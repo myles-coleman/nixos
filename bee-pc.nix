@@ -104,6 +104,7 @@
     docker
     terraform
     awscli2
+    mangohud
   ];
 
   programs.steam = {
