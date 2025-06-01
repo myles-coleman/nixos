@@ -109,6 +109,7 @@
     ntfs3g
     alejandra
     libnotify
+    neofetch
   ];
 
   fileSystems."/mnt/harddrive" = {
