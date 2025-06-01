@@ -91,11 +91,19 @@
     discord
     brave
     windsurf
-    ntfs3g
-    alejandra
-    libnotify
+    ntfs3g #for mounting ntfs drives
+    alejandra #for formatting in rebuild script
+    libnotify #for system notifications
     neofetch
-    protonup-qt
+    protonup-qt # for steam proton
+    obs-studio
+    kubectl
+    kubernetes-helm
+    helmfile
+    k9s
+    docker
+    terraform
+    awscli2
   ];
 
   programs.steam = {
