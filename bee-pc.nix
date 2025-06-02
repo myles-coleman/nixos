@@ -104,7 +104,7 @@
     docker
     terraform
     awscli2
-    mangohud
+    mangohud #for application hardware metrics overlay (isn't working)
   ];
 
   programs.steam = {
