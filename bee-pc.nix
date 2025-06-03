@@ -105,6 +105,7 @@
     terraform
     awscli2
     mangohud #for application hardware metrics overlay (isn't working)
+    rpi-imager
   ];
 
   programs.steam = {
