@@ -107,9 +107,10 @@
     mangohud #for application hardware metrics overlay (isn't working)
     rpi-imager
     #minecraft
-    grim
-    swappy
-    slurp
+    # grim
+    # swappy
+    # slurp
+    r2modman
   ];
 
   programs.steam = {
