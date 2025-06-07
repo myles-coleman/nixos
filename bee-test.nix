@@ -2,7 +2,11 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  x11LibPath = "${pkgs.xorg.libX11}/lib";
+  xextLibPath = "${pkgs.xorg.libXext}/lib";
+  xrandrLibPath = "${pkgs.xorg.libXrandr}/lib";
+in {
   users.users.mylesc = {
     isNormalUser = true;
     description = "Myles Coleman";
