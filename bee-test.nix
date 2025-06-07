@@ -70,8 +70,6 @@
     vulkan-tools
     xorg.libX11
     linuxPackages.nvidia_x11
-    # Custom MangoHud wrapper
-    (import ./mangohud-wrapper.nix {inherit pkgs;})
   ];
 
   environment.variables = {
