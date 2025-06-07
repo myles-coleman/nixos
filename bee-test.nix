@@ -66,6 +66,17 @@
     pamixer
   ];
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
+
+  programs.steam.extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
+
   fileSystems."/mnt/harddrive" = {
     device = "UUID=060C52F50C52DEED";
     fsType = "ntfs-3g";
