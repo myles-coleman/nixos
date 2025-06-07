@@ -153,11 +153,13 @@ in {
   fileSystems."/mnt/harddrive" = {
     device = "UUID=060C52F50C52DEED";
     fsType = "ntfs-3g";
+    options = ["uid=1000" "gid=100" "umask=0002"];
   };
 
   fileSystems."/mnt/backup" = {
     device = "UUID=01DA7976C02A2420";
     fsType = "ntfs-3g";
+    options = ["uid=1000" "gid=100" "umask=0002"];
   };
 
   # List services that you want to enable:
