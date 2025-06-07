@@ -128,7 +128,7 @@ in {
   hardware.nvidia.open = true;
 
   environment.variables = {
-    MANGOHUD = "1";
+    # MANGOHUD = "1";
     # VK_INSTANCE_LAYERS = "VK_LAYER_MANGOHUD_overlay";
   };
 
