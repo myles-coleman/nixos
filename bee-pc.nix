@@ -112,6 +112,7 @@
     # slurp
     r2modman
     htop
+    mangojuice
   ];
 
   programs.steam = {
