@@ -122,6 +122,8 @@
 
   environment.variables = {
     LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+    # Make Vulkan apps see MangoHud layer
+    VK_LAYER_PATH = "${pkgs.mangohud}/etc/vulkan/explicit_layer.d";
   };
 
   programs.steam = {
