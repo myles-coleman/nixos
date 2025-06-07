@@ -126,6 +126,7 @@ in {
 
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia.open = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable; # Will give 550.x
 
   environment.variables = {
     LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib:${x11LibPath}:${xextLibPath}:${xrandrLibPath}";
