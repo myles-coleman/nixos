@@ -120,6 +120,9 @@
     mesa-demos
   ];
 
+  services.xserver.videoDrivers = ["nvidia"];
+  hardware.nvidia.open = true;
+
   environment.variables = {
     LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
     # Make Vulkan apps see MangoHud layer
