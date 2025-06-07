@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: {
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mylesc = {
     isNormalUser = true;
     description = "Myles Coleman";
@@ -25,7 +24,6 @@
 
   # Environment variables
   environment.sessionVariables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
     NIXOS_OZONE_WL = "1";
   };
 
