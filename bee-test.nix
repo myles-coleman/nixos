@@ -65,6 +65,8 @@
     networkmanagerapplet
     pamixer
     mangohud
+    mesa-demos
+    vulkan-tools
   ];
 
   environment.variables = {
