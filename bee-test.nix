@@ -7,7 +7,7 @@
   users.users.mylesc = {
     isNormalUser = true;
     description = "Myles Coleman";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "input"];
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
@@ -41,6 +41,7 @@
     rofi-wayland
     libnotify
     swww
+    waybar
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
