@@ -64,7 +64,12 @@
     neofetch
     networkmanagerapplet
     pamixer
+    mangohud
   ];
+
+  environment.variables = {
+    MANGOHUD = "1";
+  };
 
   programs.steam = {
     enable = true;
