@@ -64,6 +64,7 @@
     neofetch
     networkmanagerapplet
     pamixer
+    pavucontrol
   ];
 
   fileSystems."/mnt/harddrive" = {
