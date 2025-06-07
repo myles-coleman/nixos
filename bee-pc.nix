@@ -116,7 +116,7 @@ in {
     # slurp
     r2modman
     htop
-    # goverlay
+    goverlay
     # lutris
     steam-run
     vulkan-tools
