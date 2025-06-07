@@ -124,7 +124,14 @@ in {
     mesa-demos
   ];
 
+  services.xserver.videoDrivers = ["nvidia"];
+  hardware.nvidia.open = true;
+
   environment.variables = {
+    # LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib:${x11LibPath}:${xextLibPath}:${xrandrLibPath}";
+    # VK_LAYER_PATH = "${pkgs.mangohud}/etc/vulkan/implicit_layer.d";
+
+    # GLOBAL MANGOHUD ENABLE
     MANGOHUD = "1";
     VK_INSTANCE_LAYERS = "VK_LAYER_MANGOHUD_overlay";
   };
