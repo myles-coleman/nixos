@@ -111,6 +111,7 @@
     # swappy
     # slurp
     r2modman
+    htop
   ];
 
   programs.steam = {
