@@ -67,6 +67,8 @@
     mangohud
     mesa-demos
     vulkan-tools
+    xorg.libX11
+    linuxPackages.nvidia_x11
   ];
 
   environment.variables = {
