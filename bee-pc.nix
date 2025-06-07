@@ -116,6 +116,8 @@
     # lutris
     steam-run
     vulkan-tools
+    xorg.libX11
+    mesa-demos
   ];
 
   programs.steam = {
