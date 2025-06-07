@@ -3,11 +3,7 @@
   pkgs,
   lib,
   ...
-}: let
-  x11LibPath = "${pkgs.xorg.libX11}/lib";
-  xextLibPath = "${pkgs.xorg.libXext}/lib";
-  xrandrLibPath = "${pkgs.xorg.libXrandr}/lib";
-in {
+}: {
   users.users.mylesc = {
     isNormalUser = true;
     description = "Myles Coleman";
@@ -44,10 +40,7 @@ in {
   hardware = {
     graphics.enable = true;
     nvidia.modesetting.enable = true;
-    nvidia.open = true;
   };
-
-  services.xserver.videoDrivers = ["nvidia"];
 
   environment.systemPackages = with pkgs; [
     dunst
