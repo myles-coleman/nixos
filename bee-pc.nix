@@ -5,7 +5,11 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  x11LibPath = "${pkgs.xorg.libX11}/lib";
+  xextLibPath = "${pkgs.xorg.libXext}/lib";
+  xrandrLibPath = "${pkgs.xorg.libXrandr}/lib";
+in {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -124,9 +128,8 @@
   hardware.nvidia.open = true;
 
   environment.variables = {
-    LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
-    # Make Vulkan apps see MangoHud layer
-    VK_LAYER_PATH = "${pkgs.mangohud}/etc/vulkan/explicit_layer.d";
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib:${x11LibPath}:${xextLibPath}:${xrandrLibPath}";
+    VK_LAYER_PATH = "${pkgs.mangohud}/etc/vulkan/implicit_layer.d";
   };
 
   programs.steam = {
