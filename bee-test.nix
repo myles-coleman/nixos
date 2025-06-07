@@ -13,8 +13,16 @@
     ];
   };
 
-  services.displayManager.sddm.wayland.enable = true;
-  services.displayManager.defaultSession = "hyprland";
+  # Use greetd for login and auto-start Hyprland
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "Hyprland";
+        user = "mylesc";
+      };
+    };
+  };
 
   # Enable Hyprland
   programs.hyprland = {
