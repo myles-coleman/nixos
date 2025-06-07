@@ -63,6 +63,7 @@
     libnotify #for system notifications
     neofetch
     networkmanagerapplet
+    pamixer
   ];
 
   fileSystems."/mnt/harddrive" = {
