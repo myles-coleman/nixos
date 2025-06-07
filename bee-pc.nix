@@ -120,6 +120,10 @@
     mesa-demos
   ];
 
+  environment.variables = {
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+  };
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
