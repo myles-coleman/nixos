@@ -104,15 +104,16 @@
     docker
     terraform
     awscli2
-    mangohud #for application hardware metrics overlay (isn't working)
+    # mangohud #for application hardware metrics overlay (isn't working)
     rpi-imager
-    #minecraft
+    # minecraft
     # grim
     # swappy
     # slurp
     r2modman
     htop
-    goverlay
+    # goverlay
+    # lutris
   ];
 
   programs.steam = {
@@ -120,7 +121,10 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+    gamescopeSession.enable = true;
   };
+
+  programs.gamemode.enable = true;
 
   programs.steam.extraCompatPackages = with pkgs; [
     proton-ge-bin
