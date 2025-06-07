@@ -114,6 +114,7 @@
     htop
     # goverlay
     # lutris
+    steam-run
   ];
 
   programs.steam = {
