@@ -40,7 +40,10 @@
   hardware = {
     graphics.enable = true;
     nvidia.modesetting.enable = true;
+    nvidia.open = true;
   };
+
+  services.xserver.videoDrivers = ["nvidia"];
 
   environment.systemPackages = with pkgs; [
     dunst
