@@ -3,7 +3,11 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  x11LibPath = "${pkgs.xorg.libX11}/lib";
+  xextLibPath = "${pkgs.xorg.libXext}/lib";
+  xrandrLibPath = "${pkgs.xorg.libXrandr}/lib";
+in {
   users.users.mylesc = {
     isNormalUser = true;
     description = "Myles Coleman";
@@ -72,7 +76,6 @@
     mesa-demos
     vulkan-tools
     xorg.libX11
-    linuxPackages.nvidia_x11
   ];
 
   environment.variables = {
