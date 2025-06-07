@@ -112,7 +112,7 @@
     # slurp
     r2modman
     htop
-    mangojuice
+    goverlay
   ];
 
   programs.steam = {
