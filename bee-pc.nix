@@ -115,6 +115,7 @@
     # goverlay
     # lutris
     steam-run
+    vulkan-tools
   ];
 
   programs.steam = {
