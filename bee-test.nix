@@ -78,6 +78,7 @@
     neofetch
     networkmanagerapplet
     pamixer
+    pavucontrol
     mangohud
     mesa-demos
     vulkan-tools
