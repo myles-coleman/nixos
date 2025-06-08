@@ -86,6 +86,7 @@
     blueman
     lutris
     stown
+    toybox
   ];
 
   environment.variables = {
