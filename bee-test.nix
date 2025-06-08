@@ -96,6 +96,7 @@
     toybox #gives unix utilities like `killall`
     pcmanfm #file manager
     nwg-look #themeing gtk apps
+    catppuccin-gtk
   ];
 
   environment.variables = {
