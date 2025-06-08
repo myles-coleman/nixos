@@ -97,7 +97,7 @@
   ];
 
   environment.variables = {
-    MANGOHUD = "1";
+    # MANGOHUD = "1";
   };
 
   # Font configuration
