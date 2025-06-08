@@ -58,6 +58,7 @@
   environment.systemPackages = with pkgs; [
     dunst
     kitty
+    starship #kitty configuration
     rofi-wayland
     libnotify
     swww
@@ -65,11 +66,11 @@
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
-    nerd-fonts.meslo-lg
+    nerd-fonts.meslo-lg ## Fonts and Icons
     meslo-lgs-nf
     font-awesome
     material-icons
-    material-design-icons
+    material-design-icons ## ^^^^^^^^^^^^^
     vim
     wget
     git
