@@ -40,7 +40,11 @@
   hardware = {
     graphics.enable = true;
     nvidia.modesetting.enable = true;
+    nvidia.open = true;
+    nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  services.xserver.videoDrivers = ["nvidia"];
 
   # Configure keymap in X11
   services.xserver.xkb = {
