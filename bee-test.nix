@@ -82,6 +82,7 @@
     mesa-demos
     vulkan-tools
     xorg.libX11
+    zenity
   ];
 
   environment.variables = {
