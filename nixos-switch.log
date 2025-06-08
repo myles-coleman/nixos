@@ -1,17 +1,278 @@
 building Nix...
 building the system configuration...
-these 2 derivations will be built:
-  /nix/store/fcibhki100fbsd69dlmm9jf0dh7pkkhw-etc.drv
-  /nix/store/69lpivkbfgixsnmgz3dcrz3hhzmy0zp6-nixos-system-nixos-25.05.802746.7282cb574e06.drv
-building '/nix/store/fcibhki100fbsd69dlmm9jf0dh7pkkhw-etc.drv'...
-building '/nix/store/69lpivkbfgixsnmgz3dcrz3hhzmy0zp6-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
-stopping the following units: systemd-modules-load.service, systemd-tmpfiles-resetup.service
+these 8 derivations will be built:
+  /nix/store/iryh5pipmqn8jfh8hbmrn7z8pa9ndqb8-linux-6.12.30-modules.drv
+  /nix/store/fpfczr6p7mfqfj2y5c7jk8l948cgxdg2-linux-6.12.30-modules-shrunk.drv
+  /nix/store/6c87nff200qgjy8l9pigz55p0myimw0b-closure-info.drv
+  /nix/store/0dwjgdyz7v3mxvnm26bpi84fdjq2r9nq-initrd-linux-6.12.30.drv
+  /nix/store/dcy6p9c8fy60q5flxmfl0y1mxbn6yyjc-boot.json.drv
+  /nix/store/39mpaam5k7n8njh5x60bri1mii1g28hy-system-units.drv
+  /nix/store/j9iqqmfnmhwcqxwyi2wvpmhick4lxlkk-etc.drv
+  /nix/store/0rai8239xn82hs874sr55w1wn2q214py-nixos-system-nixos-25.05.802746.7282cb574e06.drv
+building '/nix/store/iryh5pipmqn8jfh8hbmrn7z8pa9ndqb8-linux-6.12.30-modules.drv'...
+building '/nix/store/39mpaam5k7n8njh5x60bri1mii1g28hy-system-units.drv'...
+created 21 symlinks in user environment
+kernel version is 6.12.30
+building '/nix/store/j9iqqmfnmhwcqxwyi2wvpmhick4lxlkk-etc.drv'...
+building '/nix/store/fpfczr6p7mfqfj2y5c7jk8l948cgxdg2-linux-6.12.30-modules-shrunk.drv'...
+kernel version is 6.12.30
+root module: nvme
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/common/nvme-auth.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/host/nvme-core.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/host/nvme.ko.xz
+root module: xhci_pci
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/xhci-pci.ko.xz
+root module: ahci
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libahci.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/ahci.ko.xz
+root module: usb_storage
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/storage/usb-storage.ko.xz
+root module: usbhid
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/sd_mod.ko.xz
+root module: ext2
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/fs/ext2/ext2.ko.xz
+root module: ext4
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/fs/jbd2/jbd2.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/lib/crc16.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/crc32c-intel.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crc32c_generic.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/fs/ext4/ext4.ko.xz
+root module: dm_mod
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/dax/dax.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/md/dm-mod.ko.xz
+root module: dm_crypt
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/char/hw_random/rng-core.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/ecc.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/ecdh_generic.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/lib/crypto/libaescfb.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/char/tpm/tpm.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/tee/tee.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/lib/asn1_encoder.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/security/keys/trusted-keys/trusted.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/security/keys/encrypted-keys/encrypted-keys.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/dax/dax.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/md/dm-mod.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/md/dm-crypt.ko.xz
+root module: cryptd
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+root module: input_leds
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/leds/led-class.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/input-leds.ko.xz
+root module: aes
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/lib/crypto/gf128mul.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/aesni-intel.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/crypto/padlock-aes.ko.xz
+root module: aes_generic
+  builtin dependency: aes_generic
+root module: blowfish
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/blowfish_common.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/blowfish-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/blowfish_common.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/blowfish_generic.ko.xz
+root module: twofish
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/twofish_common.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/twofish_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-x86_64-3way.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/twofish_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-x86_64-3way.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/twofish-avx-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/twofish_common.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/twofish_generic.ko.xz
+root module: serpent
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/serpent_generic.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/serpent-sse2-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crypto_simd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/serpent_generic.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/serpent-avx-x86_64.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/crypto_simd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/serpent_generic.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/serpent-avx-x86_64.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/serpent-avx2.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/serpent_generic.ko.xz
+root module: cbc
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/cbc.ko.xz
+root module: xts
+  builtin dependency: ecb
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/xts.ko.xz
+root module: lrw
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/lib/crypto/gf128mul.ko.xz
+  builtin dependency: ecb
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/lrw.ko.xz
+root module: sha1
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/sha1-ssse3.ko.xz
+root module: sha256
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/sha256-ssse3.ko.xz
+root module: sha512
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/arch/x86/crypto/sha512-ssse3.ko.xz
+root module: af_alg
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/af_alg.ko.xz
+root module: algif_skcipher
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/af_alg.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/crypto/algif_skcipher.ko.xz
+root module: ecb
+  builtin dependency: ecb
+root module: ahci
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libahci.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/ahci.ko.xz
+root module: sata_nv
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/sata_nv.ko.xz
+root module: sata_via
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/sata_via.ko.xz
+root module: sata_sis
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/pata_sis.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/sata_sis.ko.xz
+root module: sata_uli
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/sata_uli.ko.xz
+root module: ata_piix
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/ata_piix.ko.xz
+root module: pata_marvell
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/ata/pata_marvell.ko.xz
+root module: nvme
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/common/nvme-auth.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/host/nvme-core.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/nvme/host/nvme.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/sd_mod.ko.xz
+root module: sr_mod
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/cdrom/cdrom.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/scsi/sr_mod.ko.xz
+root module: mmc_block
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/mmc/core/mmc_core.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/misc/rpmb-core.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/mmc/core/mmc_block.ko.xz
+root module: uhci_hcd
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/uhci-hcd.ko.xz
+root module: ehci_hcd
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-hcd.ko.xz
+root module: ehci_pci
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-pci.ko.xz
+root module: ohci_hcd
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ohci-hcd.ko.xz
+root module: ohci_pci
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ohci-hcd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/ohci-pci.ko.xz
+root module: xhci_hcd
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/xhci-hcd.ko.xz
+root module: xhci_pci
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/usb/host/xhci-pci.ko.xz
+root module: usbhid
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: hid_generic
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-generic.ko.xz
+root module: hid_lenovo
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-lenovo.ko.xz
+root module: hid_apple
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-apple.ko.xz
+root module: hid_roccat
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-roccat.ko.xz
+root module: hid_logitech_hidpp
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-logitech-hidpp.ko.xz
+root module: hid_logitech_dj
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-logitech-dj.ko.xz
+root module: hid_microsoft
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/ff-memless.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-microsoft.ko.xz
+root module: hid_cherry
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-cherry.ko.xz
+root module: hid_corsair
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/hid/hid-corsair.ko.xz
+root module: pcips2
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/pcips2.ko.xz
+root module: atkbd
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/vivaldi-fmap.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/libps2.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/keyboard/atkbd.ko.xz
+root module: i8042
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/input/serio/i8042.ko.xz
+root module: dm_mod
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/dax/dax.ko.xz
+  dependency already copied: /nix/store/ia4881m60bcagd2pvw4zx4z3wclgfxvk-linux-6.12.30-modules/lib/modules/6.12.30/kernel/drivers/md/dm-mod.ko.xz
+lib/firmware/edid not found, skipping.
+depmod: WARNING: could not open modules.builtin.modinfo at /nix/store/0m97sfmcc1hx9qrd7xk7xsllkaldp5i4-linux-6.12.30-modules-shrunk/lib/modules/6.12.30: No such file or directory
+building '/nix/store/6c87nff200qgjy8l9pigz55p0myimw0b-closure-info.drv'...
+structuredAttrs is enabled
+building '/nix/store/0dwjgdyz7v3mxvnm26bpi84fdjq2r9nq-initrd-linux-6.12.30.drv'...
+building '/nix/store/dcy6p9c8fy60q5flxmfl0y1mxbn6yyjc-boot.json.drv'...
+building '/nix/store/0rai8239xn82hs874sr55w1wn2q214py-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
+stopping the following units: systemd-modules-load.service
 activating the configuration...
 setting up /etc...
 reloading user units for mylesc...
 restarting sysinit-reactivation.target
-reloading the following units: dbus.service
-restarting the following units: polkit.service, systemd-udevd.service
-starting the following units: systemd-modules-load.service, systemd-tmpfiles-resetup.service
-the following new units were started: acpid.service, NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/2r7hp64aw91c8shbrn7q1qrj65h10yr5-nixos-system-nixos-25.05.802746.7282cb574e06
+starting the following units: systemd-modules-load.service
+the following new units were started: NetworkManager-dispatcher.service
+Done. The new configuration is /nix/store/f5j89saqqffcaiygxw94hdp7fgs1rh8b-nixos-system-nixos-25.05.802746.7282cb574e06

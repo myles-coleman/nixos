@@ -37,14 +37,17 @@
   };
 
   # Hardware configuration
+  services.xserver.videoDrivers = ["nvidia"];
+
   hardware = {
     graphics.enable = true;
     nvidia.modesetting.enable = true;
-    nvidia.open = true;
+    nvidia.open = false;
     nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+    nvidia.powerManagement.enable = false;
+    nvidia.powerManagement.finegrained = false;
+    nvidia.nvidiaSettings = true;
   };
-
-  services.xserver.videoDrivers = ["nvidia"];
 
   # Configure keymap in X11
   services.xserver.xkb = {
