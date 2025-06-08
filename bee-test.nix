@@ -43,7 +43,7 @@
     graphics.enable = true;
     nvidia.modesetting.enable = true;
     nvidia.open = false;
-    nvidia.package = config.boot.kernelPackages.nvidiaPackages.production;
+    nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
     nvidia.powerManagement.enable = false;
     nvidia.powerManagement.finegrained = false;
     nvidia.nvidiaSettings = true;
