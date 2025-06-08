@@ -127,6 +127,20 @@
     jack.enable = true;
   };
 
+  # Enable Bluetooth support
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
+    };
+  };
+
+  # Start the bluetooth service
+  services.blueman.enable = true;
+
   # Example rofi keybind (assuming using Hyprland's config in ~/.config/hypr/hyprland.conf, not in NixOS config)
   # This would go in hyprland.conf, not in NixOS configuration.nix:
   #
