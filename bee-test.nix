@@ -65,6 +65,11 @@
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
+    nerd-fonts.meslo-lg
+    meslo-lgs-nf
+    font-awesome
+    material-icons
+    material-design-icons
     vim
     wget
     git
@@ -94,19 +99,28 @@
     MANGOHUD = "1";
   };
 
-  # GTK configuration
-  programs.dconf.enable = true;
-
-  # Configure GTK settings
-  environment.etc."xdg/gtk-3.0/settings.ini".text = ''
-    [Settings]
-    gtk-application-prefer-dark-theme=true
-  '';
-
-  environment.etc."xdg/gtk-4.0/settings.ini".text = ''
-    [Settings]
-    gtk-application-prefer-dark-theme=true
-  '';
+  # Font configuration
+  fonts = {
+    enableDefaultPackages = true;
+    fontDir.enable = true;
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-emoji
+      nerd-fonts.meslo-lg
+      meslo-lgs-nf
+      font-awesome
+      material-icons
+      material-design-icons
+    ];
+    fontconfig = {
+      defaultFonts = {
+        monospace = ["MesloLGS Nerd Font Mono"];
+        sansSerif = ["Noto Sans"];
+        serif = ["Noto Serif"];
+      };
+    };
+  };
 
   programs.steam = {
     enable = true;

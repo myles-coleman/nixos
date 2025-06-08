@@ -1,17 +1,1114 @@
 building Nix...
 building the system configuration...
-these 4 derivations will be built:
-  /nix/store/hdb81mmjmqkj9i6v3r6bn93mimin7fbx-etc-xdg-gtk-3.0-settings.ini.drv
-  /nix/store/qa8ink2z7jjwhjsxi9gax982m01k401c-etc-xdg-gtk-4.0-settings.ini.drv
-  /nix/store/gv12b6bk3b65ilv5700c6saqm29g40hz-etc.drv
-  /nix/store/7zr76r1055f88qrzzh27cf3wbmsg9fji-nixos-system-nixos-25.05.802746.7282cb574e06.drv
-building '/nix/store/hdb81mmjmqkj9i6v3r6bn93mimin7fbx-etc-xdg-gtk-3.0-settings.ini.drv'...
-building '/nix/store/qa8ink2z7jjwhjsxi9gax982m01k401c-etc-xdg-gtk-4.0-settings.ini.drv'...
-building '/nix/store/gv12b6bk3b65ilv5700c6saqm29g40hz-etc.drv'...
-building '/nix/store/7zr76r1055f88qrzzh27cf3wbmsg9fji-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
+these 27 derivations will be built:
+  /nix/store/q2fih7z7d3wvm3xs3xagpsfpdka86zh0-steam-fhsenv-rootfs.drv
+  /nix/store/b2xf2w5i3v4gi5r2f4qd2ncyz61m49x1-steam-bwrap.drv
+  /nix/store/9hw15y7kb8gh10ji29bb9a44g6kwqhc1-steam.drv
+  /nix/store/grz9pvng5q9nv1zipmin7mx48hka1vrv-steam-run-fhsenv-rootfs.drv
+  /nix/store/4v8wgs174kzqy1kykram6f6vygcdfvgs-steam-run-bwrap.drv
+  /nix/store/a5b18nldpnwaw9i25ay7yxmhnmjllqlw-steam-run.drv
+  /nix/store/vvhsa40yn26wjlagl097knghibnsabpf-X11-fonts.drv
+  /nix/store/rhxf3p2lp91m8qj6qmns2j803536d47g-dri-pkgconfig-stub.drv
+  /nix/store/wyppdsw9xy0mwcq1yihnchcvki3vgwm3-xwayland-24.1.6.drv
+  /nix/store/pk6pwg07dll9cacm5fz94l5d4ckl4101-system-path.drv
+  /nix/store/3n0xw0bc9h624rm8dlrv3d3vsnbnqxgs-dbus-1.drv
+  /nix/store/iwz2m3183bba64p0v1hl4h1gl74v9xqp-X-Restart-Triggers-dbus.drv
+  /nix/store/1hz0xlvhbmbrszy6fpxl42vridqidkfa-unit-dbus.service.drv
+  /nix/store/412jgndl7gfpli3rb82fazzb8zwrm5jb-user-environment.drv
+  /nix/store/7w0gk31gsym24a427msg2kyjvdkh6ahc-unit-dbus.service.drv
+  /nix/store/llhwprzi0xjh7ql32yq1fkixwa5v1cgr-user-units.drv
+  /nix/store/ywzkhlzi1xax6b4210xlhmklm33gj78c-X-Restart-Triggers-polkit.drv
+  /nix/store/69qymfp5pdg1r1ng4852z0xsw0mf909j-unit-polkit.service.drv
+  /nix/store/zlw9y55ddhfa7l6w3m7qb844rgav7zyl-system-units.drv
+  /nix/store/9bvvgfyzmlmnyz0ncl9hm64pr56fza90-exec.drv
+  /nix/store/j32xyagbrnq88jahmhirnwq5rkglfh0k-fc-cache.drv
+  /nix/store/ah2jrcvpsvryi81q745g02dzk00m0kbc-fc-00-nixos-cache.conf.drv
+  /nix/store/kiv2biswagk6g09iylrc2jz9jf621pgf-fc-52-nixos-default-fonts.conf.drv
+  /nix/store/c0nm6j7hbxl9j86y0n2ib1c8bh4mxm94-fontconfig-conf.drv
+  /nix/store/zmlm2aq3w62dhlj1y7kc5wfbzc1wgp6g-fontconfig-etc.drv
+  /nix/store/477wg6xi47ga6a7v8xz1md8w8vd16z20-etc.drv
+  /nix/store/if8zlwf2a18kya8g78bs5nw53c3alps6-nixos-system-nixos-25.05.802746.7282cb574e06.drv
+these 25 paths will be fetched (50.95 MiB download, 276.53 MiB unpacked):
+  /nix/store/9a2ddf7jq5wan6rgg8p323h7w0i3llgr-egl-wayland-1.1.19
+  /nix/store/iy01w3wyzgmwf7c4z0a6xvkri6ngcy2q-egl-wayland-1.1.19-dev
+  /nix/store/fn571a2wqxw0hkppfrl787rbjmna5xdj-eglexternalplatform-1.2.1
+  /nix/store/whn7k5rx9zdvc6qiwrn816sgdqq670bg-font-alias-1.0.5
+  /nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2
+  /nix/store/brkawr94aa84kk80gybq1psmndb3sd1j-glu-9.0.3-dev
+  /nix/store/d97l8zz6jakhihpa6bv5p4kpilwvrjzm-libXaw-1.0.16-dev
+  /nix/store/gd4ixml1nzyr5bwqiiqxz1w0ffskgf9n-libXdmcp-1.1.5-dev
+  /nix/store/mwan3006nzdq6ia8lw3hyk4vlc585g17-libXmu-1.2.1-dev
+  /nix/store/fa2hj404k1va7mlwbgi2c5fvmcbr4nva-libXpm-3.5.17-bin
+  /nix/store/kpndnmnjrigk6wdawayrkckfb76kil7c-libXpm-3.5.17-dev
+  /nix/store/sd1mcmaycch7xf9z6kj8f8vwzrr9vdlf-libXres-1.2.2-dev
+  /nix/store/qafhj1pi49qd3h73z6h29v4czldhzp1r-libdecor-0.2.2-dev
+  /nix/store/rr35g8c9hz3sj83mvg8qcggwjlz8b10s-libepoxy-1.5.10-dev
+  /nix/store/8bm4rib6gdnsa3msbx3nk1qf98a4si07-libtirpc-1.3.6-dev
+  /nix/store/zwpxdc89slc9j9h2mdmyxfwbbw568830-libunwind-1.8.1-dev
+  /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47
+  /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0
+  /nix/store/a7yr2m39dbajjssgiz3bnj0snzangyf4-mesa-gl-headers-25.0.1
+  /nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03
+  /nix/store/4z2gcgbw579y37jv1dc10y5ymix53rs1-mkfontscale-1.2.3
+  /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21
+  /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004
+  /nix/store/pn09vm5vr353yjsr2mc62333k7xwcsnm-xtrans-1.6.0
+  /nix/store/jh2klmckr12wj19b6zxkach0zrnapndn-xwayland-24.1.6.tar.xz
+copying path '/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2' from 'https://cache.nixos.org'...
+copying path '/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47' from 'https://cache.nixos.org'...
+copying path '/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03' from 'https://cache.nixos.org'...
+copying path '/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21' from 'https://cache.nixos.org'...
+building '/nix/store/412jgndl7gfpli3rb82fazzb8zwrm5jb-user-environment.drv'...
+copying path '/nix/store/whn7k5rx9zdvc6qiwrn816sgdqq670bg-font-alias-1.0.5' from 'https://cache.nixos.org'...
+copying path '/nix/store/a7yr2m39dbajjssgiz3bnj0snzangyf4-mesa-gl-headers-25.0.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004' from 'https://cache.nixos.org'...
+copying path '/nix/store/pn09vm5vr353yjsr2mc62333k7xwcsnm-xtrans-1.6.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/jh2klmckr12wj19b6zxkach0zrnapndn-xwayland-24.1.6.tar.xz' from 'https://cache.nixos.org'...
+copying path '/nix/store/fn571a2wqxw0hkppfrl787rbjmna5xdj-eglexternalplatform-1.2.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/brkawr94aa84kk80gybq1psmndb3sd1j-glu-9.0.3-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/gd4ixml1nzyr5bwqiiqxz1w0ffskgf9n-libXdmcp-1.1.5-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/mwan3006nzdq6ia8lw3hyk4vlc585g17-libXmu-1.2.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/sd1mcmaycch7xf9z6kj8f8vwzrr9vdlf-libXres-1.2.2-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/qafhj1pi49qd3h73z6h29v4czldhzp1r-libdecor-0.2.2-dev' from 'https://cache.nixos.org'...
+building '/nix/store/rhxf3p2lp91m8qj6qmns2j803536d47g-dri-pkgconfig-stub.drv'...
+building '/nix/store/kiv2biswagk6g09iylrc2jz9jf621pgf-fc-52-nixos-default-fonts.conf.drv'...
+building '/nix/store/9bvvgfyzmlmnyz0ncl9hm64pr56fza90-exec.drv'...
+created 575 symlinks in user environment
+copying path '/nix/store/9a2ddf7jq5wan6rgg8p323h7w0i3llgr-egl-wayland-1.1.19' from 'https://cache.nixos.org'...
+copying path '/nix/store/fa2hj404k1va7mlwbgi2c5fvmcbr4nva-libXpm-3.5.17-bin' from 'https://cache.nixos.org'...
+copying path '/nix/store/rr35g8c9hz3sj83mvg8qcggwjlz8b10s-libepoxy-1.5.10-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/8bm4rib6gdnsa3msbx3nk1qf98a4si07-libtirpc-1.3.6-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/zwpxdc89slc9j9h2mdmyxfwbbw568830-libunwind-1.8.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/4z2gcgbw579y37jv1dc10y5ymix53rs1-mkfontscale-1.2.3' from 'https://cache.nixos.org'...
+copying path '/nix/store/d97l8zz6jakhihpa6bv5p4kpilwvrjzm-libXaw-1.0.16-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/iy01w3wyzgmwf7c4z0a6xvkri6ngcy2q-egl-wayland-1.1.19-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/kpndnmnjrigk6wdawayrkckfb76kil7c-libXpm-3.5.17-dev' from 'https://cache.nixos.org'...
+building '/nix/store/wyppdsw9xy0mwcq1yihnchcvki3vgwm3-xwayland-24.1.6.drv'...
+Running phase: unpackPhase
+unpacking source archive /nix/store/jh2klmckr12wj19b6zxkach0zrnapndn-xwayland-24.1.6.tar.xz
+source root is xwayland-24.1.6
+setting SOURCE_DATE_EPOCH to timestamp 1740508691 of file "xwayland-24.1.6/xserver.ent.in"
+Running phase: patchPhase
+Running phase: updateAutotoolsGnuConfigScriptsPhase
+Running phase: configurePhase
+mesonConfigurePhase flags: --prefix=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6 --libdir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/lib --libexecdir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/libexec --bindir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/bin --sbindir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/sbin --includedir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/include --mandir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/man --infodir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/info --localedir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/locale -Dauto_features=enabled -Dwrap_mode=nodownload --buildtype=plain -Dxcsecurity=true -Ddefault_font_path=/run/current-system/sw/share/X11/fonts -Dxkb_bin_dir=/nix/store/zznnq3j74hlgrqirbwc9hazbfmgqga7i-xkbcomp-1.4.7/bin -Dxkb_dir=/nix/store/6fq80h0myz0nc01425zm9hrfcl2p5hd7-xkeyboard-config-2.44/etc/X11/xkb -Dxkb_output_dir=/nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/X11/xkb/compiled -Dlibunwind=true
+building '/nix/store/vvhsa40yn26wjlagl097knghibnsabpf-X11-fonts.drv'...
+building '/nix/store/j32xyagbrnq88jahmhirnwq5rkglfh0k-fc-cache.drv'...
+building '/nix/store/q2fih7z7d3wvm3xs3xagpsfpdka86zh0-steam-fhsenv-rootfs.drv'...
+building '/nix/store/grz9pvng5q9nv1zipmin7mx48hka1vrv-steam-run-fhsenv-rootfs.drv'...
+The Meson build system
+Version: 1.7.2
+Source dir: /build/xwayland-24.1.6
+Build dir: /build/xwayland-24.1.6/build
+Build type: native build
+Project name: xwayland
+Project version: 24.1.6
+C compiler for the host machine: gcc (gcc 14.2.1 "gcc (GCC) 14.2.1 20250322")
+C linker for the host machine: gcc ld.bfd 2.44
+structuredAttrs is enabled
+structuredAttrs is enabled
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Font directories:
+        /nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37
+        /nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01
+        /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21
+        /nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03
+        /nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2
+        /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47
+        /nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37
+        /nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503
+        /nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5
+        /nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03
+        /nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047
+        /nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share
+        /nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share
+        /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share
+        /nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share
+        /nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share
+        /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share
+        /nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share
+        /nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share
+        /nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share
+        /nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share
+        /nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share
+        /nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts
+        /nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts
+        /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts
+        /nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts
+        /nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts
+        /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts
+        /nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts
+        /nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts
+        /nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts
+        /nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts
+        /nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts
+        /nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts/truetype
+        /nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts/noto
+        /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype
+        /nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts/truetype
+        /nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts/opentype
+        /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/opentype
+        /nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/truetype
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/eot
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/truetype
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff
+        /nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff2
+        /nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts/truetype
+        /nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts/truetype
+        /nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts/truetype
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc/liberation-fonts-2.1.5
+        /nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts/truetype
+        /nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts/opentype
+        /nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts/noto
+        /nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype/noto-cjk
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts
+        /nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts/MesloLG
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts/truetype: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts/noto: skipping, existing cache is valid: 888 fonts, 0 dirs
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype/noto-cjk: skipping, existing cache is valid: 60 fonts, 0 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts/MesloLG: skipping, existing cache is valid: 72 fonts, 0 dirs
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts/truetype: skipping, existing cache is valid: 4 fonts, 0 dirs
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts/opentype: skipping, existing cache is valid: 3 fonts, 0 dirs
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts: skipping, existing cache is valid: 0 fonts, 2 dirs
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/opentype: skipping, existing cache is valid: 4 fonts, 0 dirs
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/truetype: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts: skipping, existing cache is valid: 0 fonts, 4 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/eot: skipping, existing cache is valid: 0 fonts, 0 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/truetype: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff2: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts/truetype: skipping, existing cache is valid: 22 fonts, 0 dirs
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts/truetype: skipping, existing cache is valid: 12 fonts, 0 dirs
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts/truetype: skipping, existing cache is valid: 33 fonts, 0 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share: skipping, existing cache is valid: 0 fonts, 2 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc/liberation-fonts-2.1.5: skipping, existing cache is valid: 0 fonts, 0 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts/truetype: skipping, existing cache is valid: 12 fonts, 0 dirs
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts: skipping, existing cache is valid: 3 fonts, 1 dirs
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts/opentype: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts: skipping, existing cache is valid: 0 fonts, 1 dirs
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts/noto: skipping, existing cache is valid: 1 fonts, 0 dirs
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share: skipping, looped directory detected
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share: skipping, looped directory detected
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share: skipping, looped directory detected
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share: skipping, looped directory detected
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share: skipping, looped directory detected
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share: skipping, looped directory detected
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share: skipping, looped directory detected
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share: skipping, looped directory detected
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share: skipping, looped directory detected
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share: skipping, looped directory detected
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share: skipping, looped directory detected
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share: skipping, looped directory detected
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share: skipping, looped directory detected
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts: skipping, looped directory detected
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts: skipping, looped directory detected
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts: skipping, looped directory detected
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts: skipping, looped directory detected
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts: skipping, looped directory detected
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts: skipping, looped directory detected
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts: skipping, looped directory detected
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts: skipping, looped directory detected
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts: skipping, looped directory detected
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts: skipping, looped directory detected
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc: skipping, looped directory detected
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts: skipping, looped directory detected
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts: skipping, looped directory detected
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts: skipping, looped directory detected
+/nix/store/zh5iazbs69x4irfdml5fzbh9nm05spgb-dejavu-fonts-minimal-2.37/share/fonts/truetype: skipping, looped directory detected
+/nix/store/r8pd5mfrmrh3i15xjp5jcqs1hsgm7n21-noto-fonts-2025.04.01/share/fonts/noto: skipping, looped directory detected
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype: skipping, looped directory detected
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype: skipping, looped directory detected
+/nix/store/si32pfr7d2x1szrllp46djprhryl1f0z-meslo-lgs-nf-unstable-2023-04-03/share/fonts/truetype: skipping, looped directory detected
+/nix/store/n84p8wa0k885nfy0cj3z2pff4ipd6sds-font-awesome-6.7.2/share/fonts/opentype: skipping, looped directory detected
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/opentype: skipping, looped directory detected
+/nix/store/44a75n5nf0j0x9dzdih464rk1dvnf3yv-material-icons-4.0.0/share/fonts/truetype: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/eot: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/truetype: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff: skipping, looped directory detected
+/nix/store/9f7dz8v69q945slcd6ylrwbj8j6a649l-material-design-icons-7.4.47/share/fonts/woff2: skipping, looped directory detected
+/nix/store/46g6p6698lc50ypik6mgg0wf3q23gzqz-dejavu-fonts-2.37/share/fonts/truetype: skipping, looped directory detected
+/nix/store/1fn8sllmwqwpgl8ggg965d01ihjmsggc-freefont-ttf-20120503/share/fonts/truetype: skipping, looped directory detected
+/nix/store/vg2gjknwfxi53lh8z3cbhibc70kka2wv-gyre-fonts-2.005/share/fonts/truetype: skipping, looped directory detected
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/doc/liberation-fonts-2.1.5: skipping, looped directory detected
+/nix/store/vl44mgyhq46plr28vfj06zj9lk89jyaw-liberation-fonts-2.1.5/share/fonts/truetype: skipping, looped directory detected
+/nix/store/n4ycrf3jfdmzqmxd31nlcbdha5rz1fhi-unifont-16.0.03/share/fonts/opentype: skipping, looped directory detected
+/nix/store/j6my08rg747ngwqb5mnxhc06i5p2xz8v-noto-fonts-color-emoji-2.047/share/fonts/noto: skipping, looped directory detected
+/nix/store/fgs89wjy49y4gmfja2gfyjn81clwh717-noto-fonts-cjk-sans-2.004/share/fonts/opentype/noto-cjk: skipping, looped directory detected
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts: skipping, looped directory detected
+/nix/store/j04labkr8q7qrvfmqg4p86iz1y58433a-nerd-fonts-meslo-lg-3.4.0+1.21/share/fonts/truetype/NerdFonts/MesloLG: skipping, looped directory detected
+/var/cache/fontconfig: not cleaning non-existent cache directory
+/nix/store/b1940ipi7mm48nhmvxip4x0synawzhkb-fc-cache: cleaning cache directory
+Compiler for C supports arguments -Wall: YES 
+/nix/store/64zabz1hxymxbcvp78hp9kacrygnf9l9-fontconfig-2.16.0-bin/bin/fc-cache: succeeded
+building '/nix/store/ah2jrcvpsvryi81q745g02dzk00m0kbc-fc-00-nixos-cache.conf.drv'...
+Compiler for C supports arguments -Wpointer-arith: YES 
+Compiler for C supports arguments -Wmissing-declarations: YES 
+Compiler for C supports arguments -Wformat=2: YES 
+Compiler for C supports arguments -Wstrict-prototypes: YES 
+Compiler for C supports arguments -Wmissing-prototypes: YES 
+Compiler for C supports arguments -Wnested-externs: YES 
+Compiler for C supports arguments -Wbad-function-cast: YES 
+Compiler for C supports arguments -Wold-style-definition: YES 
+Compiler for C supports arguments -Wunused: YES 
+Compiler for C supports arguments -Wuninitialized: YES 
+Compiler for C supports arguments -Wshadow: YES 
+Compiler for C supports arguments -Wmissing-noreturn: YES 
+Compiler for C supports arguments -Wmissing-format-attribute: YES 
+Compiler for C supports arguments -Wredundant-decls: YES 
+building '/nix/store/c0nm6j7hbxl9j86y0n2ib1c8bh4mxm94-fontconfig-conf.drv'...
+Compiler for C supports arguments -Werror=implicit: YES 
+Compiler for C supports arguments -Werror=nonnull: YES 
+Compiler for C supports arguments -Werror=init-self: YES 
+Compiler for C supports arguments -Werror=main: YES 
+Compiler for C supports arguments -Werror=missing-braces: YES 
+Compiler for C supports arguments -Werror=sequence-point: YES 
+Compiler for C supports arguments -Werror=return-type: YES 
+Compiler for C supports arguments -Werror=trigraphs: YES 
+Compiler for C supports arguments -Werror=array-bounds: YES 
+Compiler for C supports arguments -Werror=write-strings: YES 
+Compiler for C supports arguments -Werror=address: YES 
+Compiler for C supports arguments -Werror=int-to-pointer-cast: YES 
+Compiler for C supports arguments -Werror=pointer-to-int-cast: YES 
+meson.build:61: WARNING: Consider using the built-in warning_level option instead of using "-Wall".
+building '/nix/store/zmlm2aq3w62dhlj1y7kc5wfbzc1wgp6g-fontconfig-etc.drv'...
+Found pkg-config: YES (/nix/store/2crk9xnq5x9v7yf0r2nwkgj8qsmxr4ly-pkg-config-wrapper-0.29.2/bin/pkg-config) 0.29.2
+Run-time dependency x11 found: YES 1.8.12
+Run-time dependency xproto found: YES 7.0.33
+Run-time dependency randrproto found: YES 1.6.0
+Run-time dependency renderproto found: YES 0.11.1
+Run-time dependency xextproto found: YES 7.3.0
+created 1 symlinks in user environment
+Run-time dependency inputproto found: YES 2.3.99.2
+Run-time dependency kbproto found: YES 1.0.7
+Run-time dependency fontsproto found: YES 2.1.3
+Run-time dependency fixesproto found: YES 6.1
+Run-time dependency damageproto found: YES 1.2.1
+Run-time dependency xcmiscproto found: YES 1.2.2
+Run-time dependency bigreqsproto found: YES 1.1.2
+Run-time dependency presentproto found: YES 1.4
+Run-time dependency xtrans found: YES 1.6.0
+Run-time dependency videoproto found: YES 2.3.3
+Run-time dependency compositeproto found: YES 0.4.2
+Run-time dependency recordproto found: YES 1.14.2
+Run-time dependency scrnsaverproto found: YES 1.2.3
+Run-time dependency resourceproto found: YES 1.2.0
+Run-time dependency dri3proto found: YES 1.4
+Run-time dependency xineramaproto found: YES 1.2.1
+Run-time dependency xf86bigfontproto found: YES 1.2.0
+Run-time dependency xf86vidmodeproto found: YES 2.3.1
+Run-time dependency xshmfence found: YES 1.3.3
+Run-time dependency xwaylandproto found: YES 1.0
+Run-time dependency dpmsproto found: YES 1.2
+Run-time dependency pixman-1 found: YES 0.44.2
+Did not find CMake 'cmake'
+Found CMake: NO
+Run-time dependency libbsd-overlay found: NO (tried pkgconfig and cmake)
+Run-time dependency xkbcomp found: YES 1.4.7
+Run-time dependency xkbfile found: YES 1.1.3
+Run-time dependency xfont2 found: YES 2.0.7
+Run-time dependency libsystemd found: YES 257
+Run-time dependency libxcvt found: YES 0.1.3
+Run-time dependency wayland-client found: YES 1.23.1
+Run-time dependency wayland-protocols found: YES 1.44
+Dependency libxcvt found: YES 0.1.3 (cached)
+Dependency xshmfence found: YES 1.3.3 (cached)
+Run-time dependency libdrm found: YES 2.4.124
+Run-time dependency epoxy found: YES 1.5.10
+Checking for function "getaddrinfo" : YES 
+Run-time dependency gbm found: YES 25.0.1
+Dependency epoxy found: YES 1.5.10 (cached)
+Run-time dependency libdecor-0 found: YES 0.2.2
+Run-time dependency libei-1.0 found: YES 1.4.1
+Run-time dependency liboeffis-1.0 found: YES 1.4.1
+Checking for function "SHA1Init" : NO 
+Checking for function "CC_SHA1_Init" : NO 
+Has header "wincrypt.h" : NO 
+Library md found: NO
+Run-time dependency libsha1 found: NO (tried pkgconfig and cmake)
+Run-time dependency nettle found: NO (tried pkgconfig and cmake)
+libgcrypt-config found: NO
+Run-time dependency libgcrypt found: NO (tried pkgconfig and config-tool)
+Library crypto found: YES
+Run-time dependency openssl found: YES 3.4.1
+Message: Using libcrypto SHA1 functions
+Run-time dependency xdmcp found: YES 1.1.5
+Dependency libdrm found: YES 2.4.124 (cached)
+Has header "sys/eventfd.h" : YES 
+Has header "sys/shm.h" : YES 
+Library m found: YES
+Library dl found: YES
+Run-time dependency libselinux found: NO (tried pkgconfig and cmake)
+Run-time dependency audit found: NO (tried pkgconfig and cmake)
+Run-time dependency libunwind found: YES 1.8.1
+Configuring Xserver.1 using configuration
+Run-time dependency xorg-sgml-doctools found: NO (tried pkgconfig and cmake)
+Program xmlto found: NO
+Program xsltproc found: NO
+Program fop found: NO
+Run-time dependency dri found: YES 25.0
+Checking if "typeof()" compiles: YES 
+Checking for function "clock_gettime" : YES 
+Checking if "CLOCK_MONOTONIC" compiles: YES 
+Checking for size of "unsigned long" : 8 
+Header "pthread.h" has symbol "PTHREAD_MUTEX_RECURSIVE" : YES 
+Checking if "pthread_setname_np(tid, name)" compiles: YES 
+Has header "dlfcn.h" : YES 
+Has header "execinfo.h" : YES 
+Has header "fnmatch.h" : YES 
+Has header "stdlib.h" : YES 
+Has header "string.h" : YES 
+Has header "strings.h" : YES 
+Has header "sys/ucred.h" : NO 
+Has header "sys/utsname.h" : YES 
+Has header "sys/sysmacros.h" : YES 
+Checking for function "arc4random_buf" with dependency libbsd-overlay: YES 
+Checking for function "backtrace" : YES 
+Checking for function "cbrt" : YES 
+Checking for function "epoll_create1" : YES 
+Checking for function "getuid" : YES 
+Checking for function "geteuid" : YES 
+Checking for function "isastream" : NO 
+Checking for function "issetugid" : NO 
+Checking for function "getifaddrs" : YES 
+Checking for function "getpeereid" : NO 
+Checking for function "getpeerucred" : NO 
+Checking for function "getprogname" : NO 
+Checking for function "getzoneid" : NO 
+Checking for function "memfd_create" : YES 
+Checking for function "mkostemp" : YES 
+Checking for function "mmap" : YES 
+Checking for function "open_device" : NO 
+Checking for function "poll" : YES 
+Checking for function "pollset_create" : NO 
+Checking for function "posix_fallocate" : YES 
+Checking for function "port_create" : NO 
+Checking for function "reallocarray" with dependency libbsd-overlay: YES 
+Checking for function "seteuid" : YES 
+Warning: Schema ?org.gnome.system.locale? has path ?/system/locale/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy? has path ?/system/proxy/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.http? has path ?/system/proxy/http/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.https? has path ?/system/proxy/https/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.ftp? has path ?/system/proxy/ftp/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.socks? has path ?/system/proxy/socks/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+building '/nix/store/4v8wgs174kzqy1kykram6f6vygcdfvgs-steam-run-bwrap.drv'...
+Checking for function "setitimer" : YES 
+Checking for function "shmctl64" : NO 
+Checking for function "sigaction" : YES 
+Checking for function "sigprocmask" : YES 
+Checking for type "socklen_t" : YES 
+Checking for function "strcasecmp" : YES 
+Checking for function "strcasestr" : YES 
+Checking for function "strlcat" with dependency libbsd-overlay: YES 
+Checking for function "strlcpy" with dependency libbsd-overlay: YES 
+Checking for function "strncasecmp" : YES 
+Checking for function "strndup" : YES 
+Header "string.h" has symbol "strndup" : YES 
+Checking for function "timingsafe_memcmp" : NO 
+Checking for function "vasprintf" : YES 
+Checking for function "vsnprintf" : YES 
+Checking for function "walkcontext" : NO 
+Checking whether type "struct xucred" has member "cr_pid" : NO 
+Header "sys/socket.h" has symbol "SCM_RIGHTS" : YES 
+Header "sys/socket.h" has symbol "SO_PEERCRED" : YES 
+Configuring dix-config.h using configuration
+Configuring version-config.h using configuration
+Configuring xkb-config.h using configuration
+Configuring xwayland-config.h using configuration
+Run-time dependency glproto found: YES 1.4.17
+Run-time dependency gl found: YES 1.2
+Dependency glproto found: YES 1.4.17 (cached)
+Dependency gl found: YES 1.2 (cached)
+Run-time dependency libtirpc found: YES 1.3.6
+Library pthread found: YES
+Run-time dependency xau found: YES 1.0.12
+Dependency presentproto found: YES 1.4 (cached)
+Dependency epoxy found: YES 1.5.10 (cached)
+Build-time dependency wayland-scanner found: YES 1.23.1
+Program /nix/store/czj4c9kniwgnniv5w7rjqr3mkvkcymfz-wayland-scanner-1.23.1-bin/bin/wayland-scanner found: YES (/nix/store/czj4c9kniwgnniv5w7rjqr3mkvkcymfz-wayland-scanner-1.23.1-bin/bin/wayland-scanner)
+Dependency wayland-protocols found: YES 1.44 (cached)
+hw/xwayland/meson.build:189: WARNING: Project targets '>= 0.56.0' but uses feature introduced in '0.62.0': pkgconfig.generate implicit variable for builtin directories.
+Configuring Xwayland.1 using configuration
+Configuring org.freedesktop.Xwayland.desktop using configuration
+Program rendercheck found: NO
+Program scripts/xvfb-piglit.sh found: YES (/build/xwayland-24.1.6/test/scripts/xvfb-piglit.sh)
+Program scripts/xwayland-piglit.sh found: YES (/build/xwayland-24.1.6/test/scripts/xwayland-piglit.sh)
+Run-time dependency xcb found: YES 1.17.0
+Run-time dependency xcb-xinput found: YES 1.17.0
+Dependency xcb found: YES 1.17.0 (cached)
+Run-time dependency xcb-damage found: YES 1.17.0
+Dependency xcb found: YES 1.17.0 (cached)
+Run-time dependency xcb-sync found: YES 1.17.0
+Build targets in project: 33
+WARNING: Project specifies a minimum meson_version '>= 0.56.0' but uses features which were added in newer versions:
+ * 0.62.0: {'pkgconfig.generate implicit variable for builtin directories'}
+
+xwayland 24.1.6
+
+  User defined options
+    auto_features    : enabled
+    bindir           : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/bin
+    buildtype        : plain
+Warning: Schema ?org.gnome.system.locale? has path ?/system/locale/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy? has path ?/system/proxy/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.http? has path ?/system/proxy/http/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.https? has path ?/system/proxy/https/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.ftp? has path ?/system/proxy/ftp/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.socks? has path ?/system/proxy/socks/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+    default_font_path: /run/current-system/sw/share/X11/fonts
+    includedir       : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/include
+    infodir          : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/info
+    libdir           : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/lib
+    libexecdir       : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/libexec
+    libunwind        : true
+    localedir        : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/locale
+    mandir           : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/man
+    prefix           : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6
+    sbindir          : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/sbin
+    wrap_mode        : nodownload
+    xcsecurity       : true
+    xkb_bin_dir      : /nix/store/zznnq3j74hlgrqirbwc9hazbfmgqga7i-xkbcomp-1.4.7/bin
+    xkb_dir          : /nix/store/6fq80h0myz0nc01425zm9hrfcl2p5hd7-xkeyboard-config-2.44/etc/X11/xkb
+    xkb_output_dir   : /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/X11/xkb/compiled
+
+Found ninja-1.12.1 at /nix/store/93p8lzm2pajznwjanciiq3zggqndykyy-ninja-1.12.1/bin/ninja
+mesonConfigurePhase: enabled\ parallel\ building
+Running phase: buildPhase
+build flags: -j16
+[1/447] Compiling C object dix/liblibxserver_dix.a.p/globals.c.o
+[2/447] Compiling C object dix/liblibxserver_dix.a.p/atom.c.o
+[3/447] Compiling C object dix/liblibxserver_dix.a.p/gestures.c.o
+[4/447] Compiling C object dix/liblibxserver_dix.a.p/main.c.o
+[5/447] Compiling C object dix/liblibxserver_dix.a.p/extension.c.o
+[6/447] Compiling C object dix/liblibxserver_dix.a.p/cursor.c.o
+[7/447] Compiling C object dix/liblibxserver_dix.a.p/glyphcurs.c.o
+[8/447] Compiling C object dix/liblibxserver_dix.a.p/eventconvert.c.o
+[9/447] Compiling C object dix/liblibxserver_dix.a.p/dixutils.c.o
+[10/447] Compiling C object dix/liblibxserver_dix.a.p/gc.c.o
+[11/447] Compiling C object dix/liblibxserver_dix.a.p/initatoms.c.o
+[12/447] Compiling C object dix/liblibxserver_dix.a.p/pixmap.c.o
+[13/447] Compiling C object dix/liblibxserver_dix.a.p/enterleave.c.o
+[14/447] Compiling C object dix/liblibxserver_dix.a.p/grabs.c.o
+[15/447] Compiling C object dix/liblibxserver_dix.a.p/dixfonts.c.o
+[16/447] Compiling C object dix/liblibxserver_dix.a.p/privates.c.o
+[17/447] Compiling C object dix/liblibxserver_dix.a.p/registry.c.o
+[18/447] Compiling C object dix/liblibxserver_dix.a.p/getevents.c.o
+[19/447] Compiling C object dix/liblibxserver_main.a.p/stubmain.c.o
+[20/447] Compiling C object dix/liblibxserver_dix.a.p/inpututils.c.o
+[21/447] Compiling C object dix/liblibxserver_dix.a.p/ptrveloc.c.o
+[22/447] Compiling C object dix/liblibxserver_dix.a.p/tables.c.o
+[23/447] Compiling C object dix/liblibxserver_dix.a.p/property.c.o
+[24/447] Compiling C object dix/liblibxserver_dix.a.p/selection.c.o
+[25/447] Compiling C object dri3/liblibxserver_dri3.a.p/dri3.c.o
+building '/nix/store/b2xf2w5i3v4gi5r2f4qd2ncyz61m49x1-steam-bwrap.drv'...
+[26/447] Compiling C object dix/liblibxserver_dix.a.p/devices.c.o
+[27/447] Compiling C object dix/liblibxserver_dix.a.p/resource.c.o
+[28/447] Compiling C object dri3/liblibxserver_dri3.a.p/dri3_screen.c.o
+[29/447] Compiling C object dix/liblibxserver_dix.a.p/region.c.o
+[30/447] Compiling C object dix/liblibxserver_dix.a.p/colormap.c.o
+[31/447] Compiling C object dix/liblibxserver_dix.a.p/touch.c.o
+[32/447] Compiling C object dix/liblibxserver_dix.a.p/swaprep.c.o
+[33/447] Compiling C object dri3/liblibxserver_dri3.a.p/dri3_request.c.o
+[34/447] Compiling C object dix/liblibxserver_dix.a.p/dispatch.c.o
+[35/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_table.c.o
+[36/447] Compiling C object glx/liblibxserver_glx.a.p/extension_string.c.o
+[37/447] Compiling C object dix/liblibxserver_dix.a.p/swapreq.c.o
+[38/447] Compiling C object glx/liblibxserver_glx.a.p/clientinfo.c.o
+[39/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_size_get.c.o
+[40/447] Compiling C object glx/liblibxserver_glx.a.p/createcontext.c.o
+[41/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_program.c.o
+[42/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_texture_compression.c.o
+[43/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_reqsize.c.o
+[44/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_util.c.o
+[45/447] Compiling C object dix/liblibxserver_dix.a.p/events.c.o
+[46/447] Compiling C object glx/liblibxserver_glx.a.p/glxdriswrast.c.o
+[47/447] Compiling C object glx/liblibxserver_glx.a.p/renderpix.c.o
+[48/447] Compiling C object glx/liblibxserver_glx.a.p/glxext.c.o
+[49/447] Compiling C object glx/liblibxserver_glx.a.p/renderpixswap.c.o
+[50/447] Compiling C object glx/liblibxserver_glx.a.p/glxdricommon.c.o
+[51/447] Compiling C object glx/liblibxserver_glx.a.p/render2.c.o
+[52/447] Compiling C object glx/liblibxserver_glx.a.p/glxscreens.c.o
+[53/447] Compiling C object glx/liblibxserver_glx.a.p/glxcmdsswap.c.o
+[54/447] Compiling C object glx/liblibxserver_glx.a.p/render2swap.c.o
+[55/447] Compiling C object glx/liblibxserver_glx.a.p/single2.c.o
+[56/447] Compiling C object glx/liblibxserver_glx.a.p/swap_interval.c.o
+[57/447] Compiling C object glx/liblibxserver_glx.a.p/single2swap.c.o
+[58/447] Compiling C object glx/liblibxserver_glx.a.p/singlesize.c.o
+[59/447] Compiling C object glx/liblibglxvnd.a.p/vndext.c.o
+[60/447] Compiling C object glx/liblibxserver_glx.a.p/rensize.c.o
+[61/447] Compiling C object glx/liblibxserver_glx.a.p/xfont.c.o
+[62/447] Compiling C object glx/liblibglxvnd.a.p/vndservermapping.c.o
+[63/447] Compiling C object dix/liblibxserver_dix.a.p/window.c.o
+[64/447] Compiling C object glx/liblibxserver_glx.a.p/singlepix.c.o
+[65/447] Compiling C object glx/liblibglxvnd.a.p/vndservervendor.c.o
+[66/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_dispatch.c.o
+[67/447] Compiling C object fb/liblibxserver_fb.a.p/fballpriv.c.o
+[68/447] Compiling C object glx/liblibxserver_glx.a.p/singlepixswap.c.o
+[69/447] Compiling C object glx/liblibxserver_glx.a.p/glxcmds.c.o
+[70/447] Compiling C object glx/liblibglxvnd.a.p/vndcmds.c.o
+[71/447] Compiling C object fb/liblibxserver_fb.a.p/fbarc.c.o
+[72/447] Compiling C object fb/liblibxserver_fb.a.p/fbfillrect.c.o
+[73/447] Compiling C object fb/liblibxserver_fb.a.p/fbcmap_mi.c.o
+[74/447] Compiling C object fb/liblibxserver_fb.a.p/fbfillsp.c.o
+[75/447] Compiling C object fb/liblibxserver_fb.a.p/fbgetsp.c.o
+[76/447] Compiling C object fb/liblibxserver_fb.a.p/fbfill.c.o
+[77/447] Compiling C object fb/liblibxserver_fb.a.p/fbcopy.c.o
+[78/447] Compiling C object fb/liblibxserver_fb.a.p/fbbltone.c.o
+[79/447] Compiling C object fb/liblibxserver_fb.a.p/fbgc.c.o
+[80/447] Compiling C object fb/liblibxserver_fb.a.p/fbline.c.o
+[81/447] Compiling C object fb/liblibxserver_fb.a.p/fbglyph.c.o
+[82/447] Compiling C object fb/liblibxserver_fb.a.p/fbimage.c.o
+[83/447] Compiling C object fb/liblibxserver_fb.a.p/fbblt.c.o
+[84/447] Compiling C object fb/liblibxserver_fb.a.p/fboverlay.c.o
+[85/447] Compiling C object fb/liblibxserver_fb.a.p/fbpoint.c.o
+building '/nix/store/a5b18nldpnwaw9i25ay7yxmhnmjllqlw-steam-run.drv'...
+[86/447] Compiling C object fb/liblibxserver_fb.a.p/fbpict.c.o
+[87/447] Compiling C object fb/liblibxserver_fb.a.p/fbpixmap.c.o
+[88/447] Compiling C object fb/liblibxserver_fb.a.p/fbpush.c.o
+[89/447] Compiling C object fb/liblibxserver_fb.a.p/fbscreen.c.o
+[90/447] Compiling C object fb/liblibxserver_fb.a.p/fbsetsp.c.o
+[91/447] Compiling C object fb/liblibxserver_fb.a.p/fbutil.c.o
+[92/447] Compiling C object fb/liblibxserver_fb.a.p/fbsolid.c.o
+[93/447] Compiling C object fb/liblibxserver_fb.a.p/fbtrap.c.o
+[94/447] Compiling C object glx/liblibxserver_glx.a.p/indirect_dispatch_swap.c.o
+[95/447] Compiling C object fb/liblibxserver_fb.a.p/fbtile.c.o
+[96/447] Compiling C object mi/liblibxserver_mi.a.p/midash.c.o
+[97/447] Compiling C object fb/liblibxserver_fb.a.p/fbseg.c.o
+[98/447] Compiling C object fb/liblibxserver_fb.a.p/fbwindow.c.o
+[99/447] Compiling C object mi/liblibxserver_mi.a.p/micopy.c.o
+[100/447] Compiling C object mi/liblibxserver_mi.a.p/mifillrct.c.o
+[101/447] Compiling C object mi/liblibxserver_mi.a.p/mibitblt.c.o
+[102/447] Compiling C object mi/liblibxserver_mi.a.p/mieq.c.o
+[103/447] Compiling C object mi/liblibxserver_mi.a.p/miglblt.c.o
+[104/447] Compiling C object mi/liblibxserver_mi.a.p/migc.c.o
+[105/447] Compiling C object mi/liblibxserver_mi.a.p/micmap.c.o
+[106/447] Compiling C object mi/liblibxserver_mi.a.p/miexpose.c.o
+[107/447] Compiling C object mi/liblibxserver_mi.a.p/mipolypnt.c.o
+[108/447] Compiling C object mi/liblibxserver_mi.a.p/midispcur.c.o
+[109/447] Compiling C object mi/liblibxserver_mi.a.p/mipolyrect.c.o
+[110/447] Compiling C object mi/liblibxserver_mi.a.p/mipolytext.c.o
+[111/447] Compiling C object mi/liblibxserver_mi.a.p/mipointer.c.o
+[112/447] Compiling C object mi/liblibxserver_mi.a.p/mipushpxl.c.o
+[113/447] Compiling C object mi/liblibxserver_mi.a.p/mifillarc.c.o
+[114/447] Compiling C object mi/liblibxserver_mi.a.p/miscrinit.c.o
+[115/447] Compiling C object mi/liblibxserver_mi.a.p/mipolyseg.c.o
+[116/447] Compiling C object mi/liblibxserver_mi.a.p/mipoly.c.o
+[117/447] Compiling C object fb/liblibxserver_fb.a.p/fbbits.c.o
+[118/447] Compiling C object os/liblibxlibc.a.p/timingsafe_memcmp.c.o
+[119/447] Compiling C object mi/liblibxserver_mi.a.p/mivaltree.c.o
+[120/447] Compiling C object mi/liblibxserver_mi.a.p/misprite.c.o
+[121/447] Compiling C object os/liblibxserver_os.a.p/alloc.c.o
+[122/447] Compiling C object mi/liblibxserver_mi.a.p/mizerclip.c.o
+[123/447] Compiling C object mi/liblibxserver_mi.a.p/mizerline.c.o
+[124/447] Compiling C object mi/liblibxserver_mi.a.p/miwindow.c.o
+[125/447] Compiling C object os/liblibxserver_os.a.p/backtrace.c.o
+[126/447] Compiling C object os/liblibxserver_os.a.p/fmt.c.o
+[127/447] Compiling C object os/liblibxserver_os.a.p/WaitFor.c.o
+[128/447] Compiling C object os/liblibxserver_os.a.p/client.c.o
+[129/447] Compiling C object os/liblibxserver_os.a.p/auth.c.o
+[130/447] Compiling C object os/liblibxserver_os.a.p/mitauth.c.o
+[131/447] Compiling C object os/liblibxserver_os.a.p/inputthread.c.o
+[132/447] Compiling C object mi/liblibxserver_mi.a.p/mizerarc.c.o
+[133/447] Compiling C object os/liblibxserver_os.a.p/oscolor.c.o
+[134/447] Compiling C object os/liblibxserver_os.a.p/string.c.o
+[135/447] Compiling C object os/liblibxserver_os.a.p/osinit.c.o
+[136/447] Compiling C object mi/liblibxserver_mi.a.p/mioverlay.c.o
+[137/447] Compiling C object os/liblibxserver_os.a.p/ospoll.c.o
+[138/447] Compiling C object os/liblibxserver_os.a.p/connection.c.o
+[139/447] Compiling C object os/liblibxserver_os.a.p/access.c.o
+[140/447] Compiling C object os/liblibxserver_os.a.p/xsha1.c.o
+../os/xsha1.c: In function 'x_sha1_init':
+../os/xsha1.c:270:5: warning: 'SHA1_Init' is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+  270 |     ret = SHA1_Init(ctx);
+      |     ^~~
+In file included from ../os/xsha1.c:260:
+/nix/store/kcgqglb4iax0zh5jlrxmjdik93wlgsrq-openssl-3.4.1-dev/include/openssl/sha.h:49:27: note: declared here
+   49 | OSSL_DEPRECATEDIN_3_0 int SHA1_Init(SHA_CTX *c);
+      |                           ^~~~~~~~~
+../os/xsha1.c: In function 'x_sha1_update':
+building '/nix/store/9hw15y7kb8gh10ji29bb9a44g6kwqhc1-steam.drv'...
+../os/xsha1.c:284:5: warning: 'SHA1_Update' is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+  284 |     ret = SHA1_Update(sha_ctx, data, size);
+      |     ^~~
+/nix/store/kcgqglb4iax0zh5jlrxmjdik93wlgsrq-openssl-3.4.1-dev/include/openssl/sha.h:50:27: note: declared here
+   50 | OSSL_DEPRECATEDIN_3_0 int SHA1_Update(SHA_CTX *c, const void *data, size_t len);
+      |                           ^~~~~~~~~~~
+../os/xsha1.c: In function 'x_sha1_final':
+../os/xsha1.c:296:5: warning: 'SHA1_Final' is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+  296 |     ret = SHA1_Final(result, sha_ctx);
+      |     ^~~
+/nix/store/kcgqglb4iax0zh5jlrxmjdik93wlgsrq-openssl-3.4.1-dev/include/openssl/sha.h:51:27: note: declared here
+   51 | OSSL_DEPRECATEDIN_3_0 int SHA1_Final(unsigned char *md, SHA_CTX *c);
+      |                           ^~~~~~~~~~
+[141/447] Compiling C object os/liblibxserver_os.a.p/xprintf.c.o
+[142/447] Compiling C object os/liblibxserver_os.a.p/xdmauth.c.o
+[143/447] Compiling C object os/liblibxserver_os.a.p/io.c.o
+[144/447] Compiling C object os/liblibxserver_os.a.p/busfault.c.o
+[145/447] Compiling C object os/liblibxserver_os.a.p/rpcauth.c.o
+[146/447] Compiling C object mi/liblibxserver_mi.a.p/miwideline.c.o
+[147/447] Compiling C object composite/liblibxserver_composite.a.p/compinit.c.o
+[148/447] Compiling C object composite/liblibxserver_composite.a.p/compoverlay.c.o
+[149/447] Compiling C object os/liblibxserver_os.a.p/utils.c.o
+[150/447] Compiling C object mi/liblibxserver_mi.a.p/miarc.c.o
+[151/447] Compiling C object composite/liblibxserver_composite.a.p/compalloc.c.o
+[152/447] Compiling C object os/liblibxserver_os.a.p/xdmcp.c.o
+[153/447] Compiling C object miext/sync/liblibxserver_miext_sync.a.p/misync.c.o
+[154/447] Compiling C object os/liblibxserver_os.a.p/log.c.o
+[155/447] Compiling C object damageext/liblibxserver_damageext.a.p/damageext.c.o
+[156/447] Compiling C object composite/liblibxserver_composite.a.p/compext.c.o
+[157/447] Compiling C object miext/sync/liblibxserver_miext_sync.a.p/misyncfd.c.o
+[158/447] Compiling C object composite/liblibxserver_composite.a.p/compwindow.c.o
+[159/447] Compiling C object dbe/liblibxserver_dbe.a.p/midbe.c.o
+[160/447] Compiling C object miext/sync/liblibxserver_miext_sync.a.p/misyncshm.c.o
+[161/447] Compiling C object present/liblibxserver_present.a.p/present.c.o
+[162/447] Compiling C object dbe/liblibxserver_dbe.a.p/dbe.c.o
+[163/447] Compiling C object os/liblibxserver_os.a.p/xstrans.c.o
+[164/447] Compiling C object present/liblibxserver_present.a.p/present_execute.c.o
+[165/447] Compiling C object present/liblibxserver_present.a.p/present_fake.c.o
+[166/447] Compiling C object present/liblibxserver_present.a.p/present_fence.c.o
+[167/447] Compiling C object present/liblibxserver_present.a.p/present_event.c.o
+[168/447] Compiling C object present/liblibxserver_present.a.p/present_notify.c.o
+[169/447] Compiling C object present/liblibxserver_present.a.p/present_screen.c.o
+[170/447] Compiling C object present/liblibxserver_present.a.p/present_vblank.c.o
+[171/447] Compiling C object present/liblibxserver_present.a.p/present_request.c.o
+[172/447] Compiling C object randr/liblibxserver_randr.a.p/rrdispatch.c.o
+[173/447] Compiling C object randr/liblibxserver_randr.a.p/rrlease.c.o
+[174/447] Compiling C object randr/liblibxserver_randr.a.p/rrinfo.c.o
+[175/447] Compiling C object randr/liblibxserver_randr.a.p/rrpointer.c.o
+[176/447] Compiling C object randr/liblibxserver_randr.a.p/randr.c.o
+[177/447] Compiling C object randr/liblibxserver_randr.a.p/rrmode.c.o
+[178/447] Compiling C object present/liblibxserver_present.a.p/present_scmd.c.o
+[179/447] Compiling C object randr/liblibxserver_randr.a.p/rrmonitor.c.o
+[180/447] Compiling C object randr/liblibxserver_randr.a.p/rrprovider.c.o
+[181/447] Compiling C object randr/liblibxserver_randr.a.p/rrtransform.c.o
+[182/447] Compiling C object randr/liblibxserver_randr.a.p/rrxinerama.c.o
+[183/447] Compiling C object randr/liblibxserver_randr.a.p/rrproperty.c.o
+[184/447] Compiling C object randr/liblibxserver_randr.a.p/rroutput.c.o
+[185/447] Compiling C object randr/liblibxserver_randr.a.p/rrproviderproperty.c.o
+[186/447] Compiling C object record/liblibxserver_record.a.p/set.c.o
+[187/447] Compiling C object render/liblibxserver_render.a.p/filter.c.o
+[188/447] Compiling C object render/liblibxserver_render.a.p/animcur.c.o
+[189/447] Compiling C object miext/damage/liblibxserver_miext_damage.a.p/damage.c.o
+[190/447] Compiling C object randr/liblibxserver_randr.a.p/rrsdispatch.c.o
+[191/447] Compiling C object render/liblibxserver_render.a.p/matrix.c.o
+[192/447] Compiling C object render/liblibxserver_render.a.p/mirect.c.o
+[193/447] Compiling C object render/liblibxserver_render.a.p/mitrap.c.o
+[194/447] Compiling C object randr/liblibxserver_randr.a.p/rrcrtc.c.o
+[195/447] Compiling C object render/liblibxserver_render.a.p/glyph.c.o
+[196/447] Compiling C object render/liblibxserver_render.a.p/mitri.c.o
+[197/447] Compiling C object randr/liblibxserver_randr.a.p/rrscreen.c.o
+[198/447] Compiling C object render/liblibxserver_render.a.p/miindex.c.o
+[199/447] Compiling C object render/liblibxserver_render.a.p/mipict.c.o
+[200/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/disconnect.c.o
+[201/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/saveset.c.o
+[202/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/xfixes.c.o
+[203/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/select.c.o
+[204/447] Compiling C object xkb/liblibxserver_xkb.a.p/ddxLEDs.c.o
+[205/447] Compiling C object xkb/liblibxserver_xkb.a.p/ddxCtrls.c.o
+[206/447] Compiling C object xkb/liblibxserver_xkb.a.p/ddxBeep.c.o
+[207/447] Compiling C object xkb/liblibxserver_xkb.a.p/ddxLoad.c.o
+[208/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/cursor.c.o
+[209/447] Compiling C object xfixes/liblibxserver_xfixes.a.p/region.c.o
+[210/447] Compiling C object record/liblibxserver_record.a.p/record.c.o
+[211/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbfmisc.c.o
+[212/447] Compiling C object render/liblibxserver_render.a.p/picture.c.o
+[213/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbSwap.c.o
+[214/447] Compiling C object xkb/liblibxserver_xkb.a.p/maprules.c.o
+[215/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbAccessX.c.o
+[216/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbPrKeyEv.c.o
+[217/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbEvents.c.o
+[218/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkmread.c.o
+[219/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbtext.c.o
+[220/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbout.c.o
+[221/447] Compiling C object xkb/liblibxserver_xkb_stubs.a.p/ddxKillSrv.c.o
+[222/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbInit.c.o
+[223/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbLEDs.c.o
+[224/447] Compiling C object Xext/liblibxserver_xext.a.p/bigreq.c.o
+[225/447] Compiling C object xkb/liblibxserver_xkb_stubs.a.p/ddxPrivate.c.o
+[226/447] Compiling C object xkb/liblibxserver_xkb.a.p/XKBAlloc.c.o
+[227/447] Compiling C object xkb/liblibxserver_xkb_stubs.a.p/ddxVT.c.o
+[228/447] Compiling C object Xext/liblibxserver_xext.a.p/geext.c.o
+[229/447] Compiling C object Xext/liblibxserver_xext.a.p/sleepuntil.c.o
+[230/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbActions.c.o
+[231/447] Compiling C object render/liblibxserver_render.a.p/render.c.o
+[232/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkbUtils.c.o
+[233/447] Compiling C object Xext/liblibxserver_xext.a.p/xcmisc.c.o
+[234/447] Compiling C object xkb/liblibxserver_xkb.a.p/XKBGAlloc.c.o
+[235/447] Compiling C object xkb/liblibxserver_xkb.a.p/XKBMisc.c.o
+[236/447] Compiling C object Xext/liblibxserver_xext.a.p/shape.c.o
+[237/447] Compiling C object Xext/liblibxserver_xext.a.p/hashtable.c.o
+[238/447] Compiling C object Xext/liblibxserver_xext.a.p/dpms.c.o
+[239/447] Compiling C object xkb/liblibxserver_xkb.a.p/XKBMAlloc.c.o
+[240/447] Compiling C object Xext/liblibxserver_xext.a.p/panoramiXSwap.c.o
+[241/447] Compiling C object Xext/liblibxserver_xext.a.p/xtest.c.o
+[242/447] Compiling C object Xext/liblibxserver_xext.a.p/xace.c.o
+[243/447] Compiling C object Xi/liblibxserver_xi.a.p/allowev.c.o
+[244/447] Compiling C object Xext/liblibxserver_xext.a.p/xres.c.o
+[245/447] Compiling C object Xi/liblibxserver_xi.a.p/chgdctl.c.o
+[246/447] Compiling C object Xext/liblibxserver_xext.a.p/xvmain.c.o
+[247/447] Compiling C object Xext/liblibxserver_xext.a.p/security.c.o
+[248/447] Compiling C object Xext/liblibxserver_xext.a.p/xvmc.c.o
+[249/447] Compiling C object Xext/liblibxserver_xext.a.p/saver.c.o
+[250/447] Compiling C object Xext/liblibxserver_xext.a.p/panoramiX.c.o
+[251/447] Compiling C object Xi/liblibxserver_xi.a.p/chgkbd.c.o
+[252/447] Compiling C object Xext/liblibxserver_xext.a.p/shm.c.o
+[253/447] Compiling C object Xext/liblibxserver_xext.a.p/sync.c.o
+[254/447] Compiling C object Xi/liblibxserver_xi.a.p/chgfctl.c.o
+[255/447] Compiling C object Xi/liblibxserver_xi.a.p/chgkmap.c.o
+[256/447] Compiling C object Xi/liblibxserver_xi.a.p/devbell.c.o
+[257/447] Compiling C object Xi/liblibxserver_xi.a.p/chgptr.c.o
+[258/447] Compiling C object Xi/liblibxserver_xi.a.p/chgprop.c.o
+[259/447] Compiling C object Xi/liblibxserver_xi.a.p/closedev.c.o
+[260/447] Compiling C object Xi/liblibxserver_xi.a.p/getbmap.c.o
+[261/447] Compiling C object Xext/liblibxserver_xext.a.p/xvdisp.c.o
+[262/447] Compiling C object Xi/liblibxserver_xi.a.p/getfocus.c.o
+[263/447] Compiling C object Xi/liblibxserver_xi.a.p/getmmap.c.o
+[264/447] Compiling C object Xi/liblibxserver_xi.a.p/getdctl.c.o
+[265/447] Compiling C object Xi/liblibxserver_xi.a.p/getkmap.c.o
+[266/447] Compiling C object Xi/liblibxserver_xi.a.p/getfctl.c.o
+[267/447] Compiling C object Xi/liblibxserver_xi.a.p/getvers.c.o
+[268/447] Compiling C object Xi/liblibxserver_xi.a.p/getprop.c.o
+[269/447] Compiling C object Xext/liblibxserver_xext_vidmode.a.p/vidmode.c.o
+[270/447] Compiling C object Xi/liblibxserver_xi.a.p/getselev.c.o
+[271/447] Compiling C object Xi/liblibxserver_xi.a.p/grabdev.c.o
+[272/447] Compiling C object Xi/liblibxserver_xi.a.p/grabdevb.c.o
+[273/447] Compiling C object Xi/liblibxserver_xi.a.p/extinit.c.o
+[274/447] Compiling C object Xi/liblibxserver_xi.a.p/grabdevk.c.o
+[275/447] Compiling C object Xi/liblibxserver_xi.a.p/gtmotion.c.o
+[276/447] Compiling C object Xi/liblibxserver_xi.a.p/opendev.c.o
+[277/447] Compiling C object Xi/liblibxserver_xi.a.p/setbmap.c.o
+[278/447] Compiling C object Xi/liblibxserver_xi.a.p/setfocus.c.o
+[279/447] Compiling C object Xext/liblibxserver_xext.a.p/panoramiXprocs.c.o
+[280/447] Compiling C object Xi/liblibxserver_xi.a.p/setdval.c.o
+[281/447] Compiling C object Xi/liblibxserver_xi.a.p/queryst.c.o
+[282/447] Compiling C object Xi/liblibxserver_xi.a.p/listdev.c.o
+[283/447] Compiling C object Xi/liblibxserver_xi.a.p/sendexev.c.o
+[284/447] Compiling C object Xi/liblibxserver_xi.a.p/selectev.c.o
+[285/447] Compiling C object Xi/liblibxserver_xi.a.p/setmmap.c.o
+[286/447] Compiling C object Xi/liblibxserver_xi.a.p/setmode.c.o
+[287/447] Compiling C object Xi/liblibxserver_xi.a.p/ungrdev.c.o
+[288/447] Compiling C object Xi/liblibxserver_xi.a.p/ungrdevb.c.o
+[289/447] Compiling C object Xi/liblibxserver_xi.a.p/ungrdevk.c.o
+[290/447] Compiling C object Xi/liblibxserver_xi.a.p/xiallowev.c.o
+[291/447] Compiling C object Xi/liblibxserver_xi.a.p/xichangecursor.c.o
+[292/447] Compiling C object Xi/liblibxserver_xi.a.p/xigetclientpointer.c.o
+[293/447] Compiling C object Xi/liblibxserver_xi.a.p/xigrabdev.c.o
+[294/447] Compiling C object Xi/liblibxserver_xi.a.p/xipassivegrab.c.o
+[295/447] Compiling C object Xi/liblibxserver_xi.a.p/xiqueryversion.c.o
+[296/447] Compiling C object Xi/liblibxserver_xi.a.p/xisetclientpointer.c.o
+[297/447] Compiling C object Xi/liblibxserver_xi.a.p/xiquerypointer.c.o
+[298/447] Compiling C object Xi/liblibxserver_xi.a.p/xichangehierarchy.c.o
+[299/447] Compiling C object Xi/liblibxserver_xi.a.p/xisetdevfocus.c.o
+[300/447] Compiling C object Xi/liblibxserver_xi.a.p/xibarriers.c.o
+[301/447] Compiling C object Xi/liblibxserver_xi.a.p/xiquerydevice.c.o
+[302/447] Compiling C object Xi/liblibxserver_xi_stubs.a.p/stubs.c.o
+[303/447] Compiling C object Xi/liblibxserver_xi.a.p/xiselectev.c.o
+[304/447] Compiling C object Xi/liblibxserver_xi.a.p/xiwarppointer.c.o
+[305/447] Compiling C object Xi/liblibxserver_xi.a.p/xiproperty.c.o
+[306/447] Compiling C object glamor/libglamor.a.p/glamor_core.c.o
+[307/447] Compiling C object glamor/libglamor.a.p/glamor_image.c.o
+[308/447] Compiling C object glamor/libglamor.a.p/glamor_lines.c.o
+[309/447] Compiling C object Xi/liblibxserver_xi.a.p/exevents.c.o
+[310/447] Compiling C object glamor/libglamor.a.p/glamor_font.c.o
+[311/447] Compiling C object glamor/libglamor.a.p/glamor_dash.c.o
+[312/447] Compiling C object glamor/libglamor.a.p/glamor_copy.c.o
+[313/447] Compiling C object glamor/libglamor.a.p/glamor_segs.c.o
+[314/447] Compiling C object xkb/liblibxserver_xkb.a.p/xkb.c.o
+[315/447] Compiling C object glamor/libglamor.a.p/glamor_composite_glyphs.c.o
+[316/447] Compiling C object glamor/libglamor.a.p/glamor.c.o
+[317/447] Compiling C object glamor/libglamor.a.p/glamor_prepare.c.o
+[318/447] Compiling C object glamor/libglamor.a.p/glamor_rects.c.o
+[319/447] Compiling C object glamor/libglamor.a.p/glamor_gradient.c.o
+[320/447] Compiling C object glamor/libglamor.a.p/glamor_triangles.c.o
+[321/447] Compiling C object glamor/libglamor.a.p/glamor_spans.c.o
+[322/447] Compiling C object glamor/libglamor.a.p/glamor_trapezoid.c.o
+[323/447] Compiling C object glamor/libglamor.a.p/glamor_program.c.o
+[324/447] Compiling C object glamor/libglamor.a.p/glamor_addtraps.c.o
+[325/447] Compiling C object glamor/libglamor.a.p/glamor_points.c.o
+[326/447] Compiling C object glamor/libglamor.a.p/glamor_pixmap.c.o
+[327/447] Generating 'hw/xwayland/Xwayland.p/relative-pointer-unstable-v1-client-protocol.h'
+[328/447] Generating 'hw/xwayland/Xwayland.p/pointer-constraints-unstable-v1-client-protocol.h'
+[329/447] Generating 'hw/xwayland/Xwayland.p/pointer-gestures-unstable-v1-client-protocol.h'
+[330/447] Compiling C object glamor/libglamor.a.p/glamor_transform.c.o
+[331/447] Generating 'hw/xwayland/Xwayland.p/xwayland-keyboard-grab-unstable-v1-client-protocol.h'
+[332/447] Generating 'hw/xwayland/Xwayland.p/tablet-unstable-v2-client-protocol.h'
+[333/447] Generating 'hw/xwayland/Xwayland.p/xdg-output-unstable-v1-client-protocol.h'
+[334/447] Compiling C object glamor/libglamor.a.p/glamor_transfer.c.o
+[335/447] Generating 'hw/xwayland/Xwayland.p/linux-dmabuf-unstable-v1-client-protocol.h'
+[336/447] Compiling C object glamor/libglamor.a.p/glamor_picture.c.o
+[337/447] Generating 'hw/xwayland/Xwayland.p/viewporter-client-protocol.h'
+[338/447] Generating 'hw/xwayland/Xwayland.p/drm-lease-v1-client-protocol.h'
+[339/447] Generating 'hw/xwayland/Xwayland.p/keyboard-shortcuts-inhibit-unstable-v1-client-protocol.h'
+[340/447] Generating 'hw/xwayland/Xwayland.p/xwayland-shell-v1-client-protocol.h'
+[341/447] Generating 'hw/xwayland/Xwayland.p/xdg-shell-client-protocol.h'
+[342/447] Generating 'hw/xwayland/Xwayland.p/tearing-control-v1-client-protocol.h'
+[343/447] Generating 'hw/xwayland/Xwayland.p/fractional-scale-v1-client-protocol.h'
+[344/447] Generating 'hw/xwayland/Xwayland.p/relative-pointer-unstable-v1-protocol.c'
+[345/447] Generating 'hw/xwayland/Xwayland.p/pointer-constraints-unstable-v1-protocol.c'
+[346/447] Generating 'hw/xwayland/Xwayland.p/pointer-gestures-unstable-v1-protocol.c'
+[347/447] Generating 'hw/xwayland/Xwayland.p/linux-drm-syncobj-v1-client-protocol.h'
+[348/447] Generating 'hw/xwayland/Xwayland.p/tablet-unstable-v2-protocol.c'
+[349/447] Generating 'hw/xwayland/Xwayland.p/xwayland-keyboard-grab-unstable-v1-protocol.c'
+[350/447] Generating 'hw/xwayland/Xwayland.p/xdg-output-unstable-v1-protocol.c'
+[351/447] Generating 'hw/xwayland/Xwayland.p/linux-dmabuf-unstable-v1-protocol.c'
+[352/447] Generating 'hw/xwayland/Xwayland.p/viewporter-protocol.c'
+[353/447] Generating 'hw/xwayland/Xwayland.p/xdg-shell-protocol.c'
+[354/447] Generating 'hw/xwayland/Xwayland.p/drm-lease-v1-protocol.c'
+[355/447] Generating 'hw/xwayland/Xwayland.p/keyboard-shortcuts-inhibit-unstable-v1-protocol.c'
+[356/447] Generating 'hw/xwayland/Xwayland.p/xwayland-shell-v1-protocol.c'
+[357/447] Generating 'hw/xwayland/Xwayland.p/tearing-control-v1-protocol.c'
+[358/447] Generating 'hw/xwayland/Xwayland.p/fractional-scale-v1-protocol.c'
+[359/447] Generating 'hw/xwayland/Xwayland.p/linux-drm-syncobj-v1-protocol.c'
+[360/447] Generating 'hw/xwayland/Xwayland.p/drm-protocol.c'
+[361/447] Generating 'hw/xwayland/Xwayland.p/drm-client-protocol.h'
+[362/447] Linking static target dix/liblibxserver_main.a
+[363/447] Linking static target dri3/liblibxserver_dri3.a
+[364/447] Linking static target glx/liblibglxvnd.a
+[365/447] Linking static target glx/liblibxserver_glx.a
+[366/447] Linking static target dix/liblibxserver_dix.a
+[367/447] Linking static target fb/liblibxserver_fb.a
+[368/447] Linking static target os/liblibxlibc.a
+[369/447] Linking static target mi/liblibxserver_mi.a
+[370/447] Linking static target damageext/liblibxserver_damageext.a
+[371/447] Linking static target composite/liblibxserver_composite.a
+[372/447] Linking static target os/liblibxserver_os.a
+[373/447] Linking static target dbe/liblibxserver_dbe.a
+[374/447] Linking static target miext/damage/liblibxserver_miext_damage.a
+[375/447] Linking static target miext/sync/liblibxserver_miext_sync.a
+[376/447] Linking static target record/liblibxserver_record.a
+[377/447] Compiling C object glamor/libglamor.a.p/glamor_glyphblt.c.o
+[378/447] Linking static target present/liblibxserver_present.a
+[379/447] Linking static target randr/liblibxserver_randr.a
+[380/447] Linking static target render/liblibxserver_render.a
+[381/447] Linking static target xfixes/liblibxserver_xfixes.a
+[382/447] Linking static target xkb/liblibxserver_xkb_stubs.a
+[383/447] Linking static target Xext/liblibxserver_xext_vidmode.a
+[384/447] Linking static target xkb/liblibxserver_xkb.a
+[385/447] Linking static target Xext/liblibxserver_xext.a
+[386/447] Linking static target Xi/liblibxserver_xi_stubs.a
+[387/447] Linking static target Xi/liblibxserver_xi.a
+[388/447] Compiling C object glamor/libglamor.a.p/glamor_vbo.c.o
+[389/447] Compiling C object glamor/libglamor.a.p/glamor_text.c.o
+[390/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_relative-pointer-unstable-v1-protocol.c.o
+[391/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_pointer-constraints-unstable-v1-protocol.c.o
+[392/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_pointer-gestures-unstable-v1-protocol.c.o
+[393/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_tablet-unstable-v2-protocol.c.o
+[394/447] Compiling C object glamor/libglamor.a.p/glamor_window.c.o
+[395/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_xwayland-keyboard-grab-unstable-v1-protocol.c.o
+[396/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_xdg-output-unstable-v1-protocol.c.o
+[397/447] Compiling C object glamor/libglamor.a.p/glamor_utils.c.o
+[398/447] Compiling C object glamor/libglamor.a.p/glamor_compositerects.c.o
+[399/447] Compiling C object glamor/libglamor.a.p/glamor_sync.c.o
+[400/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_linux-dmabuf-unstable-v1-protocol.c.o
+[401/447] Compiling C object glamor/libglamor.a.p/glamor_fbo.c.o
+[402/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_xdg-shell-protocol.c.o
+[403/447] Compiling C object hw/vfb/Xvfb.p/InitInput.c.o
+[404/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_keyboard-shortcuts-inhibit-unstable-v1-protocol.c.o
+[405/447] Compiling C object hw/vfb/Xvfb.p/.._.._mi_miinitext.c.o
+[406/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_viewporter-protocol.c.o
+[407/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_drm-lease-v1-protocol.c.o
+[408/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_tearing-control-v1-protocol.c.o
+[409/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_xwayland-shell-v1-protocol.c.o
+[410/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_linux-drm-syncobj-v1-protocol.c.o
+[411/447] Compiling C object glamor/libglamor.a.p/glamor_glx_provider.c.o
+[412/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_fractional-scale-v1-protocol.c.o
+[413/447] Compiling C object hw/xwayland/Xwayland.p/meson-generated_drm-protocol.c.o
+[414/447] Compiling C object glamor/libglamor.a.p/glamor_largepixmap.c.o
+[415/447] Compiling C object glamor/libglamor.a.p/glamor_xv.c.o
+[416/447] Compiling C object hw/vfb/Xvfb.p/InitOutput.c.o
+[417/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-cvt.c.o
+[418/447] Compiling C object glamor/libglamor.a.p/glamor_render.c.o
+[419/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-pixmap.c.o
+[420/447] Linking static target glamor/libglamor.a
+[421/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-shm.c.o
+[422/447] Compiling C object hw/xwayland/Xwayland.p/xwayland.c.o
+[423/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-drm-lease.c.o
+[424/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-cursor.c.o
+[425/447] Compiling C object hw/xwayland/Xwayland.p/.._.._mi_miinitext.c.o
+[426/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-vidmode.c.o
+[427/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-window-buffers.c.o
+[428/447] Compiling C object test/simple-xinit.p/simple-xinit.c.o
+../test/simple-xinit.c: In function 'handle_sigchld':
+../test/simple-xinit.c:71:5: warning: ignoring return value of 'write' declared with attribute 'warn_unused_result' [-Wunused-result]
+   71 |     write(server_displayfd, server_dead, strlen(server_dead));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[429/447] Compiling C object test/bigreq/request-length.p/request-length.c.o
+../test/bigreq/request-length.c: In function 'main':
+../test/bigreq/request-length.c:65:5: warning: ignoring return value of 'write' declared with attribute 'warn_unused_result' [-Wunused-result]
+   65 |     write(fd, &xise_req, sizeof(xise_req));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[430/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-screen.c.o
+[431/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-present.c.o
+[432/447] Compiling C object test/sync/sync.p/sync.c.o
+[433/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-glamor.c.o
+[434/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-output.c.o
+[435/447] Linking target test/simple-xinit
+[436/447] Linking target test/bigreq/request-length
+[437/447] Compiling C object test/damage/damage-primitives.p/primitives.c.o
+[438/447] Linking target test/sync/sync
+[439/447] Linking target hw/vfb/Xvfb
+[440/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-xtest.c.o
+[441/447] Linking target test/damage/damage-primitives
+[442/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-glamor-xv.c.o
+[443/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-dmabuf.c.o
+[444/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-window.c.o
+[445/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-input.c.o
+[446/447] Compiling C object hw/xwayland/Xwayland.p/xwayland-glamor-gbm.c.o
+[447/447] Linking target hw/xwayland/Xwayland
+Running phase: installPhase
+mesonInstallPhase flags: ''
+Installing hw/xwayland/Xwayland to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/bin
+Installing /build/xwayland-24.1.6/build/man/Xserver.1 to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/man/man1
+Installing /build/xwayland-24.1.6/build/hw/xwayland/Xwayland.1 to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/man/man1
+Installing /build/xwayland-24.1.6/dix/protocol.txt to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/lib/xorg
+Installing /build/xwayland-24.1.6/build/meson-private/xwayland.pc to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/lib/pkgconfig
+Installing /build/xwayland-24.1.6/build/hw/xwayland/org.freedesktop.Xwayland.desktop to /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/applications
+Running phase: fixupPhase
+shrinking RPATHs of ELF executables and libraries in /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6
+shrinking /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/bin/Xwayland
+checking for references to /build/ in /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6...
+gzipping man pages under /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/share/man/
+patching script interpreter paths in /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6
+stripping (with command strip and flags -S -p) in  /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/lib /nix/store/pn06r98wmj73sqrfxbiv13mxcpf2aryh-xwayland-24.1.6/bin
+building '/nix/store/pk6pwg07dll9cacm5fz94l5d4ckl4101-system-path.drv'...
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/etc/xdg/waybar/style.css' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/etc/xdg/waybar/style.css'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/etc/xdg/waybar/config.jsonc' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/etc/xdg/waybar/config.jsonc'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/bin/.waybar-wrapped' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/bin/.waybar-wrapped'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/bin/waybar' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/bin/waybar'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/systemd/user/waybar.service' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/systemd/user/waybar.service'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/libcava.so' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/libcava.so'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/pkgconfig/cava.pc' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/pkgconfig/cava.pc'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/systemd/user/waybar.service' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/systemd/user/waybar.service'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-language.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-backlight-slider.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-backlight-slider.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-systemd-failed-units.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-systemd-failed-units.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-mode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-mode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-jack.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-jack.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-submap.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-submap.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-pulseaudio.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-pulseaudio.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-menu.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-menu.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-power-profiles-daemon.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-power-profiles-daemon.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-idle-inhibitor.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-idle-inhibitor.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-tray.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-tray.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-states.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-states.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-tags.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-tags.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-dwl-tags.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-dwl-tags.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-battery.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-battery.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-gamemode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-gamemode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-bluetooth.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-bluetooth.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-layout.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-layout.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wlr-taskbar.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wlr-taskbar.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-styles.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-styles.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-inhibitor.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-inhibitor.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sndio.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sndio.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-disk.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-disk.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cpu.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cpu.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-pulseaudio-slider.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-pulseaudio-slider.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wlr-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wlr-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-mpris.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-mpris.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-keyboard-state.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-keyboard-state.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wireplumber.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wireplumber.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-temperature.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-temperature.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-scratchpad.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-scratchpad.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-custom.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-custom.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cffi.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cffi.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cava.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cava.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-dwl-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-dwl-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-mpd.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-mpd.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-backlight.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-backlight.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-memory.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-memory.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-mode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-mode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-image.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-image.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-privacy.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-privacy.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-network.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-network.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-clock.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-clock.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-upower.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-upower.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-language.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-language.5.gz'
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/halt' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/halt'
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/poweroff' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/poweroff'
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/reboot' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/reboot'
+created 10591 symlinks in user environment
+building '/nix/store/ywzkhlzi1xax6b4210xlhmklm33gj78c-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/3n0xw0bc9h624rm8dlrv3d3vsnbnqxgs-dbus-1.drv'...
+building '/nix/store/69qymfp5pdg1r1ng4852z0xsw0mf909j-unit-polkit.service.drv'...
+building '/nix/store/iwz2m3183bba64p0v1hl4h1gl74v9xqp-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/1hz0xlvhbmbrszy6fpxl42vridqidkfa-unit-dbus.service.drv'...
+building '/nix/store/7w0gk31gsym24a427msg2kyjvdkh6ahc-unit-dbus.service.drv'...
+building '/nix/store/zlw9y55ddhfa7l6w3m7qb844rgav7zyl-system-units.drv'...
+building '/nix/store/llhwprzi0xjh7ql32yq1fkixwa5v1cgr-user-units.drv'...
+building '/nix/store/477wg6xi47ga6a7v8xz1md8w8vd16z20-etc.drv'...
+building '/nix/store/if8zlwf2a18kya8g78bs5nw53c3alps6-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
 activating the configuration...
 setting up /etc...
+removing obsolete symlink ‘/etc/xdg/gtk-4.0/settings.ini’...
+removing obsolete symlink ‘/etc/xdg/gtk-3.0/settings.ini’...
 reloading user units for mylesc...
 restarting sysinit-reactivation.target
+reloading the following units: dbus.service
+restarting the following units: polkit.service
 the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/qdlgxfh5031zh1ipgma3ky8rny3p9dc3-nixos-system-nixos-25.05.802746.7282cb574e06
+Done. The new configuration is /nix/store/s35shmiw2hvn18r9knjb4rwxw74b9ig0-nixos-system-nixos-25.05.802746.7282cb574e06
