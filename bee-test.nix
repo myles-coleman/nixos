@@ -85,6 +85,7 @@
     zenity
     blueman
     lutris
+    stown
   ];
 
   environment.variables = {
