@@ -4,6 +4,8 @@
   lib,
   ...
 }: {
+  # Using a specific kernel version that's compatible with NVIDIA drivers
+  boot.kernelPackages = pkgs.linuxPackages_6_1;
   boot.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
   boot.kernelParams = ["nvidia-drm.modeset=1"];
 
@@ -49,6 +51,7 @@
     nvidia.powerManagement.enable = false;
     nvidia.powerManagement.finegrained = false;
     nvidia.nvidiaSettings = false;
+    nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
     #   version = "560.35.03";
@@ -57,6 +60,15 @@
     #   openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
     #   settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
     #   persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
+    # };
+
+    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+    #   version = "550.40.07";
+    #   sha256_64bit = "sha256-KYk2xye37v7ZW7h+uNJM/u8fNf7KyGTZjiaU03dJpK0=";
+    #   sha256_aarch64 = "sha256-AV7KgRXYaQGBFl7zuRcfnTGr8rS5n13nGUIe3mJTXb4=";
+    #   openSha256 = "sha256-mRUTEWVsbjq+psVe+kAT6MjyZuLkG2yRDxCMvDJRL1I=";
+    #   settingsSha256 = "sha256-c30AQa4g4a1EHmaEu1yc05oqY01y+IusbBuq+P6rMCs=";
+    #   persistencedSha256 = "sha256-11tLSY8uUIl4X/roNnxf5yS2PQvHvoNjnd2CB67e870=";
     # };
   };
 

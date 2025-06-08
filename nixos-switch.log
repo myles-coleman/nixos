@@ -1,25 +1,1101 @@
 building Nix...
 building the system configuration...
-these 7 derivations will be built:
-  /nix/store/vi1ahr0sgqflw37w7na4fra961xb5845-nixos.conf.drv
-  /nix/store/8vc8n0cwkm93618dih0szvvgm0s6rv3b-X-Restart-Triggers-systemd-modules-load.drv
-  /nix/store/5wzxjxfl316995094sjcicj72crd587k-unit-systemd-modules-load.service.drv
-  /nix/store/034433rla9ixiyz6b59lhcr0kkxxm50q-system-units.drv
-  /nix/store/5gvlbiz4gjfsgds39basxww8g7i4k1z3-boot.json.drv
-  /nix/store/6rvh7vxk8rp9ay182568q7fwl5517pic-etc.drv
-  /nix/store/insz4w56dfzwr7z3snpvx5pl0mmd0z8l-nixos-system-nixos-25.05.802746.7282cb574e06.drv
-building '/nix/store/5gvlbiz4gjfsgds39basxww8g7i4k1z3-boot.json.drv'...
-building '/nix/store/vi1ahr0sgqflw37w7na4fra961xb5845-nixos.conf.drv'...
-building '/nix/store/8vc8n0cwkm93618dih0szvvgm0s6rv3b-X-Restart-Triggers-systemd-modules-load.drv'...
-building '/nix/store/5wzxjxfl316995094sjcicj72crd587k-unit-systemd-modules-load.service.drv'...
-building '/nix/store/034433rla9ixiyz6b59lhcr0kkxxm50q-system-units.drv'...
-building '/nix/store/6rvh7vxk8rp9ay182568q7fwl5517pic-etc.drv'...
-building '/nix/store/insz4w56dfzwr7z3snpvx5pl0mmd0z8l-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
-stopping the following units: systemd-modules-load.service
+these 32 derivations will be built:
+  /nix/store/glyyz3fxhk0n5q49s7avmprbbk6bx01i-uname.drv
+  /nix/store/i70y9s3zy5gmqp18mik998vd5dls808v-nvidia-x11-570.144-6.1.140.drv
+  /nix/store/z9pa8bkbfh00ifd0hxb9xyb4jnqm58i4-steam-run-fhsenv-rootfs.drv
+  /nix/store/278xji0sbivjfbb0nc7l74fcirzmnkrb-steam-run-bwrap.drv
+  /nix/store/5g0yf0sqf0h9a1h679pqj3hc7mbjkcrf-graphics-drivers-32bit.drv
+  /nix/store/kl38lkhj6ilgl0gvd151ax8iq67lv1jx-linux-6.1.140-modules.drv
+  /nix/store/mnp7pmnndijhawpgrcm5v8x2xxrg5lnm-firmware.drv
+  /nix/store/czaf7kxq1pkyqdln6znas8cyqw0y1fqm-linux-6.1.140-modules-shrunk.drv
+  /nix/store/jwd0294s2dd71fyz3jrfw1hp4baxm0ns-closure-info.drv
+  /nix/store/6v07y18bjxh4i5kvxrdfw8sxc8148kwa-initrd-linux-6.1.140.drv
+  /nix/store/bxf7f95v5c4zs0c8lrs4lnxrf54i9i9l-steam-run.drv
+  /nix/store/q6d0512z1rl2ypc4j24hc05r17mpa92p-steam-fhsenv-rootfs.drv
+  /nix/store/bwy3dh9lmd2nrdiyswr5jz7dmn0ab8cf-steam-bwrap.drv
+  /nix/store/df76c0k3cgn8m6zkxq7dp8qlbrdimb80-steam.drv
+  /nix/store/lvndfgy868zj8pf83myry28ywrvmf11v-system-path.drv
+  /nix/store/c1cdsbcdyjv9q3w42gncf4wz7afph0k2-dbus-1.drv
+  /nix/store/76fg7bchn7zd10l0fxcdblc0crp5gnlp-X-Restart-Triggers-dbus.drv
+  /nix/store/rgmw3ck6lyg4x6kf8jdlvdfxmkqapmfm-graphics-drivers.drv
+  /nix/store/hl0rr590lcdvi9lifrlgi6jcw60hzrl3-graphics-driver.conf.drv
+  /nix/store/99jh7l9k7dmawj285xh3v7zk10xkgdgd-tmpfiles.d.drv
+  /nix/store/9z7xi4dnwg43ncqsl0b357k95mihqar8-X-Restart-Triggers-polkit.drv
+  /nix/store/aj1rfllwsrgxqiks0cbma933f2w2g308-unit-dbus.service.drv
+  /nix/store/cr0cmikcks108m6z8iafcmnw1imc9ysi-unit-polkit.service.drv
+  /nix/store/s8c46cv8xai9c7c64f3midny5g2kszlb-X-Restart-Triggers-systemd-tmpfiles-resetup.drv
+  /nix/store/g6xp2xmckm992j1xjrzxln82rz1jd5x0-unit-systemd-tmpfiles-resetup.service.drv
+  /nix/store/dd74wjwck0hj5i98m83w6gz3naz7fl8z-system-units.drv
+  /nix/store/hk3m8gy8vd9cy6yxzw7a30dfma89qn6h-unit-dbus.service.drv
+  /nix/store/hr84yivja5pyihkkg1fvjaq7gafm1gjx-boot.json.drv
+  /nix/store/lbb6hj2wyy42mkgcwaxgrzrbjj0iaiv3-user-units.drv
+  /nix/store/p2rh12bjj243173is9rm2ypjwdccs6w6-etc-modprobe.d-firmware.conf.drv
+  /nix/store/ygxw39j8h0f32ldzip2876a668439rdq-etc.drv
+  /nix/store/xmlf06znv4qc718m7bzg6v4yng3gswa1-nixos-system-nixos-25.05.802746.7282cb574e06.drv
+these 2 paths will be fetched (217.75 MiB download, 794.29 MiB unpacked):
+  /nix/store/24fj4w56nri6nicakm13wb1sa7ix4svh-linux-6.1.140
+  /nix/store/y6cbhmq58y0xp99d6mkgjyvsrs0br1rq-linux-6.1.140-dev
+copying path '/nix/store/24fj4w56nri6nicakm13wb1sa7ix4svh-linux-6.1.140' from 'https://cache.nixos.org'...
+building '/nix/store/glyyz3fxhk0n5q49s7avmprbbk6bx01i-uname.drv'...
+Running phase: patchPhase
+Running phase: updateAutotoolsGnuConfigScriptsPhase
+Running phase: configurePhase
+no configure script, doing nothing
+Running phase: buildPhase
+Running phase: checkPhase
+Running phase: installPhase
+no Makefile or custom installPhase, doing nothing
+Running phase: fixupPhase
+shrinking RPATHs of ELF executables and libraries in /nix/store/0brff0rxfw7g72wg7slzkzy3bklbycnv-uname
+checking for references to /build/ in /nix/store/0brff0rxfw7g72wg7slzkzy3bklbycnv-uname...
+patching script interpreter paths in /nix/store/0brff0rxfw7g72wg7slzkzy3bklbycnv-uname
+copying path '/nix/store/y6cbhmq58y0xp99d6mkgjyvsrs0br1rq-linux-6.1.140-dev' from 'https://cache.nixos.org'...
+building '/nix/store/i70y9s3zy5gmqp18mik998vd5dls808v-nvidia-x11-570.144-6.1.140.drv'...
+Running phase: unpackPhase
+Creating directory NVIDIA-Linux-x86_64-570.144
+Verifying archive integrity... OK
+Uncompressing NVIDIA Accelerated Graphics Driver for Linux-x86_64 570.144.....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+source root is NVIDIA-Linux-x86_64-570.144
+setting SOURCE_DATE_EPOCH to timestamp 1744319988 of file "NVIDIA-Linux-x86_64-570.144/sandboxutils-filelist.json"
+Running phase: patchPhase
+Running phase: updateAutotoolsGnuConfigScriptsPhase
+Running phase: configurePhase
+no configure script, doing nothing
+Running phase: buildPhase
+Building linux driver against kernel: /nix/store/y6cbhmq58y0xp99d6mkgjyvsrs0br1rq-linux-6.1.140-dev
+make[1]: Entering directory '/nix/store/y6cbhmq58y0xp99d6mkgjyvsrs0br1rq-linux-6.1.140-dev/lib/modules/6.1.140/source'
+  SYMLINK /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-kernel.o
+  SYMLINK /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nv-modeset-kernel.o
+ CONFTEST: hash__remap_4k_pfn
+ CONFTEST: set_pages_uc
+ CONFTEST: list_is_first
+ CONFTEST: set_memory_uc
+ CONFTEST: set_memory_array_uc
+ CONFTEST: set_pages_array_uc
+ CONFTEST: ioremap_cache
+ CONFTEST: ioremap_wc
+ CONFTEST: ioremap_driver_hardened
+ CONFTEST: ioremap_driver_hardened_wc
+ CONFTEST: ioremap_cache_shared
+ CONFTEST: pci_get_domain_bus_and_slot
+ CONFTEST: get_num_physpages
+ CONFTEST: pde_data
+ CONFTEST: xen_ioemu_inject_msi
+ CONFTEST: phys_to_dma
+ CONFTEST: get_dma_ops
+ CONFTEST: dma_attr_macros
+ CONFTEST: dma_map_page_attrs
+ CONFTEST: write_cr4
+ CONFTEST: of_find_node_by_phandle
+ CONFTEST: of_node_to_nid
+ CONFTEST: of_get_ibm_chip_id
+ CONFTEST: pci_stop_and_remove_bus_device
+ CONFTEST: pci_rebar_get_possible_sizes
+ CONFTEST: wait_for_random_bytes
+ CONFTEST: register_cpu_notifier
+ CONFTEST: cpuhp_setup_state
+ CONFTEST: dma_map_resource
+ CONFTEST: get_backlight_device_by_name
+ CONFTEST: timer_setup
+ CONFTEST: pci_enable_msix_range
+ CONFTEST: kernel_read_has_pointer_pos_arg
+ CONFTEST: kernel_write_has_pointer_pos_arg
+ CONFTEST: dma_direct_map_resource
+ CONFTEST: tegra_get_platform
+ CONFTEST: tegra_bpmp_send_receive
+ CONFTEST: flush_cache_all
+ CONFTEST: vmf_insert_pfn
+ CONFTEST: jiffies_to_timespec
+ CONFTEST: ktime_get_raw_ts64
+ CONFTEST: ktime_get_real_ts64
+ CONFTEST: full_name_hash
+ CONFTEST: pci_enable_atomic_ops_to_root
+ CONFTEST: vga_tryget
+ CONFTEST: cc_platform_has
+ CONFTEST: cc_attr_guest_sev_snp
+ CONFTEST: hv_get_isolation_type
+ CONFTEST: seq_read_iter
+ CONFTEST: follow_pfn
+ CONFTEST: ptep_get
+ CONFTEST: drm_gem_object_get
+ CONFTEST: drm_gem_object_put_unlocked
+ CONFTEST: add_memory_driver_managed
+ CONFTEST: device_property_read_u64
+ CONFTEST: devm_of_platform_populate
+ CONFTEST: of_dma_configure
+ CONFTEST: of_property_count_elems_of_size
+ CONFTEST: of_property_read_variable_u8_array
+ CONFTEST: of_property_read_variable_u32_array
+ CONFTEST: i2c_new_client_device
+ CONFTEST: i2c_unregister_device
+ CONFTEST: of_get_named_gpio
+ CONFTEST: devm_gpio_request_one
+ CONFTEST: gpio_direction_input
+ CONFTEST: gpio_direction_output
+ CONFTEST: gpio_get_value
+ CONFTEST: gpio_set_value
+ CONFTEST: gpio_to_irq
+ CONFTEST: icc_get
+ CONFTEST: devm_of_icc_get
+ CONFTEST: icc_put
+ CONFTEST: icc_set_bw
+ CONFTEST: dma_buf_export_args
+ CONFTEST: dma_buf_ops_has_kmap
+ CONFTEST: dma_buf_ops_has_kmap_atomic
+ CONFTEST: dma_buf_ops_has_map
+ CONFTEST: dma_buf_ops_has_map_atomic
+ CONFTEST: dma_buf_has_dynamic_attachment
+ CONFTEST: dma_buf_attachment_has_peer2peer
+ CONFTEST: dma_set_mask_and_coherent
+ CONFTEST: devm_clk_bulk_get_all
+ CONFTEST: get_task_ioprio
+ CONFTEST: mdev_set_iommu_device
+ CONFTEST: offline_and_remove_memory
+ CONFTEST: stack_trace
+ CONFTEST: crypto_tfm_ctx_aligned
+ CONFTEST: radix_tree_empty
+ CONFTEST: radix_tree_replace_slot
+ CONFTEST: pnv_npu2_init_context
+ CONFTEST: cpumask_of_node
+ CONFTEST: ioasid_get
+ CONFTEST: mm_pasid_drop
+ CONFTEST: mmget_not_zero
+ CONFTEST: mmgrab
+ CONFTEST: iommu_sva_bind_device_has_drvdata_arg
+ CONFTEST: vm_fault_to_errno
+ CONFTEST: find_next_bit_wrap
+ CONFTEST: iommu_is_dma_domain
+ CONFTEST: for_each_sgtable_dma_page
+ CONFTEST: folio_test_swapcache
+ CONFTEST: acpi_video_backlight_use_native
+ CONFTEST: acpi_video_register_backlight
+ CONFTEST: drm_dev_unref
+ CONFTEST: drm_reinit_primary_mode_group
+ CONFTEST: get_user_pages_remote
+ CONFTEST: get_user_pages
+ CONFTEST: pin_user_pages_remote
+ CONFTEST: pin_user_pages
+ CONFTEST: drm_gem_object_lookup
+ CONFTEST: drm_atomic_state_ref_counting
+ CONFTEST: drm_driver_has_gem_prime_res_obj
+ CONFTEST: drm_atomic_helper_connector_dpms
+ CONFTEST: drm_connector_funcs_have_mode_in_name
+ CONFTEST: drm_connector_has_vrr_capable_property
+ CONFTEST: drm_framebuffer_get
+ CONFTEST: drm_dev_put
+ CONFTEST: drm_format_num_planes
+ CONFTEST: drm_connector_for_each_possible_encoder
+ CONFTEST: drm_rotation_available
+ CONFTEST: drm_vma_offset_exact_lookup_locked
+ CONFTEST: nvhost_dma_fence_unpack
+ CONFTEST: dma_fence_set_error
+ CONFTEST: fence_set_error
+ CONFTEST: sync_file_get_fence
+ CONFTEST: drm_aperture_remove_conflicting_pci_framebuffers
+ CONFTEST: aperture_remove_conflicting_devices
+ CONFTEST: aperture_remove_conflicting_pci_devices
+ CONFTEST: drm_fbdev_generic_setup
+ CONFTEST: drm_fbdev_ttm_setup
+ CONFTEST: drm_client_setup
+ CONFTEST: drm_connector_attach_hdr_output_metadata_property
+ CONFTEST: drm_helper_crtc_enable_color_mgmt
+ CONFTEST: drm_crtc_enable_color_mgmt
+ CONFTEST: drm_atomic_helper_legacy_gamma_set
+ CONFTEST: vmf_insert_mixed
+ CONFTEST: pfn_to_pfn_t
+ CONFTEST: drm_gem_prime_mmap
+ CONFTEST: is_export_symbol_gpl_of_node_to_nid
+ CONFTEST: is_export_symbol_gpl_sme_active
+ CONFTEST: is_export_symbol_present_swiotlb_map_sg_attrs
+ CONFTEST: is_export_symbol_present_swiotlb_dma_ops
+ CONFTEST: is_export_symbol_present___close_fd
+ CONFTEST: is_export_symbol_present_close_fd
+ CONFTEST: is_export_symbol_present_get_unused_fd
+ CONFTEST: is_export_symbol_present_get_unused_fd_flags
+ CONFTEST: is_export_symbol_present_nvhost_get_default_device
+ CONFTEST: is_export_symbol_present_nvhost_syncpt_unit_interface_get_byte_offset
+ CONFTEST: is_export_symbol_present_nvhost_syncpt_unit_interface_get_aperture
+ CONFTEST: is_export_symbol_present_tegra_dce_register_ipc_client
+ CONFTEST: is_export_symbol_present_tegra_dce_unregister_ipc_client
+ CONFTEST: is_export_symbol_present_tegra_dce_client_ipc_send_recv
+ CONFTEST: is_export_symbol_present_dram_clk_to_mc_clk
+ CONFTEST: is_export_symbol_present_get_dram_num_channels
+ CONFTEST: is_export_symbol_present_tegra_dram_types
+ CONFTEST: is_export_symbol_present_pxm_to_node
+ CONFTEST: is_export_symbol_present_screen_info
+ CONFTEST: is_export_symbol_gpl_screen_info
+ CONFTEST: is_export_symbol_present_i2c_bus_status
+ CONFTEST: is_export_symbol_present_tegra_fuse_control_read
+ CONFTEST: is_export_symbol_present_tegra_get_platform
+ CONFTEST: is_export_symbol_present_pci_find_host_bridge
+ CONFTEST: is_export_symbol_present_tsec_comms_send_cmd
+ CONFTEST: is_export_symbol_present_tsec_comms_set_init_cb
+ CONFTEST: is_export_symbol_present_tsec_comms_clear_init_cb
+ CONFTEST: is_export_symbol_present_tsec_comms_alloc_mem_from_gscco
+ CONFTEST: is_export_symbol_present_tsec_comms_free_gscco_mem
+ CONFTEST: is_export_symbol_present_memory_block_size_bytes
+ CONFTEST: crypto
+ CONFTEST: crypto_akcipher_verify
+ CONFTEST: is_export_symbol_present_follow_pte
+ CONFTEST: follow_pte_arg_vma
+ CONFTEST: is_export_symbol_present_follow_pfnmap_start
+ CONFTEST: is_export_symbol_gpl_pci_ats_supported
+ CONFTEST: ecc_digits_from_bytes
+ CONFTEST: is_export_symbol_present_int_active_memcg
+ CONFTEST: is_export_symbol_present_migrate_vma_setup
+ CONFTEST: dma_ops
+ CONFTEST: swiotlb_dma_ops
+ CONFTEST: noncoherent_swiotlb_dma_ops
+ CONFTEST: vm_fault_has_address
+ CONFTEST: vm_insert_pfn_prot
+ CONFTEST: vmf_insert_pfn_prot
+ CONFTEST: vm_ops_fault_removed_vma_arg
+ CONFTEST: kmem_cache_has_kobj_remove_work
+ CONFTEST: sysfs_slab_unlink
+ CONFTEST: proc_ops
+ CONFTEST: timespec64
+ CONFTEST: vmalloc_has_pgprot_t_arg
+ CONFTEST: mm_has_mmap_lock
+ CONFTEST: pci_channel_state
+ CONFTEST: pci_dev_has_ats_enabled
+ CONFTEST: remove_memory_has_nid_arg
+ CONFTEST: add_memory_driver_managed_has_mhp_flags_arg
+ CONFTEST: num_registered_fb
+ CONFTEST: pci_driver_has_driver_managed_dma
+ CONFTEST: vm_area_struct_has_const_vm_flags
+ CONFTEST: memory_failure_has_trapno_arg
+ CONFTEST: foll_longterm_present
+ CONFTEST: bus_type_has_iommu_ops
+ CONFTEST: class_create_has_no_owner_arg
+ CONFTEST: class_devnode_has_const_arg
+ CONFTEST: mmu_notifier_ops_invalidate_range
+ CONFTEST: mmu_notifier_ops_arch_invalidate_secondary_tlbs
+ CONFTEST: migrate_vma_added_flags
+ CONFTEST: migrate_device_range
+ CONFTEST: handle_mm_fault_has_mm_arg
+ CONFTEST: handle_mm_fault_has_pt_regs_arg
+ CONFTEST: mempolicy_has_unified_nodes
+ CONFTEST: mempolicy_has_home_node
+ CONFTEST: mpol_preferred_many_present
+ CONFTEST: mmu_interval_notifier
+ CONFTEST: fault_flag_remote_present
+ CONFTEST: sg_dma_page_iter
+ CONFTEST: struct_page_has_zone_device_data
+ CONFTEST: drm_bus_present
+ CONFTEST: drm_bus_has_bus_type
+ CONFTEST: drm_bus_has_get_irq
+ CONFTEST: drm_bus_has_get_name
+ CONFTEST: drm_driver_has_device_list
+ CONFTEST: drm_driver_has_legacy_dev_list
+ CONFTEST: drm_driver_has_set_busid
+ CONFTEST: drm_crtc_state_has_connectors_changed
+ CONFTEST: drm_init_function_args
+ CONFTEST: drm_helper_mode_fill_fb_struct
+ CONFTEST: drm_master_drop_has_from_release_arg
+ CONFTEST: drm_driver_unload_has_int_return_type
+ CONFTEST: drm_atomic_helper_crtc_destroy_state_has_crtc_arg
+ CONFTEST: drm_atomic_helper_plane_destroy_state_has_plane_arg
+ CONFTEST: drm_mode_object_find_has_file_priv_arg
+ CONFTEST: dma_buf_owner
+ CONFTEST: drm_connector_list_iter
+ CONFTEST: drm_atomic_helper_swap_state_has_stall_arg
+ CONFTEST: drm_driver_prime_flag_present
+ CONFTEST: vm_fault_t
+ CONFTEST: drm_gem_object_has_resv
+ CONFTEST: drm_crtc_state_has_async_flip
+ CONFTEST: drm_crtc_state_has_pageflip_flags
+ CONFTEST: drm_crtc_state_has_vrr_enabled
+ CONFTEST: drm_format_modifiers_present
+ CONFTEST: drm_vma_node_is_allowed_has_tag_arg
+ CONFTEST: drm_vma_offset_node_has_readonly
+ CONFTEST: drm_display_mode_has_vrefresh
+ CONFTEST: drm_driver_master_set_has_int_return_type
+ CONFTEST: drm_driver_has_gem_free_object
+ CONFTEST: drm_prime_pages_to_sg_has_drm_device_arg
+ CONFTEST: drm_driver_has_gem_prime_callbacks
+ CONFTEST: drm_crtc_atomic_check_has_atomic_state_arg
+ CONFTEST: drm_gem_object_vmap_has_map_arg
+ CONFTEST: drm_plane_atomic_check_has_atomic_state_arg
+ CONFTEST: drm_device_has_pdev
+ CONFTEST: drm_crtc_state_has_no_vblank
+ CONFTEST: drm_mode_config_has_allow_fb_modifiers
+ CONFTEST: drm_has_hdr_output_metadata
+ CONFTEST: dma_resv_add_fence
+ CONFTEST: dma_resv_reserve_fences
+ CONFTEST: reservation_object_reserve_shared_has_num_fences_arg
+ CONFTEST: drm_connector_has_override_edid
+ CONFTEST: drm_master_has_leases
+ CONFTEST: drm_file_get_master
+ CONFTEST: drm_modeset_lock_all_end
+ CONFTEST: drm_connector_lookup
+ CONFTEST: drm_connector_put
+ CONFTEST: drm_driver_has_dumb_destroy
+ CONFTEST: fence_ops_use_64bit_seqno
+ CONFTEST: drm_aperture_remove_conflicting_pci_framebuffers_has_driver_arg
+ CONFTEST: drm_mode_create_dp_colorspace_property_has_supported_colorspaces_arg
+ CONFTEST: drm_syncobj_features_present
+ CONFTEST: drm_unlocked_ioctl_flag_present
+ CONFTEST: drm_framebuffer_obj_present
+ CONFTEST: drm_color_ctm_3x4_present
+ CONFTEST: drm_color_lut
+ CONFTEST: drm_property_blob_put
+ CONFTEST: drm_driver_has_gem_prime_mmap
+ CONFTEST: drm_output_poll_changed
+ CONFTEST: drm_driver_has_date
+ CONFTEST: file_operations_fop_unsigned_offset_present
+ CONFTEST: drm_connector_helper_funcs_mode_valid_has_const_mode_arg
+ CONFTEST: dom0_kernel_present
+ CONFTEST: nvidia_vgpu_kvm_build
+ CONFTEST: nvidia_grid_build
+ CONFTEST: nvidia_grid_csp_build
+ CONFTEST: pm_runtime_available
+ CONFTEST: pci_class_multimedia_hd_audio
+ CONFTEST: drm_available
+ CONFTEST: vfio_pci_core_available
+ CONFTEST: mdev_available
+ CONFTEST: cmd_uphy_display_port_init
+ CONFTEST: cmd_uphy_display_port_off
+ CONFTEST: memory_failure_mf_sw_simulated_defined
+ CONFTEST: device_vm_build
+ CONFTEST: pcie_reset_flr
+ CONFTEST: module_import_ns_takes_constant
+ CONFTEST: drm_atomic_available
+ CONFTEST: is_export_symbol_gpl_refcount_inc
+ CONFTEST: is_export_symbol_gpl_refcount_dec_and_test
+ CONFTEST: drm_alpha_blending_available
+ CONFTEST: is_export_symbol_present_drm_gem_prime_fd_to_handle
+ CONFTEST: is_export_symbol_present_drm_gem_prime_handle_to_fd
+ CONFTEST: ib_peer_memory_symbols
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pci.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-dmabuf.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-nano-timer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-acpi.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-cray.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-dma.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-i2c.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-mmap.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-p2p.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pat.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-procfs.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-usermap.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-vm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-vtophys.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-interface.o
+/build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-mmap.c:326:5: warning: conflicting types for 'nv_encode_caching' due to enum/integer mismatch; have 'int(pgprot_t *, NvU32,  nv_memory_type_t)' {aka 'int(struct pgprot *, unsigned int,  nv_memory_type_t)'} []
+  326 | int nv_encode_caching(
+      |     ^~~~~~~~~~~~~~~~~
+In file included from /build/NVIDIA-Linux-x86_64-570.144/kernel/common/inc/nv-linux.h:1763,
+                 from /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-mmap.c:27:
+/build/NVIDIA-Linux-x86_64-570.144/kernel/common/inc/nv-proto.h:44:13: note: previous declaration of 'nv_encode_caching' with type 'int(pgprot_t *, NvU32,  NvU32)' {aka 'int(struct pgprot *, unsigned int,  unsigned int)'}
+   44 | int         nv_encode_caching           (pgprot_t *, NvU32, NvU32);
+      |             ^~~~~~~~~~~~~~~~~
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-mlock.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-pci.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-registry.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-usermap.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-modeset-interface.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pci-table.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-kthread-q.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-memdbg.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-report-err.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-rsync.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-msi.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-caps.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-caps-imex.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-host1x.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv_uvm_interface.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_aead.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_ecc.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hkdf.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rand.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_shash.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rsa.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_aead_aes_gcm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_sha.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hmac_sha.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_internal_crypt_lib.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hkdf_sha.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_ec.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_x509.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rsa_ext.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nvlink_linux.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nvlink_caps.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/linux_nvswitch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/procfs_nvswitch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/i2c_nvswitch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_common.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_linux.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/nvstatus.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/nvCpuUuid.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/nv-kthread-q.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/nv-kthread-q-selftest.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_tools.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_global.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_isr.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_procfs.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_space.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_space_mm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_semaphore.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_mem.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_rm_mem.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_channel.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_lock.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hal.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_processors.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_tree.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_rb_tree.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_allocator.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_range.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_range_device_p2p.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_policy.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_block.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_group.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_replayable_faults.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_non_replayable_faults.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_access_counters.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_events.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_module.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pte_batch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_tlb_batch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_push.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pushbuffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_thread_context.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_tracker.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_ce.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_sec2.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_maxwell_access_counter_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pascal.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pascal_ce.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pascal_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pascal_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pascal_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_volta_ce.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_volta_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_volta_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_volta.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_volta_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_turing.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_turing_access_counter_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_turing_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_turing_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_turing_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ampere.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ampere_ce.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ampere_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ampere_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ampere_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper_ce.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper_sec2.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hopper_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ada.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_blackwell.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_blackwell_fault_buffer.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_blackwell_mmu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_blackwell_host.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_policy.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_utils.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_kvmalloc.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pmm_sysmem.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pmm_gpu.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_migrate.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_populate_pageable.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_migrate_pageable.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_map_external.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_user_channel.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_hmm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_heuristics.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_thrashing.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_prefetch.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ats.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ats_ibm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ats_faults.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ats_sva.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_conf_computing.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_test_rng.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_tree_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_allocator_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_gpu_semaphore_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_mem_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_rm_mem_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_page_tree_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_tracker_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_push_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_channel_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_ce_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_host_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_lock_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_utils_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_kvmalloc_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pmm_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_pmm_sysmem_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_events_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_perf_module_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_get_rm_ptes_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_fault_buffer_flush_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_peer_identity_mappings_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_va_block_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_range_group_tree_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_thread_context_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_rb_tree_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm/uvm_sec2_test.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nvidia-modeset-linux.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nv-kthread-q.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-drv.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-utils.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-crtc.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-encoder.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-connector.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-gem.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-fb.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-modeset.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-fence.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-helper.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nv-kthread-q.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nv-pci-table.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-gem-user-memory.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-gem-dma-buf.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-format.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-os-interface.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm/nvidia-drm-linux.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem/nvidia-peermem.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset.o
+ld -r -o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-interface.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pci.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-dmabuf.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-nano-timer.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-acpi.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-cray.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-dma.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-i2c.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-mmap.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-p2p.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pat.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-procfs.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-usermap.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-vm.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-vtophys.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-interface.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-mlock.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-pci.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-registry.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/os-usermap.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-modeset-interface.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-pci-table.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-kthread-q.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-memdbg.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-report-err.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-rsync.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-msi.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-caps.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-caps-imex.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv-host1x.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nv_uvm_interface.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_aead.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_ecc.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hkdf.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rand.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_shash.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rsa.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_aead_aes_gcm.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_sha.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hmac_sha.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_internal_crypt_lib.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_hkdf_sha.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_ec.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_x509.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/libspdm_rsa_ext.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nvlink_linux.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/nvlink_caps.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/linux_nvswitch.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/procfs_nvswitch.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia/i2c_nvswitch.o
+ld -r -o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nv-modeset-interface.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nvidia-modeset-linux.o /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset/nv-kthread-q.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem.o
+  MODPOST /build/NVIDIA-Linux-x86_64-570.144/kernel/Module.symvers
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm.mod.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset.mod.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem.mod.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm.mod.o
+  CC [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia.mod.o
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset.ko
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem.ko
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm.ko
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm.ko
+  LD [M]  /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia.ko
+  BTF [M] /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem.ko
+Skipping BTF generation for /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-peermem.ko due to unavailability of vmlinux
+  BTF [M] /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset.ko
+Skipping BTF generation for /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-modeset.ko due to unavailability of vmlinux
+  BTF [M] /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm.ko
+Skipping BTF generation for /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-drm.ko due to unavailability of vmlinux
+  BTF [M] /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm.ko
+Skipping BTF generation for /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia-uvm.ko due to unavailability of vmlinux
+  BTF [M] /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia.ko
+Skipping BTF generation for /build/NVIDIA-Linux-x86_64-570.144/kernel/nvidia.ko due to unavailability of vmlinux
+make[1]: Leaving directory '/nix/store/y6cbhmq58y0xp99d6mkgjyvsrs0br1rq-linux-6.1.140-dev/lib/modules/6.1.140/source'
+buildPhase completed in 40 seconds
+Running phase: installPhase
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/libnvidia-egl-xlib.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/libEGL_nvidia.so.0"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/libnvidia-egl-gbm.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/libnvidia-egl-wayland.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/libnvidia-egl-xcb.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/libnvidia-egl-xlib.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/libEGL_nvidia.so.0"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/libnvidia-egl-gbm.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/libnvidia-egl-wayland.so.1"
+  }
+}
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/libnvidia-egl-xcb.so.1"
+  }
+}
+substituteStream() in derivation nvidia-x11-570.144-6.1.140: WARNING: '--replace' is deprecated, use --replace-{fail,warn,quiet}. (file 'nvidia-bug-report.sh')
+Running phase: fixupPhase
+checking for references to /build/ in /nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140...
+patching script interpreter paths in /nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140
+/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/bin/nvidia-sleep.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/xy4jjgw87sbgwylm5kn047d9gkbhsr9x-bash-5.2p37/bin/bash"
+/nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/systemd/system-sleep/nvidia: interpreter directive changed from "#!/bin/sh" to "/nix/store/xy4jjgw87sbgwylm5kn047d9gkbhsr9x-bash-5.2p37/bin/sh"
+checking for references to /build/ in /nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32...
+patching script interpreter paths in /nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32
+checking for references to /build/ in /nix/store/cg453dj2fvflinlakzjvf5xw42hh1jx1-nvidia-x11-570.144-6.1.140-bin...
+patchelf: wrong ELF type
+patchelf: wrong ELF type
+patchelf: wrong ELF type
+patchelf: wrong ELF type
+patchelf: wrong ELF type
+gzipping man pages under /nix/store/cg453dj2fvflinlakzjvf5xw42hh1jx1-nvidia-x11-570.144-6.1.140-bin/share/man/
+patching script interpreter paths in /nix/store/cg453dj2fvflinlakzjvf5xw42hh1jx1-nvidia-x11-570.144-6.1.140-bin
+/nix/store/cg453dj2fvflinlakzjvf5xw42hh1jx1-nvidia-x11-570.144-6.1.140-bin/bin/nvidia-bug-report.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/xy4jjgw87sbgwylm5kn047d9gkbhsr9x-bash-5.2p37/bin/sh"
+checking for references to /build/ in /nix/store/gjk5a3fk20v5h8pw5r9biy0lpa8rvjk9-nvidia-x11-570.144-6.1.140-firmware...
+patchelf: wrong ELF type
+patchelf: wrong ELF type
+patching script interpreter paths in /nix/store/gjk5a3fk20v5h8pw5r9biy0lpa8rvjk9-nvidia-x11-570.144-6.1.140-firmware
+rewriting symlink /nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140/lib/gbm/nvidia-drm_gbm.so to be relative to /nix/store/gb9xs0hkxxswc30af3sbydl88k8xpl0s-nvidia-x11-570.144-6.1.140
+rewriting symlink /nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32/lib/gbm/nvidia-drm_gbm.so to be relative to /nix/store/ym5ws81kmcdfy9w1dxbx34p596m5iwxy-nvidia-x11-570.144-6.1.140-lib32
+building '/nix/store/mnp7pmnndijhawpgrcm5v8x2xxrg5lnm-firmware.drv'...
+building '/nix/store/5g0yf0sqf0h9a1h679pqj3hc7mbjkcrf-graphics-drivers-32bit.drv'...
+building '/nix/store/rgmw3ck6lyg4x6kf8jdlvdfxmkqapmfm-graphics-drivers.drv'...
+building '/nix/store/kl38lkhj6ilgl0gvd151ax8iq67lv1jx-linux-6.1.140-modules.drv'...
+building '/nix/store/q6d0512z1rl2ypc4j24hc05r17mpa92p-steam-fhsenv-rootfs.drv'...
+building '/nix/store/z9pa8bkbfh00ifd0hxb9xyb4jnqm58i4-steam-run-fhsenv-rootfs.drv'...
+created 920 symlinks in user environment
+created 133 symlinks in user environment
+created 181 symlinks in user environment
+created 21 symlinks in user environment
+kernel version is 6.1.140
+structuredAttrs is enabled
+building '/nix/store/p2rh12bjj243173is9rm2ypjwdccs6w6-etc-modprobe.d-firmware.conf.drv'...
+building '/nix/store/hl0rr590lcdvi9lifrlgi6jcw60hzrl3-graphics-driver.conf.drv'...
+structuredAttrs is enabled
+building '/nix/store/99jh7l9k7dmawj285xh3v7zk10xkgdgd-tmpfiles.d.drv'...
+building '/nix/store/s8c46cv8xai9c7c64f3midny5g2kszlb-X-Restart-Triggers-systemd-tmpfiles-resetup.drv'...
+building '/nix/store/g6xp2xmckm992j1xjrzxln82rz1jd5x0-unit-systemd-tmpfiles-resetup.service.drv'...
+building '/nix/store/czaf7kxq1pkyqdln6znas8cyqw0y1fqm-linux-6.1.140-modules-shrunk.drv'...
+kernel version is 6.1.140
+root module: nvme
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/crct10dif-pclmul.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_generic.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc-t10dif.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64-rocksoft.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/block/t10-pi.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/common/nvme-common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/host/nvme-core.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/host/nvme.ko.xz
+root module: xhci_pci
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci-renesas.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci.ko.xz
+Warning: Schema ?org.gnome.system.locale? has path ?/system/locale/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy? has path ?/system/proxy/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.http? has path ?/system/proxy/http/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.https? has path ?/system/proxy/https/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.ftp? has path ?/system/proxy/ftp/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.socks? has path ?/system/proxy/socks/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+root module: ahci
+building '/nix/store/278xji0sbivjfbb0nc7l74fcirzmnkrb-steam-run-bwrap.drv'...
+Warning: Schema ?org.gnome.system.locale? has path ?/system/locale/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy? has path ?/system/proxy/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.http? has path ?/system/proxy/http/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.https? has path ?/system/proxy/https/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.ftp? has path ?/system/proxy/ftp/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+Warning: Schema ?org.gnome.system.proxy.socks? has path ?/system/proxy/socks/?.  Paths starting with ?/apps/?, ?/desktop/? or ?/system/? are deprecated.
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libahci.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/ahci.ko.xz
+root module: usb_storage
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/storage/usb-storage.ko.xz
+root module: usbhid
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/crct10dif-pclmul.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_generic.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc-t10dif.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64-rocksoft.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/block/t10-pi.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/sd_mod.ko.xz
+root module: ext2
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/fs/ext2/ext2.ko.xz
+root module: ext4
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/fs/jbd2/jbd2.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc16.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/crc32c-intel.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crc32c_generic.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/fs/ext4/ext4.ko.xz
+root module: dm_mod
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/dax/dax.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/md/dm-mod.ko.xz
+root module: dm_crypt
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/char/hw_random/rng-core.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/char/tpm/tpm.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/tee/tee.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/asn1_encoder.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/security/keys/trusted-keys/trusted.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/security/keys/encrypted-keys/encrypted-keys.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/dax/dax.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/md/dm-mod.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/md/dm-crypt.ko.xz
+root module: cryptd
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+root module: input_leds
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/leds/led-class.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/input-leds.ko.xz
+root module: aes
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/aesni-intel.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/crypto/padlock-aes.ko.xz
+root module: aes_generic
+  builtin dependency: aes_generic
+root module: blowfish
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/blowfish_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/blowfish-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/blowfish_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/blowfish_generic.ko.xz
+root module: twofish
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/twofish_common.ko.xz
+building '/nix/store/bwy3dh9lmd2nrdiyswr5jz7dmn0ab8cf-steam-bwrap.drv'...
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/twofish_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-x86_64-3way.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/twofish_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-x86_64-3way.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/twofish-avx-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/twofish_common.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/twofish_generic.ko.xz
+root module: serpent
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crypto_simd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/serpent_generic.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/serpent-sse2-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crypto_simd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/serpent_generic.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/serpent-avx-x86_64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cryptd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crypto_simd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/serpent_generic.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/serpent-avx-x86_64.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/serpent-avx2.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/serpent_generic.ko.xz
+root module: cbc
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/cbc.ko.xz
+root module: xts
+building '/nix/store/bxf7f95v5c4zs0c8lrs4lnxrf54i9i9l-steam-run.drv'...
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/ecb.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/xts.ko.xz
+root module: lrw
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/gf128mul.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/ecb.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/lrw.ko.xz
+root module: sha1
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/sha1-ssse3.ko.xz
+root module: sha256
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/sha256-ssse3.ko.xz
+root module: sha512
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/sha512-ssse3.ko.xz
+root module: af_alg
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/af_alg.ko.xz
+root module: algif_skcipher
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/af_alg.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/algif_skcipher.ko.xz
+root module: ecb
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/ecb.ko.xz
+root module: ahci
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libahci.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/ahci.ko.xz
+root module: sata_nv
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/sata_nv.ko.xz
+root module: sata_via
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/sata_via.ko.xz
+root module: sata_sis
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+building '/nix/store/df76c0k3cgn8m6zkxq7dp8qlbrdimb80-steam.drv'...
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/pata_sis.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/sata_sis.ko.xz
+root module: sata_uli
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/sata_uli.ko.xz
+root module: ata_piix
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/ata_piix.ko.xz
+root module: pata_marvell
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/ata/pata_marvell.ko.xz
+root module: nvme
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/crct10dif-pclmul.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_generic.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc-t10dif.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64-rocksoft.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/block/t10-pi.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/common/nvme-common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/host/nvme-core.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/nvme/host/nvme.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/arch/x86/crypto/crct10dif-pclmul.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/crypto/crct10dif_generic.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc-t10dif.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/lib/crc64-rocksoft.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/block/t10-pi.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/sd_mod.ko.xz
+root module: sr_mod
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/cdrom/cdrom.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/scsi/sr_mod.ko.xz
+root module: mmc_block
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/mmc/core/mmc_core.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/mmc/core/mmc_block.ko.xz
+root module: uhci_hcd
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/uhci-hcd.ko.xz
+root module: ehci_hcd
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-hcd.ko.xz
+root module: ehci_pci
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-pci.ko.xz
+root module: ohci_hcd
+building '/nix/store/lvndfgy868zj8pf83myry28ywrvmf11v-system-path.drv'...
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ohci-hcd.ko.xz
+root module: ohci_pci
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ohci-hcd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/ohci-pci.ko.xz
+root module: xhci_hcd
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-hcd.ko.xz
+root module: xhci_pci
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci-renesas.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci.ko.xz
+root module: usbhid
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: hid_generic
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-generic.ko.xz
+root module: hid_lenovo
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-lenovo.ko.xz
+root module: hid_apple
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-apple.ko.xz
+root module: hid_roccat
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-roccat.ko.xz
+root module: hid_logitech_hidpp
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-logitech-hidpp.ko.xz
+root module: hid_logitech_dj
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-logitech-dj.ko.xz
+root module: hid_microsoft
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/ff-memless.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-microsoft.ko.xz
+root module: hid_cherry
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-cherry.ko.xz
+root module: hid_corsair
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/hid/hid-corsair.ko.xz
+root module: pcips2
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/pcips2.ko.xz
+root module: atkbd
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/vivaldi-fmap.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/libps2.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/keyboard/atkbd.ko.xz
+root module: i8042
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/input/serio/i8042.ko.xz
+root module: dm_mod
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/dax/dax.ko.xz
+  dependency already copied: /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/md/dm-mod.ko.xz
+firmware for /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci.ko.xz: renesas_usb_fw.mem
+lib/firmware -> /nix/store/r2gq3k4ipd4qfq9bnrycd905nzsmbqcd-linux-6.1.140-modules-shrunk/lib/firmware
+WARNING: missing firmware renesas_usb_fw.mem for module /nix/store/pyx1ca88rhzmvyck9sfn1bgqgfakl3j8-linux-6.1.140-modules/lib/modules/6.1.140/kernel/drivers/usb/host/xhci-pci.ko.xz
+lib/firmware/edid not found, skipping.
+depmod: WARNING: could not open modules.builtin.modinfo at /nix/store/r2gq3k4ipd4qfq9bnrycd905nzsmbqcd-linux-6.1.140-modules-shrunk/lib/modules/6.1.140: No such file or directory
+building '/nix/store/jwd0294s2dd71fyz3jrfw1hp4baxm0ns-closure-info.drv'...
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/etc/xdg/waybar/style.css' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/etc/xdg/waybar/style.css'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/etc/xdg/waybar/config.jsonc' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/etc/xdg/waybar/config.jsonc'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/bin/.waybar-wrapped' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/bin/.waybar-wrapped'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/bin/waybar' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/bin/waybar'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/systemd/user/waybar.service' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/systemd/user/waybar.service'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/libcava.so' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/libcava.so'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/lib/pkgconfig/cava.pc' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/lib/pkgconfig/cava.pc'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/systemd/user/waybar.service' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/systemd/user/waybar.service'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-language.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-backlight-slider.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-backlight-slider.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-systemd-failed-units.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-systemd-failed-units.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-mode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-mode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-jack.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-jack.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-submap.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-submap.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-pulseaudio.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-pulseaudio.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-menu.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-menu.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-power-profiles-daemon.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-power-profiles-daemon.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-idle-inhibitor.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-idle-inhibitor.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-tray.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-tray.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-states.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-states.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-tags.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-tags.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-dwl-tags.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-dwl-tags.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-battery.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-battery.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-gamemode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-gamemode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-bluetooth.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-bluetooth.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-river-layout.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-river-layout.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wlr-taskbar.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wlr-taskbar.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-styles.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-styles.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-inhibitor.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-inhibitor.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sndio.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sndio.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-disk.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-disk.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cpu.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cpu.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-pulseaudio-slider.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-pulseaudio-slider.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wlr-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wlr-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-mpris.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-mpris.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-keyboard-state.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-keyboard-state.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-wireplumber.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-wireplumber.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-temperature.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-temperature.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-scratchpad.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-scratchpad.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-custom.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-custom.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cffi.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cffi.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-cava.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-cava.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-dwl-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-dwl-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-mpd.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-mpd.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-backlight.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-backlight.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-memory.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-memory.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-mode.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-mode.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-image.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-image.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-window.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-window.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-privacy.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-privacy.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-network.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-network.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-clock.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-clock.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-sway-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-sway-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-workspaces.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-workspaces.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-upower.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-upower.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-hyprland-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-hyprland-language.5.gz'
+warning: collision between `/nix/store/v83wjfqd4yiqf2c90lhasr55nm0lvvdg-waybar-0.12.0/share/man/man5/waybar-niri-language.5.gz' and `/nix/store/l2aw7jhndlv442d6gnnz910mlvvk0x6b-waybar-0.12.0/share/man/man5/waybar-niri-language.5.gz'
+structuredAttrs is enabled
+building '/nix/store/6v07y18bjxh4i5kvxrdfw8sxc8148kwa-initrd-linux-6.1.140.drv'...
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/halt' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/halt'
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/poweroff' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/poweroff'
+warning: collision between `/nix/store/if9z6wmzmb07j63c02mvfkhn1mw1w5p4-systemd-257.5/bin/reboot' and `/nix/store/h33pxzr7j2x9xxskmxiyrfnad9c48pdh-toybox-0.8.12/bin/reboot'
+building '/nix/store/hr84yivja5pyihkkg1fvjaq7gafm1gjx-boot.json.drv'...
+created 10600 symlinks in user environment
+building '/nix/store/9z7xi4dnwg43ncqsl0b357k95mihqar8-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/c1cdsbcdyjv9q3w42gncf4wz7afph0k2-dbus-1.drv'...
+building '/nix/store/cr0cmikcks108m6z8iafcmnw1imc9ysi-unit-polkit.service.drv'...
+building '/nix/store/76fg7bchn7zd10l0fxcdblc0crp5gnlp-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/aj1rfllwsrgxqiks0cbma933f2w2g308-unit-dbus.service.drv'...
+building '/nix/store/hk3m8gy8vd9cy6yxzw7a30dfma89qn6h-unit-dbus.service.drv'...
+building '/nix/store/dd74wjwck0hj5i98m83w6gz3naz7fl8z-system-units.drv'...
+building '/nix/store/lbb6hj2wyy42mkgcwaxgrzrbjj0iaiv3-user-units.drv'...
+building '/nix/store/ygxw39j8h0f32ldzip2876a668439rdq-etc.drv'...
+building '/nix/store/xmlf06znv4qc718m7bzg6v4yng3gswa1-nixos-system-nixos-25.05.802746.7282cb574e06.drv'...
 activating the configuration...
 setting up /etc...
 reloading user units for mylesc...
 restarting sysinit-reactivation.target
-starting the following units: systemd-modules-load.service
-the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/shy0yk0q0w83wzs68r0wcdrw25mvc1v4-nixos-system-nixos-25.05.802746.7282cb574e06
+reloading the following units: dbus.service
+restarting the following units: polkit.service
+the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+Done. The new configuration is /nix/store/m0vcqba0727vmld5wk4qcxs9g0sbkrgi-nixos-system-nixos-25.05.802746.7282cb574e06
