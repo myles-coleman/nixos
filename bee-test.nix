@@ -42,6 +42,12 @@
     nvidia.modesetting.enable = true;
   };
 
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
   environment.systemPackages = with pkgs; [
     dunst
     kitty
@@ -73,7 +79,6 @@
 
   environment.variables = {
     MANGOHUD = "1";
-    LD_LIBRARY_PATH = lib.mkForce "/run/opengl-driver/lib:/run/current-system/sw/lib:/nix/store/y6bg8kbly9p7wyp0hyyqddgbjvxlpcjd-pipewire-1.4.2-jack/lib:$\{LD_LIBRARY_PATH\}";
   };
 
   programs.steam = {
