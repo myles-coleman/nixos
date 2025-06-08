@@ -43,10 +43,18 @@
     graphics.enable = true;
     nvidia.modesetting.enable = true;
     nvidia.open = false;
-    nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
     nvidia.powerManagement.enable = false;
     nvidia.powerManagement.finegrained = false;
-    nvidia.nvidiaSettings = true;
+    nvidia.nvidiaSettings = false;
+
+    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+    #   version = "560.35.03";
+    #   sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+    #   sha256_aarch64 = "sha256-s8ZAVKvRNXpjxRYqM3E5oss5FdqW+tv1qQC2pDjfG+s=";
+    #   openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
+    #   settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
+    #   persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
+    # };
   };
 
   # Configure keymap in X11
@@ -89,14 +97,14 @@
     mesa-demos
     vulkan-tools
     xorg.libX11
-    zenity
+    zenity #power button stuff
     blueman #bluetooth manager
     lutris #game launcher
     stown #sets symlinks for dotfiles to ~/.config
     toybox #gives unix utilities like `killall`
     pcmanfm #file manager
     nwg-look #themeing gtk apps
-    catppuccin-gtk
+    catppuccin-gtk #catppuccin theme
   ];
 
   environment.variables = {
