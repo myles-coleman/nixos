@@ -94,6 +94,7 @@
     lutris #game launcher
     stown #sets symlinks for dotfiles to ~/.config
     toybox #gives unix utilities like `killall`
+    pcmanfm
   ];
 
   environment.variables = {
