@@ -84,6 +84,7 @@
     xorg.libX11
     zenity
     blueman
+    lutris
   ];
 
   environment.variables = {
