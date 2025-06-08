@@ -52,7 +52,16 @@
     nvidia.powerManagement.enable = false;
     nvidia.powerManagement.finegrained = false;
     nvidia.nvidiaSettings = false;
-    nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+      version = "570.153.02";
+      sha256_64bit = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+      sha256_aarch64 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+      openSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+      settingsSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+      persistencedSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+    };
 
     # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
     #   version = "560.35.03";
