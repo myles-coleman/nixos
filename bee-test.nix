@@ -84,15 +84,29 @@
     vulkan-tools
     xorg.libX11
     zenity
-    blueman
-    lutris
-    stown
-    toybox
+    blueman #bluetooth manager
+    lutris #game launcher
+    stown #sets symlinks for dotfiles to ~/.config
+    toybox #gives unix utilities like `killall`
   ];
 
   environment.variables = {
     MANGOHUD = "1";
   };
+
+  # GTK configuration
+  programs.dconf.enable = true;
+
+  # Configure GTK settings
+  environment.etc."xdg/gtk-3.0/settings.ini".text = ''
+    [Settings]
+    gtk-application-prefer-dark-theme=true
+  '';
+
+  environment.etc."xdg/gtk-4.0/settings.ini".text = ''
+    [Settings]
+    gtk-application-prefer-dark-theme=true
+  '';
 
   programs.steam = {
     enable = true;
