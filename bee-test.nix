@@ -4,8 +4,9 @@
   lib,
   ...
 }: {
-  # Using a specific kernel version that's compatible with NVIDIA drivers
-  boot.kernelPackages = pkgs.linuxPackages_6_1;
+  boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_6_1;
+
   boot.kernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
   boot.kernelParams = ["nvidia-drm.modeset=1"];
 
