@@ -83,6 +83,7 @@
     vulkan-tools
     xorg.libX11
     zenity
+    blueman
   ];
 
   environment.variables = {
