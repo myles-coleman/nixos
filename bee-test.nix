@@ -139,6 +139,7 @@
     pcmanfm #file manager
     nwg-look #themeing gtk apps
     catppuccin-gtk #catppuccin theme
+    prismlauncher #minecraft launcher
   ];
 
   environment.variables = {
