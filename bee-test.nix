@@ -141,6 +141,7 @@
     catppuccin-gtk #catppuccin theme
     prismlauncher #minecraft launcher
     r2modman
+    htop
   ];
 
   environment.variables = {
