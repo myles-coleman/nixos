@@ -140,6 +140,7 @@
     nwg-look #themeing gtk apps
     catppuccin-gtk #catppuccin theme
     prismlauncher #minecraft launcher
+    r2modman
   ];
 
   environment.variables = {
