@@ -194,17 +194,17 @@
     proton-ge-bin
   ];
 
-  fileSystems."/mnt/harddrive" = {
-    device = "UUID=060C52F50C52DEED";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "gid=100" "umask=0002"];
-  };
+ # fileSystems."/mnt/harddrive" = {
+ #   device = "UUID=060C52F50C52DEED";
+ #   fsType = "ntfs-3g";
+ #   options = ["uid=1000" "gid=100" "umask=0002"];
+ # };
 
-  fileSystems."/mnt/backup" = {
-    device = "UUID=01DA7976C02A2420";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "gid=100" "umask=0002"];
-  };
+#  fileSystems."/mnt/backup" = {
+#    device = "UUID=01DA7976C02A2420";
+#    fsType = "ntfs-3g";
+#    options = ["uid=1000" "gid=100" "umask=0002"];
+#  };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
