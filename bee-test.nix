@@ -43,58 +43,63 @@
   };
 
   # Hardware configuration
-  services.xserver.videoDrivers = ["nvidia"];
+  # services.xserver.videoDrivers = ["nvidia"];
 
-  hardware = {
-    graphics.enable = true;
-    nvidia.modesetting.enable = true;
-    nvidia.open = false;
-    nvidia.powerManagement.enable = false;
-    nvidia.powerManagement.finegrained = false;
-    nvidia.nvidiaSettings = false;
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # hardware = {
+  #   graphics.enable = true;
+  #   nvidia.modesetting.enable = true;
+  #   nvidia.open = false;
+  #   nvidia.powerManagement.enable = false;
+  #   nvidia.powerManagement.finegrained = false;
+  #   nvidia.nvidiaSettings = false;
+  #   # nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-    nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "570.153.02";
-      sha256_64bit = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
-      sha256_aarch64 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
-      openSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
-      settingsSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
-      persistencedSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
-    };
+  #   nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+  #     version = "570.153.02";
+  #     sha256_64bit = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+  #     sha256_aarch64 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+  #     openSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+  #     settingsSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+  #     persistencedSha256 = "sha256-FIiG5PaVdvqPpnFA5uXdblH5Cy7HSmXxp6czTfpd4bY=";
+  #   };
 
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    #   version = "560.35.03";
-    #   sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    #   sha256_aarch64 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    #   openSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    #   settingsSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    #   persistencedSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    # };
+  #   # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+  #   #   version = "560.35.03";
+  #   #   sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+  #   #   sha256_aarch64 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+  #   #   openSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+  #   #   settingsSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+  #   #   persistencedSha256 = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+  #   # };
 
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    #   version = "550.40.07";
-    #   sha256_64bit = "sha256-KYk2xye37v7ZW7h+uNJM/u8fNf7KyGTZjiaU03dJpK0=";
-    #   sha256_aarch64 = "sha256-AV7KgRXYaQGBFl7zuRcfnTGr8rS5n13nGUIe3mJTXb4=";
-    #   openSha256 = "sha256-mRUTEWVsbjq+psVe+kAT6MjyZuLkG2yRDxCMvDJRL1I=";
-    #   settingsSha256 = "sha256-c30AQa4g4a1EHmaEu1yc05oqY01y+IusbBuq+P6rMCs=";
-    #   persistencedSha256 = "sha256-11tLSY8uUIl4X/roNnxf5yS2PQvHvoNjnd2CB67e870=";
-    # };
+  #   # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+  #   #   version = "550.40.07";
+  #   #   sha256_64bit = "sha256-KYk2xye37v7ZW7h+uNJM/u8fNf7KyGTZjiaU03dJpK0=";
+  #   #   sha256_aarch64 = "sha256-AV7KgRXYaQGBFl7zuRcfnTGr8rS5n13nGUIe3mJTXb4=";
+  #   #   openSha256 = "sha256-mRUTEWVsbjq+psVe+kAT6MjyZuLkG2yRDxCMvDJRL1I=";
+  #   #   settingsSha256 = "sha256-c30AQa4g4a1EHmaEu1yc05oqY01y+IusbBuq+P6rMCs=";
+  #   #   persistencedSha256 = "sha256-11tLSY8uUIl4X/roNnxf5yS2PQvHvoNjnd2CB67e870=";
+  #   # };
 
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    #   version = "555.58.02";
-    #   sha256_64bit = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
-    #   sha256_aarch64 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
-    #   openSha256 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
-    #   settingsSha256 = "sha256-ZpuVZybW6CFN/gz9rx+UJvQ715FZnAOYfHn5jt5Z2C8=";
-    #   persistencedSha256 = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
-    # };
-  };
+  #   # nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+  #   #   version = "555.58.02";
+  #   #   sha256_64bit = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
+  #   #   sha256_aarch64 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
+  #   #   openSha256 = "sha256-8hyRiGB+m2hL3c9MDA/Pon+Xl6E788MZ50WrrAGUVuY=";
+  #   #   settingsSha256 = "sha256-ZpuVZybW6CFN/gz9rx+UJvQ715FZnAOYfHn5jt5Z2C8=";
+  #   #   persistencedSha256 = "sha256-xctt4TPRlOJ6r5S54h5W6PT6/3Zy2R4ASNFPu8TSHKM=";
+  #   # };
+  # };
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  # services.xserver.xkb = {
+  #   layout = "us";
+  #   variant = "";
+  # };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -130,7 +135,7 @@
     mangohud
     mesa-demos
     vulkan-tools
-    xorg.libX11
+    # xorg.libX11
     zenity #power button stuff
     blueman #bluetooth manager
     lutris #game launcher
