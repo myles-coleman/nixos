@@ -6,14 +6,6 @@
   pkgs,
   ...
 }: let
-  # nixGL overlay for AMD
-  nixGLOverlay = final: prev: {
-    nixGL = import (builtins.fetchTarball {
-      url = "https://github.com/guibou/nixGL/archive/refs/heads/main.tar.gz";
-      sha256 = "1crnbv3mdx83xjwl2j63rwwl9qfgi2f1lr53zzjlby5lh50xjz4n"; # May need to update if hash fails
-    }) {pkgs = prev;};
-  };
-
   krisp-patcher =
     pkgs.writers.writePython3Bin "krisp-patcher"
     {
@@ -49,8 +41,6 @@ in {
     enable = true;
     enable32Bit = true;
   };
-
-  nixpkgs.overlays = [nixGLOverlay];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -119,7 +109,6 @@ in {
     mesa-demos
     mangohud
     krisp-patcher
-    nixGL.nixGLMesa
   ];
 
   environment.variables = {
