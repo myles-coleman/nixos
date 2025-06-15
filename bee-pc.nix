@@ -5,21 +5,16 @@
   config,
   pkgs,
   ...
-}: let
-  x11LibPath = "${pkgs.xorg.libX11}/lib";
-  xextLibPath = "${pkgs.xorg.libXext}/lib";
-  xrandrLibPath = "${pkgs.xorg.libXrandr}/lib";
-in {
+}: {
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
 
   # Enable CUPS to print documents.
@@ -87,6 +82,7 @@ in {
     vulkan-tools
     xorg.libX11
     mesa-demos
+    mangohud
   ];
 
   services.xserver.videoDrivers = ["nvidia"];
@@ -102,23 +98,26 @@ in {
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+    gamescopeSession.enable = true;
   };
+
+  programs.gamemode.enable = true;
 
   programs.steam.extraCompatPackages = with pkgs; [
     proton-ge-bin
   ];
 
-  fileSystems."/mnt/harddrive" = {
-    device = "UUID=060C52F50C52DEED";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "gid=100" "umask=0002"];
-  };
+  # fileSystems."/mnt/harddrive" = {
+  #   device = "UUID=060C52F50C52DEED";
+  #   fsType = "ntfs-3g";
+  #   options = ["uid=1000" "gid=100" "umask=0002"];
+  # };
 
-  fileSystems."/mnt/backup" = {
-    device = "UUID=01DA7976C02A2420";
-    fsType = "ntfs-3g";
-    options = ["uid=1000" "gid=100" "umask=0002"];
-  };
+  # fileSystems."/mnt/backup" = {
+  #   device = "UUID=01DA7976C02A2420";
+  #   fsType = "ntfs-3g";
+  #   options = ["uid=1000" "gid=100" "umask=0002"];
+  # };
 
   # List services that you want to enable:
 

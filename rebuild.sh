@@ -4,7 +4,7 @@
 set -e
 
 # Edit your config
-vim bee-test.nix
+vim bee-pc.nix
 
 # cd to your config dir
 pushd ~/nixos/
