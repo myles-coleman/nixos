@@ -37,10 +37,10 @@ in {
     desktopManager.gnome.enable = true;
   };
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  # hardware.graphics = {
+  #   enable = true;
+  #   enable32Bit = true;
+  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
