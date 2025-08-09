@@ -62,9 +62,9 @@ in {
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.mylesc = {
+  users.users.bee = {
     isNormalUser = true;
-    description = "Myles Coleman";
+    description = "bee";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       kdePackages.kate

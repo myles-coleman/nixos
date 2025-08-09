@@ -1,12 +1,103 @@
 building Nix...
 building the system configuration...
-stopping the following units: accounts-daemon.service
+these 11 derivations will be built:
+  /nix/store/3q2bzbhmmc2r3da6qjm923z9j1yvyp8y-system-path.drv
+  /nix/store/yb1jsjba2blc6lrazcc8rlss06kz72yb-X-Restart-Triggers-polkit.drv
+  /nix/store/cijcr62clbdb5ljwc95w47g25lw4ixav-unit-polkit.service.drv
+  /nix/store/jilw8xv0kwirsz96smamg37i2c0g5k86-dbus-1.drv
+  /nix/store/zb374238bs45k6mskpbnr5vnzix5dq36-X-Restart-Triggers-dbus.drv
+  /nix/store/iw7js1glh6nqilc203h7408fx89z60sn-unit-dbus.service.drv
+  /nix/store/1nh8xnqnijrqq7cal3ql1rmw55qy1nhl-system-units.drv
+  /nix/store/kxhka5iiy25mln8vpkwb5f1icwsh0zd5-unit-dbus.service.drv
+  /nix/store/p1i5kpqlkk2fkwvq9rp1mklyvwy4vwws-user-units.drv
+  /nix/store/qz1zz3i53k78c7jq7lgnr88dsy53a48q-etc.drv
+  /nix/store/sjlip8ny35lr0ggzy9inbm2z1k1xnr8p-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
+this path will be fetched (0.06 MiB download, 0.17 MiB unpacked):
+  /nix/store/aqkw0jzmk0pkh10gslmsajnfpr6snxnr-wofi-1.4.1
+copying path '/nix/store/aqkw0jzmk0pkh10gslmsajnfpr6snxnr-wofi-1.4.1' from 'https://cache.nixos.org'...
+building '/nix/store/3q2bzbhmmc2r3da6qjm923z9j1yvyp8y-system-path.drv'...
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/etc/xdg/waybar/style.css' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/etc/xdg/waybar/style.css'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/etc/xdg/waybar/config.jsonc' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/etc/xdg/waybar/config.jsonc'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/bin/.waybar-wrapped' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/bin/.waybar-wrapped'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/bin/waybar' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/bin/waybar'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-systemd-failed-units.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-systemd-failed-units.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-niri-window.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-niri-window.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-keyboard-state.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-keyboard-state.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-river-mode.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-river-mode.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-hyprland-workspaces.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-hyprland-workspaces.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-cava.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-cava.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sway-mode.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sway-mode.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sway-workspaces.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sway-workspaces.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-image.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-image.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-hyprland-window.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-hyprland-window.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-tray.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-tray.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-custom.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-custom.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-temperature.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-temperature.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-pulseaudio.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-pulseaudio.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-wlr-taskbar.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-wlr-taskbar.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sway-language.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sway-language.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-river-window.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-river-window.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-disk.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-disk.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-river-tags.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-river-tags.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sndio.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sndio.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-menu.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-menu.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-power-profiles-daemon.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-power-profiles-daemon.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-network.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-network.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-niri-language.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-niri-language.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-memory.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-memory.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-gps.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-gps.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-river-layout.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-river-layout.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-niri-workspaces.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-niri-workspaces.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-battery.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-battery.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-idle-inhibitor.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-idle-inhibitor.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-wireplumber.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-wireplumber.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sway-scratchpad.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sway-scratchpad.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-dwl-window.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-dwl-window.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-cffi.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-cffi.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-backlight.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-backlight.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-privacy.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-privacy.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-sway-window.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-sway-window.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-mpd.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-mpd.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-clock.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-clock.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-inhibitor.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-inhibitor.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-hyprland-language.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-hyprland-language.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-styles.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-styles.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-dwl-tags.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-dwl-tags.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-gamemode.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-gamemode.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-pulseaudio-slider.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-pulseaudio-slider.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-cpu.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-cpu.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-upower.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-upower.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-bluetooth.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-bluetooth.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-jack.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-jack.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-mpris.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-mpris.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-hyprland-submap.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-hyprland-submap.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-wlr-workspaces.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-wlr-workspaces.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-states.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-states.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/man/man5/waybar-backlight-slider.5.gz' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/man/man5/waybar-backlight-slider.5.gz'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/share/systemd/user/waybar.service' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/share/systemd/user/waybar.service'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/lib/pkgconfig/cava.pc' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/lib/pkgconfig/cava.pc'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/lib/systemd/user/waybar.service' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/lib/systemd/user/waybar.service'
+warning: collision between `/nix/store/r1c8fw7dhiq9baklvx1j6zwkj51953yw-waybar-0.13.0/lib/libcava.so' and `/nix/store/6anlfhdfij95lzn4vlxkjsvhfhn3x4lm-waybar-0.13.0/lib/libcava.so'
+warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/poweroff' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/poweroff'
+warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/halt' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/halt'
+warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/reboot' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/reboot'
+created 10353 symlinks in user environment
+building '/nix/store/yb1jsjba2blc6lrazcc8rlss06kz72yb-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/jilw8xv0kwirsz96smamg37i2c0g5k86-dbus-1.drv'...
+building '/nix/store/cijcr62clbdb5ljwc95w47g25lw4ixav-unit-polkit.service.drv'...
+building '/nix/store/zb374238bs45k6mskpbnr5vnzix5dq36-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/iw7js1glh6nqilc203h7408fx89z60sn-unit-dbus.service.drv'...
+building '/nix/store/kxhka5iiy25mln8vpkwb5f1icwsh0zd5-unit-dbus.service.drv'...
+building '/nix/store/1nh8xnqnijrqq7cal3ql1rmw55qy1nhl-system-units.drv'...
+building '/nix/store/p1i5kpqlkk2fkwvq9rp1mklyvwy4vwws-user-units.drv'...
+building '/nix/store/qz1zz3i53k78c7jq7lgnr88dsy53a48q-etc.drv'...
+building '/nix/store/sjlip8ny35lr0ggzy9inbm2z1k1xnr8p-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
 activating the configuration...
 setting up /etc...
-reloading user units for mylesc...
+reloading user units for bee...
 restarting sysinit-reactivation.target
 reloading the following units: dbus.service
 restarting the following units: polkit.service
-starting the following units: accounts-daemon.service
 the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/x9sccgm36s48virklrz79ci0nbx980nm-nixos-system-nixos-25.05.802746.7282cb574e06
+Done. The new configuration is /nix/store/vp85sy91aiia3lnnw7nj1ksy08m43r7c-nixos-system-nixos-25.05.807819.e728d7ae4bb6
