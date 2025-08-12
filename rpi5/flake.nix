@@ -20,8 +20,7 @@
       system = "x86_64-linux";  # build system architecture
       targetSystem = "aarch64-linux";  # target architecture
     in {
-      installerImages.rpi5 = nixos-raspberrypi.installerImages.rpi5;
-      packages.${system}.default = self.installerImages.rpi5;
+      packages.${system}.default = nixos-raspberrypi.installerImages.rpi5;
       
       nixosConfigurations.rpi5 = nixos-raspberrypi.lib.nixosSystem {
         inherit system;
