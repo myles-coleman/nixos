@@ -17,6 +17,8 @@
 
   programs.zsh = {
     enable = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting.enable = true;
     ohMyZsh = {
       enable = true;
       theme = "robbyrussell";
@@ -24,8 +26,6 @@
         "colored-man-pages"
         "colorize"
         "history-substring-search"
-        "z"
-        "zsh-autosuggestions"
       ];
     };
   };
