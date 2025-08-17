@@ -7,7 +7,7 @@
   users.users.bee = {
     isNormalUser = true;
     description = "bee";
-    extraGroups = ["networkmanager" "wheel" "input" "video"];
+    extraGroups = ["networkmanager" "wheel" "input"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
@@ -55,10 +55,6 @@
 
   hardware = {
     graphics.enable = true;
-    # Enable backlight control
-    acpilight.enable = true;
-    # Enable brightness control for GPD Pocket 4
-    brillo.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -104,7 +100,6 @@
     waybar
     zsh
     zsh-autosuggestions
-    xorg.xinput
     brightnessctl
   ];
 
