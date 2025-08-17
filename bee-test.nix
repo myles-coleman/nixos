@@ -57,15 +57,6 @@
     graphics.enable = true;
   };
 
-  # GPD Pocket 4 touchscreen rotation configuration
-  services.xserver.libinput.enable = true;
-
-  # Custom udev rules for touchscreen rotation
-  services.udev.extraRules = ''
-    # Try a different transformation matrix (90 degrees)
-    ACTION=="add|change", KERNEL=="event[0-9]*", ATTRS{name}=="NVTK0603:00 0603:F001", ENV{LIBINPUT_CALIBRATION_MATRIX}="0 1 0 -1 0 1"
-  '';
-
   environment.systemPackages = with pkgs; [
     dunst
     kitty
@@ -109,7 +100,6 @@
     waybar
     zsh
     zsh-autosuggestions
-    xorg.xinput
   ];
 
   environment.variables = {
