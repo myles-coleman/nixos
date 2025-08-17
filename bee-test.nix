@@ -78,6 +78,9 @@
     pcmanfm #file manager
     nwg-look #themeing gtk apps
     catppuccin-gtk #catppuccin theme
+    papirus-icon-theme # icon theme for dark mode
+    adwaita-qt # Qt theme that follows GTK
+    adwaita-icon-theme # Adwaita icons
     htop
     kdePackages.dolphin
     wofi
@@ -117,6 +120,43 @@
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+
+  # Global dark theme configuration
+  qt = {
+    enable = true;
+    platformTheme = "gtk2";
+    style = "gtk2";
+  };
+
+  # GTK theme configuration
+  programs.dconf.enable = true;
+  services.dbus.packages = [pkgs.dconf];
+
+  # Set GTK theme globally
+  environment.etc = {
+    "xdg/gtk-2.0/gtkrc".text = ''
+      gtk-theme-name="Catppuccin-Mocha-Standard-Blue-Dark"
+      gtk-icon-theme-name="Papirus-Dark"
+      gtk-font-name="Noto Sans 10"
+      gtk-cursor-theme-name="Adwaita"
+    '';
+    "xdg/gtk-3.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=Catppuccin-Mocha-Standard-Blue-Dark
+      gtk-icon-theme-name=Papirus-Dark
+      gtk-font-name=Noto Sans 10
+      gtk-cursor-theme-name=Adwaita
+      gtk-application-prefer-dark-theme=true
+    '';
+    "xdg/gtk-4.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=Catppuccin-Mocha-Standard-Blue-Dark
+      gtk-icon-theme-name=Papirus-Dark
+      gtk-font-name=Noto Sans 10
+      gtk-cursor-theme-name=Adwaita
+      gtk-application-prefer-dark-theme=true
+    '';
+  };
 
   # Enable sound with PipeWire
   services.pulseaudio.enable = false;
