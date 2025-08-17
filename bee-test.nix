@@ -8,11 +8,15 @@
     isNormalUser = true;
     description = "bee";
     extraGroups = ["networkmanager" "wheel" "input"];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
     ];
   };
+
+  # Enable zsh system-wide
+  programs.zsh.enable = true;
 
   # Use greetd for login and auto-start Hyprland
   services.greetd = {
