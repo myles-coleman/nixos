@@ -81,6 +81,7 @@
     htop
     kdePackages.dolphin
     wofi
+    waybar
   ];
 
   environment.variables = {
