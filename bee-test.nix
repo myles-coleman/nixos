@@ -82,6 +82,8 @@
     kdePackages.dolphin
     wofi
     waybar
+    zsh
+    zsh-autosuggestions
   ];
 
   environment.variables = {
