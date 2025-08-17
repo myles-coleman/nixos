@@ -15,8 +15,20 @@
     ];
   };
 
-  # Enable zsh system-wide
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    ohMyZsh = {
+      enable = true;
+      theme = "robbyrussell";
+      plugins = [
+        "colored-man-pages"
+        "colorize"
+        "history-substring-search"
+        "z"
+        "zsh-autosuggestions"
+      ];
+    };
+  };
 
   # Use greetd for login and auto-start Hyprland
   services.greetd = {
