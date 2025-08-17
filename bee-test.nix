@@ -48,10 +48,6 @@
     rofi-wayland
     libnotify
     swww
-    waybar
-    (waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-    }))
     nerd-fonts.meslo-lg ## Fonts and Icons
     meslo-lgs-nf
     font-awesome
@@ -77,14 +73,11 @@
     # xorg.libX11
     zenity #power button stuff
     blueman #bluetooth manager
-    lutris #game launcher
     stown #sets symlinks for dotfiles to ~/.config
     toybox #gives unix utilities like `killall`
     pcmanfm #file manager
     nwg-look #themeing gtk apps
     catppuccin-gtk #catppuccin theme
-    prismlauncher #minecraft launcher
-    r2modman
     htop
     kdePackages.dolphin
     wofi
@@ -121,32 +114,6 @@
     enable = true;
   };
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-    gamescopeSession.enable = true;
-  };
-
-  programs.gamemode.enable = true;
-
-  programs.steam.extraCompatPackages = with pkgs; [
-    proton-ge-bin
-  ];
-
-  # fileSystems."/mnt/harddrive" = {
-  #   device = "UUID=060C52F50C52DEED";
-  #   fsType = "ntfs-3g";
-  #   options = ["uid=1000" "gid=100" "umask=0002"];
-  # };
-
-  #  fileSystems."/mnt/backup" = {
-  #    device = "UUID=01DA7976C02A2420";
-  #    fsType = "ntfs-3g";
-  #    options = ["uid=1000" "gid=100" "umask=0002"];
-  #  };
-
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
@@ -171,13 +138,7 @@
       };
     };
   };
-
-  # Start the bluetooth service
   services.blueman.enable = true;
 
-  # Example rofi keybind (assuming using Hyprland's config in ~/.config/hypr/hyprland.conf, not in NixOS config)
-  # This would go in hyprland.conf, not in NixOS configuration.nix:
-  #
-  # bind = $mainMod, S, exec, rofi -show drun -show-icons
   system.stateVersion = "25.05";
 }
