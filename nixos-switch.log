@@ -1,38 +1,403 @@
 building Nix...
 building the system configuration...
 evaluation warning: The option `programs.zsh.enableAutosuggestions' defined in `/home/bee/nixos/bee-test.nix' has been renamed to `programs.zsh.autosuggestions.enable'.
-these 11 derivations will be built:
-  /nix/store/k5sdh5mgvp4n4l70p3x2mhs33m3m3j4h-system-path.drv
-  /nix/store/x45rarj2wg92lyfj4z8r6hl6wkiyjxqc-X-Restart-Triggers-polkit.drv
-  /nix/store/mc6l6zmmpidzshr4w6xlyhpfdn3rm37c-unit-polkit.service.drv
-  /nix/store/vq4adai0z2slddyy1n2ycaa61ns9gw2n-dbus-1.drv
-  /nix/store/z3a5q56k7hi04xhp3gmazr59bsip4pn5-X-Restart-Triggers-dbus.drv
-  /nix/store/x06ni1a2ys5bk8sdsv1wgqiqwi08vq5h-unit-dbus.service.drv
-  /nix/store/2qzapr1d1xxqb14pqcs48wgp4yw7gdhz-system-units.drv
-  /nix/store/pyxhcq8cyqdzaf6pjg036f06xwadfkhw-unit-dbus.service.drv
-  /nix/store/h1v943x5b66xazzqj4c2nnmizsp74as4-user-units.drv
-  /nix/store/3z6gsbvkzw7ikr6i8dz5hcazccd4i3sp-etc.drv
-  /nix/store/vjlph09hfvx8sgr6vra11dh8wmlrjkab-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
-building '/nix/store/k5sdh5mgvp4n4l70p3x2mhs33m3m3j4h-system-path.drv'...
+these 29 derivations will be built:
+  /nix/store/k611raa4jfzxg5nb0lsydaak2cc5v6jx-extra-udev-rules.drv
+  /nix/store/fx0ldph6hzj3a5crpz3cqgbmkqd8xqis-udev-rules.drv
+  /nix/store/x18dijls8l67l5fnyzkzbsajbkn38a9a-X-Restart-Triggers-systemd-udevd.drv
+  /nix/store/9lrydabqf7iw4cyn84nlwak6qpp7d1zq-unit-systemd-udevd.service.drv
+  /nix/store/h00h8cvmfzmnf08v5x9c0xssv8gmj5cs-lua-5.2.4-env.drv
+  /nix/store/3arbv7wxy1mjc3j3pm0i57si8gz9v9pm-mpv-with-scripts-0.40.0.drv
+  /nix/store/iirh1wybqfj6zfk028jxzh67afyhq8z7-system-path.drv
+  /nix/store/kwbdlgq5mrj6ksg0grsp2j16njjyb6wi-dbus-1.drv
+  /nix/store/ni90bbl9mmz50f0hb5q1ym0vpjr8afn1-X-Restart-Triggers-dbus.drv
+  /nix/store/aqp7likfalpbq5l5cg17bw5s2lkwqfrm-unit-dbus.service.drv
+  /nix/store/y22ysk5a1hk5ql7y71015mwaq4wfmxay-nixos.conf.drv
+  /nix/store/wqcdrn6kix1z84gnrxrz9jxc31mssa2l-X-Restart-Triggers-systemd-modules-load.drv
+  /nix/store/cvc6gy76snvbq7iilchyha5blixqc410-unit-systemd-modules-load.service.drv
+  /nix/store/g3hl6s4z51mhzpf85zffsdyf9kb1wgny-X-Restart-Triggers-polkit.drv
+  /nix/store/xishl084m67amdrwaz0a10hfbch21485-unit-polkit.service.drv
+  /nix/store/aviwwkar1fppgh8a9h0fzinvyr4hxap6-system-units.drv
+  /nix/store/j5jsig3f5zq754svg9zm85cxq6pl3m4q-hwdb.bin.drv
+  /nix/store/kwrflyl9fngrxbnjl53glibl27zg6636-etc-kvm-toggle.sh.drv
+  /nix/store/s64gvyz9ax3k3bnbvxjiggiy60mghlhw-etc-modprobe.d-nixos.conf.drv
+  /nix/store/6sr9j106xbxapy15gyrhbp66188y008w-unit-kvm-viewer.service.drv
+  /nix/store/z8jrp8lk2xwm19lbd76dj7lp8rjfjlq7-unit-dbus.service.drv
+  /nix/store/wg90mykz4fl0dsvqlxgx8d98gyw6wz58-user-units.drv
+  /nix/store/1rdbgd51s1hcj740ppjaz9q2fqn3ahyz-etc.drv
+  /nix/store/2chzgq30fkvv2972gpmgq8h03hyhhzny-linux-6.12.41-modules.drv
+  /nix/store/lnm3w94bx4l00c7mc8fnb6sjhng648sw-linux-6.12.41-modules-shrunk.drv
+  /nix/store/dw2ma41ycizh9xhfph744bcs83gj34d6-closure-info.drv
+  /nix/store/931cxi1gb26q3wpppjz127k927n8alsv-initrd-linux-6.12.41.drv
+  /nix/store/642ig0ggrpkn28n68a69i5qiyb40iv5l-boot.json.drv
+  /nix/store/mm9hv2c44qivg6bnl7vw9kxbvr60qjmx-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
+these 39 paths will be fetched (19.69 MiB download, 106.93 MiB unpacked):
+  /nix/store/38h4lv6y1xnj2h1bh5xlbbxzwmhp5dav-atomicparsley-20240608.083822.1ed9031
+  /nix/store/f302785dssmia0iw59r4cgn00jkcv6pp-curl-impersonate-chrome-0.8.0
+  /nix/store/s3hammhrpv8six2d8sfrx33bvhi3wi9v-ffmpeg-7.1.1-bin
+  /nix/store/xrvgwg0qlqiv96fx9b6679n1l44fq5dv-ffmpeg-7.1.1-doc
+  /nix/store/sby9b7y3av5zfm8l419qjfgghn7l897w-ffmpeg-7.1.1-man
+  /nix/store/6y60v24by9jj41vihnxp2qzfxr5x0m6r-ffmpeg-headless-7.1.1-bin
+  /nix/store/p2gzj7jvfivjpvkxm96pgdq8xr0r7pbs-gsl-2.8
+  /nix/store/vi7fri7v3i09h39dhjqaxywxyx0gcp8l-guvcview-2.2.1
+  /nix/store/zz5z3w3v7masarfy3z4z305005s7d7kp-libXpresent-1.0.1
+  /nix/store/5bps5aaz834pd1kxcx9n41gmwxy3pzb9-libplacebo-7.349.0
+  /nix/store/rkpc9r13shkvqw63zahyna7zi41hl0yd-lua-5.2.4-env
+  /nix/store/yqp04qi3q6zi78lp6sy8wcx0g5rrmh31-lua5.2-luasocket-3.1.0-1
+  /nix/store/q89jamydlzqw5n9jpqqyf4xl0381pdhx-mpv-0.40.0
+  /nix/store/yg9230k7yxyppysfihl3qxmmxw8qa6a4-mpv-0.40.0-dev
+  /nix/store/fp582vsfssav87i0bllcq7pi78jmlri5-mpv-0.40.0-doc
+  /nix/store/ryir8vgzpl0dm19a6fl4dz63sp627x7y-mpv-0.40.0-man
+  /nix/store/awsjjjz8kgkv3gm95qyzfrycr4pg8dgd-mujs-1.3.6
+  /nix/store/4c1kqjnmdis19fp3d9apwdcapg88rw0i-python3.12-brotli-1.1.0
+  /nix/store/x2zbm6r9gwnvdfhz8adcwady61dyvddk-python3.12-cffi-1.17.1
+  /nix/store/c0174cd1xsfkxjj9vi90ww87x8ywga6n-python3.12-cryptography-44.0.2
+  /nix/store/96dyqwh6nfnxn7n960pm98ppd347p58f-python3.12-curl-cffi-0.7.4
+  /nix/store/da68khsaxfvylhk41i7qpsqr1mwjwqzx-python3.12-jeepney-0.9
+  /nix/store/3r9hp5rn8gscjssq9jfm1ylng87kg19x-python3.12-mutagen-1.47.0
+  /nix/store/dwsngljnvhq4jmlbqybbc0s21nh86svv-python3.12-pycparser-2.22
+  /nix/store/pdha5symbmcxc5g0108awmr76g44qi51-python3.12-pycryptodomex-3.21.0
+  /nix/store/mhclkq5zsnb9anpxarpnx9b6i0kgkyjg-python3.12-secretstorage-3.3.3
+  /nix/store/9lxk59ip95n0rw8859dyy087xwwsb3gx-python3.12-typing-extensions-4.13.2
+  /nix/store/n3a8mnnar9gb8psfma9wyj5lqzgcibjf-python3.12-websockets-15.0.1
+  /nix/store/9zi9xj9dqzsipb43v7vvq9fri2spwbwz-rubberband-4.0.0
+  /nix/store/y1p2msy25gylj3gbx1hpvqw4ib2spz8m-uchardet-0.0.8
+  /nix/store/7jh3cw0zraw194k9hpds1s4w0ppahh6s-usbutils-018
+  /nix/store/6ms04d8zz3sqwdxcaz932hxs51h02x4h-usbutils-018-man
+  /nix/store/pzzx41smc2677rdq8vj45iw7as4ag2ig-v4l-utils-1.24.1
+  /nix/store/wjxy928khxp43abjfv21rxzwjxggja0s-v4l-utils-1.24.1-lib
+  /nix/store/a1ii8sizhcinxsznw5ysznivshvd1p8a-v4l2loopback-0.15.1-6.12.41
+  /nix/store/7vqbvcl0m52ngwbrz4cfx5immml2d2qq-v4l2loopback-0.15.1-6.12.41-bin
+  /nix/store/82krcvwild9kb9kf94j8ihnincpl14y2-vamp-plugin-sdk-2.10
+  /nix/store/alv9cmb2pr32qjipiw44jzxkc4y6632c-wf-recorder-0.5.0
+  /nix/store/qm0nd9138i00s2p140scwmbnkbbbjf0p-yt-dlp-2025.07.21
+copying path '/nix/store/xrvgwg0qlqiv96fx9b6679n1l44fq5dv-ffmpeg-7.1.1-doc' from 'https://cache.nixos.org'...
+copying path '/nix/store/sby9b7y3av5zfm8l419qjfgghn7l897w-ffmpeg-7.1.1-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/6ms04d8zz3sqwdxcaz932hxs51h02x4h-usbutils-018-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/fp582vsfssav87i0bllcq7pi78jmlri5-mpv-0.40.0-doc' from 'https://cache.nixos.org'...
+copying path '/nix/store/ryir8vgzpl0dm19a6fl4dz63sp627x7y-mpv-0.40.0-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/s3hammhrpv8six2d8sfrx33bvhi3wi9v-ffmpeg-7.1.1-bin' from 'https://cache.nixos.org'...
+copying path '/nix/store/7jh3cw0zraw194k9hpds1s4w0ppahh6s-usbutils-018' from 'https://cache.nixos.org'...
+copying path '/nix/store/alv9cmb2pr32qjipiw44jzxkc4y6632c-wf-recorder-0.5.0' from 'https://cache.nixos.org'...
+building '/nix/store/kwrflyl9fngrxbnjl53glibl27zg6636-etc-kvm-toggle.sh.drv'...
+building '/nix/store/s64gvyz9ax3k3bnbvxjiggiy60mghlhw-etc-modprobe.d-nixos.conf.drv'...
+building '/nix/store/y22ysk5a1hk5ql7y71015mwaq4wfmxay-nixos.conf.drv'...
+copying path '/nix/store/p2gzj7jvfivjpvkxm96pgdq8xr0r7pbs-gsl-2.8' from 'https://cache.nixos.org'...
+copying path '/nix/store/wjxy928khxp43abjfv21rxzwjxggja0s-v4l-utils-1.24.1-lib' from 'https://cache.nixos.org'...
+copying path '/nix/store/7vqbvcl0m52ngwbrz4cfx5immml2d2qq-v4l2loopback-0.15.1-6.12.41-bin' from 'https://cache.nixos.org'...
+building '/nix/store/k611raa4jfzxg5nb0lsydaak2cc5v6jx-extra-udev-rules.drv'...
+copying path '/nix/store/38h4lv6y1xnj2h1bh5xlbbxzwmhp5dav-atomicparsley-20240608.083822.1ed9031' from 'https://cache.nixos.org'...
+copying path '/nix/store/6y60v24by9jj41vihnxp2qzfxr5x0m6r-ffmpeg-headless-7.1.1-bin' from 'https://cache.nixos.org'...
+copying path '/nix/store/yqp04qi3q6zi78lp6sy8wcx0g5rrmh31-lua5.2-luasocket-3.1.0-1' from 'https://cache.nixos.org'...
+copying path '/nix/store/5bps5aaz834pd1kxcx9n41gmwxy3pzb9-libplacebo-7.349.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/zz5z3w3v7masarfy3z4z305005s7d7kp-libXpresent-1.0.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/f302785dssmia0iw59r4cgn00jkcv6pp-curl-impersonate-chrome-0.8.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/awsjjjz8kgkv3gm95qyzfrycr4pg8dgd-mujs-1.3.6' from 'https://cache.nixos.org'...
+copying path '/nix/store/4c1kqjnmdis19fp3d9apwdcapg88rw0i-python3.12-brotli-1.1.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/3r9hp5rn8gscjssq9jfm1ylng87kg19x-python3.12-mutagen-1.47.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/dwsngljnvhq4jmlbqybbc0s21nh86svv-python3.12-pycparser-2.22' from 'https://cache.nixos.org'...
+copying path '/nix/store/da68khsaxfvylhk41i7qpsqr1mwjwqzx-python3.12-jeepney-0.9' from 'https://cache.nixos.org'...
+copying path '/nix/store/n3a8mnnar9gb8psfma9wyj5lqzgcibjf-python3.12-websockets-15.0.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/pdha5symbmcxc5g0108awmr76g44qi51-python3.12-pycryptodomex-3.21.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/9lxk59ip95n0rw8859dyy087xwwsb3gx-python3.12-typing-extensions-4.13.2' from 'https://cache.nixos.org'...
+building '/nix/store/wqcdrn6kix1z84gnrxrz9jxc31mssa2l-X-Restart-Triggers-systemd-modules-load.drv'...
+copying path '/nix/store/y1p2msy25gylj3gbx1hpvqw4ib2spz8m-uchardet-0.0.8' from 'https://cache.nixos.org'...
+copying path '/nix/store/pzzx41smc2677rdq8vj45iw7as4ag2ig-v4l-utils-1.24.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/82krcvwild9kb9kf94j8ihnincpl14y2-vamp-plugin-sdk-2.10' from 'https://cache.nixos.org'...
+copying path '/nix/store/vi7fri7v3i09h39dhjqaxywxyx0gcp8l-guvcview-2.2.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/rkpc9r13shkvqw63zahyna7zi41hl0yd-lua-5.2.4-env' from 'https://cache.nixos.org'...
+copying path '/nix/store/x2zbm6r9gwnvdfhz8adcwady61dyvddk-python3.12-cffi-1.17.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/a1ii8sizhcinxsznw5ysznivshvd1p8a-v4l2loopback-0.15.1-6.12.41' from 'https://cache.nixos.org'...
+building '/nix/store/j5jsig3f5zq754svg9zm85cxq6pl3m4q-hwdb.bin.drv'...
+building '/nix/store/fx0ldph6hzj3a5crpz3cqgbmkqd8xqis-udev-rules.drv'...
+Adding hwdb files for package /nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7
+copying path '/nix/store/c0174cd1xsfkxjj9vi90ww87x8ywga6n-python3.12-cryptography-44.0.2' from 'https://cache.nixos.org'...
+copying path '/nix/store/96dyqwh6nfnxn7n960pm98ppd347p58f-python3.12-curl-cffi-0.7.4' from 'https://cache.nixos.org'...
+copying path '/nix/store/9zi9xj9dqzsipb43v7vvq9fri2spwbwz-rubberband-4.0.0' from 'https://cache.nixos.org'...
+building '/nix/store/cvc6gy76snvbq7iilchyha5blixqc410-unit-systemd-modules-load.service.drv'...
+building '/nix/store/2chzgq30fkvv2972gpmgq8h03hyhhzny-linux-6.12.41-modules.drv'...
+Adding hwdb files for package /nix/store/f040c9mhj9sm2mngzqpbsx6walbpqqnr-ipv6-privacy-extensions.rules
+Adding hwdb files for package /nix/store/xgnd6bkasz0hb6817dg9jhjqifkd9jcd-ipv6-privacy-extensions.rules
+Adding hwdb files for package /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31
+Adding hwdb files for package /nix/store/9v4lbzjmyiakal5anxxz1f9crb9jj6dz-bcache-tools-1.0.8
+Adding hwdb files for package /nix/store/kak79wrar59cxam1v63f8ssiq3qnwr3r-networkmanager-1.52.1
+Adding hwdb files for package /nix/store/84xgh27n9jvcqbwwvnndnsqg60rsy5ab-NetworkManager-fortisslvpn-gnome-1.4.0
+Adding hwdb files for package /nix/store/ahys62y5jbn1yknxi5d3gg8z9dmwgr1q-NetworkManager-iodine-gnome-1.2.0-unstable-2024-11-02
+Adding hwdb files for package /nix/store/hn60fqvy9a9rarzis3skgn0wsl8yh0sf-NetworkManager-l2tp-gnome-1.20.20
+Adding hwdb files for package /nix/store/rvkwm6n0xcbkd8ax7vlg8xy1f6cqan60-NetworkManager-openconnect-1.2.10
+Adding hwdb files for package /nix/store/kviazvwppqnqx45m493nswsa93wvcill-NetworkManager-openvpn-1.12.0
+Adding hwdb files for package /nix/store/47w29zlm5c80khjqzkfmlqd9q9nhg4fh-NetworkManager-vpnc-1.4.0
+Adding hwdb files for package /nix/store/30ka641qgrjlxxsr9zg7bwaiv21azzqf-NetworkManager-sstp-gnome-1.3.2
+Adding hwdb files for package /nix/store/zykypmdzblyss1yk4hpdk7z461ywqdwj-wpa_supplicant-2.11
+Adding hwdb files for package /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0
+Adding hwdb files for package /nix/store/iwhdf0hzc3wi5lcpk1i0fl1csdd5f06j-extra-udev-rules
+Adding hwdb files for package /nix/store/cajxzhhk2xv3vvkklx2alik2zdh9kfrw-extra-hwdb-file
+Adding hwdb files for package /nix/store/k04aq5dbw7wfm0yf44bbl3cw5c3asysz-bluez-5.80
+Adding hwdb files for package /nix/store/vh9gp7pna8x50vpshd9c5m3094qfcp8n-pipewire-1.4.7
+Generating hwdb database...
+Adding rules for package /nix/store/f040c9mhj9sm2mngzqpbsx6walbpqqnr-ipv6-privacy-extensions.rules
+Copying /nix/store/f040c9mhj9sm2mngzqpbsx6walbpqqnr-ipv6-privacy-extensions.rules/etc/udev/rules.d/98-ipv6-privacy-extensions.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/98-ipv6-privacy-extensions.rules
+Adding rules for package /nix/store/xgnd6bkasz0hb6817dg9jhjqifkd9jcd-ipv6-privacy-extensions.rules
+Copying /nix/store/xgnd6bkasz0hb6817dg9jhjqifkd9jcd-ipv6-privacy-extensions.rules/etc/udev/rules.d/99-ipv6-privacy-extensions.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/99-ipv6-privacy-extensions.rules
+Adding rules for package /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31
+Copying /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31/lib/udev/rules.d/10-dm.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/10-dm.rules
+Copying /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31/lib/udev/rules.d/11-dm-lvm.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/11-dm-lvm.rules
+Copying /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31/lib/udev/rules.d/13-dm-disk.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/13-dm-disk.rules
+Copying /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31/lib/udev/rules.d/69-dm-lvm.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/69-dm-lvm.rules
+Copying /nix/store/xg9psxsapqf720y5d05m6a4fqall112p-lvm2-2.03.31/lib/udev/rules.d/95-dm-notify.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/95-dm-notify.rules
+Adding rules for package /nix/store/9v4lbzjmyiakal5anxxz1f9crb9jj6dz-bcache-tools-1.0.8
+Copying /nix/store/9v4lbzjmyiakal5anxxz1f9crb9jj6dz-bcache-tools-1.0.8/lib/udev/rules.d/69-bcache.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/69-bcache.rules
+Adding rules for package /nix/store/kak79wrar59cxam1v63f8ssiq3qnwr3r-networkmanager-1.52.1
+Copying /nix/store/kak79wrar59cxam1v63f8ssiq3qnwr3r-networkmanager-1.52.1/lib/udev/rules.d/84-nm-drivers.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/84-nm-drivers.rules
+Copying /nix/store/kak79wrar59cxam1v63f8ssiq3qnwr3r-networkmanager-1.52.1/lib/udev/rules.d/85-nm-unmanaged.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/85-nm-unmanaged.rules
+Copying /nix/store/kak79wrar59cxam1v63f8ssiq3qnwr3r-networkmanager-1.52.1/lib/udev/rules.d/90-nm-thunderbolt.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/90-nm-thunderbolt.rules
+Adding rules for package /nix/store/84xgh27n9jvcqbwwvnndnsqg60rsy5ab-NetworkManager-fortisslvpn-gnome-1.4.0
+Adding rules for package /nix/store/ahys62y5jbn1yknxi5d3gg8z9dmwgr1q-NetworkManager-iodine-gnome-1.2.0-unstable-2024-11-02
+Adding rules for package /nix/store/hn60fqvy9a9rarzis3skgn0wsl8yh0sf-NetworkManager-l2tp-gnome-1.20.20
+Adding rules for package /nix/store/rvkwm6n0xcbkd8ax7vlg8xy1f6cqan60-NetworkManager-openconnect-1.2.10
+Adding rules for package /nix/store/kviazvwppqnqx45m493nswsa93wvcill-NetworkManager-openvpn-1.12.0
+Adding rules for package /nix/store/47w29zlm5c80khjqzkfmlqd9q9nhg4fh-NetworkManager-vpnc-1.4.0
+Adding rules for package /nix/store/30ka641qgrjlxxsr9zg7bwaiv21azzqf-NetworkManager-sstp-gnome-1.3.2
+Adding rules for package /nix/store/zykypmdzblyss1yk4hpdk7z461ywqdwj-wpa_supplicant-2.11
+Adding rules for package /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-broadmobi-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-broadmobi-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-cinterion-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-cinterion-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-dell-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-dell-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-dlink-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-dlink-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-ericsson-mbm.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-ericsson-mbm.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-fibocom-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-fibocom-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-foxconn-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-foxconn-port-types.rules
+copying path '/nix/store/q89jamydlzqw5n9jpqqyf4xl0381pdhx-mpv-0.40.0' from 'https://cache.nixos.org'...
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-gosuncn-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-gosuncn-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-haier-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-haier-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-huawei-net-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-huawei-net-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-linktop-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-linktop-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-longcheer-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-longcheer-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-mtk-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-mtk-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-nokia-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-nokia-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-qcom-soc.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-qcom-soc.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-quectel-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-quectel-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-sierra.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-sierra.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-simtech-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-simtech-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-telit-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-telit-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-tplink-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-tplink-port-types.rules
+copying path '/nix/store/mhclkq5zsnb9anpxarpnx9b6i0kgkyjg-python3.12-secretstorage-3.3.3' from 'https://cache.nixos.org'...
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-ublox-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-ublox-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-x22x-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-x22x-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/77-mm-zte-port-types.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-zte-port-types.rules
+Copying /nix/store/ibviqf38m9h3r5p7mmbpj1ry3rw46rim-modemmanager-1.22.0/lib/udev/rules.d/80-mm-candidate.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/80-mm-candidate.rules
+Adding rules for package /nix/store/iwhdf0hzc3wi5lcpk1i0fl1csdd5f06j-extra-udev-rules
+Copying /nix/store/iwhdf0hzc3wi5lcpk1i0fl1csdd5f06j-extra-udev-rules/etc/udev/rules.d/99-local.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/99-local.rules
+Adding rules for package /nix/store/cajxzhhk2xv3vvkklx2alik2zdh9kfrw-extra-hwdb-file
+Adding rules for package /nix/store/k04aq5dbw7wfm0yf44bbl3cw5c3asysz-bluez-5.80
+Copying /nix/store/k04aq5dbw7wfm0yf44bbl3cw5c3asysz-bluez-5.80/lib/udev/rules.d/97-hid2hci.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/97-hid2hci.rules
+Adding rules for package /nix/store/vh9gp7pna8x50vpshd9c5m3094qfcp8n-pipewire-1.4.7
+Copying /nix/store/vh9gp7pna8x50vpshd9c5m3094qfcp8n-pipewire-1.4.7/lib/udev/rules.d/90-pipewire-alsa.rules to /nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/90-pipewire-alsa.rules
+created 17 symlinks in user environment
+kernel version is 6.12.41
+copying path '/nix/store/qm0nd9138i00s2p140scwmbnkbbbjf0p-yt-dlp-2025.07.21' from 'https://cache.nixos.org'...
+Checking that all programs called by relative paths in udev rules exist in /nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/lib/udev... OK
+Checking that all programs called by absolute paths in udev rules exist... OK
+copying path '/nix/store/yg9230k7yxyppysfihl3qxmmxw8qa6a4-mpv-0.40.0-dev' from 'https://cache.nixos.org'...
+
+Verifying udev rules using udevadm verify...
+/nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-huawei-net-port-types.rules:25 style: whitespace after comma is expected.
+/nix/store/0fxmdc4ay9xn0djpzrzv6xi8ziins2xx-udev-rules/77-mm-huawei-net-port-types.rules:26 style: whitespace after comma is expected.
+
+39 udev rules files have been checked.
+  Success: 39
+  Fail:    0
+OK
+building '/nix/store/x18dijls8l67l5fnyzkzbsajbkn38a9a-X-Restart-Triggers-systemd-udevd.drv'...
+building '/nix/store/9lrydabqf7iw4cyn84nlwak6qpp7d1zq-unit-systemd-udevd.service.drv'...
+building '/nix/store/3arbv7wxy1mjc3j3pm0i57si8gz9v9pm-mpv-with-scripts-0.40.0.drv'...
+building '/nix/store/iirh1wybqfj6zfk028jxzh67afyhq8z7-system-path.drv'...
+building '/nix/store/6sr9j106xbxapy15gyrhbp66188y008w-unit-kvm-viewer.service.drv'...
 warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/reboot' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/reboot'
 warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/poweroff' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/poweroff'
 warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/halt' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/halt'
-created 10392 symlinks in user environment
-building '/nix/store/x45rarj2wg92lyfj4z8r6hl6wkiyjxqc-X-Restart-Triggers-polkit.drv'...
-building '/nix/store/vq4adai0z2slddyy1n2ycaa61ns9gw2n-dbus-1.drv'...
-building '/nix/store/mc6l6zmmpidzshr4w6xlyhpfdn3rm37c-unit-polkit.service.drv'...
-building '/nix/store/z3a5q56k7hi04xhp3gmazr59bsip4pn5-X-Restart-Triggers-dbus.drv'...
-building '/nix/store/pyxhcq8cyqdzaf6pjg036f06xwadfkhw-unit-dbus.service.drv'...
-building '/nix/store/x06ni1a2ys5bk8sdsv1wgqiqwi08vq5h-unit-dbus.service.drv'...
-building '/nix/store/h1v943x5b66xazzqj4c2nnmizsp74as4-user-units.drv'...
-building '/nix/store/2qzapr1d1xxqb14pqcs48wgp4yw7gdhz-system-units.drv'...
-building '/nix/store/3z6gsbvkzw7ikr6i8dz5hcazccd4i3sp-etc.drv'...
-building '/nix/store/vjlph09hfvx8sgr6vra11dh8wmlrjkab-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
+created 10992 symlinks in user environment
+building '/nix/store/g3hl6s4z51mhzpf85zffsdyf9kb1wgny-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/kwbdlgq5mrj6ksg0grsp2j16njjyb6wi-dbus-1.drv'...
+building '/nix/store/xishl084m67amdrwaz0a10hfbch21485-unit-polkit.service.drv'...
+building '/nix/store/ni90bbl9mmz50f0hb5q1ym0vpjr8afn1-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/aqp7likfalpbq5l5cg17bw5s2lkwqfrm-unit-dbus.service.drv'...
+building '/nix/store/z8jrp8lk2xwm19lbd76dj7lp8rjfjlq7-unit-dbus.service.drv'...
+building '/nix/store/aviwwkar1fppgh8a9h0fzinvyr4hxap6-system-units.drv'...
+building '/nix/store/wg90mykz4fl0dsvqlxgx8d98gyw6wz58-user-units.drv'...
+building '/nix/store/1rdbgd51s1hcj740ppjaz9q2fqn3ahyz-etc.drv'...
+building '/nix/store/lnm3w94bx4l00c7mc8fnb6sjhng648sw-linux-6.12.41-modules-shrunk.drv'...
+kernel version is 6.12.41
+root module: nvme
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/common/nvme-auth.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/host/nvme-core.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/host/nvme.ko.xz
+root module: xhci_pci
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/xhci-pci.ko.xz
+root module: thunderbolt
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/thunderbolt/thunderbolt.ko.xz
+root module: usbhid
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: usb_storage
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/storage/usb-storage.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/sd_mod.ko.xz
+root module: ext2
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/fs/ext2/ext2.ko.xz
+root module: ext4
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/fs/jbd2/jbd2.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/fs/mbcache.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/lib/crc16.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/arch/x86/crypto/crc32c-intel.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/crypto/crc32c_generic.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/fs/ext4/ext4.ko.xz
+root module: ahci
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libahci.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/ahci.ko.xz
+root module: sata_nv
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/sata_nv.ko.xz
+root module: sata_via
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/sata_via.ko.xz
+root module: sata_sis
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/pata_sis.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/sata_sis.ko.xz
+root module: sata_uli
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/sata_uli.ko.xz
+root module: ata_piix
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/ata_piix.ko.xz
+root module: pata_marvell
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/libata.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/ata/pata_marvell.ko.xz
+root module: nvme
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/common/nvme-auth.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/host/nvme-core.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/nvme/host/nvme.ko.xz
+root module: sd_mod
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/sd_mod.ko.xz
+root module: sr_mod
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/cdrom/cdrom.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_common.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/scsi_mod.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/scsi/sr_mod.ko.xz
+root module: mmc_block
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/mmc/core/mmc_core.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/misc/rpmb-core.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/mmc/core/mmc_block.ko.xz
+root module: uhci_hcd
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/uhci-hcd.ko.xz
+root module: ehci_hcd
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-hcd.ko.xz
+root module: ehci_pci
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-pci.ko.xz
+root module: ohci_hcd
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ohci-hcd.ko.xz
+root module: ohci_pci
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ohci-hcd.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-hcd.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ehci-pci.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/ohci-pci.ko.xz
+root module: xhci_hcd
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/xhci-hcd.ko.xz
+root module: xhci_pci
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/xhci-hcd.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/usb/host/xhci-pci.ko.xz
+root module: usbhid
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/usbhid/usbhid.ko.xz
+root module: hid_generic
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-generic.ko.xz
+root module: hid_lenovo
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-lenovo.ko.xz
+root module: hid_apple
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-apple.ko.xz
+root module: hid_roccat
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-roccat.ko.xz
+root module: hid_logitech_hidpp
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-logitech-hidpp.ko.xz
+root module: hid_logitech_dj
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-logitech-dj.ko.xz
+root module: hid_microsoft
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/ff-memless.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-microsoft.ko.xz
+root module: hid_cherry
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-cherry.ko.xz
+root module: hid_corsair
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/leds/led-class.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/usbhid/usbhid.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/hid/hid-corsair.ko.xz
+root module: pcips2
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/pcips2.ko.xz
+root module: atkbd
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/vivaldi-fmap.ko.xz
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/libps2.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/keyboard/atkbd.ko.xz
+root module: i8042
+  dependency already copied: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/serio.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/input/serio/i8042.ko.xz
+root module: dm_mod
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/dax/dax.ko.xz
+  copying dependency: /nix/store/szki8z5imjjb1dgb234vqz7scrjq0f91-linux-6.12.41-modules/lib/modules/6.12.41/kernel/drivers/md/dm-mod.ko.xz
+lib/firmware/edid not found, skipping.
+depmod: WARNING: could not open modules.builtin.modinfo at /nix/store/k97jnskc103bcgj1i8dqafhgnf9n45ss-linux-6.12.41-modules-shrunk/lib/modules/6.12.41: No such file or directory
+building '/nix/store/dw2ma41ycizh9xhfph744bcs83gj34d6-closure-info.drv'...
+structuredAttrs is enabled
+building '/nix/store/931cxi1gb26q3wpppjz127k927n8alsv-initrd-linux-6.12.41.drv'...
+building '/nix/store/642ig0ggrpkn28n68a69i5qiyb40iv5l-boot.json.drv'...
+building '/nix/store/mm9hv2c44qivg6bnl7vw9kxbvr60qjmx-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
+stopping the following units: systemd-modules-load.service
 activating the configuration...
 setting up /etc...
 reloading user units for bee...
 restarting sysinit-reactivation.target
 reloading the following units: dbus.service
 restarting the following units: polkit.service, systemd-udevd.service
-the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/4gwmjkydyfjiavy17zydvh4ip49115x6-nixos-system-nixos-25.05.807819.e728d7ae4bb6
+starting the following units: systemd-modules-load.service
+the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+Done. The new configuration is /nix/store/1hvadj2y4all8g2q4imw7dxlphy6cji5-nixos-system-nixos-25.05.807819.e728d7ae4bb6

@@ -100,7 +100,7 @@
     waybar
     zsh
     zsh-autosuggestions
-    brightnessctl
+    brightnessctl #brightness control
   ];
 
   environment.variables = {
