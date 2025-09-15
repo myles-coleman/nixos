@@ -116,7 +116,7 @@
   };
 
   # Ensure Tailscale doesn't interfere with DNS
-  networking.resolvconf.enable = false; # Prevent conflicts with Tailscale DNS
+  # networking.resolvconf.enable = false; # Prevent conflicts with Tailscale DNS
 
   # Font configuration
   fonts = {
