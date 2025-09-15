@@ -101,6 +101,7 @@
     zsh
     zsh-autosuggestions
     brightnessctl #brightness control
+    calibre
   ];
 
   environment.variables = {
