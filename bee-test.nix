@@ -102,12 +102,13 @@
     zsh-autosuggestions
     brightnessctl #brightness control
     calibre
-    tailscale
   ];
 
   environment.variables = {
     # MANGOHUD = "1";
   };
+
+  services.tailscale.enable = true;
 
   # Font configuration
   fonts = {
