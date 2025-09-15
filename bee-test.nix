@@ -108,7 +108,15 @@
     # MANGOHUD = "1";
   };
 
-  services.tailscale.enable = true;
+  # Tailscale configuration
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client"; # or "both" if you need exit node capabilities
+    openFirewall = true; # Open firewall for Tailscale
+  };
+
+  # Ensure Tailscale doesn't interfere with DNS
+  networking.resolvconf.enable = false; # Prevent conflicts with Tailscale DNS
 
   # Font configuration
   fonts = {
