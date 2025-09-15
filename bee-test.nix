@@ -111,7 +111,7 @@
   # Tailscale configuration
   services.tailscale = {
     enable = true;
-    useRoutingFeatures = "client"; # or "both" if you need exit node capabilities
+    useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
     openFirewall = true; # Open firewall for Tailscale
   };
 
