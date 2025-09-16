@@ -102,6 +102,7 @@
     zsh-autosuggestions
     brightnessctl #brightness control
     calibre
+    ethtool
   ];
 
   environment.variables = {
