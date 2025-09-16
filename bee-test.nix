@@ -115,8 +115,8 @@
     openFirewall = true; # Open firewall for Tailscale
   };
 
-  fileSystems."/mnt/nfs" = {
-    device = "10.0.0.150:/mnt/md0/data";
+  fileSystems."/home/bee/media" = {
+    device = "10.0.0.150:/mnt/md0/data/media";
     fsType = "nfs";
     options = ["rw" "soft" "timeo=30" "retrans=3" "_netdev"];
   };
