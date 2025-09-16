@@ -118,8 +118,18 @@
 
   fileSystems."/home/bee/media" = {
     device = "10.0.0.150:/mnt/md0/data/media";
-    fsType = "nfs";
-    options = ["rw" "soft" "timeo=30" "retrans=3" "_netdev"];
+    fsType = "nfs4";
+    options = [
+      "rw"
+      "soft"
+      "timeo=30"
+      "retrans=3"
+      "_netdev"
+      "rsize=1048576"
+      "wsize=1048576" # Using the same buffer sizes as current mount
+      "vers=4.2" # Using the same NFS version as current mount
+      "proto=tcp" # Same as current mount
+    ];
   };
 
   # Ensure NFS client support is enabled
