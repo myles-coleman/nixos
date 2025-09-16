@@ -115,8 +115,14 @@
     openFirewall = true; # Open firewall for Tailscale
   };
 
-  # Ensure Tailscale doesn't interfere with DNS
-  # networking.resolvconf.enable = false; # Prevent conflicts with Tailscale DNS
+  fileSystems."/mnt/nfs" = {
+    device = "10.0.0.150:/mnt/md0/data";
+    fsType = "nfs";
+    options = ["rw" "soft" "timeo=30" "retrans=3" "_netdev"];
+  };
+
+  # Ensure NFS client support is enabled
+  services.rpcbind.enable = true; # Required for NFSv3
 
   # Font configuration
   fonts = {
