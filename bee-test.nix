@@ -104,6 +104,7 @@
     calibre
     ethtool
     docker
+    gnumake
   ];
 
   environment.variables = {
