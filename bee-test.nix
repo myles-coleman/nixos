@@ -120,6 +120,12 @@
     openFirewall = true; # Open firewall for Tailscale
   };
 
+  # Enable Mullvad VPN service
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+
   fileSystems."/home/bee/media" = {
     device = "10.0.0.150:/mnt/md0/data/media";
     fsType = "nfs4";
