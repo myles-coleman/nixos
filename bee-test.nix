@@ -103,6 +103,7 @@
     brightnessctl #brightness control
     calibre
     ethtool
+    docker
   ];
 
   environment.variables = {
