@@ -7,7 +7,7 @@
   users.users.bee = {
     isNormalUser = true;
     description = "bee";
-    extraGroups = ["networkmanager" "wheel" "input"];
+    extraGroups = ["networkmanager" "wheel" "input" "docker"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
@@ -110,7 +110,8 @@
     # MANGOHUD = "1";
   };
 
-  # Tailscale configuration
+  virtualisation.docker.enable = true;
+
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
