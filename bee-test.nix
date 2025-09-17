@@ -105,6 +105,7 @@
     ethtool
     docker
     gnumake
+    mullvad-vpn
   ];
 
   environment.variables = {
