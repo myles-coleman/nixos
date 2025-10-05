@@ -169,6 +169,17 @@ in {
     };
   };
 
+  # tmux config
+  programs.tmux = {
+    enable = true;
+    plugins = with pkgs; [
+      tmuxPlugins.sensible
+    ];
+    # extraConfig = ''
+    # ...
+    # '';
+  };
+
   # Manual Oh My Posh configuration
   environment.etc."oh-my-posh-config.json" = {
     text = builtins.readFile "${config.users.users.${mainUser}.home}/dotfiles/oh-my-posh/.config/oh-my-posh/custom-theme.omp.json";
