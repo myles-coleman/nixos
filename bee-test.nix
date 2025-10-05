@@ -108,6 +108,7 @@ in {
     gnumake
     mullvad-vpn
     oh-my-posh
+    tmux
   ];
 
   environment.variables = {
