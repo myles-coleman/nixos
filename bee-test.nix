@@ -106,6 +106,7 @@
     docker
     gnumake
     mullvad-vpn
+    oh-my-posh
   ];
 
   environment.variables = {
@@ -117,10 +118,9 @@
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
-    openFirewall = true; # Open firewall for Tailscale
+    openFirewall = true;
   };
 
-  # Enable Mullvad VPN service
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn;
@@ -136,14 +136,13 @@
       "retrans=3"
       "_netdev"
       "rsize=1048576"
-      "wsize=1048576" # Using the same buffer sizes as current mount
-      "vers=4.2" # Using the same NFS version as current mount
-      "proto=tcp" # Same as current mount
+      "wsize=1048576"
+      "vers=4.2"
+      "proto=tcp"
     ];
   };
 
-  # Ensure NFS client support is enabled
-  services.rpcbind.enable = true; # Required for NFSv3
+  services.rpcbind.enable = true;
 
   # Font configuration
   fonts = {
@@ -169,8 +168,12 @@
   };
 
   programs.starship = {
-    enable = true;
+    enable = false;
   };
+
+  # programs.oh-my-posh = {
+  #   enable = true;
+  # };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
