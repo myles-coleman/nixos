@@ -3,10 +3,12 @@
   pkgs,
   lib,
   ...
-}: {
-  users.users.bee = {
+}: let
+  mainUser = "bee";
+in {
+  users.users.${mainUser} = {
     isNormalUser = true;
-    description = "bee";
+    description = mainUser;
     extraGroups = ["networkmanager" "wheel" "input" "docker"];
     shell = pkgs.zsh;
     packages = with pkgs; [
@@ -165,7 +167,7 @@
 
   # Manual Oh My Posh configuration
   environment.etc."oh-my-posh-config.json" = {
-    text = builtins.readFile ./custom-theme.omp.json;
+    text = builtins.readFile "${config.users.users.${mainUser}.home}/dotfiles/oh-my-posh/.config/oh-my-posh/custom-theme.omp.json";
     mode = "0644";
   };
 
