@@ -23,7 +23,6 @@ in {
     enableCompletion = true;
     ohMyZsh = {
       enable = true;
-      theme = "robbyrussell";
       plugins = [
         "colored-man-pages"
         "colorize"
