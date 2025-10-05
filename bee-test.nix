@@ -171,9 +171,16 @@
     enable = false;
   };
 
-  # programs.oh-my-posh = {
-  #   enable = true;
-  # };
+  # Manual Oh My Posh configuration
+  environment.etc."oh-my-posh-config.json" = {
+    text = builtins.readFile ./custom-theme.omp.json;
+    mode = "0644";
+  };
+
+  programs.zsh.interactiveShellInit = ''
+    # Initialize Oh My Posh with custom theme
+    eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
+  '';
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
