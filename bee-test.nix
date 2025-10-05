@@ -11,7 +11,6 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
-      #  thunderbird
     ];
   };
 
@@ -30,7 +29,6 @@
     };
   };
 
-  # Use greetd for login and auto-start Hyprland
   services.greetd = {
     enable = true;
     settings = {
@@ -41,7 +39,6 @@
     };
   };
 
-  # Enable Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -60,7 +57,6 @@
   environment.systemPackages = with pkgs; [
     dunst
     kitty
-    starship #kitty configuration
     rofi-wayland
     libnotify
     swww
@@ -165,10 +161,6 @@
         serif = ["Noto Serif"];
       };
     };
-  };
-
-  programs.starship = {
-    enable = false;
   };
 
   # Manual Oh My Posh configuration
