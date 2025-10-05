@@ -22,7 +22,7 @@ in {
     syntaxHighlighting.enable = true;
     enableCompletion = true;
     shellAliases = {
-      rebuild = ".${config.users.users.${mainUser}.home}/nixos/rebuild.sh";
+      rebuild = "sh ${config.users.users.${mainUser}.home}/nixos/rebuild.sh";
     };
     ohMyZsh = {
       enable = true;
