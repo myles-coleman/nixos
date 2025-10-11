@@ -96,6 +96,7 @@ in {
     obs-studio
     kubectl
     kustomize
+    wl-clipboard
     kubernetes-helm
     helmfile
     k9s
