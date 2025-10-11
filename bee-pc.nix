@@ -97,6 +97,7 @@ in {
     kubectl
     kustomize
     wl-clipboard
+    jq
     kubernetes-helm
     helmfile
     k9s
