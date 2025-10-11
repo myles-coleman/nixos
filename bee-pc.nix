@@ -44,6 +44,7 @@ in {
     enableCompletion = true;
     shellAliases = {
       rebuild = "sh ${config.users.users.${mainUser}.home}/nixos/rebuild.sh";
+      windsurf = "windsurf 2>/dev/null";
     };
     ohMyZsh = {
       enable = true;
