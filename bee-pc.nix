@@ -95,6 +95,7 @@ in {
     protonup-qt # for steam proton
     obs-studio
     kubectl
+    kustomize
     kubernetes-helm
     helmfile
     k9s
