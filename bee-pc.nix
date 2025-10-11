@@ -1,11 +1,10 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
+  mainUser = "bee";
   krisp-patcher =
     pkgs.writers.writePython3Bin "krisp-patcher"
     {
@@ -28,48 +27,56 @@
       )
     );
 in {
-  services.xserver = {
-    enable = true;
-    displayManager.gdm = {
-      enable = true;
-      wayland = false; # Disable Wayland in GDM
-    };
-    desktopManager.gnome.enable = true;
-  };
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.bee = {
+  users.users.${mainUser} = {
     isNormalUser = true;
-    description = "bee";
-    extraGroups = ["networkmanager" "wheel"];
+    description = mainUser;
+    extraGroups = ["networkmanager" "wheel" "input" "docker"];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
-      #  thunderbird
     ];
+  };
+
+  programs.zsh = {
+    enable = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    enableCompletion = true;
+    shellAliases = {
+      rebuild = "sh ${config.users.users.${mainUser}.home}/nixos/rebuild.sh";
+    };
+    ohMyZsh = {
+      enable = true;
+      plugins = [
+        "colored-man-pages"
+        "colorize"
+        "history-substring-search"
+      ];
+    };
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "Hyprland";
+        user = "bee";
+      };
+    };
+  };
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  hardware = {
+    graphics.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -109,6 +116,30 @@ in {
     mesa-demos
     mangohud
     krisp-patcher
+    dunst
+    kitty
+    rofi-wayland
+    swww
+    nerd-fonts.meslo-lg
+    meslo-lgs-nf
+    font-awesome
+    material-icons
+    material-design-icons
+    networkmanagerapplet
+    pamixer
+    pavucontrol
+    zenity
+    blueman
+    stown
+    nwg-look
+    catppuccin-gtk
+    kdePackages.dolphin
+    wofi
+    waybar
+    zsh
+    gnumake
+    mullvad-vpn
+    oh-my-posh
   ];
 
   environment.variables = {
@@ -130,6 +161,97 @@ in {
     proton-ge-bin
   ];
 
+  virtualisation.docker.enable = true;
+
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
+    openFirewall = true;
+  };
+
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+
+  fileSystems."/home/bee/media" = {
+    device = "10.0.0.150:/mnt/md0/data/media";
+    fsType = "nfs4";
+    options = [
+      "rw"
+      "soft"
+      "timeo=30"
+      "retrans=3"
+      "_netdev"
+      "rsize=1048576"
+      "wsize=1048576"
+      "vers=4.2"
+      "proto=tcp"
+    ];
+  };
+
+  services.rpcbind.enable = true;
+
+  # Font configuration
+  fonts = {
+    enableDefaultPackages = true;
+    fontDir.enable = true;
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-emoji
+      nerd-fonts.meslo-lg
+      meslo-lgs-nf
+      font-awesome
+      material-icons
+      material-design-icons
+    ];
+    fontconfig = {
+      defaultFonts = {
+        monospace = ["MesloLGS Nerd Font Mono"];
+        sansSerif = ["Noto Sans"];
+        serif = ["Noto Serif"];
+      };
+    };
+  };
+
+  # Manual Oh My Posh configuration
+  environment.etc."oh-my-posh-config.json" = {
+    text = builtins.readFile "${config.users.users.${mainUser}.home}/dotfiles/oh-my-posh/.config/oh-my-posh/custom-theme.omp.json";
+    mode = "0644";
+  };
+
+  programs.zsh.interactiveShellInit = ''
+    # Initialize Oh My Posh with custom theme
+    eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
+  '';
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+
+  # Enable sound with PipeWire
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+  # Enable Bluetooth support
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
+    };
+  };
+  services.blueman.enable = true;
+
   # fileSystems."/mnt/harddrive" = {
   #   device = "UUID=060C52F50C52DEED";
   #   fsType = "ntfs-3g";
@@ -142,22 +264,5 @@ in {
   #   options = ["uid=1000" "gid=100" "umask=0002"];
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 }
