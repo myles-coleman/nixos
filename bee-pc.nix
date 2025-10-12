@@ -5,6 +5,9 @@
   ...
 }: let
   mainUser = "bee";
+  unstable = import (fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+  }) {config = config.nixpkgs.config;};
   krisp-patcher =
     pkgs.writers.writePython3Bin "krisp-patcher"
     {
@@ -104,7 +107,7 @@ in {
     k9s
     docker
     terraform
-    opentofu
+    unstable.opentofu
     terragrunt
     awscli2
     mangohud #for application hardware metrics overlay (isn't working)
