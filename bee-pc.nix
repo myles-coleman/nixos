@@ -103,6 +103,7 @@ in {
     k9s
     docker
     terraform
+    opentofu
     terragrunt
     awscli2
     mangohud #for application hardware metrics overlay (isn't working)
