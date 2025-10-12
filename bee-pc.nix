@@ -150,6 +150,7 @@ in {
     gnumake
     mullvad-vpn
     oh-my-posh
+    dig
   ];
 
   environment.variables = {
