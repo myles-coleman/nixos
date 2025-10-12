@@ -103,6 +103,7 @@ in {
     k9s
     docker
     terraform
+    terragrunt
     awscli2
     mangohud #for application hardware metrics overlay (isn't working)
     rpi-imager
