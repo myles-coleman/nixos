@@ -44,7 +44,7 @@ in {
     enableCompletion = true;
     shellAliases = {
       rebuild = "sh ${config.users.users.${mainUser}.home}/nixos/rebuild.sh";
-      windsurf = "windsurf 2>/dev/null";
+      windsurf = "windsurf 2>/dev/null"; # hide windsurf warnings
     };
     ohMyZsh = {
       enable = true;
@@ -96,7 +96,7 @@ in {
     obs-studio
     kubectl
     kustomize
-    wl-clipboard
+    wl-clipboard # wayland clipboard for kubernetes
     jq
     kubernetes-helm
     helmfile
