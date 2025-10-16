@@ -186,6 +186,13 @@ in {
     package = pkgs.mullvad-vpn;
   };
 
+  # Enable mDNS for .local domain resolution
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    nssmdns6 = true;
+  };
+
   fileSystems."/home/bee/media" = {
     device = "10.0.0.150:/mnt/md0/data/media";
     fsType = "nfs4";

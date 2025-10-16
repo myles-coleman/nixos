@@ -56,6 +56,20 @@
             settings.PermitRootLogin = "no";
           };
 
+          # Enable mDNS for .local domain resolution
+          services.avahi = {
+            enable = true;
+            nssmdns4 = true;
+            publish = {
+              enable = true;
+              addresses = true;
+              domain = true;
+              hinfo = true;
+              userServices = true;
+              workstation = true;
+            };
+          };
+
           time.timeZone = "America/Los_Angeles";
           i18n.defaultLocale = "en_US.UTF-8";
 
