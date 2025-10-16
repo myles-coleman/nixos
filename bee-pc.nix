@@ -151,6 +151,7 @@ in {
     mullvad-vpn
     oh-my-posh
     dig
+    nixos-anywhere
   ];
 
   environment.variables = {

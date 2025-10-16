@@ -2,8 +2,12 @@
   description = "NixOS configuration for Raspberry Pi 5";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -19,25 +23,23 @@
     self,
     nixpkgs,
     nixos-raspberrypi,
+    disko,
   } @ inputs: let
-    system = "x86_64-linux"; # build system architecture
-    targetSystem = "aarch64-linux"; # target architecture
+    system = "x86_64-linux";
+    targetSystem = "aarch64-linux";
   in {
-    packages.${system}.default = nixos-raspberrypi.installerImages.rpi5;
-
     nixosConfigurations.rpi5 = nixos-raspberrypi.lib.nixosSystem {
-      inherit system;
+      system = targetSystem;
       specialArgs = inputs;
       modules = [
-        ({...}: {
-          imports = with nixos-raspberrypi.nixosModules; [
-            raspberry-pi-5.base
-            raspberry-pi-5.bluetooth
-          ];
-          boot.binfmt.emulatedSystems = ["aarch64-linux"]; # for cross-compilation
-        })
+        nixos-raspberrypi.nixosModules.raspberry-pi-5.base
+        nixos-raspberrypi.nixosModules.raspberry-pi-5.page-size-16k
+        nixos-raspberrypi.nixosModules.raspberry-pi-5.bluetooth
+        nixos-raspberrypi.nixosModules.raspberry-pi-5.display-vc4
+        disko.nixosModules.disko
+        ./disko-config.nix
 
-        {
+        ({pkgs, ...}: {
           networking = {
             hostName = "node1";
           };
@@ -57,16 +59,19 @@
           time.timeZone = "America/Los_Angeles";
           i18n.defaultLocale = "en_US.UTF-8";
 
-          environment.systemPackages = with nixpkgs.legacyPackages.${targetSystem}; [
+          environment.systemPackages = with pkgs; [
             vim
             git
             htop
           ];
 
           hardware.enableRedistributableFirmware = true; # Hardware-specific settings
-          system.stateVersion = "25.05"; # This is required for the SD image
-        }
+          system.stateVersion = "25.05";
+        })
       ];
     };
+
+    # Expose the SD card installer image for cross-compilation
+    packages.${system}.default = self.nixosConfigurations.rpi5.config.system.build.sdImage;
   };
 }
