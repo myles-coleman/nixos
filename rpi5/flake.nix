@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration for Raspberry Pi 5";
+  description = "Multi-node K3s cluster on Raspberry Pi 5";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -27,65 +27,101 @@
   } @ inputs: let
     system = "x86_64-linux";
     targetSystem = "aarch64-linux";
+    
+    baseConfig = [
+      nixos-raspberrypi.nixosModules.raspberry-pi-5.base
+      nixos-raspberrypi.nixosModules.raspberry-pi-5.page-size-16k
+      nixos-raspberrypi.nixosModules.raspberry-pi-5.bluetooth
+      nixos-raspberrypi.nixosModules.raspberry-pi-5.display-vc4
+      disko.nixosModules.disko
+      ./disko-config.nix
+      
+      ({pkgs, ...}: {
+        users.users.pi = {
+          initialPassword = "raspberry";
+          isNormalUser = true;
+          extraGroups = ["wheel"];
+        };
+
+        services.openssh = {
+          enable = true;
+          settings.PasswordAuthentication = true;
+          settings.PermitRootLogin = "no";
+        };
+
+        # enable mDNS for .local domain resolution
+        services.avahi = {
+          enable = true;
+          nssmdns4 = true;
+          publish = {
+            enable = true;
+            addresses = true;
+            domain = true;
+            hinfo = true;
+            userServices = true;
+            workstation = true;
+          };
+        };
+
+        time.timeZone = "America/Los_Angeles";
+        i18n.defaultLocale = "en_US.UTF-8";
+        
+        hardware.enableRedistributableFirmware = true;
+        system.stateVersion = "25.05";
+      })
+    ];
   in {
-    nixosConfigurations.rpi5 = nixos-raspberrypi.lib.nixosSystem {
+    nixosConfigurations.node0 = nixos-raspberrypi.lib.nixosSystem {
       system = targetSystem;
       specialArgs = inputs;
-      modules = [
-        nixos-raspberrypi.nixosModules.raspberry-pi-5.base
-        nixos-raspberrypi.nixosModules.raspberry-pi-5.page-size-16k
-        nixos-raspberrypi.nixosModules.raspberry-pi-5.bluetooth
-        nixos-raspberrypi.nixosModules.raspberry-pi-5.display-vc4
-        disko.nixosModules.disko
-        ./disko-config.nix
-
-        ({pkgs, ...}: {
-          networking = {
-            hostName = "node1";
-          };
-
-          users.users.pi = {
-            initialPassword = "raspberry";
-            isNormalUser = true;
-            extraGroups = ["wheel"];
-          };
-
-          services.openssh = {
-            enable = true;
-            settings.PasswordAuthentication = true;
-            settings.PermitRootLogin = "no";
-          };
-
-          # Enable mDNS for .local domain resolution
-          services.avahi = {
-            enable = true;
-            nssmdns4 = true;
-            publish = {
-              enable = true;
-              addresses = true;
-              domain = true;
-              hinfo = true;
-              userServices = true;
-              workstation = true;
-            };
-          };
-
-          time.timeZone = "America/Los_Angeles";
-          i18n.defaultLocale = "en_US.UTF-8";
-
-          environment.systemPackages = with pkgs; [
-            vim
-            git
-            htop
-          ];
-
-          hardware.enableRedistributableFirmware = true; # Hardware-specific settings
-          system.stateVersion = "25.05";
+      modules = baseConfig ++ [
+        ./k3s-server.nix
+        ({...}: {
+          networking.hostName = "node0";
         })
       ];
     };
 
-    # Expose the SD card installer image for cross-compilation
-    packages.${system}.default = self.nixosConfigurations.rpi5.config.system.build.sdImage;
+    nixosConfigurations.node1 = nixos-raspberrypi.lib.nixosSystem {
+      system = targetSystem;
+      specialArgs = inputs;
+      modules = baseConfig ++ [
+        ./k3s-agent.nix
+        ({...}: {
+          networking.hostName = "node1";
+        })
+      ];
+    };
+
+    nixosConfigurations.node2 = nixos-raspberrypi.lib.nixosSystem {
+      system = targetSystem;
+      specialArgs = inputs;
+      modules = baseConfig ++ [
+        ./k3s-agent.nix
+        ({...}: {
+          networking.hostName = "node2";
+        })
+      ];
+    };
+
+    nixosConfigurations.node3 = nixos-raspberrypi.lib.nixosSystem {
+      system = targetSystem;
+      specialArgs = inputs;
+      modules = baseConfig ++ [
+        ./k3s-agent.nix
+        ({...}: {
+          networking.hostName = "node3";
+        })
+      ];
+    };
+
+    packages.${system} = {
+      node0 = self.nixosConfigurations.node0.config.system.build.sdImage;
+      node1 = self.nixosConfigurations.node1.config.system.build.sdImage;
+      node2 = self.nixosConfigurations.node2.config.system.build.sdImage;
+      node3 = self.nixosConfigurations.node3.config.system.build.sdImage;
+      
+      default = self.packages.${system}.node0;
+    };
   };
 }
