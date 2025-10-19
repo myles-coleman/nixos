@@ -5,7 +5,7 @@
     k3s
     kubectl
     coreutils
-    open-iscsi
+    openiscsi
     cryptsetup
     util-linux
     nfs-utils
