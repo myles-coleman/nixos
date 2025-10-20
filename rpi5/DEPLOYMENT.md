@@ -15,8 +15,22 @@ Deploy NixOS with k3s to Raspberry Pi 5 nodes using installer SD card first.
 
 ### 1. Generate K3s Token
 
+
 ```bash
-openssl rand -hex 32 > secrets/token
+# Generate a random token for the server
+openssl rand -hex 32 > token
+```
+
+```bash
+# Get node-token from server
+ssh pi@node0.local
+cat /var/lib/rancher/k3s/server/node-token
+```
+
+```bash
+# token needs to be added before building, make sure to remove after building
+git add -f token
+git reset token
 ```
 
 ### 2. Build Installer Image

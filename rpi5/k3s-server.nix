@@ -6,8 +6,6 @@
     ./k3s-token-secrets.nix
   ];
 
-  services.k3s.package = pkgs.k3s_1_32;
-  
   environment.etc."rancher/k3s/server/manifests/kube-vip.yaml".text = ''
     apiVersion: v1
     kind: Pod

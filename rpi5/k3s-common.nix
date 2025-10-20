@@ -1,9 +1,10 @@
 { config, pkgs, lib, ... }:
 
 {
+  services.k3s.package = pkgs.k3s_1_30;
+  
   environment.systemPackages = with pkgs; [
     k3s
-    kubectl
     coreutils
     openiscsi
     cryptsetup
@@ -11,6 +12,8 @@
     nfs-utils
     vim
     htop
+    kubectl
+    curl
   ];
 
   boot.kernelModules = [
@@ -39,6 +42,12 @@
     enable = true;
     name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
   };
+
+  # symlink iscsiadm for Longhorn
+  system.activationScripts.longhorn-iscsiadm = ''
+    mkdir -p /usr/bin
+    ln -sf ${pkgs.openiscsi}/bin/iscsiadm /usr/bin/iscsiadm
+  '';
 
   systemd.services.k3s.after = [ "network-online.target" ];
   systemd.services.k3s.wants = [ "network-online.target" ];

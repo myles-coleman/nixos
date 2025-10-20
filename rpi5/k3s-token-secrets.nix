@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  k3sTokenPath = ./secrets/token;
+  k3sTokenPath = ./token;
   k3sToken = if builtins.pathExists k3sTokenPath
     then lib.removeSuffix "\n" (builtins.readFile k3sTokenPath)
     else "";
