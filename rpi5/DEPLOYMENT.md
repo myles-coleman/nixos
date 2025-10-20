@@ -66,12 +66,3 @@ for i in {0..3}; do
   nixos-rebuild switch --flake .#node$i --target-host pi@node$i.local --use-remote-sudo --build-host pi@node$i.local
 done
 ```
-
-### Rotate k3s token
-```bash
-# Generate new token
-openssl rand -hex 32 > secrets/token
-
-# Rebuild all nodes
-nix build .#node0 .#node1 .#node2 .#node3
-```
