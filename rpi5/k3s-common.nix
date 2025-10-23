@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  services.k3s.package = pkgs.k3s_1_30;
+  services.k3s.package = pkgs.k3s_1_33;
   
   environment.systemPackages = with pkgs; [
     k3s
