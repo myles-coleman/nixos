@@ -153,6 +153,7 @@ in {
     dig
     nixos-anywhere
     argocd
+    go-task
   ];
 
   environment.variables = {
