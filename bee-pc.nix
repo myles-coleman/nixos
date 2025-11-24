@@ -154,6 +154,7 @@ in {
     nixos-anywhere
     argocd
     go-task
+    hyprshot
   ];
 
   environment.variables = {
