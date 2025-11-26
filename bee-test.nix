@@ -110,6 +110,7 @@ in {
     oh-my-posh
     tmux
     libretro.citra
+    python313Packages.cmake
   ];
 
   environment.variables = {
