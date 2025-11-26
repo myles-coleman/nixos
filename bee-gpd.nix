@@ -5,6 +5,9 @@
   ...
 }: let
   mainUser = "bee";
+  unstable = import (fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+  }) {config = config.nixpkgs.config;};
   krisp-patcher =
     pkgs.writers.writePython3Bin "krisp-patcher"
     {
@@ -97,7 +100,7 @@ in {
     obsidian
     discord
     brave
-    windsurf
+    unstable.windsurf
     ntfs3g #for mounting ntfs drives
     alejandra #for formatting in rebuild script
     libnotify #for system notifications
