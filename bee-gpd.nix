@@ -242,7 +242,16 @@ in {
     powerOnBoot = true;
     settings = {
       General = {
-        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
+        KernelExperimental = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+    input = {
+      General = {
+        ClassicBondedOnly = false;
       };
     };
   };
