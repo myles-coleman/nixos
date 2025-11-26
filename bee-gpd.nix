@@ -83,6 +83,12 @@ in {
     graphics.enable = true;
   };
 
+  # Kernel modules for game controllers
+  boot.kernelModules = ["hid_nintendo" "joydev"];
+
+  # Enable joystick support
+  hardware.uinput.enable = true;
+
   environment.systemPackages = with pkgs; [
     dunst
     kitty
