@@ -78,7 +78,7 @@ else
             -f v4l2 \
             -input_format mjpeg \
             -framerate 60 \
-            -video_size 1920x1080 \
+            -video_size 2560x1600 \
             -i "$KVM_DEVICE" \
             -c:v rawvideo \
             -pix_fmt yuv420p \

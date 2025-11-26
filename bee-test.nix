@@ -109,6 +109,7 @@ in {
     mullvad-vpn
     oh-my-posh
     tmux
+    libretro.citra
   ];
 
   environment.variables = {
