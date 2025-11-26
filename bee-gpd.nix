@@ -133,7 +133,6 @@ in {
     mullvad-vpn
     oh-my-posh
     tmux
-    libretro.citra
     python313Packages.cmake
   ];
 
