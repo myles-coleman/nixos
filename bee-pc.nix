@@ -152,6 +152,9 @@ in {
     oh-my-posh
     dig
     nixos-anywhere
+    argocd
+    go-task
+    hyprshot
   ];
 
   environment.variables = {
