@@ -152,6 +152,7 @@ in {
     oh-my-posh
     dig
     nixos-anywhere
+    argocd
   ];
 
   environment.variables = {
