@@ -156,6 +156,7 @@ in {
     go-task
     hyprshot
     obs-studio-plugins.obs-vkcapture
+    nodejs_20
   ];
 
   environment.variables = {
