@@ -211,6 +211,13 @@ in {
     # '';
   };
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16384;
+    }
+  ];
+
   # Manual Oh My Posh configuration
   environment.etc."oh-my-posh-config.json" = {
     text = builtins.readFile "${config.users.users.${mainUser}.home}/dotfiles/oh-my-posh/.config/oh-my-posh/custom-theme.omp.json";
