@@ -1,5 +1,6 @@
 building Nix...
 building the system configuration...
+<<<<<<< HEAD
 these 19 derivations will be built:
   /nix/store/x7d8w6g9814jr3l9ggac27wgdvbgb17c-system-path.drv
   /nix/store/84fwf0d7pfxjhkzns0h8650jp16bl1b9-dbus-1.drv
@@ -31,6 +32,81 @@ building '/nix/store/vb26jl9dq0ilxy0gdwy1h3v4yz8hw96w-etc-profile.drv'...
 building '/nix/store/3w5wvlxbw6v7yd9a3fcawzmrgj9rw7zl-etc-zshenv.drv'...
 building '/nix/store/bd249y1hra6k2hr7d6adx58h4qkwxpf7-etc-tmux.conf.drv'...
 building '/nix/store/x7d8w6g9814jr3l9ggac27wgdvbgb17c-system-path.drv'...
+=======
+unpacking 'https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz' into the Git cache...
+these 15 derivations will be built:
+  /nix/store/0zxzkh95blbqb6ayhbj3s9csk2n1alkx-slack-desktop-4.45.64-amd64.deb.drv
+  /nix/store/1ppblky2nrcj3lk3k16pl6iyif97cj8x-slack-4.45.64.drv
+  /nix/store/xgsbf9wx3fc6flr1nlarzssyfzllba29-Windsurf-linux-x64-1.13.3.tar.gz.drv
+  /nix/store/jhsybsmcrr3zbp2xdxxpdxfmzpx6092r-windsurf-1.13.3.drv
+  /nix/store/bdc6lyahjqqg3r6kfhqknjd7glxhxl7j-system-path.drv
+  /nix/store/xhb9g44wpxm9dn19gn743fj4hfsj7rlx-dbus-1.drv
+  /nix/store/4zyssjxsa4mrpd711qqgkln3hsk8jqv7-X-Restart-Triggers-dbus.drv
+  /nix/store/989sg5nanpq5qv5j7pkbq5g8m78v4z4n-unit-dbus.service.drv
+  /nix/store/s50hglzmf73p7xmqvq8r2f6hdyag3id8-user-units.drv
+  /nix/store/8p64z0cj2zy0m1ip48yppi98r9kb0fgj-unit-dbus.service.drv
+  /nix/store/f6w9gdkwjbjamh3n6f6hbn7ia7fsglvb-X-Restart-Triggers-polkit.drv
+  /nix/store/nwl0pb6q8408k803cj04qif1ih2dag0b-unit-polkit.service.drv
+  /nix/store/wk4bswyshh8k6y7wf1nbz4z8ahn4bfr4-system-units.drv
+  /nix/store/5p9yilq6p5cb83hy2y19ivygcdavyz2f-etc.drv
+  /nix/store/fyrx8vz7afnmkbhhhqmra1q61g22pw94-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
+these 4 paths will be fetched (57.18 MiB download, 283.38 MiB unpacked):
+  /nix/store/q76zykz1m446b6g3g836gj4xzcp5brd2-dpkg-1.22.11
+  /nix/store/q4zi2lmlimzxv7mix9manl763zhzvnmp-opentofu-1.11.2
+  /nix/store/h2vbiqnkrgsmkmnvhvdi6kd2drb3rqdw-webkitgtk-2.50.4+abi=4.1
+  /nix/store/b55ybkxzvpnj6ydbr325pnr32rwp3v45-webkitgtk-2.50.4+abi=4.1-dev
+copying path '/nix/store/q4zi2lmlimzxv7mix9manl763zhzvnmp-opentofu-1.11.2' from 'https://cache.nixos.org'...
+copying path '/nix/store/q76zykz1m446b6g3g836gj4xzcp5brd2-dpkg-1.22.11' from 'https://cache.nixos.org'...
+copying path '/nix/store/h2vbiqnkrgsmkmnvhvdi6kd2drb3rqdw-webkitgtk-2.50.4+abi=4.1' from 'https://cache.nixos.org'...
+building '/nix/store/xgsbf9wx3fc6flr1nlarzssyfzllba29-Windsurf-linux-x64-1.13.3.tar.gz.drv'...
+building '/nix/store/0zxzkh95blbqb6ayhbj3s9csk2n1alkx-slack-desktop-4.45.64-amd64.deb.drv'...
+structuredAttrs is enabled
+
+trying https://windsurf-stable.codeiumdata.com/linux-x64/stable/f5d6162bf21a6caf7ad124c0ddf9cb1089034608/Windsurf-linux-x64-1.13.3.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+trying https://downloads.slack-edge.com/desktop-releases/linux/x64/4.45.64/slack-desktop-4.45.64-amd64.deb
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (6) Could not resolve host: downloads.slack-edge.com
+Warning: Problem : timeout. Will retry in 1 second. 3 retries left.
+100 82.8M  100 82.8M    0     0  1395k      0  0:01:00  0:01:00 --:--:-- 1660k
+building '/nix/store/1ppblky2nrcj3lk3k16pl6iyif97cj8x-slack-4.45.64.drv'...
+Running phase: patchPhase
+Running phase: updateAutotoolsGnuConfigScriptsPhase
+Running phase: configurePhase
+no configure script, doing nothing
+Running phase: glibPreInstallPhase
+Running phase: installPhase
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+patchelf: cannot find section '.interp'. The input file is most likely statically linked
+substituteStream() in derivation slack-4.45.64: WARNING: '--replace' is deprecated, use --replace-{fail,warn,quiet}. (file '/nix/store/b0jwhzmgq7yxqprqsajx697l4z2aswzr-slack-4.45.64/share/applications/slack.desktop')
+Running phase: dropIconThemeCache
+Running phase: fixupPhase
+checking for references to /build/ in /nix/store/b0jwhzmgq7yxqprqsajx697l4z2aswzr-slack-4.45.64...
+patching script interpreter paths in /nix/store/b0jwhzmgq7yxqprqsajx697l4z2aswzr-slack-4.45.64
+stripping (with command strip and flags -S -p) in  /nix/store/b0jwhzmgq7yxqprqsajx697l4z2aswzr-slack-4.45.64/lib /nix/store/b0jwhzmgq7yxqprqsajx697l4z2aswzr-slack-4.45.64/bin
+100 218.3M 100 218.3M   0     0  2863k     0   0:01:18  0:01:18 --:--:--  3833k
+copying path '/nix/store/b55ybkxzvpnj6ydbr325pnr32rwp3v45-webkitgtk-2.50.4+abi=4.1-dev' from 'https://cache.nixos.org'...
+building '/nix/store/jhsybsmcrr3zbp2xdxxpdxfmzpx6092r-windsurf-1.13.3.drv'...
+Running phase: unpackPhase
+unpacking source archive /nix/store/mqxwikc067hlwg920q639b6idzc3xn68-Windsurf-linux-x64-1.13.3.tar.gz
+source root is Windsurf
+setting SOURCE_DATE_EPOCH to timestamp 1766583352 of file "Windsurf/windsurf"
+>>>>>>> 3276046 (33 current  2025-12-29 16:21:08  25.05.807819.e728d7ae4bb6  6.12.41                                 *)
 Running phase: patchPhase
 Running phase: updateAutotoolsGnuConfigScriptsPhase
 Running phase: updateAutotoolsGnuConfigScriptsPhase
@@ -39,6 +115,7 @@ no configure script, doing nothing
 Running phase: buildPhase
 no Makefile or custom buildPhase, doing nothing
 Running phase: installPhase
+<<<<<<< HEAD
 /nix/store/chrslx87s23yv28ax9ysb747g22qrkfz-wrapper.c:43:22: warning: 'assert_failure' defined but not used [-Wunused-function]
    43 | static noreturn void assert_failure(const char *assertion) {
       |                      ^~~~~~~~~~~~~~
@@ -66,11 +143,512 @@ building '/nix/store/m87s5d634lzll3fjrsnrnh68ac4af904-system-units.drv'...
 building '/nix/store/kq6mr7ws2h5yrjhz14v97jn32bpnqk2f-user-units.drv'...
 building '/nix/store/2i46xyjc8ysgqhrmarwkklygm6m4i7nb-etc.drv'...
 building '/nix/store/dq38k2bp8my5m21i933rzrlgyqkn0cpr-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
+=======
+Copying '/nix/store/4alnlfafda65zpzwhx98zz2070f0hfy2-windsurf.desktop/share/applications/windsurf.desktop' into '/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/share/applications'
+Copying '/nix/store/n09i7q29cwnq15gxkxaikgabhgwab1b5-windsurf-url-handler.desktop/share/applications/windsurf-url-handler.desktop' into '/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/share/applications'
+Running phase: gappsWrapperArgsHook
+Running phase: dropIconThemeCache
+Running phase: dropIconThemeCache
+Running phase: dropIconThemeCache
+Running phase: fixupPhase
+Wrapping program '/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/bin/windsurf'
+shrinking RPATHs of ELF executables and libraries in /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libGLESv2.so
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libffmpeg.so
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libvulkan.so.1
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome-sandbox
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-watchdog/build/Release/watchdog.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/windows-foreground-love/build/Release/obj.target/foreground_love.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/windows-foreground-love/build/Release/foreground_love.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-keymap/build/Release/keymapping.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-is-elevated/build/Release/iselevated.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@parcel/watcher/build/Release/watcher.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/node-pty/build/Release/pty.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/deviceid/build/Release/windows.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/sqlite3/build/Release/vscode-sqlite3.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/spdlog/build/Release/spdlog.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/policy-watcher/build/Release/vscode-policy-watcher.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/kerberos/build/Release/obj.target/kerberos.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/kerberos/build/Release/kerberos.node
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf/bin/language_server_linux_x64
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf/bin/fd
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libvk_swiftshader.so
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome_crashpad_handler
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libEGL.so
+shrinking /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/windsurf
+checking for references to /build/ in /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3...
+patching script interpreter paths in /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/bin/.windsurf-wrapped: interpreter directive changed from "#!/usr/bin/env sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/bin/windsurf: interpreter directive changed from "#!/usr/bin/env sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/out/vs/base/node/cpuUsage.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/out/vs/base/node/terminateProcess.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/out/vs/base/node/ps.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/launchdarkly-eventsource/scripts/better-audit.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/jschardet/scripts/run-workflow.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/jschardet/scripts/show-size-changes.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/open/xdg-open: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/ms-vscode.js-debug/src/targets/node/terminateProcess.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf-remote-openssh/scripts/launchSSHAskpass.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf-remote-openssh/scripts/terminateProcess.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/git-editor-empty.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/askpass.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/ssh-askpass-empty.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/git-editor.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/ssh-askpass.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/git/dist/askpass-empty.sh: interpreter directive changed from "#!/bin/sh" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/sh"
+/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf-dev-containers/scripts/terminateProcess.sh: interpreter directive changed from "#!/bin/bash" to "/nix/store/rlq03x4cwf8zn73hxaxnx0zn5q9kifls-bash-5.3p3/bin/bash"
+stripping (with command strip and flags -S -p) in  /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/bin
+automatically fixing dependencies for ELF files
+{'add_existing': True,
+ 'append_rpaths': [],
+ 'extra_args': [],
+ 'ignore_missing': [],
+ 'keep_libc': False,
+ 'libs': [PosixPath('/nix/store/h7fgzg0gkpar781i0vj423sq8zyr24a5-unzip-6.0/lib'),
+          PosixPath('/nix/store/2lcaqq9rs6mn2jlrcfk885pg72scnjcv-auto-patchelf-hook/lib'),
+          PosixPath('/nix/store/qrhfjdpb10snd6zpbijr902jfxl6m5hk-auto-patchelf-0-unstable-2024-08-14/lib'),
+          PosixPath('/nix/store/l87z7vxm5gp0n21ddrlx4dmrrqg92a7w-binutils-wrapper-2.44/lib'),
+          PosixPath('/nix/store/lvnbpwbb8mxkvi4g6593ncfrhhfli1yn-asar-3.2.4/lib'),
+          PosixPath('/nix/store/c3pz622hnhm2g9v9spq4zy21abpxfgwr-copy-desktop-items-hook/lib'),
+          PosixPath('/nix/store/kz730bdzhzx3wxxjqqwcf16a6bvynjnz-wrap-gapps-hook/lib'),
+          PosixPath('/nix/store/6l9mndwn2z52njn5shabyqc3jr3bxmla-make-shell-wrapper-hook/lib'),
+          PosixPath('/nix/store/3lq26d4nmwgh8cy0h55spgb3bxc7l504-die-hook/lib'),
+          PosixPath('/nix/store/r9qybwam7v4sj4b6jyavb7dm97hhprm9-gtk+3-3.24.51-dev/lib'),
+          PosixPath('/nix/store/8hmax96hh41z898iwc2alj3rwi1yqb72-at-spi2-core-2.58.1-dev/lib'),
+          PosixPath('/nix/store/x5d1mak1amjrmxv4vm19r05pja38fyf1-dbus-1.14.10-dev/lib'),
+          PosixPath('/nix/store/94j5bdf27k7f95hdw1ppqwggwxjw76jk-expat-2.7.3-dev/lib'),
+          PosixPath('/nix/store/jnjcxanszfrp8ln69wp0n9s237xbh7bz-expat-2.7.3/lib'),
+          PosixPath('/nix/store/ibgwqf5qna1cy3gc30w27dcjvij60ick-dbus-1.14.10-lib/lib'),
+          PosixPath('/nix/store/rxzvps8zldnz4sgphbw6893n6ikai6gn-dbus-1.14.10/lib'),
+          PosixPath('/nix/store/g1zvzj5msg1d92jj2z9hn3b9n68rp8ap-glib-2.86.1-dev/lib'),
+          PosixPath('/nix/store/hqvsiah013yzb17b13fn18fpqk7m13cg-zlib-1.3.1-dev/lib'),
+          PosixPath('/nix/store/l7xwm1f6f3zj2x8jwdbi8gdyfbx07sh7-zlib-1.3.1/lib'),
+          PosixPath('/nix/store/9pvv6nip8hbk19ca24wmncjir9pv8vas-libffi-3.5.2-dev/lib'),
+          PosixPath('/nix/store/b9p0zpa93hwvh4d0r1rmgc2500yx2ldn-libffi-3.5.2/lib'),
+          PosixPath('/nix/store/kwr2jkqrbf6gsalagrka7gb7yrn71qpi-gettext-0.25.1/lib'),
+          PosixPath('/nix/store/l1fi677mcxsa175gf0zvpk68kf1calbn-glibc-iconv-2.40/lib'),
+          PosixPath('/nix/store/6mhypw5m1hbqn2glq4lhrlhbgdczdka5-glib-2.86.1-bin/lib'),
+          PosixPath('/nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib'),
+          PosixPath('/nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib'),
+          PosixPath('/nix/store/kx95a2drx2mgkxb61k65xlvp0dcbpsly-cairo-1.18.4-dev/lib'),
+          PosixPath('/nix/store/m4yklwaw26d8hhyl82fl6jmx1waqrakg-fontconfig-2.17.1-dev/lib'),
+          PosixPath('/nix/store/zykjcxzj7mg1x325xxfnrymf50daqvgb-freetype-2.13.3-dev/lib'),
+          PosixPath('/nix/store/q1a3bjhg3b4plgb7fk7zis1gi09rbi1d-bzip2-1.0.8-dev/lib'),
+          PosixPath('/nix/store/qm9rxn2sc1vrz91i443rr6f0vxm0zd82-bzip2-1.0.8-bin/lib'),
+          PosixPath('/nix/store/xgavznqg1ay2hycpp7yy9ia1n751jcla-bzip2-1.0.8/lib'),
+          PosixPath('/nix/store/9jixqayj11r1b2r4ikrwb3kc51innr6j-brotli-1.1.0-dev/lib'),
+          PosixPath('/nix/store/v8czfabwiry1aik0j3b4mqkqvn7vnxfi-brotli-1.1.0-lib/lib'),
+          PosixPath('/nix/store/yqnk9l97ppx2kz65wrkk5mzxi0jixkaf-brotli-1.1.0/lib'),
+          PosixPath('/nix/store/251366801cw3qn4bqka2pp21hlpzwj1v-libpng-apng-1.6.50-dev/lib'),
+          PosixPath('/nix/store/s8md611ry6w14m4awmgivld52ym8s3b2-libpng-apng-1.6.50/lib'),
+          PosixPath('/nix/store/b6rhgkvrwzq0bzfpaw79b60i1bfbhk3w-freetype-2.13.3/lib'),
+          PosixPath('/nix/store/sl7wgh3hb00gsicw2w0jfd3vxnsd448s-fontconfig-2.17.1-bin/lib'),
+          PosixPath('/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib'),
+          PosixPath('/nix/store/pw03xfrnb6a7nz6ivq6jijsx0n52afnp-pixman-0.46.4/lib'),
+          PosixPath('/nix/store/1315vzcs2vm98pgsdzwsxm7i2mzjc0g7-libxext-1.3.6-dev/lib'),
+          PosixPath('/nix/store/l7mab2s2kjsz2pz8dfgvh39af7w7gji1-xorgproto-2024.1/lib'),
+          PosixPath('/nix/store/qcw1za21lgqfpxr7365p64mlladhi2cc-libxau-1.0.12-dev/lib'),
+          PosixPath('/nix/store/lcss48c1x1pvn1irp2y3fsvc4b5mbqxv-libxau-1.0.12/lib'),
+          PosixPath('/nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib'),
+          PosixPath('/nix/store/wkrn5svcggds11pbkyjfka7b2i3wbmhj-libxrender-0.9.12-dev/lib'),
+          PosixPath('/nix/store/sbhg4bnrg0l22936dbwrnl33vzd3kcmf-libx11-1.8.12-dev/lib'),
+          PosixPath('/nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib'),
+          PosixPath('/nix/store/dgjd3hf8ny62vbjg10w64x4jwm7cv81k-libxrender-0.9.12/lib'),
+          PosixPath('/nix/store/p7c0w266jlbzwh84qw6d5g5glbr8mzyp-libxcb-1.17.0-dev/lib'),
+          PosixPath('/nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib'),
+          PosixPath('/nix/store/0ci3da6db19gckz0i5j3br992cspvlz1-cairo-1.18.4/lib'),
+          PosixPath('/nix/store/xnhjgs6kwqhhi9n4m85gwwhpq9nlhnab-fribidi-1.0.16-dev/lib'),
+          PosixPath('/nix/store/hsf2g79801wp025f38r6abz3nkykzw3p-fribidi-1.0.16/lib'),
+          PosixPath('/nix/store/y66pci58v5axqy1zyfw6ny2akl2hfmc1-gdk-pixbuf-2.44.4-dev/lib'),
+          PosixPath('/nix/store/xwljpgkz2akmk4yi6rlhxps8zly3rbgz-libtiff-4.7.1-dev/lib'),
+          PosixPath('/nix/store/sb97pdrhpc5506lwsc8hymqln53qshal-libtiff-4.7.1-bin/lib'),
+          PosixPath('/nix/store/17djp5v30333dlf5g70i4hs1mb4qlxbd-libtiff-4.7.1/lib'),
+          PosixPath('/nix/store/978afdy60i94ffw14rxsmpxr552v8xry-libjpeg-turbo-3.1.2-dev/lib'),
+          PosixPath('/nix/store/54rrraasls3cass3hzry95wb8hm75vqq-libjpeg-turbo-3.1.2-bin/lib'),
+          PosixPath('/nix/store/li2pfjskp7ijvs29bx2077b6ggq42v0k-libjpeg-turbo-3.1.2/lib'),
+          PosixPath('/nix/store/cfnas28yx8ni9izjmk3f9hgwzin798nl-gdk-pixbuf-2.44.4/lib'),
+          PosixPath('/nix/store/6546hslddlnvg5fmx8vv3man2blcprib-gsettings-desktop-schemas-49.1/lib'),
+          PosixPath('/nix/store/rxfgwj8xwanpbbqjpl4k2wa5z0s7g1vl-libice-1.1.2-dev/lib'),
+          PosixPath('/nix/store/49jajz5qx6v8dad3fhkr1nrzw9lk8a6p-libice-1.1.2/lib'),
+          PosixPath('/nix/store/r7n2nfclnl3a6lm3zpbqpf8swbg07p8d-libsm-1.2.6-dev/lib'),
+          PosixPath('/nix/store/xk3x9567nwma79iim3ar1ixl0rcf7449-libsm-1.2.6/lib'),
+          PosixPath('/nix/store/cpwiz2l0n81q9f2psl771x8734j2smcc-libxcomposite-0.4.6-dev/lib'),
+          PosixPath('/nix/store/vr2rj7zz28zvsnycx45kn6hhim0ky94z-libxfixes-6.0.2-dev/lib'),
+          PosixPath('/nix/store/i6mb757zbagjs50kh7n9sk51f7wsr5f3-libxfixes-6.0.2/lib'),
+          PosixPath('/nix/store/qf962z4wzmjpscpzpk15y0kqy9j2ak6s-libxcomposite-0.4.6/lib'),
+          PosixPath('/nix/store/7ys6dfy22hkm2bklwq7ll7pmby443fka-libxcursor-1.2.3-dev/lib'),
+          PosixPath('/nix/store/ldl1g8r8jfhjv4asb7zkr7ljpgk7q6dv-libxcursor-1.2.3/lib'),
+          PosixPath('/nix/store/mrg12flf0fd32xay1k0yngrnhdil8lfk-libxdamage-1.1.6-dev/lib'),
+          PosixPath('/nix/store/hnqyva9af3c6l20j59z0h32j670fb3z4-libxdamage-1.1.6/lib'),
+          PosixPath('/nix/store/jb2w03lbwm7j01zn9qzcnnqcc1ca5dyj-libxi-1.8.2-dev/lib'),
+          PosixPath('/nix/store/xg9763xyrnkxhvqgvxdbfiwxnmz391rx-libxi-1.8.2/lib'),
+          PosixPath('/nix/store/s7q5sdki2ax8gla778mbhddf5v9gk4vb-libxrandr-1.5.4-dev/lib'),
+          PosixPath('/nix/store/llr8wn0a3q8vfrg6i7vr2l2k66izm56a-libxrandr-1.5.4/lib'),
+          PosixPath('/nix/store/why5pbcax1xhy1g18qbhh54l3zvm8csl-pango-1.57.0-dev/lib'),
+          PosixPath('/nix/store/fyf45yywbqkfzli3k153lngkkdhk7w58-harfbuzz-12.1.0-dev/lib'),
+          PosixPath('/nix/store/3b62m9y45l3na95fl09jn7f5gdqgr9nj-graphite2-1.3.14-dev/lib'),
+          PosixPath('/nix/store/sdbzh44az4p0gglfvlxnb6v9dbzz9rg2-graphite2-1.3.14/lib'),
+          PosixPath('/nix/store/8mk1lafnnrx0a6lvjh69afm8w3i4pvqx-harfbuzz-12.1.0/lib'),
+          PosixPath('/nix/store/mn1fbbhyy4y74143n7rl93qhxngyr1mw-libxft-2.3.9-dev/lib'),
+          PosixPath('/nix/store/r2av6qwa7rqrwicbva1nrhmxlks8sphg-libxft-2.3.9/lib'),
+          PosixPath('/nix/store/2l4f0paypz6nnk91w70sasw6yx8bpxpc-pango-1.57.0-bin/lib'),
+          PosixPath('/nix/store/2ryq506h3bjvkrbydqjrr5b4id9m63a3-pango-1.57.0/lib'),
+          PosixPath('/nix/store/b608h3ylrhrwpi9bc0y0014jf7j03pzl-libglvnd-1.7.0-dev/lib'),
+          PosixPath('/nix/store/mm4v6w3wj8wi5qc6rwdrb2rkqs08whp9-libglvnd-1.7.0/lib'),
+          PosixPath('/nix/store/qxvgjcqizyz0rhrwlm49i0ys2gcgavf0-wayland-1.24.0-dev/lib'),
+          PosixPath('/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib'),
+          PosixPath('/nix/store/490i6sjf444shs4jwfd9rb4krilnpz1j-wayland-protocols-1.45/lib'),
+          PosixPath('/nix/store/3slyb9gb4bpvb9d4yimq35hnn2wwd0wk-libxinerama-1.1.5-dev/lib'),
+          PosixPath('/nix/store/02967njjlkrskapfy99fpacns5d0znjr-libxinerama-1.1.5/lib'),
+          PosixPath('/nix/store/k0s34lml62gkq9z0shya42yc3n8hmx7z-cups-2.4.14-dev/lib'),
+          PosixPath('/nix/store/f7hbkvplxa9kbd316csian2q6j7wwnjb-gmp-with-cxx-6.3.0-dev/lib'),
+          PosixPath('/nix/store/54jkwsavi3fdciqfyjmbilq0jhvv4jga-gmp-with-cxx-6.3.0/lib'),
+          PosixPath('/nix/store/yp9c76fj59a9lcn4afp4rylrhjzqk129-cups-2.4.14-lib/lib'),
+          PosixPath('/nix/store/csxa6mi2mpjl9vqxbv2j0bha6sz6nbjw-cups-2.4.14/lib'),
+          PosixPath('/nix/store/cs86fhm7hsgxm20m826cl5qqc4nyg33s-gtk+3-3.24.51/lib'),
+          PosixPath('/nix/store/7qaqp4nkvbxhpb8ymzqzg7n0z4bnn8i0-librsvg-2.61.3-dev/lib'),
+          PosixPath('/nix/store/yba4slcxfgpwviaiji43gyq8skvjm4y1-librsvg-2.61.3/lib'),
+          PosixPath('/nix/store/8q2582rd22xp8jlcg1xn1w219q5lx5xa-patchelf-0.15.2/lib'),
+          PosixPath('/nix/store/l2xk4ac1wx9c95kpp8vymv9r9yn57fvh-update-autotools-gnu-config-scripts-hook/lib'),
+          PosixPath('/nix/store/0y5xmdb7qfvimjwbq7ibg1xdgkgjwqng-no-broken-symlinks.sh/lib'),
+          PosixPath('/nix/store/cv1d7p48379km6a85h4zp6kr86brh32q-audit-tmpdir.sh/lib'),
+          PosixPath('/nix/store/85clx3b0xkdf58jn161iy80y5223ilbi-compress-man-pages.sh/lib'),
+          PosixPath('/nix/store/wgrbkkaldkrlrni33ccvm3b6vbxzb656-make-symlinks-relative.sh/lib'),
+          PosixPath('/nix/store/5yzw0vhkyszf2d179m0qfkgxmp5wjjx4-move-docs.sh/lib'),
+          PosixPath('/nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh/lib'),
+          PosixPath('/nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh/lib'),
+          PosixPath('/nix/store/pag6l61paj1dc9sv15l7bm5c17xn5kyk-move-systemd-user-units.sh/lib'),
+          PosixPath('/nix/store/cmzya9irvxzlkh7lfy6i82gbp0saxqj3-multiple-outputs.sh/lib'),
+          PosixPath('/nix/store/x8c40nfigps493a07sdr2pm5s9j1cdc0-patch-shebangs.sh/lib'),
+          PosixPath('/nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh/lib'),
+          PosixPath('/nix/store/xyff06pkhki3qy1ls77w10s0v79c9il0-reproducible-builds.sh/lib'),
+          PosixPath('/nix/store/z7k98578dfzi6l3hsvbivzm7hfqlk0zc-set-source-date-epoch-to-latest.sh/lib'),
+          PosixPath('/nix/store/pilsssjjdxvdphlg2h19p0bfx5q0jzkn-strip.sh/lib'),
+          PosixPath('/nix/store/vr15iyyykg9zai6fpgvhcgyw7gckl78w-gcc-wrapper-14.3.0/lib'),
+          PosixPath('/nix/store/xwydcyvlsa3cvssk0y5llgdhlhjvmqdm-binutils-wrapper-2.44/lib'),
+          PosixPath('/nix/store/8rwkhrlbwipydp6d9hc2ik481xx694i6-dconf-0.49.0-lib/lib'),
+          PosixPath('/nix/store/i2f6g9090vx5qnyik1hd74wan7zyvj71-libsecret-0.21.7-dev/lib'),
+          PosixPath('/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib'),
+          PosixPath('/nix/store/srwp5rjhq09hqmc9mmcwdqg8xcs2whsq-libxscrnsaver-1.2.5/lib'),
+          PosixPath('/nix/store/9pagwd2aj3nx162s59n5c2q7q67crr0k-libxshmfence-1.3.3-dev/lib'),
+          PosixPath('/nix/store/76y47xdn8dicja8c6dlrcbcl1przln0s-libxshmfence-1.3.3/lib'),
+          PosixPath('/nix/store/21fxbdc2kbhr9glvdhfmk80fl4xra4d9-alsa-lib-1.2.14-dev/lib'),
+          PosixPath('/nix/store/cm2986rrpqxbdjr46a7kxf1pgi2bwyss-alsa-lib-1.2.14/lib'),
+          PosixPath('/nix/store/k09kq98k3xmjwskphhgr35bmjddqg1im-krb5-1.22.1-dev/lib'),
+          PosixPath('/nix/store/9z2jg63df52gd4nmbggjcw41cdi4m14p-krb5-1.22.1-lib/lib'),
+          PosixPath('/nix/store/1byrgs1ziv2v030i1z46plpqdn7w0483-krb5-1.22.1/lib'),
+          PosixPath('/nix/store/pw8v6hlrg7lz2d3x115x3zy80bbhx1x9-mesa-libgbm-25.1.0/lib'),
+          PosixPath('/nix/store/vb7mcmb8sq7ab2x7d0ihph62falar66q-libdrm-2.4.128-dev/lib'),
+          PosixPath('/nix/store/46pvg809q9aza370wzfddp86jjwl0y66-libdrm-2.4.128-bin/lib'),
+          PosixPath('/nix/store/p4fk8qb6cy0zs65j6h50rh9bs7hnsgif-libdrm-2.4.128/lib'),
+          PosixPath('/nix/store/pkvpy32vagymrhnyzhxm7rcdf8mi0iar-nss-3.112.2-dev/lib'),
+          PosixPath('/nix/store/v3y369a1a0vx7c4af1w4q1pq9r9417hx-nspr-4.38.2-dev/lib'),
+          PosixPath('/nix/store/8hm6kz26gq7cfaw07lg8vs5632abrmdm-nspr-4.38.2/lib'),
+          PosixPath('/nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib'),
+          PosixPath('/nix/store/cabgv4ns64449hpd3v5nhfdajgqwkdbk-systemd-minimal-libs-258.2-dev/lib'),
+          PosixPath('/nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib'),
+          PosixPath('/nix/store/b55ybkxzvpnj6ydbr325pnr32rwp3v45-webkitgtk-2.50.4+abi=4.1-dev/lib'),
+          PosixPath('/nix/store/gzh8pg4ljrhwbanz8brdkm5b0wlvji9d-libsoup-3.6.5-dev/lib'),
+          PosixPath('/nix/store/sawby4ngiah8ppp2v4bvmagmdvis6wmk-libsoup-3.6.5/lib'),
+          PosixPath('/nix/store/h2vbiqnkrgsmkmnvhvdi6kd2drb3rqdw-webkitgtk-2.50.4+abi=4.1/lib'),
+          PosixPath('/nix/store/k55a4x6hkn69wm49h23zxvflcgmfb4r1-libxkbfile-1.1.3-dev/lib'),
+          PosixPath('/nix/store/fiaah22hp7qr40jjf7y81zjfxzp3ldnm-libxkbfile-1.1.3/lib'),
+          PosixPath('/nix/store/h7fgzg0gkpar781i0vj423sq8zyr24a5-unzip-6.0/lib'),
+          PosixPath('/nix/store/2lcaqq9rs6mn2jlrcfk885pg72scnjcv-auto-patchelf-hook/lib'),
+          PosixPath('/nix/store/qrhfjdpb10snd6zpbijr902jfxl6m5hk-auto-patchelf-0-unstable-2024-08-14/lib'),
+          PosixPath('/nix/store/l87z7vxm5gp0n21ddrlx4dmrrqg92a7w-binutils-wrapper-2.44/lib'),
+          PosixPath('/nix/store/lvnbpwbb8mxkvi4g6593ncfrhhfli1yn-asar-3.2.4/lib'),
+          PosixPath('/nix/store/c3pz622hnhm2g9v9spq4zy21abpxfgwr-copy-desktop-items-hook/lib'),
+          PosixPath('/nix/store/kz730bdzhzx3wxxjqqwcf16a6bvynjnz-wrap-gapps-hook/lib'),
+          PosixPath('/nix/store/6l9mndwn2z52njn5shabyqc3jr3bxmla-make-shell-wrapper-hook/lib'),
+          PosixPath('/nix/store/3lq26d4nmwgh8cy0h55spgb3bxc7l504-die-hook/lib'),
+          PosixPath('/nix/store/r9qybwam7v4sj4b6jyavb7dm97hhprm9-gtk+3-3.24.51-dev/lib'),
+          PosixPath('/nix/store/8hmax96hh41z898iwc2alj3rwi1yqb72-at-spi2-core-2.58.1-dev/lib'),
+          PosixPath('/nix/store/x5d1mak1amjrmxv4vm19r05pja38fyf1-dbus-1.14.10-dev/lib'),
+          PosixPath('/nix/store/94j5bdf27k7f95hdw1ppqwggwxjw76jk-expat-2.7.3-dev/lib'),
+          PosixPath('/nix/store/jnjcxanszfrp8ln69wp0n9s237xbh7bz-expat-2.7.3/lib'),
+          PosixPath('/nix/store/ibgwqf5qna1cy3gc30w27dcjvij60ick-dbus-1.14.10-lib/lib'),
+          PosixPath('/nix/store/rxzvps8zldnz4sgphbw6893n6ikai6gn-dbus-1.14.10/lib'),
+          PosixPath('/nix/store/g1zvzj5msg1d92jj2z9hn3b9n68rp8ap-glib-2.86.1-dev/lib'),
+          PosixPath('/nix/store/hqvsiah013yzb17b13fn18fpqk7m13cg-zlib-1.3.1-dev/lib'),
+          PosixPath('/nix/store/l7xwm1f6f3zj2x8jwdbi8gdyfbx07sh7-zlib-1.3.1/lib'),
+          PosixPath('/nix/store/9pvv6nip8hbk19ca24wmncjir9pv8vas-libffi-3.5.2-dev/lib'),
+          PosixPath('/nix/store/b9p0zpa93hwvh4d0r1rmgc2500yx2ldn-libffi-3.5.2/lib'),
+          PosixPath('/nix/store/kwr2jkqrbf6gsalagrka7gb7yrn71qpi-gettext-0.25.1/lib'),
+          PosixPath('/nix/store/l1fi677mcxsa175gf0zvpk68kf1calbn-glibc-iconv-2.40/lib'),
+          PosixPath('/nix/store/6mhypw5m1hbqn2glq4lhrlhbgdczdka5-glib-2.86.1-bin/lib'),
+          PosixPath('/nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib'),
+          PosixPath('/nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib'),
+          PosixPath('/nix/store/kx95a2drx2mgkxb61k65xlvp0dcbpsly-cairo-1.18.4-dev/lib'),
+          PosixPath('/nix/store/m4yklwaw26d8hhyl82fl6jmx1waqrakg-fontconfig-2.17.1-dev/lib'),
+          PosixPath('/nix/store/zykjcxzj7mg1x325xxfnrymf50daqvgb-freetype-2.13.3-dev/lib'),
+          PosixPath('/nix/store/q1a3bjhg3b4plgb7fk7zis1gi09rbi1d-bzip2-1.0.8-dev/lib'),
+          PosixPath('/nix/store/qm9rxn2sc1vrz91i443rr6f0vxm0zd82-bzip2-1.0.8-bin/lib'),
+          PosixPath('/nix/store/xgavznqg1ay2hycpp7yy9ia1n751jcla-bzip2-1.0.8/lib'),
+          PosixPath('/nix/store/9jixqayj11r1b2r4ikrwb3kc51innr6j-brotli-1.1.0-dev/lib'),
+          PosixPath('/nix/store/v8czfabwiry1aik0j3b4mqkqvn7vnxfi-brotli-1.1.0-lib/lib'),
+          PosixPath('/nix/store/yqnk9l97ppx2kz65wrkk5mzxi0jixkaf-brotli-1.1.0/lib'),
+          PosixPath('/nix/store/251366801cw3qn4bqka2pp21hlpzwj1v-libpng-apng-1.6.50-dev/lib'),
+          PosixPath('/nix/store/s8md611ry6w14m4awmgivld52ym8s3b2-libpng-apng-1.6.50/lib'),
+          PosixPath('/nix/store/b6rhgkvrwzq0bzfpaw79b60i1bfbhk3w-freetype-2.13.3/lib'),
+          PosixPath('/nix/store/sl7wgh3hb00gsicw2w0jfd3vxnsd448s-fontconfig-2.17.1-bin/lib'),
+          PosixPath('/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib'),
+          PosixPath('/nix/store/pw03xfrnb6a7nz6ivq6jijsx0n52afnp-pixman-0.46.4/lib'),
+          PosixPath('/nix/store/1315vzcs2vm98pgsdzwsxm7i2mzjc0g7-libxext-1.3.6-dev/lib'),
+          PosixPath('/nix/store/l7mab2s2kjsz2pz8dfgvh39af7w7gji1-xorgproto-2024.1/lib'),
+          PosixPath('/nix/store/qcw1za21lgqfpxr7365p64mlladhi2cc-libxau-1.0.12-dev/lib'),
+          PosixPath('/nix/store/lcss48c1x1pvn1irp2y3fsvc4b5mbqxv-libxau-1.0.12/lib'),
+          PosixPath('/nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib'),
+          PosixPath('/nix/store/wkrn5svcggds11pbkyjfka7b2i3wbmhj-libxrender-0.9.12-dev/lib'),
+          PosixPath('/nix/store/sbhg4bnrg0l22936dbwrnl33vzd3kcmf-libx11-1.8.12-dev/lib'),
+          PosixPath('/nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib'),
+          PosixPath('/nix/store/dgjd3hf8ny62vbjg10w64x4jwm7cv81k-libxrender-0.9.12/lib'),
+          PosixPath('/nix/store/p7c0w266jlbzwh84qw6d5g5glbr8mzyp-libxcb-1.17.0-dev/lib'),
+          PosixPath('/nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib'),
+          PosixPath('/nix/store/0ci3da6db19gckz0i5j3br992cspvlz1-cairo-1.18.4/lib'),
+          PosixPath('/nix/store/xnhjgs6kwqhhi9n4m85gwwhpq9nlhnab-fribidi-1.0.16-dev/lib'),
+          PosixPath('/nix/store/hsf2g79801wp025f38r6abz3nkykzw3p-fribidi-1.0.16/lib'),
+          PosixPath('/nix/store/y66pci58v5axqy1zyfw6ny2akl2hfmc1-gdk-pixbuf-2.44.4-dev/lib'),
+          PosixPath('/nix/store/xwljpgkz2akmk4yi6rlhxps8zly3rbgz-libtiff-4.7.1-dev/lib'),
+          PosixPath('/nix/store/sb97pdrhpc5506lwsc8hymqln53qshal-libtiff-4.7.1-bin/lib'),
+          PosixPath('/nix/store/17djp5v30333dlf5g70i4hs1mb4qlxbd-libtiff-4.7.1/lib'),
+          PosixPath('/nix/store/978afdy60i94ffw14rxsmpxr552v8xry-libjpeg-turbo-3.1.2-dev/lib'),
+          PosixPath('/nix/store/54rrraasls3cass3hzry95wb8hm75vqq-libjpeg-turbo-3.1.2-bin/lib'),
+          PosixPath('/nix/store/li2pfjskp7ijvs29bx2077b6ggq42v0k-libjpeg-turbo-3.1.2/lib'),
+          PosixPath('/nix/store/cfnas28yx8ni9izjmk3f9hgwzin798nl-gdk-pixbuf-2.44.4/lib'),
+          PosixPath('/nix/store/6546hslddlnvg5fmx8vv3man2blcprib-gsettings-desktop-schemas-49.1/lib'),
+          PosixPath('/nix/store/rxfgwj8xwanpbbqjpl4k2wa5z0s7g1vl-libice-1.1.2-dev/lib'),
+          PosixPath('/nix/store/49jajz5qx6v8dad3fhkr1nrzw9lk8a6p-libice-1.1.2/lib'),
+          PosixPath('/nix/store/r7n2nfclnl3a6lm3zpbqpf8swbg07p8d-libsm-1.2.6-dev/lib'),
+          PosixPath('/nix/store/xk3x9567nwma79iim3ar1ixl0rcf7449-libsm-1.2.6/lib'),
+          PosixPath('/nix/store/cpwiz2l0n81q9f2psl771x8734j2smcc-libxcomposite-0.4.6-dev/lib'),
+          PosixPath('/nix/store/vr2rj7zz28zvsnycx45kn6hhim0ky94z-libxfixes-6.0.2-dev/lib'),
+          PosixPath('/nix/store/i6mb757zbagjs50kh7n9sk51f7wsr5f3-libxfixes-6.0.2/lib'),
+          PosixPath('/nix/store/qf962z4wzmjpscpzpk15y0kqy9j2ak6s-libxcomposite-0.4.6/lib'),
+          PosixPath('/nix/store/7ys6dfy22hkm2bklwq7ll7pmby443fka-libxcursor-1.2.3-dev/lib'),
+          PosixPath('/nix/store/ldl1g8r8jfhjv4asb7zkr7ljpgk7q6dv-libxcursor-1.2.3/lib'),
+          PosixPath('/nix/store/mrg12flf0fd32xay1k0yngrnhdil8lfk-libxdamage-1.1.6-dev/lib'),
+          PosixPath('/nix/store/hnqyva9af3c6l20j59z0h32j670fb3z4-libxdamage-1.1.6/lib'),
+          PosixPath('/nix/store/jb2w03lbwm7j01zn9qzcnnqcc1ca5dyj-libxi-1.8.2-dev/lib'),
+          PosixPath('/nix/store/xg9763xyrnkxhvqgvxdbfiwxnmz391rx-libxi-1.8.2/lib'),
+          PosixPath('/nix/store/s7q5sdki2ax8gla778mbhddf5v9gk4vb-libxrandr-1.5.4-dev/lib'),
+          PosixPath('/nix/store/llr8wn0a3q8vfrg6i7vr2l2k66izm56a-libxrandr-1.5.4/lib'),
+          PosixPath('/nix/store/why5pbcax1xhy1g18qbhh54l3zvm8csl-pango-1.57.0-dev/lib'),
+          PosixPath('/nix/store/fyf45yywbqkfzli3k153lngkkdhk7w58-harfbuzz-12.1.0-dev/lib'),
+          PosixPath('/nix/store/3b62m9y45l3na95fl09jn7f5gdqgr9nj-graphite2-1.3.14-dev/lib'),
+          PosixPath('/nix/store/sdbzh44az4p0gglfvlxnb6v9dbzz9rg2-graphite2-1.3.14/lib'),
+          PosixPath('/nix/store/8mk1lafnnrx0a6lvjh69afm8w3i4pvqx-harfbuzz-12.1.0/lib'),
+          PosixPath('/nix/store/mn1fbbhyy4y74143n7rl93qhxngyr1mw-libxft-2.3.9-dev/lib'),
+          PosixPath('/nix/store/r2av6qwa7rqrwicbva1nrhmxlks8sphg-libxft-2.3.9/lib'),
+          PosixPath('/nix/store/2l4f0paypz6nnk91w70sasw6yx8bpxpc-pango-1.57.0-bin/lib'),
+          PosixPath('/nix/store/2ryq506h3bjvkrbydqjrr5b4id9m63a3-pango-1.57.0/lib'),
+          PosixPath('/nix/store/b608h3ylrhrwpi9bc0y0014jf7j03pzl-libglvnd-1.7.0-dev/lib'),
+          PosixPath('/nix/store/mm4v6w3wj8wi5qc6rwdrb2rkqs08whp9-libglvnd-1.7.0/lib'),
+          PosixPath('/nix/store/qxvgjcqizyz0rhrwlm49i0ys2gcgavf0-wayland-1.24.0-dev/lib'),
+          PosixPath('/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib'),
+          PosixPath('/nix/store/490i6sjf444shs4jwfd9rb4krilnpz1j-wayland-protocols-1.45/lib'),
+          PosixPath('/nix/store/3slyb9gb4bpvb9d4yimq35hnn2wwd0wk-libxinerama-1.1.5-dev/lib'),
+          PosixPath('/nix/store/02967njjlkrskapfy99fpacns5d0znjr-libxinerama-1.1.5/lib'),
+          PosixPath('/nix/store/k0s34lml62gkq9z0shya42yc3n8hmx7z-cups-2.4.14-dev/lib'),
+          PosixPath('/nix/store/f7hbkvplxa9kbd316csian2q6j7wwnjb-gmp-with-cxx-6.3.0-dev/lib'),
+          PosixPath('/nix/store/54jkwsavi3fdciqfyjmbilq0jhvv4jga-gmp-with-cxx-6.3.0/lib'),
+          PosixPath('/nix/store/yp9c76fj59a9lcn4afp4rylrhjzqk129-cups-2.4.14-lib/lib'),
+          PosixPath('/nix/store/csxa6mi2mpjl9vqxbv2j0bha6sz6nbjw-cups-2.4.14/lib'),
+          PosixPath('/nix/store/cs86fhm7hsgxm20m826cl5qqc4nyg33s-gtk+3-3.24.51/lib'),
+          PosixPath('/nix/store/7qaqp4nkvbxhpb8ymzqzg7n0z4bnn8i0-librsvg-2.61.3-dev/lib'),
+          PosixPath('/nix/store/yba4slcxfgpwviaiji43gyq8skvjm4y1-librsvg-2.61.3/lib'),
+          PosixPath('/nix/store/8q2582rd22xp8jlcg1xn1w219q5lx5xa-patchelf-0.15.2/lib'),
+          PosixPath('/nix/store/l2xk4ac1wx9c95kpp8vymv9r9yn57fvh-update-autotools-gnu-config-scripts-hook/lib'),
+          PosixPath('/nix/store/0y5xmdb7qfvimjwbq7ibg1xdgkgjwqng-no-broken-symlinks.sh/lib'),
+          PosixPath('/nix/store/cv1d7p48379km6a85h4zp6kr86brh32q-audit-tmpdir.sh/lib'),
+          PosixPath('/nix/store/85clx3b0xkdf58jn161iy80y5223ilbi-compress-man-pages.sh/lib'),
+          PosixPath('/nix/store/wgrbkkaldkrlrni33ccvm3b6vbxzb656-make-symlinks-relative.sh/lib'),
+          PosixPath('/nix/store/5yzw0vhkyszf2d179m0qfkgxmp5wjjx4-move-docs.sh/lib'),
+          PosixPath('/nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh/lib'),
+          PosixPath('/nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh/lib'),
+          PosixPath('/nix/store/pag6l61paj1dc9sv15l7bm5c17xn5kyk-move-systemd-user-units.sh/lib'),
+          PosixPath('/nix/store/cmzya9irvxzlkh7lfy6i82gbp0saxqj3-multiple-outputs.sh/lib'),
+          PosixPath('/nix/store/x8c40nfigps493a07sdr2pm5s9j1cdc0-patch-shebangs.sh/lib'),
+          PosixPath('/nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh/lib'),
+          PosixPath('/nix/store/xyff06pkhki3qy1ls77w10s0v79c9il0-reproducible-builds.sh/lib'),
+          PosixPath('/nix/store/z7k98578dfzi6l3hsvbivzm7hfqlk0zc-set-source-date-epoch-to-latest.sh/lib'),
+          PosixPath('/nix/store/pilsssjjdxvdphlg2h19p0bfx5q0jzkn-strip.sh/lib'),
+          PosixPath('/nix/store/vr15iyyykg9zai6fpgvhcgyw7gckl78w-gcc-wrapper-14.3.0/lib'),
+          PosixPath('/nix/store/xwydcyvlsa3cvssk0y5llgdhlhjvmqdm-binutils-wrapper-2.44/lib'),
+          PosixPath('/nix/store/8rwkhrlbwipydp6d9hc2ik481xx694i6-dconf-0.49.0-lib/lib'),
+          PosixPath('/nix/store/i2f6g9090vx5qnyik1hd74wan7zyvj71-libsecret-0.21.7-dev/lib'),
+          PosixPath('/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib'),
+          PosixPath('/nix/store/srwp5rjhq09hqmc9mmcwdqg8xcs2whsq-libxscrnsaver-1.2.5/lib'),
+          PosixPath('/nix/store/9pagwd2aj3nx162s59n5c2q7q67crr0k-libxshmfence-1.3.3-dev/lib'),
+          PosixPath('/nix/store/76y47xdn8dicja8c6dlrcbcl1przln0s-libxshmfence-1.3.3/lib'),
+          PosixPath('/nix/store/21fxbdc2kbhr9glvdhfmk80fl4xra4d9-alsa-lib-1.2.14-dev/lib'),
+          PosixPath('/nix/store/cm2986rrpqxbdjr46a7kxf1pgi2bwyss-alsa-lib-1.2.14/lib'),
+          PosixPath('/nix/store/k09kq98k3xmjwskphhgr35bmjddqg1im-krb5-1.22.1-dev/lib'),
+          PosixPath('/nix/store/9z2jg63df52gd4nmbggjcw41cdi4m14p-krb5-1.22.1-lib/lib'),
+          PosixPath('/nix/store/1byrgs1ziv2v030i1z46plpqdn7w0483-krb5-1.22.1/lib'),
+          PosixPath('/nix/store/pw8v6hlrg7lz2d3x115x3zy80bbhx1x9-mesa-libgbm-25.1.0/lib'),
+          PosixPath('/nix/store/vb7mcmb8sq7ab2x7d0ihph62falar66q-libdrm-2.4.128-dev/lib'),
+          PosixPath('/nix/store/46pvg809q9aza370wzfddp86jjwl0y66-libdrm-2.4.128-bin/lib'),
+          PosixPath('/nix/store/p4fk8qb6cy0zs65j6h50rh9bs7hnsgif-libdrm-2.4.128/lib'),
+          PosixPath('/nix/store/pkvpy32vagymrhnyzhxm7rcdf8mi0iar-nss-3.112.2-dev/lib'),
+          PosixPath('/nix/store/v3y369a1a0vx7c4af1w4q1pq9r9417hx-nspr-4.38.2-dev/lib'),
+          PosixPath('/nix/store/8hm6kz26gq7cfaw07lg8vs5632abrmdm-nspr-4.38.2/lib'),
+          PosixPath('/nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib'),
+          PosixPath('/nix/store/cabgv4ns64449hpd3v5nhfdajgqwkdbk-systemd-minimal-libs-258.2-dev/lib'),
+          PosixPath('/nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib'),
+          PosixPath('/nix/store/b55ybkxzvpnj6ydbr325pnr32rwp3v45-webkitgtk-2.50.4+abi=4.1-dev/lib'),
+          PosixPath('/nix/store/gzh8pg4ljrhwbanz8brdkm5b0wlvji9d-libsoup-3.6.5-dev/lib'),
+          PosixPath('/nix/store/sawby4ngiah8ppp2v4bvmagmdvis6wmk-libsoup-3.6.5/lib'),
+          PosixPath('/nix/store/h2vbiqnkrgsmkmnvhvdi6kd2drb3rqdw-webkitgtk-2.50.4+abi=4.1/lib'),
+          PosixPath('/nix/store/k55a4x6hkn69wm49h23zxvflcgmfb4r1-libxkbfile-1.1.3-dev/lib'),
+          PosixPath('/nix/store/fiaah22hp7qr40jjf7y81zjfxzp3ldnm-libxkbfile-1.1.3/lib')],
+ 'paths': [PosixPath('/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3')],
+ 'recursive': True,
+ 'runtime_dependencies': [PosixPath('/nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib'),
+                          PosixPath('/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib'),
+                          PosixPath('/nix/store/0bpcnim5q2i7m670jsvprpgpjk4pkrdc-libdbusmenu-glib-16.04.0/lib'),
+                          PosixPath('/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib'),
+                          PosixPath('/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib')]}
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libGLESv2.so
+    libX11.so.6 -> found: /nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib
+    libXext.so.6 -> found: /nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib
+    libxcb.so.1 -> found: /nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib:/nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib:/nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libffmpeg.so
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libvulkan.so.1
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting interpreter of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome-sandbox
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome-sandbox
+setting RPATH to: /nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib:/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib:/nix/store/0bpcnim5q2i7m670jsvprpgpjk4pkrdc-libdbusmenu-glib-16.04.0/lib:/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib:/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libvk_swiftshader.so
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting interpreter of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome_crashpad_handler
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/chrome_crashpad_handler
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib:/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib:/nix/store/0bpcnim5q2i7m670jsvprpgpjk4pkrdc-libdbusmenu-glib-16.04.0/lib:/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib:/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/libEGL.so
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting interpreter of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/windsurf
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/windsurf
+    libffmpeg.so -> found: /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf
+    libglib-2.0.so.0 -> found: /nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib
+    libgobject-2.0.so.0 -> found: /nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib
+    libgio-2.0.so.0 -> found: /nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib
+    libnspr4.so -> found: /nix/store/8hm6kz26gq7cfaw07lg8vs5632abrmdm-nspr-4.38.2/lib
+    libnss3.so -> found: /nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib
+    libnssutil3.so -> found: /nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib
+    libsmime3.so -> found: /nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib
+    libdbus-1.so.3 -> found: /nix/store/ibgwqf5qna1cy3gc30w27dcjvij60ick-dbus-1.14.10-lib/lib
+    libatk-1.0.so.0 -> found: /nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib
+    libatk-bridge-2.0.so.0 -> found: /nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib
+    libcups.so.2 -> found: /nix/store/yp9c76fj59a9lcn4afp4rylrhjzqk129-cups-2.4.14-lib/lib
+    libcairo.so.2 -> found: /nix/store/0ci3da6db19gckz0i5j3br992cspvlz1-cairo-1.18.4/lib
+    libgtk-3.so.0 -> found: /nix/store/cs86fhm7hsgxm20m826cl5qqc4nyg33s-gtk+3-3.24.51/lib
+    libpango-1.0.so.0 -> found: /nix/store/2ryq506h3bjvkrbydqjrr5b4id9m63a3-pango-1.57.0/lib
+    libX11.so.6 -> found: /nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib
+    libXcomposite.so.1 -> found: /nix/store/qf962z4wzmjpscpzpk15y0kqy9j2ak6s-libxcomposite-0.4.6/lib
+    libXdamage.so.1 -> found: /nix/store/hnqyva9af3c6l20j59z0h32j670fb3z4-libxdamage-1.1.6/lib
+    libXext.so.6 -> found: /nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib
+    libXfixes.so.3 -> found: /nix/store/i6mb757zbagjs50kh7n9sk51f7wsr5f3-libxfixes-6.0.2/lib
+    libXrandr.so.2 -> found: /nix/store/llr8wn0a3q8vfrg6i7vr2l2k66izm56a-libxrandr-1.5.4/lib
+    libgbm.so.1 -> found: /nix/store/pw8v6hlrg7lz2d3x115x3zy80bbhx1x9-mesa-libgbm-25.1.0/lib
+    libexpat.so.1 -> found: /nix/store/jnjcxanszfrp8ln69wp0n9s237xbh7bz-expat-2.7.3/lib
+    libxcb.so.1 -> found: /nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib
+    libxkbcommon.so.0 -> found: /nix/store/bhmkfqa9b9sakim9zan85ylsgam03b0x-libxkbcommon-1.11.0/lib
+    libudev.so.1 -> found: /nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib
+    libasound.so.2 -> found: /nix/store/cm2986rrpqxbdjr46a7kxf1pgi2bwyss-alsa-lib-1.2.14/lib
+    libatspi.so.0 -> found: /nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib:/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib:/nix/store/0bpcnim5q2i7m670jsvprpgpjk4pkrdc-libdbusmenu-glib-16.04.0/lib:/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib:/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib:/nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf:/nix/store/5qdsnc26nv61j5rrw492f19xav2rz45v-glib-2.86.1/lib:/nix/store/8hm6kz26gq7cfaw07lg8vs5632abrmdm-nspr-4.38.2/lib:/nix/store/3qix2clbn8ic79pl0z6y8w08c7a1yg0s-nss-3.112.2/lib:/nix/store/ibgwqf5qna1cy3gc30w27dcjvij60ick-dbus-1.14.10-lib/lib:/nix/store/ildy6f9q59c8c4imgwcbdbf3xc9dnc5j-at-spi2-core-2.58.1/lib:/nix/store/yp9c76fj59a9lcn4afp4rylrhjzqk129-cups-2.4.14-lib/lib:/nix/store/0ci3da6db19gckz0i5j3br992cspvlz1-cairo-1.18.4/lib:/nix/store/cs86fhm7hsgxm20m826cl5qqc4nyg33s-gtk+3-3.24.51/lib:/nix/store/2ryq506h3bjvkrbydqjrr5b4id9m63a3-pango-1.57.0/lib:/nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib:/nix/store/qf962z4wzmjpscpzpk15y0kqy9j2ak6s-libxcomposite-0.4.6/lib:/nix/store/hnqyva9af3c6l20j59z0h32j670fb3z4-libxdamage-1.1.6/lib:/nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib:/nix/store/i6mb757zbagjs50kh7n9sk51f7wsr5f3-libxfixes-6.0.2/lib:/nix/store/llr8wn0a3q8vfrg6i7vr2l2k66izm56a-libxrandr-1.5.4/lib:/nix/store/pw8v6hlrg7lz2d3x115x3zy80bbhx1x9-mesa-libgbm-25.1.0/lib:/nix/store/jnjcxanszfrp8ln69wp0n9s237xbh7bz-expat-2.7.3/lib:/nix/store/9babi8y8p9crps6l8sz5gr5xm5fljw1h-libxcb-1.17.0/lib:/nix/store/bhmkfqa9b9sakim9zan85ylsgam03b0x-libxkbcommon-1.11.0/lib:/nix/store/cm2986rrpqxbdjr46a7kxf1pgi2bwyss-alsa-lib-1.2.14/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting interpreter of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf/bin/language_server_linux_x64
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf/bin/language_server_linux_x64
+setting RPATH to: /nix/store/q5fmjr9s9968bkv5bm3al5517x27bm19-systemd-minimal-libs-258.2/lib:/nix/store/5l5wsn4qxkw90h6sxxz43gbnar7w5x8s-fontconfig-2.17.1-lib/lib:/nix/store/0bpcnim5q2i7m670jsvprpgpjk4pkrdc-libdbusmenu-glib-16.04.0/lib:/nix/store/h9grlk1b07l80k6rnmyliawg25bdpsv5-wayland-1.24.0/lib:/nix/store/frrm11g30gn3cgaw2kr2a49nrnviq2ip-libsecret-0.21.7/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/extensions/windsurf/bin/fd
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/kerberos/build/Release/kerberos.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/kerberos/build/Release/obj.target/kerberos.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/policy-watcher/build/Release/vscode-policy-watcher.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/spdlog/build/Release/spdlog.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/sqlite3/build/Release/vscode-sqlite3.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@vscode/deviceid/build/Release/windows.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/node-pty/build/Release/pty.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/@parcel/watcher/build/Release/watcher.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-is-elevated/build/Release/iselevated.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-keymap/build/Release/keymapping.node
+    libX11.so.6 -> found: /nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib
+    libxkbfile.so.1 -> found: /nix/store/fiaah22hp7qr40jjf7y81zjfxzp3ldnm-libxkbfile-1.1.3/lib
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib:/nix/store/fiaah22hp7qr40jjf7y81zjfxzp3ldnm-libxkbfile-1.1.3/lib:/nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/windows-foreground-love/build/Release/foreground_love.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/windows-foreground-love/build/Release/obj.target/foreground_love.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+searching for dependencies of /nix/store/jc7x9zj74hm0chfli8hs5sv2c1rfd901-windsurf-1.13.3/lib/windsurf/resources/app/node_modules/native-watchdog/build/Release/watchdog.node
+    libstdc++.so.6 -> found: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib
+    libgcc_s.so.1 -> found: /nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+setting RPATH to: /nix/store/xm08aqdd7pxcdhm0ak6aqb1v7hw5q6ri-gcc-14.3.0-lib/lib:/nix/store/shs2lyjm5yv7fmg4pwyvrlv9zr4macmv-gcc-14.3.0-libgcc/lib
+auto-patchelf: 0 dependencies could not be satisfied
+building '/nix/store/bdc6lyahjqqg3r6kfhqknjd7glxhxl7j-system-path.drv'...
+warning: collision between `/nix/store/aab6f30yh0j4g431clxr80jv64zbhy84-steam-run/bin/steam-run' and `/nix/store/3ilfb0pg60myjybmw4iw4q0c0i5bzsyq-steam-run/bin/steam-run'
+created 11789 symlinks in user environment
+building '/nix/store/f6w9gdkwjbjamh3n6f6hbn7ia7fsglvb-X-Restart-Triggers-polkit.drv'...
+building '/nix/store/xhb9g44wpxm9dn19gn743fj4hfsj7rlx-dbus-1.drv'...
+building '/nix/store/nwl0pb6q8408k803cj04qif1ih2dag0b-unit-polkit.service.drv'...
+building '/nix/store/4zyssjxsa4mrpd711qqgkln3hsk8jqv7-X-Restart-Triggers-dbus.drv'...
+building '/nix/store/8p64z0cj2zy0m1ip48yppi98r9kb0fgj-unit-dbus.service.drv'...
+building '/nix/store/989sg5nanpq5qv5j7pkbq5g8m78v4z4n-unit-dbus.service.drv'...
+building '/nix/store/wk4bswyshh8k6y7wf1nbz4z8ahn4bfr4-system-units.drv'...
+building '/nix/store/s50hglzmf73p7xmqvq8r2f6hdyag3id8-user-units.drv'...
+building '/nix/store/5p9yilq6p5cb83hy2y19ivygcdavyz2f-etc.drv'...
+building '/nix/store/fyrx8vz7afnmkbhhhqmra1q61g22pw94-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
+>>>>>>> 3276046 (33 current  2025-12-29 16:21:08  25.05.807819.e728d7ae4bb6  6.12.41                                 *)
 activating the configuration...
 setting up /etc...
 reloading user units for bee...
 restarting sysinit-reactivation.target
 reloading the following units: dbus.service, firewall.service
 restarting the following units: polkit.service
+<<<<<<< HEAD
 the following new units were started: NetworkManager-dispatcher.service
 Done. The new configuration is /nix/store/vhrxzi1cs1mknphk6kh1hzgpp5hfjidw-nixos-system-nixos-25.05.807819.e728d7ae4bb6
+=======
+the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+Done. The new configuration is /nix/store/dxvxa7y49bvvsqd1d17i6691slgjsps3-nixos-system-nixos-25.05.807819.e728d7ae4bb6
+>>>>>>> 3276046 (33 current  2025-12-29 16:21:08  25.05.807819.e728d7ae4bb6  6.12.41                                 *)
