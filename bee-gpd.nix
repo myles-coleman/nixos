@@ -140,6 +140,7 @@ in {
     oh-my-posh
     tmux
     python313Packages.cmake
+    nvtopPackages.nvidia
   ];
 
   environment.variables = {
