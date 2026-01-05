@@ -85,6 +85,9 @@ in {
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia.open = true;
 
+  # Enable IOMMU
+  boot.kernelParams = ["amd_iommu=on" "iommu=pt"];
+
   # Kernel modules for game controllers
   boot.kernelModules = ["hid_nintendo" "joydev"];
 
