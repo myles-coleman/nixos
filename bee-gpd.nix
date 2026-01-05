@@ -190,6 +190,12 @@ in {
     ];
   };
 
+  services.hardware.bolt.enable = true;
+
+  services.udev.packages = with pkgs; [
+    bolt
+  ];
+
   services.rpcbind.enable = true;
 
   # Font configuration
