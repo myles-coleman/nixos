@@ -146,6 +146,7 @@ in {
     tmux
     python313Packages.cmake
     nvtopPackages.nvidia
+    mpv
   ];
 
   environment.variables = {
