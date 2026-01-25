@@ -293,6 +293,15 @@ in {
   };
   services.blueman.enable = true;
 
+  # Ollama service with GPU support
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+    environmentVariables = {
+      OLLAMA_HOST = "127.0.0.1:11434";
+    };
+  };
+
   # Ensure opencode npm dependencies are installed
   systemd.user.services.opencode-setup = {
     description = "Install opencode npm dependencies";
