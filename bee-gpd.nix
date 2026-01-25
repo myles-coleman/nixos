@@ -299,9 +299,24 @@ in {
     acceleration = "cuda";
     environmentVariables = {
       OLLAMA_HOST = "127.0.0.1:11434";
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib";
     };
     models = "/var/lib/ollama/models";
     loadModels = ["qwen2.5-coder:7b"];
+  };
+
+  # Allow Ollama to access GPU devices
+  systemd.services.ollama = {
+    serviceConfig = {
+      DeviceAllow = [
+        "/dev/nvidia0 rwm"
+        "/dev/nvidiactl rwm"
+        "/dev/nvidia-modeset rwm"
+        "/dev/nvidia-uvm rwm"
+        "/dev/nvidia-uvm-tools rwm"
+      ];
+      PrivateDevices = false;
+    };
   };
 
   # Ensure opencode npm dependencies are installed
