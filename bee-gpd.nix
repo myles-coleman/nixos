@@ -147,6 +147,7 @@ in {
     python313Packages.cmake
     nvtopPackages.nvidia
     mpv
+    opencode
   ];
 
   environment.variables = {
