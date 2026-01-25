@@ -293,5 +293,17 @@ in {
   };
   services.blueman.enable = true;
 
+  # Ensure opencode npm dependencies are installed
+  systemd.user.services.opencode-setup = {
+    description = "Install opencode npm dependencies";
+    wantedBy = ["default.target"];
+    after = ["network-online.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.bash}/bin/bash -c 'if [ -f $HOME/.cache/opencode/package.json ] && [ ! -d $HOME/.cache/opencode/node_modules ]; then cd $HOME/.cache/opencode && ${pkgs.nodejs}/bin/npm install; fi'";
+    };
+  };
+
   system.stateVersion = "25.05";
 }
