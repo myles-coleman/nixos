@@ -147,7 +147,7 @@ in {
     python313Packages.cmake
     nvtopPackages.nvidia
     mpv
-    opencode
+    unstable.opencode
     ollama
   ];
 
