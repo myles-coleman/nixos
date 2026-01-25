@@ -148,6 +148,7 @@ in {
     nvtopPackages.nvidia
     mpv
     opencode
+    ollama
   ];
 
   environment.variables = {
