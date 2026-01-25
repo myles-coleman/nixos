@@ -1,152 +1,19 @@
 building Nix...
 building the system configuration...
-these 13 derivations will be built:
-  /nix/store/xqk2sq0k2x3k0jd1gzf4w1yywjnx15zf-opencode-node_modules-1.1.30.drv
-  /nix/store/nxamnb64qhfk12hp4ax92qhg6gng6bbj-opencode-1.1.30.drv
-  /nix/store/0h09gysnw42hscxgbbaa56par48lzhw7-system-path.drv
-  /nix/store/7y3lwhsws3axljckh5pmzw6br092cbbg-dbus-1.drv
-  /nix/store/n4f1laqwk1hf6nd9dxz80r569ph50csv-X-Restart-Triggers-dbus.drv
-  /nix/store/1cszvlb4yrgy6mr28gw33fzl8yhigwqj-unit-dbus.service.drv
-  /nix/store/djwi9y2pksigiipkvvs7rdc526smgkvy-X-Restart-Triggers-polkit.drv
-  /nix/store/zid6qs5l62wzr2kc97sp5a3ryrbf04vf-unit-polkit.service.drv
-  /nix/store/2mg1xghmyqpah2zlahk8sp9yz7bw5hhi-system-units.drv
-  /nix/store/yj9hlzkgsy3yila9iijgjdalr1kq8y45-unit-dbus.service.drv
-  /nix/store/31nz5hr7s9cv03klq68nj41k0dd9z5y2-user-units.drv
-  /nix/store/dp3yyrzj1jgwz4crrn977pfsz0yxy8bj-etc.drv
-  /nix/store/5jalbq9pzfp4qqhicay3v9qv3gjk3dh4-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
-these 10 paths will be fetched (95.63 MiB download, 196.30 MiB unpacked):
-  /nix/store/m2gxc0sb4rkpnqhz541pp1p6g6w31gm3-bc-1.08.2
-  /nix/store/bya2xzd49g08c7c371g36wma3d5ggbp2-bun-1.3.6
-  /nix/store/98zgrv8ghd6dzqyc8qiral5vik844r17-fzf-0.67.0
-  /nix/store/dm16iwd2p8abxly30iy0idkvzpp0w5zy-iana-etc-20250505
-  /nix/store/73ik8cqs2x7m18y8zaf84vq8x49gxp6h-install-shell-files
-  /nix/store/4vlbi84gav86y4mrs96y78wq71y3zpj2-make-binary-wrapper-hook
-  /nix/store/gl0s52wp2rr83rrcs1rpkh4j8yhsmyc6-models-dev-0-unstable-2026-01-17
-  /nix/store/j95ds02lvykcvgmsbv5bqc35mry7h7qh-source
-  /nix/store/rmbkkb3ianj8k9n5lwzyyal07a7cag13-version-check-hook
-  /nix/store/nxywk9j968v5sirnp11nq5amgp1jgk59-writable-tmpdir-as-home-hook
-copying path '/nix/store/73ik8cqs2x7m18y8zaf84vq8x49gxp6h-install-shell-files' from 'https://cache.nixos.org'...
-copying path '/nix/store/j95ds02lvykcvgmsbv5bqc35mry7h7qh-source' from 'https://cache.nixos.org'...
-copying path '/nix/store/gl0s52wp2rr83rrcs1rpkh4j8yhsmyc6-models-dev-0-unstable-2026-01-17' from 'https://cache.nixos.org'...
-copying path '/nix/store/nxywk9j968v5sirnp11nq5amgp1jgk59-writable-tmpdir-as-home-hook' from 'https://cache.nixos.org'...
-copying path '/nix/store/dm16iwd2p8abxly30iy0idkvzpp0w5zy-iana-etc-20250505' from 'https://cache.nixos.org'...
-copying path '/nix/store/bya2xzd49g08c7c371g36wma3d5ggbp2-bun-1.3.6' from 'https://cache.nixos.org'...
-copying path '/nix/store/4vlbi84gav86y4mrs96y78wq71y3zpj2-make-binary-wrapper-hook' from 'https://cache.nixos.org'...
-copying path '/nix/store/rmbkkb3ianj8k9n5lwzyyal07a7cag13-version-check-hook' from 'https://cache.nixos.org'...
-copying path '/nix/store/m2gxc0sb4rkpnqhz541pp1p6g6w31gm3-bc-1.08.2' from 'https://cache.nixos.org'...
-copying path '/nix/store/98zgrv8ghd6dzqyc8qiral5vik844r17-fzf-0.67.0' from 'https://cache.nixos.org'...
-building '/nix/store/xqk2sq0k2x3k0jd1gzf4w1yywjnx15zf-opencode-node_modules-1.1.30.drv'...
-Running phase: unpackPhase
-unpacking source archive /nix/store/j95ds02lvykcvgmsbv5bqc35mry7h7qh-source
-source root is source
-Running phase: patchPhase
-Running phase: updateAutotoolsGnuConfigScriptsPhase
-Running phase: buildPhase
-bun install v1.3.6 (d530ed99)
-Resolving dependencies
-Resolved, downloaded and extracted [349]
-
-+ @actions/artifact@5.0.1 (v5.0.2 available)
-+ @tsconfig/bun@1.0.9 (v1.0.10 available)
-+ husky@9.1.7
-+ prettier@3.6.2
-+ semver@7.7.3
-+ sst@3.17.23
-+ turbo@2.5.6
-+ @aws-sdk/client-s3@3.933.0
-+ typescript@5.8.2 (v5.9.3 available)
-
-3997 packages installed [51.76s]
-[canonicalize-node-modules] rebuilt 1668 links
-   @actions/artifact -> ../../@actions+artifact@5.0.1/node_modules/@actions/artifact
-   @actions/core -> ../../@actions+core@2.0.1/node_modules/@actions/core
-   @actions/exec -> ../../@actions+exec@2.0.0/node_modules/@actions/exec
-   @actions/github -> ../../@actions+github@6.0.1/node_modules/@actions/github
-   @actions/http-client -> ../../@actions+http-client@3.0.0/node_modules/@actions/http-client
-   @actions/io -> ../../@actions+io@2.0.0/node_modules/@actions/io
-   @adobe/css-tools -> ../../@adobe+css-tools@4.4.4/node_modules/@adobe/css-tools
-   @agentclientprotocol/sdk -> ../../@agentclientprotocol+sdk@0.12.0+d6123d32214422cb/node_modules/@agentclientprotocol/sdk
-   @ai-sdk/amazon-bedrock -> ../../@ai-sdk+amazon-bedrock@3.0.73+d6123d32214422cb/node_modules/@ai-sdk/amazon-bedrock
-   @ai-sdk/anthropic -> ../../@ai-sdk+anthropic@2.0.57+d6123d32214422cb/node_modules/@ai-sdk/anthropic
-   @ai-sdk/azure -> ../../@ai-sdk+azure@2.0.91+d6123d32214422cb/node_modules/@ai-sdk/azure
-   @ai-sdk/cerebras -> ../../@ai-sdk+cerebras@1.0.34+d6123d32214422cb/node_modules/@ai-sdk/cerebras
-   @ai-sdk/cohere -> ../../@ai-sdk+cohere@2.0.22+d6123d32214422cb/node_modules/@ai-sdk/cohere
-   @ai-sdk/deepinfra -> ../../@ai-sdk+deepinfra@1.0.31+d6123d32214422cb/node_modules/@ai-sdk/deepinfra
-   @ai-sdk/gateway -> ../../@ai-sdk+gateway@2.0.25+d6123d32214422cb/node_modules/@ai-sdk/gateway
-   @ai-sdk/google -> ../../@ai-sdk+google@2.0.52+d6123d32214422cb/node_modules/@ai-sdk/google
-   @ai-sdk/google-vertex -> ../../@ai-sdk+google-vertex@3.0.97+d6123d32214422cb/node_modules/@ai-sdk/google-vertex
-   @ai-sdk/groq -> ../../@ai-sdk+groq@2.0.34+d6123d32214422cb/node_modules/@ai-sdk/groq
-   @ai-sdk/mistral -> ../../@ai-sdk+mistral@2.0.27+d6123d32214422cb/node_modules/@ai-sdk/mistral
-   @ai-sdk/openai -> ../../@ai-sdk+openai@2.0.89+d6123d32214422cb/node_modules/@ai-sdk/openai
-  ...
-[normalize-bun-binaries] rewrote 120 links
-buildPhase completed in 53 seconds
-Running phase: installPhase
-installPhase completed in 32 seconds
-building '/nix/store/nxamnb64qhfk12hp4ax92qhg6gng6bbj-opencode-1.1.30.drv'...
-Using versionCheckHook
-Running phase: unpackPhase
-unpacking source archive /nix/store/j95ds02lvykcvgmsbv5bqc35mry7h7qh-source
-source root is source
-Running phase: patchPhase
-applying patch /nix/store/17p0ws0fx09z07akgfdspbdyxn20hgcw-remove-special-and-windows-build-targets.patch
-patching file packages/opencode/script/build.ts
-Running phase: updateAutotoolsGnuConfigScriptsPhase
-Running phase: configurePhase
-Running phase: buildPhase
-/build/source/packages/opencode/node_modules/@opentui /build/source
-/build/source
-opencode script {
-  "channel": "stable",
-  "version": "1.1.30",
-  "preview": true
-}
-building opencode-linux-x64
-[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
-schema.json
-Running phase: installPhase
-Running phase: fixupPhase
-shrinking RPATHs of ELF executables and libraries in /nix/store/k62w80xr4b1c0hnlwm761zx11v9bqfzb-opencode-1.1.30
-shrinking /nix/store/k62w80xr4b1c0hnlwm761zx11v9bqfzb-opencode-1.1.30/bin/opencode
-checking for references to /build/ in /nix/store/k62w80xr4b1c0hnlwm761zx11v9bqfzb-opencode-1.1.30...
-patching script interpreter paths in /nix/store/k62w80xr4b1c0hnlwm761zx11v9bqfzb-opencode-1.1.30
-Running phase: installCheckPhase
-Executing versionCheckPhase
-Successfully managed to find version 1.1.30 in the output of the command /nix/store/k62w80xr4b1c0hnlwm761zx11v9bqfzb-opencode-1.1.30/bin/opencode --version
-1.1.30
-Finished versionCheckPhase
-no Makefile or custom installCheckPhase, doing nothing
-building '/nix/store/0h09gysnw42hscxgbbaa56par48lzhw7-system-path.drv'...
-warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/poweroff' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/poweroff'
-warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/halt' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/halt'
-warning: collision between `/nix/store/ksz6ygnl9f1l6jff3mwmjsmw7qyyxa59-systemd-257.7/bin/reboot' and `/nix/store/hdyd9h86fxm14xba7nlrsfqcpfwdg4sf-toybox-0.8.12/bin/reboot'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-haswell.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-haswell.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-alderlake.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-alderlake.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-sandybridge.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-sandybridge.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-skylakex.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-skylakex.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-base.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-base.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-x64.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-x64.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-icelake.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-icelake.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/lib/ollama/libggml-cpu-sse42.so' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/lib/ollama/libggml-cpu-sse42.so'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/bin/ollama' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/bin/ollama'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/bin/runner' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/bin/runner'
-warning: collision between `/nix/store/2q0wpm8l74bzvqvl1jsidj4ygxxzb33z-ollama-0.9.6/bin/.ollama-app' and `/nix/store/rgfvbmm0bqb8ziskl2gfn97kba9zil4s-ollama-0.9.6/bin/.ollama-app'
-created 11241 symlinks in user environment
-building '/nix/store/djwi9y2pksigiipkvvs7rdc526smgkvy-X-Restart-Triggers-polkit.drv'...
-building '/nix/store/7y3lwhsws3axljckh5pmzw6br092cbbg-dbus-1.drv'...
-building '/nix/store/zid6qs5l62wzr2kc97sp5a3ryrbf04vf-unit-polkit.service.drv'...
-building '/nix/store/n4f1laqwk1hf6nd9dxz80r569ph50csv-X-Restart-Triggers-dbus.drv'...
-building '/nix/store/1cszvlb4yrgy6mr28gw33fzl8yhigwqj-unit-dbus.service.drv'...
-building '/nix/store/yj9hlzkgsy3yila9iijgjdalr1kq8y45-unit-dbus.service.drv'...
-building '/nix/store/2mg1xghmyqpah2zlahk8sp9yz7bw5hhi-system-units.drv'...
-building '/nix/store/31nz5hr7s9cv03klq68nj41k0dd9z5y2-user-units.drv'...
-building '/nix/store/dp3yyrzj1jgwz4crrn977pfsz0yxy8bj-etc.drv'...
-building '/nix/store/5jalbq9pzfp4qqhicay3v9qv3gjk3dh4-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
+these 5 derivations will be built:
+  /nix/store/a4rfdcxqfpkf2s23vpx6dxagwzv2m5aa-unit-script-ollama-model-loader-start.drv
+  /nix/store/4z6ja3039ngx38vp0jv1c9pilf5wcn32-unit-ollama-model-loader.service.drv
+  /nix/store/n8n3q2nlpawc49g83hcs43glbcpy0fyp-system-units.drv
+  /nix/store/likagr10lm39hrnl85lihxrfymdrv2zx-etc.drv
+  /nix/store/fl6lpvn2jsh7l616gxbfnfcsiqkf6flw-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv
+building '/nix/store/a4rfdcxqfpkf2s23vpx6dxagwzv2m5aa-unit-script-ollama-model-loader-start.drv'...
+building '/nix/store/4z6ja3039ngx38vp0jv1c9pilf5wcn32-unit-ollama-model-loader.service.drv'...
+building '/nix/store/n8n3q2nlpawc49g83hcs43glbcpy0fyp-system-units.drv'...
+building '/nix/store/likagr10lm39hrnl85lihxrfymdrv2zx-etc.drv'...
+building '/nix/store/fl6lpvn2jsh7l616gxbfnfcsiqkf6flw-nixos-system-nixos-25.05.807819.e728d7ae4bb6.drv'...
 activating the configuration...
 setting up /etc...
 reloading user units for bee...
 restarting sysinit-reactivation.target
-reloading the following units: dbus.service
-restarting the following units: polkit.service
 the following new units were started: NetworkManager-dispatcher.service, ollama-model-loader.service
-Done. The new configuration is /nix/store/04d1yn8x3svawlpf5a08579fq6zgi4g5-nixos-system-nixos-25.05.807819.e728d7ae4bb6
+Done. The new configuration is /nix/store/pqdb4yczcx587pnsfa6snb1pnmd576gs-nixos-system-nixos-25.05.807819.e728d7ae4bb6

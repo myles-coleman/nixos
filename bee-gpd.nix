@@ -302,7 +302,7 @@ in {
       LD_LIBRARY_PATH = "/run/opengl-driver/lib";
     };
     models = "/var/lib/ollama/models";
-    loadModels = ["qwen2.5-coder:7b"];
+    loadModels = ["qwen2.5-coder:7b" "qwen2.5:7b"];
   };
 
   # Allow Ollama to access GPU devices
