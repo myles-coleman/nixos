@@ -300,6 +300,8 @@ in {
     environmentVariables = {
       OLLAMA_HOST = "127.0.0.1:11434";
     };
+    models = "/var/lib/ollama/models";
+    loadModels = ["qwen2.5-coder:7b"];
   };
 
   # Ensure opencode npm dependencies are installed
