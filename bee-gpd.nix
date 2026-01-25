@@ -88,8 +88,8 @@ in {
   # Enable IOMMU
   boot.kernelParams = ["amd_iommu=on" "iommu=pt"];
 
-  # Kernel modules for game controllers
-  boot.kernelModules = ["hid_nintendo" "joydev"];
+  # Kernel modules for game controllers and NVIDIA CUDA
+  boot.kernelModules = ["hid_nintendo" "joydev" "nvidia-uvm"];
 
   # Enable joystick support
   hardware.uinput.enable = true;
