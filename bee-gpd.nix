@@ -327,7 +327,7 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.bash}/bin/bash -c 'if [ -f $HOME/.cache/opencode/package.json ] && [ ! -d $HOME/.cache/opencode/node_modules ]; then cd $HOME/.cache/opencode && ${pkgs.nodejs}/bin/npm install; fi'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'mkdir -p $HOME/.cache/opencode && echo '\"'\"'{\"dependencies\":{\"@ai-sdk/openai-compatible\":\"1.0.31\"}}'\"'\"' > $HOME/.cache/opencode/package.json && cd $HOME/.cache/opencode && ${pkgs.nodejs}/bin/npm install'";
     };
   };
 
