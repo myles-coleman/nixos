@@ -33,7 +33,7 @@ in {
   users.users.${mainUser} = {
     isNormalUser = true;
     description = mainUser;
-    extraGroups = ["networkmanager" "wheel" "input" "docker"];
+    extraGroups = ["networkmanager" "wheel" "input" "docker" "video"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate

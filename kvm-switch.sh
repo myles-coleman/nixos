@@ -30,22 +30,28 @@ else
         if [ -e /dev/kvm-input ]; then
             KVM_DEVICE="/dev/kvm-input"
         else
-            # Try to find the HDMI capture device
+            # Try to find the HDMI capture device by checking capabilities
             for device in /dev/video*; do
-                if v4l2-ctl --device="$device" --all 2>/dev/null | grep -q "HDMI Capture"; then
-                    KVM_DEVICE="$device"
-                    break
+                # Check if device supports video capture (not just metadata)
+                if [ -c "$device" ]; then
+                    DEVICE_NAME=$(cat /sys/class/video4linux/$(basename "$device")/name 2>/dev/null || echo "")
+                    DEVICE_CAPS=$(cat /sys/class/video4linux/$(basename "$device")/device/capabilities 2>/dev/null || echo "")
+                    
+                    # Look for HDMI Capture device that supports video capture
+                    if [[ "$DEVICE_NAME" == *"HDMI Capture"* ]]; then
+                        # Test if the device actually supports capture by checking if we can query formats
+                        if ffmpeg -f v4l2 -list_formats all -i "$device" 2>&1 | grep -q "Compressed\|Raw"; then
+                            KVM_DEVICE="$device"
+                            break
+                        fi
+                    fi
                 fi
             done
             
-            # If no device found, use video3 as fallback
+            # If no device found, error out
             if [ -z "$KVM_DEVICE" ]; then
-                if [ -e /dev/video3 ]; then
-                    KVM_DEVICE="/dev/video3"
-                else
-                    echo "No KVM input device found"
-                    exit 1
-                fi
+                echo "No KVM input device found with capture capability"
+                exit 1
             fi
         fi
         
