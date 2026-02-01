@@ -149,6 +149,7 @@ in {
     mpv
     unstable.opencode
     ollama
+    ffmpeg
   ];
 
   environment.variables = {
