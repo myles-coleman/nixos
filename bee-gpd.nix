@@ -150,6 +150,13 @@ in {
     unstable.opencode
     ollama
     ffmpeg
+    redshift #blue light filter
+    hyprshot #screenshot tool
+    k9s
+    kubectl
+    kustomize
+    kubernetes-helm
+    wl-clipboard # wayland clipboard for kubernetes
   ];
 
   environment.variables = {
