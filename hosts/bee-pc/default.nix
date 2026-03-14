@@ -22,7 +22,7 @@
   environment.systemPackages = with pkgs; [
     obs-studio
     obs-studio-plugins.obs-vkcapture
-    rpi-imager
+    unstable.rpi-imager
     r2modman
     goverlay
     xorg.libX11

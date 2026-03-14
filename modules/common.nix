@@ -84,6 +84,7 @@ in {
     oh-my-posh
     zsh
     krisp-patcher
+    hyprshot
   ];
 
   nixpkgs.config.allowUnfree = true;
