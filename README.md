@@ -20,6 +20,7 @@ NixOS configurations for my machines, managed with flakes.
 │   ├── gaming.nix         # Steam, gamemode, proton
 │   ├── networking.nix     # Tailscale, Mullvad, NFS, mDNS
 │   └── nvidia.nix         # NVIDIA drivers, Ollama w/ CUDA
+├── config/                # Vendored configs (oh-my-posh, krisp-patcher)
 └── rebuild.sh             # Build + commit script
 ```
 
@@ -30,9 +31,9 @@ Rebuild the current machine (auto-detects hostname):
 sudo nixos-rebuild switch --flake .
 ```
 
-Or use the rebuild script:
+Or use the rebuild alias:
 ```bash
-sh ~/nixos/rebuild.sh
+rebuild
 ```
 
 Update flake inputs:
@@ -61,9 +62,3 @@ To add a new machine:
 2. Copy `/etc/nixos/hardware-configuration.nix` into `hosts/<hostname>/`
 3. Add a new entry in `flake.nix` under `nixosConfigurations`
 4. Choose which modules to include
-
-Note: If you want to eliminate the --impure flag in the future, you could:
-
-Move the oh-my-posh theme into the repo instead of reading it from $HOME/dotfiles/
-Vendor the krisp-patcher script as a local file instead of fetching it at eval time
-But that's optional — --impure works fine for now.
