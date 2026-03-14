@@ -55,13 +55,6 @@
     ];
   };
 
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 16384;
-    }
-  ];
-
   environment.systemPackages = with pkgs; [
     brightnessctl #brightness control
     calibre
