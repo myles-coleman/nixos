@@ -75,7 +75,6 @@
     unstable.opencode
     ollama
     ffmpeg
-    hyprshot
   ];
 
   # Ensure opencode npm dependencies are installed
