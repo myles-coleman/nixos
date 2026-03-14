@@ -62,8 +62,10 @@ in {
   };
 
   programs.zsh.interactiveShellInit = ''
-    # Initialize Oh My Posh with custom theme
-    eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
+    # Initialize Oh My Posh with custom theme (only on local sessions)
+    if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
+      eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
+    fi
   '';
 
   environment.systemPackages = with pkgs; [
