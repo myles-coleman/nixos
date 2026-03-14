@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./home
   ];
 
   boot.loader.systemd-boot.enable = true;

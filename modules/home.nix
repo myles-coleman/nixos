@@ -1,0 +1,42 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  mainUser = "bee";
+in {
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "backup";
+
+  home-manager.users.${mainUser} = {
+    home.username = mainUser;
+    home.homeDirectory = "/home/${mainUser}";
+    home.stateVersion = "25.05";
+
+    programs.kitty = {
+      enable = true;
+      themeFile = "Catppuccin-Mocha";
+      settings = {
+        font_family = "CaskaydiaCove Nerd Font Mono";
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
+        font_size = 14;
+        background_opacity = "0.9";
+      };
+    };
+
+    xdg.configFile = {
+      "rofi/config.rasi".source = ../config/rofi/config.rasi;
+      "rofi/catppuccin-mocha.rasi".source = ../config/rofi/catppuccin-mocha.rasi;
+
+      "waybar/config".source = ../config/waybar/config;
+      "waybar/style.css".source = ../config/waybar/style.css;
+
+      "MangoHud/MangoHud.conf".source = ../config/mangohud/MangoHud.conf;
+      "MangoHud/custom.conf".source = ../config/mangohud/custom.conf;
+    };
+  };
+}
