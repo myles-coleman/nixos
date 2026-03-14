@@ -85,6 +85,13 @@ in {
     hyprshot
   ];
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16384;
+    }
+  ];
+
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.trusted-users = ["root" "bee"];
