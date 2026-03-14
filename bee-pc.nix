@@ -155,6 +155,7 @@ in {
     argocd
     go-task
     hyprshot
+    obs-studio-plugins.obs-vkcapture
   ];
 
   environment.variables = {
