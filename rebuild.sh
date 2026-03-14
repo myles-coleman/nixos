@@ -3,14 +3,11 @@
 # A rebuild script that commits on a successful build
 set -e
 
-# Edit your config
-vim bee-pc.nix
-
 # cd to your config dir
 pushd ~/nixos/
 
-# Early return if no changes were detected (thanks @singiamtel!)
-if git diff --quiet '*.nix'; then
+# Early return if no changes were detected
+if git diff --quiet -- '**/*.nix' 'flake.lock'; then
     echo "No changes detected, exiting."
     popd
     exit 0
@@ -21,17 +18,17 @@ alejandra . &>/dev/null \
   || ( alejandra . ; echo "formatting failed!" && exit 1)
 
 # Shows your changes
-git diff -U0 '*.nix'
+git diff -U0 -- '**/*.nix' 'flake.lock'
 
 echo "NixOS Rebuilding..."
 
-# Rebuild, output simplified errors, log trackebacks
-sudo nixos-rebuild switch &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+# Rebuild using flake, auto-detects hostname
+sudo nixos-rebuild switch --flake . --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
 
 # Get current generation metadata
 current=$(nixos-rebuild list-generations | grep current)
 
-# Commit all changes witih the generation metadata
+# Commit all changes with the generation metadata
 git commit -am "$current"
 
 # Back to where you were
