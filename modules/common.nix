@@ -66,6 +66,9 @@ in {
     if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
       eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
     fi
+
+    # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
+    alias ssh="TERM=xterm-256color ssh"
   '';
 
   environment.systemPackages = with pkgs; [
