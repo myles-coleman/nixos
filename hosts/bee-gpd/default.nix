@@ -75,6 +75,7 @@
     unstable.opencode
     ollama
     ffmpeg
+    redshift #blue light filter
   ];
 
   # Ensure opencode npm dependencies are installed
