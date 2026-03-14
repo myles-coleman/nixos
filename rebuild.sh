@@ -23,7 +23,7 @@ git diff -U0 -- '**/*.nix' 'flake.lock'
 echo "NixOS Rebuilding..."
 
 # Rebuild using flake, auto-detects hostname
-sudo nixos-rebuild switch --flake . --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+sudo nixos-rebuild switch --flake . &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
 
 # Get current generation metadata
 current=$(nixos-rebuild list-generations | grep current)

@@ -18,14 +18,7 @@
         "F405" # name may be undefined, or defined from star imports: module
       ];
     }
-    (
-      builtins.readFile (
-        pkgs.fetchurl {
-          url = "https://pastebin.com/raw/8tQDsMVd";
-          sha256 = "sha256-IdXv0MfRG1/1pAAwHLS2+1NESFEz2uXrbSdvU9OvdJ8=";
-        }
-      )
-    );
+    (builtins.readFile ../config/krisp-patcher.py);
 in {
   users.users.${mainUser} = {
     isNormalUser = true;
@@ -57,7 +50,7 @@ in {
 
   # Manual Oh My Posh configuration
   environment.etc."oh-my-posh-config.json" = {
-    text = builtins.readFile "${config.users.users.${mainUser}.home}/dotfiles/oh-my-posh/.config/oh-my-posh/custom-theme.omp.json";
+    text = builtins.readFile ../config/oh-my-posh-theme.json;
     mode = "0644";
   };
 
