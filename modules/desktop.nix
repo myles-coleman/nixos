@@ -8,8 +8,8 @@
     enable = true;
     settings = {
       default_session = {
-        command = "Hyprland";
-        user = "bee";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+        user = "greeter";
       };
     };
   };
