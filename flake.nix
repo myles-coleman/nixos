@@ -54,6 +54,14 @@
             ./modules/nvidia.nix
           ];
       };
+
+      homelab = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          {nixpkgs.overlays = [unstableOverlay];}
+          ./hosts/homelab
+        ];
+      };
     };
   };
 }
