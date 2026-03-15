@@ -1,6 +1,6 @@
 # nixos
 
-NixOS configurations for my machines, managed with flakes.
+NixOS configurations for my machines, managed with home-manager and flakes.
 
 ## Structure
 

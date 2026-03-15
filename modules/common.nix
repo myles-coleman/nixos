@@ -30,44 +30,11 @@ in {
     ];
   };
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-    enableCompletion = true;
-    shellAliases = {
-      rebuild = "sh ~/nixos/rebuild.sh";
-    };
-    ohMyZsh = {
-      enable = true;
-      plugins = [
-        "colored-man-pages"
-        "colorize"
-        "history-substring-search"
-      ];
-    };
-  };
-
-  # Manual Oh My Posh configuration
-  environment.etc."oh-my-posh-config.json" = {
-    text = builtins.readFile ../config/oh-my-posh-theme.json;
-    mode = "0644";
-  };
-
-  programs.zsh.interactiveShellInit = ''
-    # Initialize Oh My Posh with custom theme (only on local sessions)
-    if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
-      eval "$(oh-my-posh init zsh --config /etc/oh-my-posh-config.json)"
-    fi
-
-    # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
-    alias ssh="TERM=xterm-256color ssh"
-  '';
+  programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
     wget
-    git
     obsidian
     discord
     brave
@@ -77,10 +44,7 @@ in {
     libnotify #for system notifications
     neofetch
     htop
-    stown
     gnumake
-    oh-my-posh
-    zsh
     krisp-patcher
     hyprshot
   ];
