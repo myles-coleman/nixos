@@ -79,39 +79,5 @@ To add a new machine:
 
 Dotfiles are managed by [home-manager](https://github.com/nix-community/home-manager) instead of a separate repo.
 This replaces the old `dotfiles` repo which used per-machine branches.
-
-| Before (dotfiles repo branches) | After (this repo)                                    |
-|---------------------------------|------------------------------------------------------|
-| `master` branch → bee-pc        | `hosts/bee-pc/home/` + host-specific config files    |
-| `gpd-pocket` branch → bee-gpd   | `hosts/bee-gpd/home/` + host-specific config files   |
-| Shared configs duplicated        | `modules/home.nix` (common to both)                  |
-
 Shared dotfiles (kitty, rofi, mangohud, waybar, oh-my-posh) live in `modules/home.nix`.
 Anything that differs between machines (e.g. hyprland.conf, start.sh) goes in the host's `home/` directory.
-
-### Migrating an existing machine
-
-After pulling the home-manager changes and running `rebuild` for the first time, home-manager will
-back up any existing dotfiles it needs to manage (e.g. files placed by stow) with a `.backup` suffix.
-
-Clean up the backup files and remove stow symlinks:
-```bash
-# Remove all .backup files created by home-manager
-rm ~/.config/hypr/*.backup 2>/dev/null
-rm ~/.config/waybar/*.backup 2>/dev/null
-rm ~/.config/kitty/*.backup 2>/dev/null
-rm ~/.config/rofi/*.backup 2>/dev/null
-rm ~/.config/MangoHud/*.backup 2>/dev/null
-rm ~/.config/oh-my-posh/*.backup 2>/dev/null
-
-# Remove any leftover stow-managed files not covered by home-manager
-rm -f ~/.config/waybar/kvm-switch.sh  # only needed on bee-gpd, managed there
-
-# Unstow all packages from the old dotfiles repo
-cd ~/dotfiles && stow -D */
-
-# Verify dotfiles are now nix store symlinks
-ls -la ~/.config/hypr/hyprland.conf  # should point to /nix/store/...
-```
-
-Once verified, the `dotfiles` repo is no longer needed on this machine.
