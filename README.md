@@ -63,9 +63,6 @@ nix-shell -p gh
 gh auth login --hostname github.com --git-protocol https
 gh auth setup-git
 gh repo clone https://github.com/myles-coleman/nixos
-
-git config --global user.email "mylescoleman05@gmail.com"
-git config --global user.name "Myles Coleman"
 ```
 
 **Important:** The machine's hostname must match the flake configuration name (e.g. `bee-pc`, `bee-gpd`).
