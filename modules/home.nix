@@ -28,6 +28,49 @@ in {
       };
     };
 
+    programs.zsh = {
+      enable = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      enableCompletion = true;
+      shellAliases = {
+        rebuild = "sh ~/nixos/rebuild.sh";
+      };
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "colored-man-pages"
+          "colorize"
+          "history-substring-search"
+        ];
+      };
+      initContent = ''
+        # Initialize Oh My Posh with custom theme (only on local sessions)
+        if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
+          eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
+        fi
+
+        # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
+        alias ssh="TERM=xterm-256color ssh"
+      '';
+    };
+
+    programs.oh-my-posh = {
+      enable = true;
+      enableZshIntegration = false;
+      settings = builtins.fromJSON (builtins.readFile ../config/oh-my-posh-theme.json);
+    };
+
+    programs.git = {
+      enable = true;
+      userName = "Myles Coleman";
+      userEmail = "mylescoleman05@gmail.com";
+      extraConfig = {
+        init.defaultBranch = "main";
+        pull.rebase = true;
+      };
+    };
+
     xdg.configFile = {
       "rofi/config.rasi".source = ../config/rofi/config.rasi;
       "rofi/catppuccin-mocha.rasi".source = ../config/rofi/catppuccin-mocha.rasi;
