@@ -55,11 +55,7 @@ in {
       '';
     };
 
-    programs.oh-my-posh = {
-      enable = true;
-      enableZshIntegration = false;
-      settings = builtins.fromJSON (builtins.readFile ../config/oh-my-posh-theme.json);
-    };
+    home.packages = [pkgs.oh-my-posh];
 
     programs.git = {
       enable = true;
@@ -80,6 +76,8 @@ in {
 
       "MangoHud/MangoHud.conf".source = ../config/mangohud/MangoHud.conf;
       "MangoHud/custom.conf".source = ../config/mangohud/custom.conf;
+
+      "oh-my-posh/config.json".source = ../config/oh-my-posh-theme.json;
     };
   };
 }
