@@ -161,7 +161,7 @@ in {
     python3
 
     # Networking / infra
-    net-tools
+    # net-tools
     gh
   ];
 
