@@ -123,7 +123,7 @@ in {
   hardware.graphics.enable = true;
 
   # Fan control and hardware monitoring
-  hardware.fancontrol.enable = true;
+  # hardware.fancontrol.enable = true;
   environment.systemPackages = with pkgs; [
     # Core tools
     vim
