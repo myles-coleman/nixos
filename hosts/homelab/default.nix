@@ -144,7 +144,6 @@ in {
     ethtool
     smartmontools
     mdadm
-    nvtop
     intel-gpu-tools
 
     # Intel Arc GPU (hardware video acceleration)
