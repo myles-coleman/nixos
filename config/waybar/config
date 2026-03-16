@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces", "custom/kvm", "pulseaudio", "backlight", "custom/updates"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["hyprland/submap", "hyprland/language", "cpu", "memory", "temperature", "battery", "tray", "clock"],
+    "modules-right": ["hyprland/submap", "hyprland/language", "cpu", "memory", "temperature", "battery", "custom/redshift", "tray", "clock"],
     // Modules configuration
      "hyprland/workspaces": {
          "disable-scroll": true,
@@ -188,5 +188,17 @@
         "return-type": "json",
         "on-click": "/home/bee/dotfiles/waybar/.config/waybar/kvm-switch.sh"
         // "on-click-right": "/home/bee/nixos/kvm-escape.sh"
+    },
+    "custom/redshift": {
+        "format": "{icon}",
+        "format-icons": {
+            "on": "󰌵",
+            "off": "󰌶"
+        },
+        "tooltip-format": "Redshift: {}",
+        "interval": 5,
+        "exec": "if pgrep -x redshift > /dev/null; then echo '{\"text\": \"On\", \"class\": \"on\", \"alt\": \"on\"}'; else echo '{\"text\": \"Off\", \"class\": \"off\", \"alt\": \"off\"}'; fi",
+        "return-type": "json",
+        "on-click": "pkill redshift || redshift &"
     }
 }
