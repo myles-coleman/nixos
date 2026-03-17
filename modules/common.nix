@@ -47,6 +47,7 @@ in {
     gnumake
     krisp-patcher
     hyprshot
+    direnv
   ];
 
   swapDevices = [
