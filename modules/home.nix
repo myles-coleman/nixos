@@ -23,6 +23,21 @@ in {
       x11.enable = true;
     };
 
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = false;
+        preload = [
+          "~/.config/wallpaper1.jpg"
+        ];
+        wallpaper = [
+          "eDP-1,~/.config/wallpaper1.jpg"
+          "HDMI-A-1,~/.config/wallpaper1.jpg"
+        ];
+      };
+    };
+
     programs.kitty = {
       enable = true;
       themeFile = "Catppuccin-Mocha";
@@ -76,6 +91,8 @@ in {
     };
 
     xdg.configFile = {
+      "wallpaper1.jpg".source = ../config/wallpaper1.jpg;
+
       "rofi/config.rasi".source = ../config/rofi/config.rasi;
       "rofi/catppuccin-mocha.rasi".source = ../config/rofi/catppuccin-mocha.rasi;
 
