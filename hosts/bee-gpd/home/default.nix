@@ -9,6 +9,7 @@ in {
   home-manager.users.${mainUser} = {
     services.redshift = {
       enable = true;
+      provider = "manual";
       latitude = 37.7749;
       longitude = -122.4194;
       temperature = {
@@ -17,6 +18,7 @@ in {
       };
       settings = {
         redshift = {
+          adjustment-method = "wayland";
           brightness-day = "1.0";
           brightness-night = "0.8";
         };
