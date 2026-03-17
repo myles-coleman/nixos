@@ -5,9 +5,9 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "custom/kvm", "pulseaudio", "backlight", "custom/updates"],
+    "modules-left": ["hyprland/workspaces", "custom/kvm", "pulseaudio", "backlight", "custom/updates", "custom/redshift"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["hyprland/submap", "hyprland/language", "cpu", "memory", "temperature", "battery", "custom/redshift", "tray", "clock"],
+    "modules-right": ["hyprland/submap", "hyprland/language", "cpu", "memory", "temperature", "battery", "tray", "clock"],
     // Modules configuration
      "hyprland/workspaces": {
          "disable-scroll": true,
