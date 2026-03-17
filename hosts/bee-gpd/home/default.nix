@@ -7,7 +7,7 @@
   mainUser = "bee";
 in {
   home-manager.users.${mainUser} = {
-    services.redshift = {
+    services.gammastep = {
       enable = true;
       provider = "manual";
       latitude = 37.7749;
@@ -17,8 +17,7 @@ in {
         night = 3500;
       };
       settings = {
-        redshift = {
-          adjustment-method = "wayland";
+        general = {
           brightness-day = "1.0";
           brightness-night = "0.8";
         };
