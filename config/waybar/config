@@ -195,10 +195,10 @@
             "on": "󰌵",
             "off": "󰌶"
         },
-        "tooltip-format": "Redshift: {}",
+        "tooltip-format": "Gammastep: {}",
         "interval": 5,
-        "exec": "if pgrep -x redshift > /dev/null; then echo '{\"text\": \"On\", \"class\": \"on\", \"alt\": \"on\"}'; else echo '{\"text\": \"Off\", \"class\": \"off\", \"alt\": \"off\"}'; fi",
+        "exec": "if pgrep -x gammastep > /dev/null; then echo '{\"text\": \"On\", \"class\": \"on\", \"alt\": \"on\"}'; else echo '{\"text\": \"Off\", \"class\": \"off\", \"alt\": \"off\"}'; fi",
         "return-type": "json",
-        "on-click": "pkill redshift || redshift &"
+        "on-click": "systemctl --user is-active gammastep && systemctl --user stop gammastep || systemctl --user start gammastep"
     }
 }
