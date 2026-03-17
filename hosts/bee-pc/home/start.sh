@@ -4,4 +4,6 @@ nm-applet --indicator &
 
 waybar &
 
-dunst
+dunst &
+
+hyprpaper
