@@ -15,6 +15,14 @@ in {
     home.homeDirectory = "/home/${mainUser}";
     home.stateVersion = "25.05";
 
+    home.pointerCursor = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Classic";
+      size = 16;
+      gtk.enable = true;
+      x11.enable = true;
+    };
+
     programs.kitty = {
       enable = true;
       themeFile = "Catppuccin-Mocha";
