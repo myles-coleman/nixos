@@ -27,5 +27,6 @@
       with cores; [
         mgba
       ]))
+    unstable.eden
   ];
 }
