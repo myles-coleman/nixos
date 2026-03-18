@@ -23,5 +23,9 @@
     mesa-demos
     steam-run
     protonup-qt
+    (retroarch.withCores (cores:
+      with cores; [
+        mgba
+      ]))
   ];
 }
