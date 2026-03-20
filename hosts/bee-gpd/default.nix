@@ -71,6 +71,7 @@
     ollama
     ffmpeg
     redshift #blue light filter
+    freecad
   ];
 
   # Ensure opencode npm dependencies are installed
