@@ -48,6 +48,7 @@ in {
     krisp-patcher
     hyprshot
     direnv
+    tree
   ];
 
   swapDevices = [
