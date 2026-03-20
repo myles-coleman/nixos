@@ -74,6 +74,14 @@
     freecad
   ];
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
   # Ensure opencode npm dependencies are installed
   systemd.user.services.opencode-setup = {
     description = "Install opencode npm dependencies";
