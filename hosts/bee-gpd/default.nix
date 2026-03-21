@@ -28,7 +28,7 @@
   hardware.uinput.enable = true;
 
   # SDL2 environment variable for Joy-Con button mapping (positional instead of label-based)
-  environment.sessionVariables = {
+  environment.variables = {
     SDL_GAMECONTROLLER_USE_BUTTON_LABELS = "0";
   };
 
@@ -37,6 +37,16 @@
   services.udev.packages = with pkgs; [
     bolt
   ];
+
+  # udev rules to grant user access to Nintendo Joy-Con hidraw devices
+  services.udev.extraRules = ''
+    # Nintendo Joy-Con (L)
+    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2006", MODE="0660", TAG+="uaccess"
+    # Nintendo Joy-Con (R)
+    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2007", MODE="0660", TAG+="uaccess"
+    # Nintendo Pro Controller
+    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2009", MODE="0660", TAG+="uaccess"
+  '';
 
   # Extended bluetooth settings for GPD
   hardware.bluetooth.settings = {
