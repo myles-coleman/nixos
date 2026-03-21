@@ -72,6 +72,8 @@
     ffmpeg
     redshift #blue light filter
     freecad
+    linuxConsoleTools #includes jstest for joystick testing
+    evtest #for testing input events
   ];
 
   services.openssh = {
