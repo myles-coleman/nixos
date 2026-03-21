@@ -27,6 +27,11 @@
   # Enable joystick support
   hardware.uinput.enable = true;
 
+  # SDL2 environment variable for Joy-Con button mapping (positional instead of label-based)
+  environment.sessionVariables = {
+    SDL_GAMECONTROLLER_USE_BUTTON_LABELS = "0";
+  };
+
   # Thunderbolt support
   services.hardware.bolt.enable = true;
   services.udev.packages = with pkgs; [
@@ -74,6 +79,7 @@
     freecad
     linuxConsoleTools #includes jstest for joystick testing
     evtest #for testing input events
+    SDL2 #required for proper gamepad support in emulators
   ];
 
   services.openssh = {
