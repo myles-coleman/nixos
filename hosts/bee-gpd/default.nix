@@ -38,14 +38,9 @@
     bolt
   ];
 
-  # udev rules to grant user access to Nintendo Joy-Con hidraw devices
+  # udev rules to grant user access to Nintendo Joy-Con hidraw devices (Bluetooth via uhid)
   services.udev.extraRules = ''
-    # Nintendo Joy-Con (L)
-    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2006", MODE="0660", TAG+="uaccess"
-    # Nintendo Joy-Con (R)
-    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2007", MODE="0660", TAG+="uaccess"
-    # Nintendo Pro Controller
-    KERNEL=="hidraw*", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="2009", MODE="0660", TAG+="uaccess"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", SUBSYSTEMS=="hid", DRIVERS=="nintendo", MODE="0660", GROUP="input", TAG+="uaccess"
   '';
 
   # Extended bluetooth settings for GPD
