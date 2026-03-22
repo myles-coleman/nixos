@@ -186,6 +186,19 @@ in {
 
   programs.zsh.enable = true;
 
+  # Allow passwordless nixos-rebuild for remote deploys
+  security.sudo.extraRules = [
+    {
+      users = ["${mainUser}"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.trusted-users = ["root" "bee"];
