@@ -44,6 +44,10 @@ This is a NixOS flake-based configuration managing multiple machines.
 - **Target the right host.** Always confirm which host a change applies to. Remember `homelab` does NOT use `commonModules`, so shared module changes won't affect it.
 - **Flake lock updates.** `nix flake update` should be done intentionally, not as part of routine rebuilds. Call out when bumping inputs.
 
+## Debugging Rebuilds
+
+- **Build log:** `nixos-switch.log` (gitignored) in the repo root contains the full output from the last `nixos-rebuild switch`. When a rebuild fails, read this file to diagnose errors before suggesting fixes.
+
 ## Workflow
 
 1. Edit `.nix` files or configs
