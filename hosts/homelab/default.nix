@@ -112,7 +112,7 @@ in {
         volumes = [
           "/home/${mainUser}/jellyfin/config:/config"
           "/home/${mainUser}/jellyfin/config/cache:/cache"
-          "/mnt/md0/data:/data" # RAID10 media library
+          "/mnt/md0/data/media:/data" # RAID10 media library
         ];
         environment = {
           TZ = "America/Los_Angeles";
