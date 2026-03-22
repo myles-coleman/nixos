@@ -78,6 +78,60 @@ in {
   # Docker
   virtualisation.docker.enable = true;
 
+  # Declarative OCI containers
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers = {
+      jellyfin = {
+        image = "jellyfin/jellyfin:latest";
+        ports = [
+          "8096:8096/tcp"
+          "7359:7359/udp"
+        ];
+        volumes = [
+          "/home/${mainUser}/jellyfin:/config"
+          "/home/${mainUser}/jellyfin/cache:/cache"
+          "/mnt/md0:/media"
+        ];
+        environment = {
+          TZ = "America/Los_Angeles";
+        };
+        extraOptions = [
+          "--device=/dev/dri:/dev/dri" # Intel Arc A310 HW transcoding
+        ];
+      };
+
+      vaultwarden = {
+        image = "vaultwarden/server:latest";
+        ports = [
+          "8222:80/tcp"
+        ];
+        volumes = [
+          "/home/${mainUser}/vaultwarden/data:/data"
+        ];
+        environment = {
+          TZ = "America/Los_Angeles";
+        };
+      };
+
+      nginx-proxy-manager = {
+        image = "jc21/nginx-proxy-manager:latest";
+        ports = [
+          "80:80/tcp" # HTTP
+          "443:443/tcp" # HTTPS
+          "81:81/tcp" # Admin UI
+        ];
+        volumes = [
+          "/home/${mainUser}/nginx:/data"
+          "/home/${mainUser}/nginx/letsencrypt:/etc/letsencrypt"
+        ];
+        environment = {
+          TZ = "America/Los_Angeles";
+        };
+      };
+    };
+  };
+
   # NFS server
   services.nfs.server = {
     enable = true;
