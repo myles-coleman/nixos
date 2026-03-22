@@ -122,7 +122,7 @@ in {
           "81:81/tcp" # Admin UI
         ];
         volumes = [
-          "/home/${mainUser}/nginx:/data"
+          "/home/${mainUser}/nginx/data:/data"
           "/home/${mainUser}/nginx/letsencrypt:/etc/letsencrypt"
         ];
         environment = {
