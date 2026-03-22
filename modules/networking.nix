@@ -4,7 +4,20 @@
   lib,
   ...
 }: {
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    dns = "systemd-resolved"; # Use systemd-resolved as DNS backend
+  };
+
+  services.resolved = {
+    enable = true;
+    dnssec = "allow-downgrade";
+    domains = ["~."]; # Claim root DNS zone so Tailscale MagicDNS doesn't hijack all queries
+    fallbackDns = ["1.1.1.1" "8.8.8.8"];
+    extraConfig = ''
+      DNS=1.1.1.1#cloudflare-dns.com 8.8.8.8#dns.google
+    '';
+  };
 
   services.tailscale = {
     enable = true;
