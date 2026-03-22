@@ -116,11 +116,6 @@ in {
 
       nginx-proxy-manager = {
         image = "jc21/nginx-proxy-manager:latest";
-        ports = [
-          "80:80/tcp" # HTTP
-          "443:443/tcp" # HTTPS
-          "81:81/tcp" # Admin UI
-        ];
         volumes = [
           "/home/${mainUser}/nginx/data:/data"
           "/home/${mainUser}/nginx/letsencrypt:/etc/letsencrypt"
@@ -128,6 +123,9 @@ in {
         environment = {
           TZ = "America/Los_Angeles";
         };
+        extraOptions = [
+          "--network=host" # host networking so NPM can reach other containers
+        ];
       };
     };
   };
