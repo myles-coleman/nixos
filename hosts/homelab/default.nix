@@ -186,13 +186,13 @@ in {
 
   programs.zsh.enable = true;
 
-  # Allow passwordless nixos-rebuild for remote deploys
+  # Allow passwordless sudo for remote deploys
   security.sudo.extraRules = [
     {
       users = ["${mainUser}"];
       commands = [
         {
-          command = "/run/current-system/sw/bin/nixos-rebuild";
+          command = "ALL";
           options = ["NOPASSWD"];
         }
       ];
