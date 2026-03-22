@@ -89,8 +89,8 @@ in {
           "7359:7359/udp"
         ];
         volumes = [
-          "/home/${mainUser}/jellyfin:/config"
-          "/home/${mainUser}/jellyfin/cache:/cache"
+          "/home/${mainUser}/jellyfin/config:/config"
+          "/home/${mainUser}/jellyfin/config/cache:/cache"
           "/mnt/md0:/media"
         ];
         environment = {
