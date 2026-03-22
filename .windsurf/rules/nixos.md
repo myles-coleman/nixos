@@ -9,6 +9,8 @@ description: NixOS flake configuration repo conventions and structure
 
 This is a NixOS flake-based configuration managing multiple machines.
 
+**See `README.md` for detailed structure, new machine setup instructions, and usage examples.**
+
 - **`flake.nix`** — Entry point. Defines inputs (nixpkgs 25.05, nixpkgs-unstable, home-manager) and three host configurations.
 - **`modules/`** — Shared NixOS modules (common.nix, desktop.nix, networking.nix, dev-tools.nix, gaming.nix, nvidia.nix, home.nix).
 - **`hosts/`** — Per-machine configs, each with `default.nix`, `hardware-configuration.nix`, and a `home/` directory for home-manager settings.
