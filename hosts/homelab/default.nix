@@ -8,6 +8,7 @@
 in {
   imports = [
     ./hardware-configuration.nix
+    ./home
   ];
 
   # BIOS/Legacy boot with GRUB
@@ -138,6 +139,7 @@ in {
     gnumake
     gcc
     gnupg
+    alejandra #for formatting in rebuild script
 
     # Hardware monitoring
     lm_sensors
