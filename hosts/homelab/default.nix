@@ -98,6 +98,7 @@ in {
         };
         extraOptions = [
           "--device=/dev/dri:/dev/dri" # Intel Arc A310 HW transcoding
+          "--network=homelab-net"
         ];
       };
 
@@ -112,6 +113,9 @@ in {
         environment = {
           TZ = "America/Los_Angeles";
         };
+        extraOptions = [
+          "--network=homelab-net"
+        ];
       };
 
       nginx-proxy-manager = {
@@ -129,7 +133,8 @@ in {
           TZ = "America/Los_Angeles";
         };
         extraOptions = [
-          "--add-host=host.docker.internal:host-gateway" # allow NPM to reach host services
+          "--network=homelab-net" # shared network so NPM can reach other containers by name
+          "--add-host=host.docker.internal:host-gateway" # also reach host services
         ];
       };
     };
