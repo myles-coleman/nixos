@@ -3,11 +3,24 @@
 # A rebuild script that commits on a successful build
 set -e
 
+REMOTE_HOST="bee@10.0.0.150"
+HOMELAB=false
+DRY_RUN=false
+FORCE=false
+
+for arg in "$@"; do
+    case "$arg" in
+        --homelab) HOMELAB=true ;;
+        --dry-run) DRY_RUN=true ;;
+        --force) FORCE=true ;;
+    esac
+done
+
 # cd to your config dir
 pushd ~/nixos/
 
-# Early return if no changes were detected
-if git diff --quiet -- '**/*.nix' 'flake.lock'; then
+# Early return if no changes were detected (skip with --force)
+if ! $FORCE && git diff --quiet -- '**/*.nix' 'flake.lock'; then
     echo "No changes detected, exiting."
     popd
     exit 0
@@ -20,10 +33,29 @@ alejandra . &>/dev/null \
 # Shows your changes
 git diff -U0 -- '**/*.nix' 'flake.lock'
 
-echo "NixOS Rebuilding..."
+ACTION="switch"
+if $DRY_RUN; then
+    ACTION="dry-build"
+    echo "NixOS Dry Run..."
+else
+    echo "NixOS Rebuilding..."
+fi
 
-# Rebuild using flake, auto-detects hostname
-sudo nixos-rebuild switch --flake . &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+if $HOMELAB; then
+    # Build locally, deploy to homelab
+    nixos-rebuild "$ACTION" --flake .#homelab \
+        --target-host "$REMOTE_HOST" \
+        --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+else
+    # Rebuild using flake, auto-detects hostname
+    sudo nixos-rebuild "$ACTION" --flake . &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+fi
+
+if $DRY_RUN; then
+    echo "Dry run succeeded!"
+    popd
+    exit 0
+fi
 
 # Get current generation metadata
 current=$(nixos-rebuild list-generations | grep current)

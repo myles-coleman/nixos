@@ -50,6 +50,11 @@ Or use the rebuild alias:
 rebuild
 ```
 
+Deploy to the homelab remotely (builds locally, deploys to `bee@10.0.0.150` via SSH):
+```bash
+rebuild --homelab
+```
+
 Update flake inputs:
 ```bash
 nix flake update
