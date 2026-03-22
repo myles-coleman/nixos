@@ -59,6 +59,7 @@
         inherit system;
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
+          home-manager.nixosModules.default
           ./hosts/homelab
         ];
       };

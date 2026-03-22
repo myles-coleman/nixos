@@ -68,10 +68,8 @@ in {
         ];
       };
       initContent = ''
-        # Initialize Oh My Posh with custom theme (only on local sessions)
-        if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
-          eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
-        fi
+        # Initialize Oh My Posh with custom theme
+        eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
 
         # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
         alias ssh="TERM=xterm-256color ssh"
