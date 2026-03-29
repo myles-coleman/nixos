@@ -7,6 +7,21 @@
   mainUser = "bee";
 in {
   home-manager.users.${mainUser} = {
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = false;
+        preload = [
+          "~/.config/wallpaper1.jpg"
+        ];
+        wallpaper = [
+          "eDP-1,~/.config/wallpaper1.jpg"
+          "HDMI-A-1,~/.config/wallpaper1.jpg"
+        ];
+      };
+    };
+
     services.gammastep = {
       enable = true;
       provider = "manual";
