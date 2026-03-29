@@ -23,21 +23,6 @@ in {
       x11.enable = true;
     };
 
-    services.hyprpaper = {
-      enable = true;
-      settings = {
-        ipc = "on";
-        splash = false;
-        preload = [
-          "~/.config/wallpaper1.jpg"
-        ];
-        wallpaper = [
-          "eDP-1,~/.config/wallpaper1.jpg"
-          "HDMI-A-1,~/.config/wallpaper1.jpg"
-        ];
-      };
-    };
-
     programs.kitty = {
       enable = true;
       themeFile = "Catppuccin-Mocha";
