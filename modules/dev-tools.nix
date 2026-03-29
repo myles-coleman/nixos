@@ -28,5 +28,6 @@
     dig
     slack
     uv
+    openssl
   ];
 }
