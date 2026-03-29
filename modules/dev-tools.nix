@@ -27,5 +27,6 @@
     nodejs_20
     dig
     slack
+    uv
   ];
 }
