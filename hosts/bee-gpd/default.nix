@@ -85,6 +85,7 @@
     linuxConsoleTools #includes jstest for joystick testing
     evtest #for testing input events
     SDL2 #required for proper gamepad support in emulators
+    wl-clipboard #clipboard sharing with Waydroid
   ];
 
   services.openssh = {
@@ -106,6 +107,10 @@
       ExecStart = "${pkgs.bash}/bin/bash -c 'mkdir -p $HOME/.cache/opencode && echo '\"'\"'{\"dependencies\":{\"@ai-sdk/openai-compatible\":\"1.0.31\"}}'\"'\"' > $HOME/.cache/opencode/package.json && cd $HOME/.cache/opencode && ${pkgs.nodejs}/bin/npm install'";
     };
   };
+
+  # Android emulator via Waydroid (LXC container)
+  # https://wiki.nixos.org/wiki/Waydroid
+  virtualisation.waydroid.enable = true;
 
   system.stateVersion = "25.05";
 }
