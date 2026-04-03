@@ -38,8 +38,39 @@
     bolt
   ];
 
-  # udev rules to grant user access to Nintendo Joy-Con hidraw devices (Bluetooth via uhid)
+  # eGPU hotplug: prevent nvidia modules from loading at boot (GPU isn't on
+  # the Thunderbolt bus yet, causing "NVRM: No NVIDIA GPU found" and a broken
+  # driver state). Instead, load them on-demand when the GPU appears.
+  boot.blacklistedKernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
+
+  # systemd service to load nvidia modules in the correct order after eGPU hotplug
+  systemd.services.nvidia-egpu = {
+    description = "Load NVIDIA driver stack for eGPU";
+    after = ["bolt.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = let
+        script = pkgs.writeShellScript "load-nvidia-egpu" ''
+          # Load modules in dependency order
+          ${pkgs.kmod}/bin/modprobe nvidia
+          ${pkgs.kmod}/bin/modprobe nvidia_modeset
+          ${pkgs.kmod}/bin/modprobe nvidia_uvm
+          ${pkgs.kmod}/bin/modprobe nvidia_drm modeset=1 fbdev=1
+        '';
+      in "${script}";
+    };
+  };
+
+  # Ollama needs the eGPU driver loaded before it can use CUDA
+  systemd.services.ollama = {
+    after = ["nvidia-egpu.service"];
+    wants = ["nvidia-egpu.service"];
+  };
+
+  # udev rules for eGPU hotplug + Joy-Con hidraw access
   services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TAG+="systemd", ENV{SYSTEMD_WANTS}="nvidia-egpu.service"
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", SUBSYSTEMS=="hid", DRIVERS=="nintendo", MODE="0660", GROUP="input", TAG+="uaccess"
   '';
 

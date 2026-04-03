@@ -41,21 +41,21 @@
     nssmdns6 = true;
   };
 
-  fileSystems."/home/bee/media" = {
-    device = "10.0.0.150:/mnt/md0/data/media";
-    fsType = "nfs4";
-    options = [
-      "rw"
-      "soft"
-      "timeo=30"
-      "retrans=3"
-      "_netdev"
-      "rsize=1048576"
-      "wsize=1048576"
-      "vers=4.2"
-      "proto=tcp"
-    ];
-  };
+  # fileSystems."/home/bee/media" = {
+  #   device = "10.0.0.150:/mnt/md0/data/media";
+  #   fsType = "nfs4";
+  #   options = [
+  #     "rw"
+  #     "soft"
+  #     "timeo=30"
+  #     "retrans=3"
+  #     "_netdev"
+  #     "rsize=1048576"
+  #     "wsize=1048576"
+  #     "vers=4.2"
+  #     "proto=tcp"
+  #   ];
+  # };
 
   services.rpcbind.enable = true;
 }
