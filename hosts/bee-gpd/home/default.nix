@@ -17,7 +17,7 @@ in {
         ];
         wallpaper = [
           "eDP-1,~/.config/wallpaper1.jpg"
-          "HDMI-A-1,~/.config/wallpaper1.jpg"
+          "DP-1,~/.config/wallpaper1.jpg"
         ];
       };
     };
