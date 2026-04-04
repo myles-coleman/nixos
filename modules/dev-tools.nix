@@ -33,5 +33,6 @@
     slack
     uv
     openssl
+    ranger
   ];
 }
