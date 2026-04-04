@@ -265,9 +265,11 @@ in {
     }
   ];
 
-  # Firewall (SSH, NFS, Samba ports opened automatically by their modules;
+  # Firewall (Samba ports opened by its module via openFirewall;
   # Docker bypasses iptables and manages its own port forwarding)
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [2049 111];
+  networking.firewall.allowedUDPPorts = [2049 111];
 
   programs.zsh.enable = true;
 
