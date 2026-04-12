@@ -91,7 +91,6 @@
   # ── User account ───────────────────────────────────────────────────
   users.users.bee = {
     isNormalUser = true;
-    initialPassword = "pikvm"; # TODO: Change after first login
     extraGroups = ["wheel" "video" "gpio"];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFwn9u4rjBjifRODlycmjtEJRKfV2bSnwvDa5sC5Hpp bee@bee-gpd"
