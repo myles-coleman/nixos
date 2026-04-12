@@ -674,6 +674,8 @@ in {
       SUBSYSTEM=="video4linux", ATTR{name}=="*UVC*",       SYMLINK+="kvmd-video", TAG+="systemd"
       SUBSYSTEM=="video4linux", ATTR{name}=="*USB Video*", SYMLINK+="kvmd-video", TAG+="systemd"
       SUBSYSTEM=="gpio", KERNEL=="gpiochip*", GROUP="gpio", MODE="0660"
+      KERNEL=="hidg0", SUBSYSTEM=="hidg", SYMLINK+="kvmd-hid-keyboard", GROUP="kvmd", MODE="0660"
+      KERNEL=="hidg1", SUBSYSTEM=="hidg", SYMLINK+="kvmd-hid-mouse",    GROUP="kvmd", MODE="0660"
     '';
 
     # ── MSD (virtual USB drive) loopback image ─────────────────────────
