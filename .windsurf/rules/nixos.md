@@ -11,17 +11,18 @@ This is a NixOS flake-based configuration managing multiple machines.
 
 **See `README.md` for detailed structure, new machine setup instructions, and usage examples.**
 
-- **`flake.nix`** — Entry point. Defines inputs (nixpkgs 25.05, nixpkgs-unstable, home-manager) and three host configurations.
-- **`modules/`** — Shared NixOS modules (common.nix, desktop.nix, networking.nix, dev-tools.nix, gaming.nix, nvidia.nix, home.nix).
-- **`hosts/`** — Per-machine configs, each with `default.nix`, `hardware-configuration.nix`, and a `home/` directory for home-manager settings.
-- **`config/`** — Dotfiles and app configs (waybar, rofi, MangoHud, hyprland, oh-my-posh, etc.).
-- **`rebuild.sh`** — Rebuild script: formats with `alejandra`, runs `nixos-rebuild switch --flake .`, and auto-commits on success.
+- **`flake.nix`** — Entry point. Defines inputs (nixpkgs 25.05, nixpkgs-unstable, home-manager) and four host configurations.
+- **`modules/`** — Shared NixOS modules (common.nix, desktop.nix, networking.nix, dev-tools.nix, gaming.nix, nvidia.nix, home.nix, pikvm.nix).
+- **`hosts/`** — Per-machine configs, each with `default.nix`, `hardware-configuration.nix`, and optionally a `home/` directory for home-manager settings.
+- **`config/`** — Dotfiles and app configs (waybar, rofi, MangoHud, pikvm, oh-my-posh, wallpaper, etc.).
+- **`rebuild.sh`** — Rebuild script: formats with `alejandra`, skips if no `.nix`/`flake.lock` changes (unless `--force`), runs `nixos-rebuild switch --flake .`, and auto-commits on success. Supports `--homelab`, `--pikvm`, `--dry-run`, and `--force` flags.
 
 ## Hosts
 
 - **`bee-pc`** — Desktop PC. Uses all `commonModules`.
 - **`bee-gpd`** — GPD handheld device. Uses `commonModules` + `nvidia.nix`. Has Thunderbolt, Joy-Con, Bluetooth, and tmux config.
-- **`homelab`** — Server. Minimal config, does NOT use `commonModules` (only the unstable overlay + its own host module).
+- **`homelab`** — Server. Minimal config, does NOT use `commonModules` (only the unstable overlay + home-manager + its own host module). Runs Docker containers (Jellyfin, Vaultwarden, NPM), NFS, and Samba. Deployed remotely via `rebuild --homelab`.
+- **`pikvm`** — Raspberry Pi 4 KVM (aarch64-linux). Uses `modules/pikvm.nix` (custom kvmd/ustreamer/Janus module). Does NOT use `commonModules`. Deployed remotely via `rebuild --pikvm` (cross-compiled).
 
 ## Conventions
 
@@ -45,6 +46,30 @@ This is a NixOS flake-based configuration managing multiple machines.
 - **Check NixOS options first.** Before writing custom systemd services or wrappers, search https://search.nixos.org/options to see if a built-in NixOS option already exists.
 - **Target the right host.** Always confirm which host a change applies to. Remember `homelab` does NOT use `commonModules`, so shared module changes won't affect it.
 - **Flake lock updates.** `nix flake update` should be done intentionally, not as part of routine rebuilds. Call out when bumping inputs.
+
+## Adding a New Host
+
+1. Create `hosts/<hostname>/default.nix` with the standard function signature `{ config, pkgs, lib, ... }:`.
+2. Import `./hardware-configuration.nix` and optionally `./home` in the `imports` list.
+3. Copy the machine's `/etc/nixos/hardware-configuration.nix` into `hosts/<hostname>/`.
+4. Set `networking.hostName = "<hostname>";` and `system.stateVersion`.
+5. Optionally create `hosts/<hostname>/home/default.nix` for host-specific home-manager config (dotfiles, shell aliases, per-user packages).
+6. Add a new entry in `flake.nix` under `nixosConfigurations`:
+   - **Desktop/laptop (uses shared modules):** Set `modules = commonModules ++ [ ./hosts/<hostname> ];`. Append extra modules (e.g. `./modules/nvidia.nix`) to the list as needed.
+   - **Server/appliance (standalone):** Set `modules` explicitly without `commonModules`. At minimum include the unstable overlay (`{nixpkgs.overlays = [unstableOverlay];}`) and the host path. Add `home-manager.nixosModules.default` if the host uses home-manager.
+   - **Non-x86 (e.g. aarch64):** Override `system` in the `nixpkgs.lib.nixosSystem` call and define a host-specific unstable overlay with the correct `system` value (see `pikvm` for the pattern).
+7. If the host is deployed remotely, add a flag and target in `rebuild.sh` following the `--homelab`/`--pikvm` pattern.
+
+## Adding a New Module
+
+1. Create `modules/<name>.nix` with the standard function signature `{ config, pkgs, lib, ... }:`.
+2. Define NixOS options, services, packages, or config inside the module body.
+3. Wire it into hosts:
+   - **Shared across desktops:** Add `./modules/<name>.nix` to the `commonModules` list in `flake.nix`.
+   - **Specific to one host:** Add `./modules/<name>.nix` to that host's `modules` list in `flake.nix` (see how `nvidia.nix` is added only to `bee-gpd`).
+   - **Imported by a host directly:** Add it to the `imports` list in the host's `default.nix` (see how `pikvm` imports `../../modules/pikvm.nix`).
+4. If the module needs external config files, place them in `config/<name>/` and reference them via `builtins.readFile` or home-manager's `xdg.configFile`.
+5. Keep modules focused on a single concern (e.g. one for gaming, one for networking). Don't put host-specific settings in shared modules.
 
 ## Debugging Rebuilds
 
