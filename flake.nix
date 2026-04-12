@@ -63,6 +63,23 @@
           ./hosts/homelab
         ];
       };
+
+      pikvm = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                unstable = import nixpkgs-unstable {
+                  system = "aarch64-linux";
+                  config.allowUnfree = true;
+                };
+              })
+            ];
+          }
+          ./hosts/pikvm
+        ];
+      };
     };
   };
 }
