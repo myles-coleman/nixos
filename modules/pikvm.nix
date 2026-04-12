@@ -566,6 +566,7 @@ in {
               rewrite ^/api/ws$ /ws break;
               rewrite ^/api/ws\?(.*)$ /ws?$1 break;
               proxy_pass http://kvmd;
+              proxy_http_version 1.1;
               include ${kvmd}/share/nginx/loc-proxy.conf;
               include ${kvmd}/share/nginx/loc-websocket.conf;
               auth_request off;
@@ -648,6 +649,7 @@ in {
               rewrite ^/janus/ws$ / break;
               rewrite ^/janus/ws\?(.*)$ /?$1 break;
               proxy_pass http://janus-ws;
+              proxy_http_version 1.1;
               include ${kvmd}/share/nginx/loc-proxy.conf;
               include ${kvmd}/share/nginx/loc-websocket.conf;
             }
