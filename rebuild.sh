@@ -3,14 +3,17 @@
 # A rebuild script that commits on a successful build
 set -e
 
-REMOTE_HOST="bee@10.0.0.150"
+HOMELAB_HOST="bee@10.0.0.150"
+PIKVM_HOST="bee@10.0.0.175"
 HOMELAB=false
+PIKVM=false
 DRY_RUN=false
 FORCE=false
 
 for arg in "$@"; do
     case "$arg" in
         --homelab) HOMELAB=true ;;
+        --pikvm) PIKVM=true ;;
         --dry-run) DRY_RUN=true ;;
         --force) FORCE=true ;;
     esac
@@ -44,7 +47,12 @@ fi
 if $HOMELAB; then
     # Build locally, deploy to homelab
     nixos-rebuild "$ACTION" --flake .#homelab \
-        --target-host "$REMOTE_HOST" \
+        --target-host "$HOMELAB_HOST" \
+        --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+elif $PIKVM; then
+    # Build locally (cross-compile aarch64), deploy to pikvm
+    nixos-rebuild "$ACTION" --flake .#pikvm \
+        --target-host "$PIKVM_HOST" \
         --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
 else
     # Rebuild using flake, auto-detects hostname
