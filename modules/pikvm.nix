@@ -197,7 +197,10 @@
     kvmd:
         auth:
             internal:
-                file: /etc/kvmd/empty_file
+                file: /var/lib/kvmd/htpasswd
+            totp:
+                secret:
+                    file: /var/lib/kvmd/totp.secret
 
         info:
             meta: /etc/kvmd/meta.yaml
@@ -322,7 +325,6 @@ in {
       "kvmd/logging.yaml".source = ../config/pikvm/logging.yaml;
       "kvmd/meta.yaml".source = ../config/pikvm/meta.yaml;
       "kvmd/empty_file".text = "";
-      "kvmd/totp.secret".text = "";
       "kvmd/tc358743-edid.hex".source = "${kvmd}/share/kvmd/edid/v3.hex";
     };
 
@@ -719,6 +721,9 @@ in {
       "d /var/lib/kvmd/msd 0770 kvmd kvmd -"
       "d /var/lib/kvmd/msd/mount 0770 kvmd kvmd -"
       "d /var/lib/kvmd/pst 0770 kvmd kvmd -"
+      # Persistent auth files — 'f' only creates if missing, preserves across rebuilds
+      "f /var/lib/kvmd/htpasswd 0660 kvmd kvmd -"
+      "f /var/lib/kvmd/totp.secret 0660 kvmd kvmd -"
     ];
 
     # ── Firewall ──────────────────────────────────────────────────────
