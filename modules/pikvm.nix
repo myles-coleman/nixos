@@ -322,6 +322,7 @@ in {
       "kvmd/logging.yaml".source = ../config/pikvm/logging.yaml;
       "kvmd/meta.yaml".source = ../config/pikvm/meta.yaml;
       "kvmd/empty_file".text = "";
+      "kvmd/totp.secret".text = "";
       "kvmd/tc358743-edid.hex".source = "${kvmd}/share/kvmd/edid/v3.hex";
     };
 
