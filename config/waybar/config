@@ -190,7 +190,7 @@
         // "on-click-right": "/home/bee/nixos/kvm-escape.sh"
     },
     "custom/screenshot": {
-        "format": "",
+        "format": "󰹑",
         "tooltip": true,
         "tooltip-format": "Screenshot active window to clipboard",
         "on-click": "hyprshot -m window -m active --clipboard-only"
