@@ -72,7 +72,7 @@ else
             --no-fullscreen \
             --title="KVM Input" \
             --force-window=yes \
-            --hwdec=auto \
+            --hwdec=auto-copy \
             "$PIPE_PATH" &
         
         # Give MPV time to start
