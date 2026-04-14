@@ -47,6 +47,8 @@ in {
     gnumake
     krisp-patcher
     hyprshot
+    grim #screenshot tool for wayland (hyprshot dependency)
+    slurp #region selection tool (hyprshot dependency)
     direnv
     tree
   ];
