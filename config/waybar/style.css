@@ -21,7 +21,7 @@
 }
 
 #waybar {
-	font-family: 'Source Code Pro', sans-serif;
+	font-family: 'Source Code Pro', 'MesloLGS Nerd Font', sans-serif;
 	font-size: 1.2em;
 	font-weight: 400;
   color: @base04;
