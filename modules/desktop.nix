@@ -17,6 +17,8 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    package = pkgs.unstable.hyprland; #fix for screencopy black screenshot bug in 0.49.0
+    portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
   };
 
   environment.variables = {
