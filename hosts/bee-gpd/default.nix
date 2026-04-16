@@ -117,6 +117,7 @@
     evtest #for testing input events
     SDL2 #required for proper gamepad support in emulators
     wl-clipboard #clipboard sharing with Waydroid
+    unstable.claude-code
   ];
 
   services.openssh = {
