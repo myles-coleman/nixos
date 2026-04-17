@@ -21,6 +21,7 @@
 
   services.tailscale = {
     enable = true;
+    package = pkgs.unstable.tailscale;
     useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
     openFirewall = true;
   };
