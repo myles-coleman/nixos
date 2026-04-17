@@ -72,6 +72,7 @@
   # ── Tailscale exit node + subnet router ──────────────────────────────
   services.tailscale = {
     enable = true;
+    package = pkgs.unstable.tailscale;
     useRoutingFeatures = "both";
     openFirewall = true;
     extraUpFlags = [
