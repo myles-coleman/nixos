@@ -69,8 +69,22 @@
     settings.PasswordAuthentication = false;
   };
 
-  # ── Tailscale for remote access ─────────────────────────────────────
-  services.tailscale.enable = true;
+  # ── Tailscale exit node + subnet router ──────────────────────────────
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+    openFirewall = true;
+    extraUpFlags = [
+      "--advertise-exit-node"
+      "--advertise-routes=10.0.0.0/24"
+    ];
+  };
+
+  # IP forwarding required for exit node and subnet routing
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
 
   # ── Basic system packages ───────────────────────────────────────────
   environment.systemPackages = with pkgs; [
