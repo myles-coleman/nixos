@@ -73,6 +73,13 @@ in {
       };
     };
 
+    home.file = {
+      ".claude/commands/SDD-1-generate-spec.md".source = ../config/claude-commands/SDD-1-generate-spec.md;
+      ".claude/commands/SDD-2-generate-task-list-from-spec.md".source = ../config/claude-commands/SDD-2-generate-task-list-from-spec.md;
+      ".claude/commands/SDD-3-manage-tasks.md".source = ../config/claude-commands/SDD-3-manage-tasks.md;
+      ".claude/commands/SDD-4-validate-spec-implementation.md".source = ../config/claude-commands/SDD-4-validate-spec-implementation.md;
+    };
+
     xdg.configFile = {
       "wallpaper1.jpg".source = ../config/wallpaper1.jpg;
 
