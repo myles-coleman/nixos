@@ -16,9 +16,9 @@ NixOS system configurations for 4 machines, managed with flakes and home-manager
 
 ## Commands
 
-- **Rebuild local machine**: `./rebuild.sh` (auto-detects hostname, formats with alejandra, auto-commits on success)
-- **Rebuild homelab**: `./rebuild.sh --homelab` (deploys to bee@10.0.0.150)
-- **Rebuild pikvm**: `./rebuild.sh --pikvm` (cross-compiles aarch64, deploys to bee@10.0.0.175)
+- **Rebuild local machine**: `rebuild` (shell alias for `./rebuild.sh`, auto-detects hostname, formats with alejandra, auto-commits on success)
+- **Rebuild homelab**: `rebuild --homelab` (deploys to bee@10.0.0.150)
+- **Rebuild pikvm**: `rebuild --pikvm` (cross-compiles aarch64, deploys to bee@10.0.0.175)
 - **Dry run**: Add `--dry-run` to any rebuild command
 - **Force rebuild** (skip change detection): Add `--force`
 - **Update flake inputs**: `nix flake update`
