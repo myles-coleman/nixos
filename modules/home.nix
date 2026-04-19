@@ -23,6 +23,11 @@ in {
       x11.enable = true;
     };
 
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
     programs.kitty = {
       enable = true;
       themeFile = "Catppuccin-Mocha";
