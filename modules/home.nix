@@ -61,6 +61,9 @@ in {
         # Initialize Oh My Posh with custom theme
         eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
 
+        # Re-initialize direnv hook after oh-my-posh to prevent precmd clobbering
+        eval "$(direnv hook zsh)"
+
         # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
         alias ssh="TERM=xterm-256color ssh"
       '';
