@@ -44,23 +44,23 @@
   boot.blacklistedKernelModules = ["nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"];
 
   # systemd service to load nvidia modules in the correct order after eGPU hotplug
-  systemd.services.nvidia-egpu = {
-    description = "Load NVIDIA driver stack for eGPU";
-    after = ["bolt.service"];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = let
-        script = pkgs.writeShellScript "load-nvidia-egpu" ''
-          # Load modules in dependency order
-          ${pkgs.kmod}/bin/modprobe nvidia
-          ${pkgs.kmod}/bin/modprobe nvidia_modeset
-          ${pkgs.kmod}/bin/modprobe nvidia_uvm
-          ${pkgs.kmod}/bin/modprobe nvidia_drm modeset=1 fbdev=1
-        '';
-      in "${script}";
-    };
-  };
+  # systemd.services.nvidia-egpu = {
+  #   description = "Load NVIDIA driver stack for eGPU";
+  #   after = ["bolt.service"];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     RemainAfterExit = true;
+  #     ExecStart = let
+  #       script = pkgs.writeShellScript "load-nvidia-egpu" ''
+  #         # Load modules in dependency order
+  #         ${pkgs.kmod}/bin/modprobe nvidia
+  #         ${pkgs.kmod}/bin/modprobe nvidia_modeset
+  #         ${pkgs.kmod}/bin/modprobe nvidia_uvm
+  #         ${pkgs.kmod}/bin/modprobe nvidia_drm modeset=1 fbdev=1
+  #       '';
+  #     in "${script}";
+  #   };
+  # };
 
   # Ollama needs the eGPU driver loaded before it can use CUDA
   systemd.services.ollama = {
