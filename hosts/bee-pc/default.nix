@@ -32,6 +32,7 @@
     font-awesome
     material-icons
     material-design-icons
+    unstable.opencode
   ];
 
   # fileSystems."/mnt/harddrive" = {
