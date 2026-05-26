@@ -119,6 +119,7 @@
     wl-clipboard #clipboard sharing with Waydroid
     unstable.claude-code
     zathura
+    prismlauncher
   ];
 
   services.openssh = {
