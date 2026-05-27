@@ -13,6 +13,9 @@
   boot.loader.systemd-boot.configurationLimit = 1;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Allow running armv6l binaries via QEMU (for cross-deploying to RPi 1)
+  boot.binfmt.emulatedSystems = ["armv6l-linux"];
+
   # Enable IOMMU
   boot.kernelParams = ["amd_iommu=on" "iommu=pt"];
 
