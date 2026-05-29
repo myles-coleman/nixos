@@ -1,5 +1,5 @@
 ---
-name: SDD-2-generate-task-list-from-spec
+name: sdd-2-generate-task-list-from-spec
 description: "Generate a task list from a Spec with mandatory planning audit gate"
 tags:
   - planning
