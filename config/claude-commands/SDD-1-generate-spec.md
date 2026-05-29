@@ -1,5 +1,5 @@
 ---
-name: SDD-1-generate-spec
+name: sdd-1-generate-spec
 description: "Generate a Specification (Spec) for a feature with enhanced workflow guidance and scope validation"
 tags:
   - planning
