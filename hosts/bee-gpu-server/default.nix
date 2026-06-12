@@ -13,12 +13,12 @@
   # Using systemd-boot (lighter than GRUB, less EFI space needed)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
+
   # Note: systemd-boot doesn't auto-detect Windows like GRUB does
   # Windows should still be bootable via UEFI firmware boot menu
   # Press F12/F11 during boot to select Windows manually
   # Or add manual entry (see comments below)
-  
+
   # Optional: Limit number of generations to save space
   boot.loader.systemd-boot.configurationLimit = 10;
 
