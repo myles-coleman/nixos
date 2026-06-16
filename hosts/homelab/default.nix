@@ -224,6 +224,7 @@ in {
     gcc
     gnupg
     alejandra #for formatting in rebuild script
+    ranger
 
     # Hardware monitoring
     lm_sensors
@@ -242,6 +243,7 @@ in {
     kustomize
     opentofu
     terraform
+    kubectl
 
     # Languages / runtimes
     python3
