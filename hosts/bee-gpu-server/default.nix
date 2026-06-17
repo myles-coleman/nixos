@@ -52,5 +52,14 @@
     wantedBy = ["multi-user.target"];
   };
 
+  # SSH configuration
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
   system.stateVersion = "25.05";
 }
