@@ -6,16 +6,47 @@
 }: let
   mainUser = "bee";
 in {
-  home-manager.users.${mainUser} = {
-    # Basic Plasma/KDE home-manager configuration
-    home.packages = with pkgs; [
-      # Additional KDE applications can be added here
-      kdePackages.konsole
-      kdePackages.gwenview
-      kdePackages.ark
-    ];
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "backup";
 
-    # Plasma-specific settings can be added here using home-manager's plasma module
-    # or through plasma-manager if integrated in the future
+  home-manager.users.${mainUser} = {
+    home.username = mainUser;
+    home.homeDirectory = "/home/${mainUser}";
+    home.stateVersion = "25.05";
+
+    programs.zsh = {
+      enable = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      enableCompletion = true;
+      shellAliases = {
+        rebuild = "sh ~/nixos/rebuild.sh";
+      };
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "colored-man-pages"
+          "colorize"
+          "history-substring-search"
+        ];
+      };
+      initContent = ''
+        # Initialize Oh My Posh with custom theme
+        eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
+      '';
+    };
+
+    home.packages = [pkgs.oh-my-posh];
+
+    xdg.configFile = {
+      "oh-my-posh/config.json".source = ../../../config/oh-my-posh-theme.json;
+    };
+
+    programs.git = {
+      enable = true;
+      userName = "bee";
+      userEmail = "your-email@example.com"; # Change this
+    };
   };
 }
