@@ -68,13 +68,7 @@
         inherit system;
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
-          ./modules/common.nix
-          ./modules/plasma.nix
-          ./modules/networking.nix
-          ./modules/dev-tools.nix
-          ./modules/gaming.nix
           home-manager.nixosModules.default
-          ./modules/home.nix
           ./hosts/bee-gpu-server
         ];
       };

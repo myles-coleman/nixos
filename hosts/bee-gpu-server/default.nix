@@ -3,30 +3,52 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  mainUser = "bee";
+in {
   imports = [
     ./hardware-configuration.nix
     ./home
   ];
 
-  # Dual-boot configuration with Windows
+  # UEFI boot with GRUB
   boot.loader.grub = {
     enable = true;
     device = "nodev";
     efiSupport = true;
-    useOSProber = true; # Detect Windows and other OS
+    useOSProber = true;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Note: systemd-boot doesn't auto-detect Windows like GRUB does
-  # Windows should still be bootable via UEFI firmware boot menu
-  # Press F12/F11 during boot to select Windows manually
-  # Or add manual entry (see comments below)
-
-  # Optional: Limit number of generations to save space
-  boot.loader.systemd-boot.configurationLimit = 10;
-
   networking.hostName = "bee-gpu-server";
+
+  # Users
+  users.users.${mainUser} = {
+    isNormalUser = true;
+    description = mainUser;
+    extraGroups = ["networkmanager" "wheel" "docker"];
+    shell = pkgs.zsh;
+  };
+
+  # SSH (password + key auth)
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
+  # Tailscale
+  services.tailscale = {
+    enable = true;
+    package = pkgs.unstable.tailscale;
+    useRoutingFeatures = "both";
+    openFirewall = true;
+  };
+
+  # Docker
+  virtualisation.docker.enable = true;
 
   # AMD GPU support
   hardware.graphics = {
@@ -36,9 +58,35 @@
 
   # AMD specific packages
   environment.systemPackages = with pkgs; [
+    # Core tools
+    vim
+    wget
+    curl
+    git
+    htop
+    tmux
+    tree
+    tldr
+    neofetch
+    gnumake
+    gcc
+    gnupg
+    alejandra
+    ranger
+
+    # Hardware monitoring
+    lm_sensors
+
+    # AMD GPU tools
     amdgpu_top
     radeontop
-    lact # Linux AMDGPU Configuration Tool
+    lact
+
+    # Development
+    gh
+
+    # Languages / runtimes
+    python3
   ];
 
   # Enable LACT service for AMD GPU control
@@ -52,14 +100,38 @@
     wantedBy = ["multi-user.target"];
   };
 
-  # SSH configuration
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = true;
-    };
-  };
+  # Swap
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16384;
+    }
+  ];
+
+  # Firewall
+  networking.firewall.enable = true;
+
+  programs.zsh.enable = true;
+
+  # Allow passwordless sudo for remote deploys
+  security.sudo.extraRules = [
+    {
+      users = ["${mainUser}"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.trusted-users = ["root" "bee"];
+
+  time.timeZone = "America/Los_Angeles";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   system.stateVersion = "25.05";
 }
