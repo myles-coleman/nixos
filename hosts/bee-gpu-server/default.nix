@@ -182,6 +182,7 @@ in {
 
   # Firewall
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [22]; # SSH
 
   programs.zsh.enable = true;
 
