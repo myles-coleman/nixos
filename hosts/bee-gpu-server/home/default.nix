@@ -42,11 +42,5 @@ in {
     xdg.configFile = {
       "oh-my-posh/config.json".source = ../../../config/oh-my-posh-theme.json;
     };
-
-    programs.git = {
-      enable = true;
-      userName = "bee";
-      userEmail = "your-email@example.com"; # Change this
-    };
   };
 }
