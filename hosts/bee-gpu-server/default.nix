@@ -108,6 +108,36 @@ in {
   # Docker
   virtualisation.docker.enable = true;
 
+  # Declarative Docker containers
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers = {
+      gemma-4-26b = {
+        image = "beebecomebigbee/llama-cpp-vulkan:latest";
+        ports = [
+          "8080:8080/tcp"
+        ];
+        volumes = [
+          "/home/${mainUser}/models:/models"
+        ];
+        extraOptions = [
+          "--device=/dev/dri/renderD128:/dev/dri/renderD128"
+          "--device=/dev/dri/card1:/dev/dri/card1"
+        ];
+        cmd = [
+          "--host"
+          "0.0.0.0"
+          "--port"
+          "8080"
+          "-m"
+          "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+          "-ngl"
+          "99"
+        ];
+      };
+    };
+  };
+
   # AMD GPU support
   hardware.graphics = {
     enable = true;
