@@ -189,6 +189,8 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
+    unstable.xenia-canary
+    # Emulators
   ];
 
   # Enable KDE Connect
