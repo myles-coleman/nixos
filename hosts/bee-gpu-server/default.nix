@@ -11,13 +11,8 @@ in {
     ./home
   ];
 
-  # UEFI boot with GRUB
-  boot.loader.grub = {
-    enable = true;
-    device = "nodev";
-    efiSupport = true;
-    useOSProber = true;
-  };
+  # UEFI boot with systemd-boot
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "bee-gpu-server";
