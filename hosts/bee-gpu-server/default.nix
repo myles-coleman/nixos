@@ -5,6 +5,12 @@
   ...
 }: let
   mainUser = "bee";
+  xrdp-xfce-session = pkgs.writeShellScript "xrdp-xfce-session" ''
+    unset WAYLAND_DISPLAY
+    unset DBUS_SESSION_BUS_ADDRESS
+    export XDG_SESSION_TYPE=x11
+    exec dbus-run-session -- xfce4-session
+  '';
 in {
   imports = [
     ./hardware-configuration.nix
@@ -30,22 +36,8 @@ in {
   # xrdp for remote desktop access
   services.xrdp = {
     enable = true;
-    defaultWindowManager = "xfce4-session";
+    defaultWindowManager = "${xrdp-xfce-session}";
     openFirewall = true;
-  };
-
-  # Fix xrdp sessions: unset Wayland env vars so XFCE runs in pure X11 mode
-  environment.etc."xrdp/startwm.sh" = {
-    text = ''
-      #!/bin/sh
-      . /etc/profile
-      unset WAYLAND_DISPLAY
-      unset XDG_SESSION_TYPE
-      unset DBUS_SESSION_BUS_ADDRESS
-      export XDG_SESSION_TYPE=x11
-      exec dbus-run-session -- xfce4-session
-    '';
-    mode = "0755";
   };
 
   # Enable Wayland support
