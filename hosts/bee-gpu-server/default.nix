@@ -5,15 +5,6 @@
   ...
 }: let
   mainUser = "bee";
-  xrdp-xfce-session = pkgs.writeShellScript "xrdp-xfce-session" ''
-    unset WAYLAND_DISPLAY
-    unset DBUS_SESSION_BUS_ADDRESS
-    export XDG_SESSION_TYPE=x11
-    export GDK_BACKEND=x11
-
-    # Test with just xterm first
-    exec xterm
-  '';
 in {
   imports = [
     ./hardware-configuration.nix
@@ -32,16 +23,6 @@ in {
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
-
-  # XFCE for xrdp remote desktop sessions
-  services.xserver.desktopManager.xfce.enable = true;
-
-  # xrdp for remote desktop access
-  services.xrdp = {
-    enable = true;
-    defaultWindowManager = "${xrdp-xfce-session}";
-    openFirewall = true;
-  };
 
   # Enable Wayland support
   environment.variables = {
@@ -203,6 +184,7 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
+    kdePackages.krfb
 
     # Emulators
     unstable.xenia-canary
@@ -234,6 +216,7 @@ in {
 
   # Firewall
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [5900];
 
   programs.zsh.enable = true;
 
