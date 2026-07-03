@@ -11,12 +11,8 @@
     export XDG_SESSION_TYPE=x11
     export GDK_BACKEND=x11
 
-    exec dbus-run-session -- bash -c '
-      # Disable compositing and start xfwm4 in the background
-      xfwm4 --compositor=off &
-      # Start the rest of the XFCE session
-      xfce4-session
-    '
+    # Test with just xterm first
+    exec xterm
   '';
 in {
   imports = [
