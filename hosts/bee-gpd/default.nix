@@ -123,6 +123,7 @@
     unstable.claude-code
     zathura
     unstable.prismlauncher
+    remmina
   ];
 
   services.openssh = {
