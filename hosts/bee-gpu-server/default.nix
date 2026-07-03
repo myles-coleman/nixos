@@ -30,8 +30,22 @@ in {
   # xrdp for remote desktop access
   services.xrdp = {
     enable = true;
-    defaultWindowManager = "dbus-run-session -- xfce4-session";
+    defaultWindowManager = "xfce4-session";
     openFirewall = true;
+  };
+
+  # Fix xrdp sessions: unset Wayland env vars so XFCE runs in pure X11 mode
+  environment.etc."xrdp/startwm.sh" = {
+    text = ''
+      #!/bin/sh
+      . /etc/profile
+      unset WAYLAND_DISPLAY
+      unset XDG_SESSION_TYPE
+      unset DBUS_SESSION_BUS_ADDRESS
+      export XDG_SESSION_TYPE=x11
+      exec dbus-run-session -- xfce4-session
+    '';
+    mode = "0755";
   };
 
   # Enable Wayland support
