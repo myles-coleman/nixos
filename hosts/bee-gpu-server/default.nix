@@ -184,8 +184,11 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
-    unstable.xenia-canary
+
     # Emulators
+    unstable.xenia-canary
+
+    remmina
   ];
 
   # Enable KDE Connect
