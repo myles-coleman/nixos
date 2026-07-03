@@ -24,6 +24,16 @@ in {
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  # XFCE for xrdp remote desktop sessions
+  services.xserver.desktopManager.xfce.enable = true;
+
+  # xrdp for remote desktop access
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "dbus-run-session -- xfce4-session";
+    openFirewall = true;
+  };
+
   # Enable Wayland support
   environment.variables = {
     NIXOS_OZONE_WL = "1";
