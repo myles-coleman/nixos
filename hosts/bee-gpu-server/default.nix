@@ -9,7 +9,14 @@
     unset WAYLAND_DISPLAY
     unset DBUS_SESSION_BUS_ADDRESS
     export XDG_SESSION_TYPE=x11
-    exec dbus-run-session -- xfce4-session
+    export GDK_BACKEND=x11
+
+    exec dbus-run-session -- bash -c '
+      # Disable compositing and start xfwm4 in the background
+      xfwm4 --compositor=off &
+      # Start the rest of the XFCE session
+      xfce4-session
+    '
   '';
 in {
   imports = [
