@@ -184,8 +184,6 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
-    kdePackages.krfb
-
     # Emulators
     unstable.xenia-canary
 
@@ -216,7 +214,7 @@ in {
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [3389 5900];
+  networking.firewall.allowedTCPPorts = [3389];
 
   programs.zsh.enable = true;
 
