@@ -5,41 +5,35 @@
   ...
 }: let
   mainUser = "bee";
-  xenia-edge = pkgs.appimageTools.wrapType2 {
-    pname = "xenia-edge";
-    version = "c0e1129";
-    src = pkgs.fetchurl {
-      url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_linux.AppImage";
-      hash = "sha256-1nvCxSwAitcGlv30ozHzeKqSsqqDtZUTyBxH2OAnw78=";
+  xenia-edge = let
+    wine = pkgs.wineWowPackages.stable;
+  in
+    pkgs.stdenv.mkDerivation {
+      pname = "xenia-edge";
+      version = "c0e1129";
+      src = pkgs.fetchurl {
+        url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_windows.zip";
+        hash = "sha256-lG3FK6hj1SmyfS44RYefHz0NYVn6UaJ1wPBq+KHLIbo=";
+      };
+      nativeBuildInputs = [pkgs.unzip pkgs.makeWrapper];
+      sourceRoot = ".";
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/share/xenia-edge $out/bin
+        cp -r *.exe *.dll $out/share/xenia-edge/ 2>/dev/null || true
+        cp -r * $out/share/xenia-edge/ 2>/dev/null || true
+        makeWrapper ${wine}/bin/wine $out/bin/xenia-edge \
+          --add-flags "$out/share/xenia-edge/xenia_edge.exe"
+        runHook postInstall
+      '';
+      meta = {
+        description = "Xbox 360 Emulator (Edge fork, D3D12 via Wine)";
+        homepage = "https://github.com/has207/xenia-edge";
+        license = lib.licenses.bsd3;
+        platforms = ["x86_64-linux"];
+        mainProgram = "xenia-edge";
+      };
     };
-    extraPkgs = fpkgs:
-      with fpkgs; [
-        vulkan-loader
-        zlib
-        libdrm
-        libglvnd
-        # Audio
-        SDL2
-        alsa-lib
-        pipewire
-        pulseaudio
-        # GUI deps
-        gtk3
-        glib
-        xorg.libX11
-        xorg.libXrandr
-        xorg.libXi
-        xorg.libXcursor
-        xorg.libXext
-      ];
-    meta = {
-      description = "Xbox 360 Emulator (Edge fork, improved Vulkan/Linux support)";
-      homepage = "https://github.com/has207/xenia-edge";
-      license = lib.licenses.bsd3;
-      platforms = ["x86_64-linux"];
-      mainProgram = "xenia-edge";
-    };
-  };
 in {
   imports = [
     ./hardware-configuration.nix
