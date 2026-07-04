@@ -27,6 +27,8 @@ in {
   # Enable Wayland support
   environment.variables = {
     NIXOS_OZONE_WL = "1";
+    # Always create a virtual display so krdp works headless (no monitor)
+    KWIN_DRM_VIRTUAL_OUTPUT = "1";
   };
 
   # Enable sound with PipeWire
