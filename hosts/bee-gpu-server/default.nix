@@ -12,30 +12,32 @@
       url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_linux.AppImage";
       hash = "sha256-1nvCxSwAitcGlv30ozHzeKqSsqqDtZUTyBxH2OAnw78=";
     };
-    extraPkgs = pkgs:
-      with pkgs; [
-        vulkan-loader
-        vulkan-headers
-        zlib
-        # GPU drivers and libs needed inside the FHS sandbox
-        mesa
-        mesa.drivers
-        libdrm
-        libglvnd
-        # Audio
-        SDL2
-        alsa-lib
-        pipewire
-        pulseaudio
-        # GUI deps
-        gtk3
-        glib
-        xorg.libX11
-        xorg.libXrandr
-        xorg.libXi
-        xorg.libXcursor
-        xorg.libXext
-      ];
+    extraPkgs = fpkgs:
+      with fpkgs;
+        [
+          vulkan-loader
+          zlib
+          libdrm
+          libglvnd
+          # Audio
+          SDL2
+          alsa-lib
+          pipewire
+          pulseaudio
+          # GUI deps
+          gtk3
+          glib
+          xorg.libX11
+          xorg.libXrandr
+          xorg.libXi
+          xorg.libXcursor
+          xorg.libXext
+        ]
+        ++ [
+          # Use unstable Mesa for RADV bug fixes (25.0.7 crashes in BindImageMemory2)
+          pkgs.unstable.mesa
+          pkgs.unstable.mesa.drivers
+        ];
     meta = {
       description = "Xbox 360 Emulator (Edge fork, improved Vulkan/Linux support)";
       homepage = "https://github.com/has207/xenia-edge";
