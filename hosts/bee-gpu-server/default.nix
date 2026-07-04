@@ -29,7 +29,7 @@
       cd "$XENIA_DIR"
       export WINEPREFIX="$HOME/.local/share/xenia-edge-prefix"
       export GAMEID="xenia-edge"
-      export PROTONPATH="${pkgs.proton-ge-bin}"
+      export PROTONPATH="${pkgs.proton-ge-bin.steamcompattool}"
       exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_edge.exe" "$@"
     '';
   in
