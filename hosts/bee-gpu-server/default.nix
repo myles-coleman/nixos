@@ -6,7 +6,6 @@
 }: let
   mainUser = "bee";
   xenia-edge = let
-    wine = pkgs.wineWowPackages.staging;
     xenia-src = pkgs.stdenv.mkDerivation {
       pname = "xenia-edge-src";
       version = "c0e1129";
@@ -23,13 +22,15 @@
     };
     launcher = pkgs.writeShellScript "xenia-edge-launcher" ''
       XENIA_DIR="$HOME/.local/share/xenia-edge-win"
-      # Sync files from nix store to writable directory
       mkdir -p "$XENIA_DIR"
       cp -u ${xenia-src}/*.exe "$XENIA_DIR/" 2>/dev/null || true
       cp -u ${xenia-src}/*.dll "$XENIA_DIR/" 2>/dev/null || true
       cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
       cd "$XENIA_DIR"
-      exec ${wine}/bin/wine "$XENIA_DIR/xenia_edge.exe" "$@"
+      export WINEPREFIX="$HOME/.local/share/xenia-edge-prefix"
+      export GAMEID="xenia-edge"
+      export PROTONPATH="${pkgs.proton-ge-bin}"
+      exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_edge.exe" "$@"
     '';
   in
     pkgs.stdenv.mkDerivation {
@@ -41,7 +42,7 @@
         ln -s ${launcher} $out/bin/xenia-edge
       '';
       meta = {
-        description = "Xbox 360 Emulator (Edge fork, D3D12 via Wine)";
+        description = "Xbox 360 Emulator (Edge fork, D3D12 via Proton)";
         homepage = "https://github.com/has207/xenia-edge";
         license = lib.licenses.bsd3;
         platforms = ["x86_64-linux"];
