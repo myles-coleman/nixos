@@ -13,31 +13,25 @@
       hash = "sha256-1nvCxSwAitcGlv30ozHzeKqSsqqDtZUTyBxH2OAnw78=";
     };
     extraPkgs = fpkgs:
-      with fpkgs;
-        [
-          vulkan-loader
-          zlib
-          libdrm
-          libglvnd
-          # Audio
-          SDL2
-          alsa-lib
-          pipewire
-          pulseaudio
-          # GUI deps
-          gtk3
-          glib
-          xorg.libX11
-          xorg.libXrandr
-          xorg.libXi
-          xorg.libXcursor
-          xorg.libXext
-        ]
-        ++ [
-          # Use unstable Mesa for RADV bug fixes (25.0.7 crashes in BindImageMemory2)
-          pkgs.unstable.mesa
-          pkgs.unstable.mesa.drivers
-        ];
+      with fpkgs; [
+        vulkan-loader
+        zlib
+        libdrm
+        libglvnd
+        # Audio
+        SDL2
+        alsa-lib
+        pipewire
+        pulseaudio
+        # GUI deps
+        gtk3
+        glib
+        xorg.libX11
+        xorg.libXrandr
+        xorg.libXi
+        xorg.libXcursor
+        xorg.libXext
+      ];
     meta = {
       description = "Xbox 360 Emulator (Edge fork, improved Vulkan/Linux support)";
       homepage = "https://github.com/has207/xenia-edge";
@@ -176,10 +170,12 @@ in {
     };
   };
 
-  # AMD GPU support
+  # AMD GPU support (use unstable Mesa for RADV bug fixes)
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    package = pkgs.unstable.mesa;
+    package32 = pkgs.unstable.pkgsi686Linux.mesa;
   };
 
   # System packages
