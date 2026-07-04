@@ -6,25 +6,39 @@
 }: let
   mainUser = "bee";
   xenia-edge = let
-    wine = pkgs.wineWowPackages.stable;
-  in
-    pkgs.stdenv.mkDerivation {
-      pname = "xenia-edge";
+    wine = pkgs.wineWowPackages.staging;
+    xenia-src = pkgs.stdenv.mkDerivation {
+      pname = "xenia-edge-src";
       version = "c0e1129";
       src = pkgs.fetchurl {
         url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_windows.zip";
         hash = "sha256-lG3FK6hj1SmyfS44RYefHz0NYVn6UaJ1wPBq+KHLIbo=";
       };
-      nativeBuildInputs = [pkgs.unzip pkgs.makeWrapper];
+      nativeBuildInputs = [pkgs.unzip];
       sourceRoot = ".";
       installPhase = ''
-        runHook preInstall
-        mkdir -p $out/share/xenia-edge $out/bin
-        cp -r *.exe *.dll $out/share/xenia-edge/ 2>/dev/null || true
-        cp -r * $out/share/xenia-edge/ 2>/dev/null || true
-        makeWrapper ${wine}/bin/wine $out/bin/xenia-edge \
-          --add-flags "$out/share/xenia-edge/xenia_edge.exe"
-        runHook postInstall
+        mkdir -p $out
+        cp -r * $out/
+      '';
+    };
+    launcher = pkgs.writeShellScript "xenia-edge-launcher" ''
+      XENIA_DIR="$HOME/.local/share/xenia-edge-win"
+      # Sync files from nix store to writable directory
+      mkdir -p "$XENIA_DIR"
+      cp -u ${xenia-src}/*.exe "$XENIA_DIR/" 2>/dev/null || true
+      cp -u ${xenia-src}/*.dll "$XENIA_DIR/" 2>/dev/null || true
+      cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
+      cd "$XENIA_DIR"
+      exec ${wine}/bin/wine "$XENIA_DIR/xenia_edge.exe" "$@"
+    '';
+  in
+    pkgs.stdenv.mkDerivation {
+      pname = "xenia-edge";
+      version = "c0e1129";
+      dontUnpack = true;
+      installPhase = ''
+        mkdir -p $out/bin
+        ln -s ${launcher} $out/bin/xenia-edge
       '';
       meta = {
         description = "Xbox 360 Emulator (Edge fork, D3D12 via Wine)";
