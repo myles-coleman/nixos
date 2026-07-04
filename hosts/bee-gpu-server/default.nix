@@ -5,6 +5,25 @@
   ...
 }: let
   mainUser = "bee";
+  xenia-edge = pkgs.appimageTools.wrapType2 {
+    pname = "xenia-edge";
+    version = "c0e1129";
+    src = pkgs.fetchurl {
+      url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_linux.AppImage";
+      hash = "sha256-1nvCxSwAitcGlv30ozHzeKqSsqqDtZUTyBxH2OAnw78=";
+    };
+    extraPkgs = pkgs: [
+      pkgs.vulkan-loader
+      pkgs.zlib
+    ];
+    meta = {
+      description = "Xbox 360 Emulator (Edge fork, improved Vulkan/Linux support)";
+      homepage = "https://github.com/has207/xenia-edge";
+      license = lib.licenses.bsd3;
+      platforms = ["x86_64-linux"];
+      mainProgram = "xenia-edge";
+    };
+  };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -189,8 +208,7 @@ in {
     kdePackages.partitionmanager
 
     # Emulators
-    unstable.xenia-canary
-    lutris
+    xenia-edge
     remmina
   ];
 
