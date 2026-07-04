@@ -216,7 +216,7 @@ in {
 
   # Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [5900];
+  networking.firewall.allowedTCPPorts = [3389 5900];
 
   programs.zsh.enable = true;
 
