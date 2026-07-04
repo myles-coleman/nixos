@@ -187,9 +187,10 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
+
     # Emulators
     unstable.xenia-canary
-
+    lutris
     remmina
   ];
 
