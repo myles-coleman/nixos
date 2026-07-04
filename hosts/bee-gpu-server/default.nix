@@ -158,6 +158,7 @@ in {
     gnupg
     alejandra
     ranger
+    brave
 
     # Hardware monitoring
     lm_sensors
