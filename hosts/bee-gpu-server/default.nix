@@ -53,6 +53,50 @@
         mainProgram = "xenia-edge";
       };
     };
+  xenia-canary = let
+    xenia-src = pkgs.stdenv.mkDerivation {
+      pname = "xenia-canary-netplay-src";
+      version = "v6.0.0";
+      src = pkgs.fetchurl {
+        url = "https://github.com/AdrianCassar/xenia-canary/releases/download/v6.0.0/xenia_canary_netplay_windows.zip";
+        hash = "sha256-vxgon+bQXgxfq34pPrUDoEkyaGUjXF0MNsk6w+VlBZU=";
+      };
+      nativeBuildInputs = [pkgs.unzip];
+      sourceRoot = ".";
+      installPhase = ''
+        mkdir -p $out
+        cp -r * $out/
+      '';
+    };
+    launcher = pkgs.writeShellScript "xenia-canary-launcher" ''
+      XENIA_DIR="$HOME/.local/share/xenia-canary-win"
+      mkdir -p "$XENIA_DIR"
+      cp -u ${xenia-src}/*.exe "$XENIA_DIR/" 2>/dev/null || true
+      cp -u ${xenia-src}/*.dll "$XENIA_DIR/" 2>/dev/null || true
+      cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
+      cd "$XENIA_DIR"
+      export WINEPREFIX="$HOME/.local/share/xenia-canary-prefix"
+      export GAMEID="xenia-canary"
+      export PROTONPATH="${pkgs.proton-ge-bin.steamcompattool}"
+      exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
+    '';
+  in
+    pkgs.stdenv.mkDerivation {
+      pname = "xenia-canary-netplay";
+      version = "v6.0.0";
+      dontUnpack = true;
+      installPhase = ''
+        mkdir -p $out/bin
+        ln -s ${launcher} $out/bin/xenia-canary
+      '';
+      meta = {
+        description = "Xbox 360 Emulator (Canary Netplay fork with network emulation)";
+        homepage = "https://github.com/AdrianCassar/xenia-canary";
+        license = lib.licenses.bsd3;
+        platforms = ["x86_64-linux"];
+        mainProgram = "xenia-canary";
+      };
+    };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -238,6 +282,7 @@ in {
 
     # Emulators
     xenia-edge
+    xenia-canary
     remmina
   ];
 
