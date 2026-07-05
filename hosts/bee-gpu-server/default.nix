@@ -30,6 +30,10 @@
       export WINEPREFIX="$HOME/.local/share/xenia-edge-prefix"
       export GAMEID="xenia-edge"
       export PROTONPATH="${pkgs.proton-ge-bin.steamcompattool}"
+      # Force 2x UI scaling for 4K displays
+      export GDK_SCALE=2
+      export GDK_DPI_SCALE=2
+      export QT_SCALE_FACTOR=2
       exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_edge.exe" "$@"
     '';
   in
