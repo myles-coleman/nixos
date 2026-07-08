@@ -76,11 +76,9 @@
       cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
       cd "$XENIA_DIR"
       export WINEPREFIX="$HOME/.local/share/xenia-canary-prefix"
-      export GAMEID="xenia-canary"
-      export PROTONPATH="${pkgs.proton-ge-bin.steamcompattool}"
-      # Disable Wine accessibility layer to prevent crashes
-      export WINE_XALIA_DISABLE=1
-      exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
+      export WINEDLLOVERRIDES="mscoree,mshtml="
+      export WINEDEBUG=-all
+      exec ${pkgs.wineWowPackages.staging}/bin/wine64 "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
     '';
   in
     pkgs.stdenv.mkDerivation {
