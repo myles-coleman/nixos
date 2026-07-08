@@ -76,9 +76,10 @@
       cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
       cd "$XENIA_DIR"
       export WINEPREFIX="$HOME/.local/share/xenia-canary-prefix"
+      export WINEARCH=win64
       export WINEDLLOVERRIDES="mscoree,mshtml="
       export WINEDEBUG=-all
-      exec ${pkgs.wineWowPackages.staging}/bin/wine64 "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
+      exec ${pkgs.wineWowPackages.staging}/bin/wine "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
     '';
   in
     pkgs.stdenv.mkDerivation {
