@@ -213,8 +213,8 @@ in {
         extraOptions = [
           "--device=/dev/dri/renderD128:/dev/dri/renderD128"
           "--device=/dev/dri/card1:/dev/dri/card1"
-          # Stability improvements: automatic restart + memory limits
-          "--restart=unless-stopped"
+          # Stability improvements: memory limits
+          # Note: NixOS handles restart via systemd, --restart flag conflicts with --rm
           "--memory=20g"
           "--memory-swap=24g"
           "--oom-kill-disable=false"
