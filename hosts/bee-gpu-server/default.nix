@@ -213,6 +213,11 @@ in {
         extraOptions = [
           "--device=/dev/dri/renderD128:/dev/dri/renderD128"
           "--device=/dev/dri/card1:/dev/dri/card1"
+          # Stability improvements: automatic restart + memory limits
+          "--restart=unless-stopped"
+          "--memory=20g"
+          "--memory-swap=24g"
+          "--oom-kill-disable=false"
         ];
         cmd = [
           "--host"
@@ -221,8 +226,36 @@ in {
           "8080"
           "-m"
           "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+          # GPU offloading
           "-ngl"
           "99"
+          # Context window management: stay below 40K max for stability
+          "-c"
+          "32768"
+          # KV cache quantization: reduce VRAM usage by ~50-60%
+          "--cache-type-k"
+          "q4_0"
+          "--cache-type-v"
+          "q8_0"
+          # Batch and generation limits: prevent memory spikes
+          "-b"
+          "512"
+          "-ub"
+          "512"
+          "-n"
+          "512"
+          "--n-predict"
+          "2048"
+          # Automatic KV cache defragmentation
+          "--defrag-thold"
+          "0.1"
+          # Parallel processing (adjust based on workload)
+          "-np"
+          "1"
+          # Enable Jinja templating
+          "--jinja"
+          # Metrics endpoint for monitoring
+          "--metrics"
         ];
       };
     };
