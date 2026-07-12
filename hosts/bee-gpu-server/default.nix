@@ -229,9 +229,10 @@ in {
           # GPU offloading
           "-ngl"
           "99"
-          # Context window management: stay below 40K max for stability
+          # Context window: 80K (Gemma 4 26B supports up to 256K)
+          # Uses ~20.7GB VRAM with 3.3GB headroom - excellent balance
           "-c"
-          "32768"
+          "81920"
           # KV cache quantization: reduce VRAM usage by ~50-60%
           "--cache-type-k"
           "q4_0"
