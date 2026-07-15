@@ -72,8 +72,9 @@ in {
   services.tailscale = {
     enable = true;
     package = pkgs.unstable.tailscale;
-    useRoutingFeatures = "both";
+    useRoutingFeatures = "client"; # Changed from "both" to "client" to avoid routing conflicts
     openFirewall = true;
+    authKeyFile = "/var/lib/tailscale/authkey";
   };
 
   # Docker
