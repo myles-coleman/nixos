@@ -124,7 +124,7 @@
     zathura
     unstable.prismlauncher
     remmina
-    squeekboard
+    wvkbd
   ];
 
   services.openssh = {
