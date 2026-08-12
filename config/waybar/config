@@ -208,10 +208,15 @@
         "on-click": "systemctl --user is-active gammastep && systemctl --user stop gammastep || systemctl --user start gammastep"
     },
     "custom/keyboard": {
-        "format": "{}",
-        "tooltip-format": "On-screen keyboard (click to toggle)",
+        "format": "{icon}",
+        "format-icons": {
+            "on": "",
+            "off": ""
+        },
+        "tooltip-format": "On-screen keyboard: {}",
         "interval": 2,
-        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo ''; else echo ''; fi",
+        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo '{\"text\":\"On\",\"alt\":\"on\",\"class\":\"on\"}'; else echo '{\"text\":\"Off\",\"alt\":\"off\",\"class\":\"off\"}'; fi",
+        "return-type": "json",
         "on-click": "~/.config/waybar/wvkbd-toggle.sh"
     }
 }
