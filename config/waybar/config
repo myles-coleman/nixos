@@ -213,9 +213,9 @@
             "on": "",
             "off": ""
         },
-        "tooltip-format": "On-screen keyboard: {}",
+        "tooltip-format": "Keyboard: {}",
         "interval": 2,
-        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo '{\"text\":\"On\",\"alt\":\"on\",\"class\":\"on\"}'; else echo '{\"text\":\"Off\",\"alt\":\"off\",\"class\":\"off\"}'; fi",
+        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo '{\"text\": \"On\", \"class\": \"on\", \"alt\": \"on\"}'; else echo '{\"text\": \"Off\", \"class\": \"off\", \"alt\": \"off\"}'; fi",
         "return-type": "json",
         "on-click": "~/.config/waybar/wvkbd-toggle.sh"
     }
