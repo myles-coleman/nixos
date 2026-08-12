@@ -208,11 +208,10 @@
         "on-click": "systemctl --user is-active gammastep && systemctl --user stop gammastep || systemctl --user start gammastep"
     },
     "custom/keyboard": {
-        "format": "KB",
-        "tooltip-format": "On-screen keyboard: {}",
+        "format": "{}",
+        "tooltip-format": "On-screen keyboard (click to toggle)",
         "interval": 2,
-        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo '{\"text\": \"ON\", \"class\": \"on\"}'; else echo '{\"text\": \"OFF\", \"class\": \"off\"}'; fi",
-        "return-type": "json",
+        "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo ''; else echo ''; fi",
         "on-click": "~/.config/waybar/wvkbd-toggle.sh"
     }
 }
