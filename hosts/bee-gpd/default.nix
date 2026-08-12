@@ -124,8 +124,8 @@
     zathura
     unstable.prismlauncher
     remmina
-    # wvkbd
-    maliit-framework
+    wvkbd
+    # maliit-framework
   ];
 
   services.openssh = {
