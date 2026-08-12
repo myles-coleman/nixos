@@ -102,6 +102,10 @@ in {
 
       "waybar/config".source = ../config/waybar/config;
       "waybar/style.css".source = ../config/waybar/style.css;
+      "waybar/wvkbd-toggle.sh" = {
+        source = ../config/waybar/wvkbd-toggle.sh;
+        executable = true;
+      };
 
       "MangoHud/MangoHud.conf".source = ../config/mangohud/MangoHud.conf;
       "MangoHud/custom.conf".source = ../config/mangohud/custom.conf;
