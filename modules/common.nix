@@ -51,6 +51,7 @@ in {
     slurp #region selection tool (hyprshot dependency)
     direnv
     tree
+    gh
   ];
 
   swapDevices = [
