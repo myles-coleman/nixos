@@ -46,7 +46,7 @@
 - [x] 1.6 Add `--protecli-vault` support to `rebuild.sh`. Add `PROTECLI_VAULT_HOST="bee@192.168.100.1"` to the host variables at the top. Add `PROTECLI_VAULT=false` to the flag defaults. Add `--protecli-vault) PROTECLI_VAULT=true ;;` to the case statement. Add an `elif $PROTECLI_VAULT; then` block following the existing `elif $BEE_GPU_SERVER` block, using `nixos-rebuild "$ACTION" --flake .#protecli-vault --target-host "$PROTECLI_VAULT_HOST" --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)`.
 - [x] 1.7 Run `alejandra .` to format all new files, then verify with `nix build .#nixosConfigurations.protecli-vault.config.system.build.toplevel --dry-run` that the flake evaluates successfully.
 
-### [~] 2.0 Network Interfaces, Bridge, and Routing with NAT
+### [x] 2.0 Network Interfaces, Bridge, and Routing with NAT
 
 #### 2.0 Proof Artifact(s)
 

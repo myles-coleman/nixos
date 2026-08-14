@@ -14,11 +14,13 @@ in {
     ./modules/services.nix
   ];
 
-  # UEFI boot with systemd-boot
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Legacy BIOS boot with GRUB (FW6C with coreboot uses legacy boot)
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+  };
 
-  networking.hostName = "protecli";
+  networking.hostName = "protecli-vault";
 
   # Users
   users.users.${mainUser} = {
