@@ -73,6 +73,15 @@
         ];
       };
 
+      protecli-vault = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          {nixpkgs.overlays = [unstableOverlay];}
+          home-manager.nixosModules.default
+          ./hosts/protecli-vault
+        ];
+      };
+
       pikvm = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [
