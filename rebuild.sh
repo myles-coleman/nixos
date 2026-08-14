@@ -6,9 +6,11 @@ set -e
 HOMELAB_HOST="bee@10.0.0.150"
 PIKVM_HOST="bee@10.0.0.175"
 BEE_GPU_SERVER_HOST="bee@10.0.0.148"
+PROTECLI_VAULT_HOST="bee@192.168.100.1"
 HOMELAB=false
 PIKVM=false
 BEE_GPU_SERVER=false
+PROTECLI_VAULT=false
 DRY_RUN=false
 FORCE=false
 
@@ -17,6 +19,7 @@ for arg in "$@"; do
         --homelab) HOMELAB=true ;;
         --pikvm) PIKVM=true ;;
         --bee-gpu-server) BEE_GPU_SERVER=true ;;
+        --protecli-vault) PROTECLI_VAULT=true ;;
         --dry-run) DRY_RUN=true ;;
         --force) FORCE=true ;;
     esac
@@ -61,6 +64,11 @@ elif $BEE_GPU_SERVER; then
     # Build locally, deploy to bee-gpu-server
     nixos-rebuild "$ACTION" --flake .#bee-gpu-server \
         --target-host "$BEE_GPU_SERVER_HOST" \
+        --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
+elif $PROTECLI_VAULT; then
+    # Build locally, deploy to protecli-vault
+    nixos-rebuild "$ACTION" --flake .#protecli-vault \
+        --target-host "$PROTECLI_VAULT_HOST" \
         --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)
 else
     # Rebuild using flake, auto-detects hostname
