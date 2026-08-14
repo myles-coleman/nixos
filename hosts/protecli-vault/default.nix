@@ -18,7 +18,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "protecli-vault";
+  networking.hostName = "protecli";
 
   # Users
   users.users.${mainUser} = {
@@ -68,8 +68,8 @@ in {
     wget
     curl
     git
+    gh
     htop
-    tmux
     tree
     alejandra
     ethtool

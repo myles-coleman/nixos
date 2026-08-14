@@ -27,7 +27,7 @@
 
 ## Tasks
 
-### [~] 1.0 Host Definition, Base System, and Remote Deployment
+### [x] 1.0 Host Definition, Base System, and Remote Deployment
 
 #### 1.0 Proof Artifact(s)
 
@@ -46,7 +46,7 @@
 - [x] 1.6 Add `--protecli-vault` support to `rebuild.sh`. Add `PROTECLI_VAULT_HOST="bee@192.168.100.1"` to the host variables at the top. Add `PROTECLI_VAULT=false` to the flag defaults. Add `--protecli-vault) PROTECLI_VAULT=true ;;` to the case statement. Add an `elif $PROTECLI_VAULT; then` block following the existing `elif $BEE_GPU_SERVER` block, using `nixos-rebuild "$ACTION" --flake .#protecli-vault --target-host "$PROTECLI_VAULT_HOST" --use-remote-sudo &>nixos-switch.log || (cat nixos-switch.log | grep --color error && exit 1)`.
 - [x] 1.7 Run `alejandra .` to format all new files, then verify with `nix build .#nixosConfigurations.protecli-vault.config.system.build.toplevel --dry-run` that the flake evaluates successfully.
 
-### [ ] 2.0 Network Interfaces, Bridge, and Routing with NAT
+### [~] 2.0 Network Interfaces, Bridge, and Routing with NAT
 
 #### 2.0 Proof Artifact(s)
 
@@ -58,18 +58,18 @@
 
 #### 2.0 Tasks
 
-- [ ] 2.1 In `hosts/protecli-vault/modules/networking.nix`, define `let` bindings at the top of the module for interface names: `wan = "enp1s0"; lan1 = "enp2s0"; lan2 = "enp3s0"; lan3 = "enp4s0"; lan4 = "enp5s0"; mgmt = "enp6s0";`. Add a comment: `# PLACEHOLDER interface names -- replace with actual names from 'ip link' on the physical device`. These names follow predictable naming for Intel i211 NICs but must be confirmed on hardware.
-- [ ] 2.2 In the same module, set `networking.useNetworkd = true;` and `networking.useDHCP = lib.mkForce false;` to switch from NetworkManager to systemd-networkd. Disable NetworkManager explicitly: `networking.networkmanager.enable = false;`. Disable the NixOS default firewall and NAT modules: `networking.firewall.enable = lib.mkForce false;` and `networking.nat.enable = false;`.
-- [ ] 2.3 Enable IPv4 forwarding via kernel sysctl: `boot.kernel.sysctl = { "net.ipv4.conf.all.forwarding" = true; };`. Add this to the networking module since it is a routing concern.
-- [ ] 2.4 Create the `br-lan` bridge netdev using `systemd.network.netdevs`: define a `"20-br-lan"` entry with `netdevConfig = { Kind = "bridge"; Name = "br-lan"; };`.
-- [ ] 2.5 Enslave the 4 LAN interfaces to the bridge. For each LAN interface (`lan1` through `lan4`), create a `systemd.network.networks` entry (e.g., `"30-${lan1}"`) with `matchConfig.Name = lan1;`, `networkConfig = { Bridge = "br-lan"; ConfigureWithoutCarrier = true; };`, and `linkConfig.RequiredForOnline = "enslaved";`. Use a helper function or `lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])` to avoid repetition, following the pattern from NixOS router community guides.
-- [ ] 2.6 Configure the WAN interface. Create a `systemd.network.networks` entry `"10-wan"` with `matchConfig.Name = wan;`, `networkConfig.DHCP = "ipv4";` (get IP from ISP router), `networkConfig.IPv4Forwarding = true;`, and `linkConfig.RequiredForOnline = "routable";`.
-- [ ] 2.7 Configure the `br-lan` bridge network. Create a `systemd.network.networks` entry `"40-br-lan"` with `matchConfig.Name = "br-lan";`, `address = ["10.0.0.1/24"];`, `networkConfig.ConfigureWithoutCarrier = true;`, and `linkConfig.RequiredForOnline = "no";`.
-- [ ] 2.8 Configure the management port. Create a `systemd.network.networks` entry `"10-mgmt"` with `matchConfig.Name = mgmt;`, `address = ["192.168.100.1/24"];`, `networkConfig.ConfigureWithoutCarrier = true;`, and `linkConfig.RequiredForOnline = "no";`.
-- [ ] 2.9 Set `systemd.network.wait-online.anyInterface = true;` so the system doesn't block boot waiting for all interfaces to come up.
-- [ ] 2.10 Disable `services.resolved` since DNS will be handled by Pi-hole and Unbound: `services.resolved.enable = false;`.
-- [ ] 2.11 Add the NAT masquerade rule. In `networking.nftables.enable = true;` (already set by the firewall module -- see task 3.1), add a `table ip nat` with a `chain postrouting` of `type nat hook postrouting priority 100; policy accept;` containing `oifname "${wan}" masquerade`. This can be placed in the networking module or the firewall module -- place it in `firewall.nix` alongside the filter rules to keep all nftables configuration in one file. Coordinate with task 3.0.
-- [ ] 2.12 Run `alejandra .` and verify the module evaluates: `nix build .#nixosConfigurations.protecli-vault.config.system.build.toplevel --dry-run`.
+- [x] 2.1 In `hosts/protecli-vault/modules/networking.nix`, define `let` bindings at the top of the module for interface names: `wan = "enp1s0"; lan1 = "enp2s0"; lan2 = "enp3s0"; lan3 = "enp4s0"; lan4 = "enp5s0"; mgmt = "enp6s0";`. Add a comment: `# PLACEHOLDER interface names -- replace with actual names from 'ip link' on the physical device`. These names follow predictable naming for Intel i211 NICs but must be confirmed on hardware.
+- [x] 2.2 In the same module, set `networking.useNetworkd = true;` and `networking.useDHCP = lib.mkForce false;` to switch from NetworkManager to systemd-networkd. Disable NetworkManager explicitly: `networking.networkmanager.enable = false;`. Disable the NixOS default firewall and NAT modules: `networking.firewall.enable = lib.mkForce false;` and `networking.nat.enable = false;`.
+- [x] 2.3 Enable IPv4 forwarding via kernel sysctl: `boot.kernel.sysctl = { "net.ipv4.conf.all.forwarding" = true; };`. Add this to the networking module since it is a routing concern.
+- [x] 2.4 Create the `br-lan` bridge netdev using `systemd.network.netdevs`: define a `"20-br-lan"` entry with `netdevConfig = { Kind = "bridge"; Name = "br-lan"; };`.
+- [x] 2.5 Enslave the 4 LAN interfaces to the bridge. For each LAN interface (`lan1` through `lan4`), create a `systemd.network.networks` entry (e.g., `"30-${lan1}"`) with `matchConfig.Name = lan1;`, `networkConfig = { Bridge = "br-lan"; ConfigureWithoutCarrier = true; };`, and `linkConfig.RequiredForOnline = "enslaved";`. Use a helper function or `lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])` to avoid repetition, following the pattern from NixOS router community guides.
+- [x] 2.6 Configure the WAN interface. Create a `systemd.network.networks` entry `"10-wan"` with `matchConfig.Name = wan;`, `networkConfig.DHCP = "ipv4";` (get IP from ISP router), `networkConfig.IPv4Forwarding = true;`, and `linkConfig.RequiredForOnline = "routable";`.
+- [x] 2.7 Configure the `br-lan` bridge network. Create a `systemd.network.networks` entry `"40-br-lan"` with `matchConfig.Name = "br-lan";`, `address = ["10.0.0.1/24"];`, `networkConfig.ConfigureWithoutCarrier = true;`, and `linkConfig.RequiredForOnline = "no";`.
+- [x] 2.8 Configure the management port. Create a `systemd.network.networks` entry `"10-mgmt"` with `matchConfig.Name = mgmt;`, `address = ["192.168.100.1/24"];`, `networkConfig.ConfigureWithoutCarrier = true;`, and `linkConfig.RequiredForOnline = "no";`.
+- [x] 2.9 Set `systemd.network.wait-online.anyInterface = true;` so the system doesn't block boot waiting for all interfaces to come up.
+- [x] 2.10 Disable `services.resolved` since DNS will be handled by Pi-hole and Unbound: `services.resolved.enable = false;`.
+- [x] 2.11 Add the NAT masquerade rule. In `networking.nftables.enable = true;` (already set by the firewall module -- see task 3.1), add a `table ip nat` with a `chain postrouting` of `type nat hook postrouting priority 100; policy accept;` containing `oifname "${wan}" masquerade`. This can be placed in the networking module or the firewall module -- place it in `firewall.nix` alongside the filter rules to keep all nftables configuration in one file. Coordinate with task 3.0.
+- [x] 2.12 Run `alejandra .` and verify the module evaluates: `nix build .#nixosConfigurations.protecli-vault.config.system.build.toplevel --dry-run`.
 
 ### [ ] 3.0 nftables Firewall Rules and Management Port Safety
 
