@@ -26,6 +26,7 @@
 
   # Static IP configuration for connecting to Protecli Vault via ethernet
   systemd.network.enable = true;
+  systemd.network.wait-online.enable = false; # Don't wait for networkd interfaces (NetworkManager handles connectivity)
   systemd.network.networks."10-eno1-vault" = {
     matchConfig.Name = "eno1";
     address = ["10.0.0.2/24"];
