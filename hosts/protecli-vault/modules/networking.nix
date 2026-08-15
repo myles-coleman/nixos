@@ -4,9 +4,6 @@
   lib,
   ...
 }: let
-  # PLACEHOLDER interface names -- replace with actual names from 'ip link' on the physical device.
-  # The FW6C has 6 Intel i211 NICs. These names follow the predictable naming scheme
-  # but must be confirmed on hardware after NixOS installation.
   wan = "enp1s0";
   lan1 = "enp2s0";
   lan2 = "enp3s0";
