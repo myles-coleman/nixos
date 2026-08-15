@@ -24,6 +24,17 @@
 
   networking.hostName = "bee-gpd";
 
+  # Static IP configuration for connecting to Protecli Vault via ethernet
+  systemd.network.enable = true;
+  systemd.network.networks."10-eno1-vault" = {
+    matchConfig.Name = "eno1";
+    address = ["10.0.0.2/24"];
+    networkConfig = {
+      ConfigureWithoutCarrier = true; # Works even when cable unplugged
+    };
+    linkConfig.RequiredForOnline = "no"; # Don't block boot
+  };
+
   # Extra groups specific to bee-gpd
   users.users.bee.extraGroups = ["video"];
 
