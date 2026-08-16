@@ -33,8 +33,14 @@ in {
   networking.firewall.enable = lib.mkForce false;
   networking.nat.enable = false;
 
-  # ── Disable systemd-resolved (DNS handled by Pi-hole + Unbound) ────
-  services.resolved.enable = false;
+  # ── Use systemd-resolved as a stub resolver for the Vault itself ───
+  # Pi-hole + Unbound handle DNS for LAN clients, but the Vault needs DNS too
+  services.resolved = {
+    enable = true;
+    # Don't use the stub listener on 127.0.0.53, use fallback DNS directly
+    dnssec = "false";
+    fallbackDns = ["8.8.8.8" "1.1.1.1"];
+  };
 
   # ── IPv4 forwarding (required for routing) ─────────────────────────
   boot.kernel.sysctl = {
