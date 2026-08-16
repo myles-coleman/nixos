@@ -68,6 +68,8 @@ in {
             DHCP = "ipv4";
             IPv4Forwarding = true;
           };
+          # Use upstream DNS servers for the Vault itself (before Pi-hole is running)
+          dns = ["8.8.8.8" "1.1.1.1"];
           linkConfig.RequiredForOnline = "routable";
         };
 
