@@ -47,7 +47,12 @@ in {
   };
 
   # Docker (for Pi-hole container)
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      dns = ["8.8.8.8" "1.1.1.1"]; # Fallback DNS for pulling images before Pi-hole is running
+    };
+  };
 
   programs.zsh.enable = true;
 
