@@ -38,9 +38,9 @@
           DNSMASQ_LISTENING = "local";
           PIHOLE_DNS_ = "127.0.0.1#5335"; # Point to Unbound
           DHCP_ACTIVE = "true";
-          DHCP_START = "10.0.0.50";
-          DHCP_END = "10.0.0.254";
-          DHCP_ROUTER = "10.0.0.1";
+          DHCP_START = "192.168.1.50";
+          DHCP_END = "192.168.1.254";
+          DHCP_ROUTER = "192.168.1.1";
           PIHOLE_DOMAIN = "lan";
           DHCP_LEASETIME = "24";
           REV_SERVER = "false";

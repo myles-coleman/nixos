@@ -92,7 +92,7 @@ in {
         # LAN bridge: main internal network
         "40-br-lan" = {
           matchConfig.Name = "br-lan";
-          address = ["10.0.0.1/24"];
+          address = ["192.168.1.1/24"];
           networkConfig = {
             ConfigureWithoutCarrier = true;
           };
