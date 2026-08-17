@@ -37,9 +37,14 @@ in {
   # Pi-hole + Unbound handle DNS for LAN clients, but the Vault needs DNS too
   services.resolved = {
     enable = true;
-    # Don't use the stub listener on 127.0.0.53, use fallback DNS directly
     dnssec = "false";
     fallbackDns = ["8.8.8.8" "1.1.1.1"];
+    # Only listen on 127.0.0.53, don't bind to port 53 on all interfaces
+    # This allows Pi-hole to bind to 0.0.0.0:53 for LAN clients
+    extraConfig = ''
+      DNSStubListener=yes
+      DNSStubListenerExtra=127.0.0.54
+    '';
   };
 
   # ── IPv4 forwarding (required for routing) ─────────────────────────
