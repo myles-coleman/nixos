@@ -33,19 +33,13 @@ in {
   networking.firewall.enable = lib.mkForce false;
   networking.nat.enable = false;
 
-  # ── Use systemd-resolved as a stub resolver for the Vault itself ───
-  # Pi-hole + Unbound handle DNS for LAN clients, but the Vault needs DNS too
-  services.resolved = {
-    enable = true;
-    dnssec = "false";
-    fallbackDns = ["8.8.8.8" "1.1.1.1"];
-    # Only listen on 127.0.0.53, don't bind to port 53 on all interfaces
-    # This allows Pi-hole to bind to 0.0.0.0:53 for LAN clients
-    extraConfig = ''
-      DNSStubListener=yes
-      DNSStubListenerExtra=127.0.0.54
-    '';
-  };
+  # ── Disable systemd-resolved entirely ──────────────────────────────
+  # The Vault will use Pi-hole (192.168.1.1) for its own DNS after Pi-hole starts
+  # Temporary bootstrap DNS is provided by Docker daemon settings
+  services.resolved.enable = false;
+
+  # Set static DNS for the Vault itself to use Pi-hole
+  networking.nameservers = ["192.168.1.1" "8.8.8.8"];
 
   # ── IPv4 forwarding (required for routing) ─────────────────────────
   boot.kernel.sysctl = {
