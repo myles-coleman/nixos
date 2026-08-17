@@ -29,7 +29,7 @@
   systemd.network.wait-online.enable = false; # Don't wait for networkd interfaces (NetworkManager handles connectivity)
   systemd.network.networks."10-eno1-vault" = {
     matchConfig.Name = "eno1";
-    address = ["10.0.0.2/24"];
+    address = ["192.168.1.2/24"];
     networkConfig = {
       ConfigureWithoutCarrier = true; # Works even when cable unplugged
     };
