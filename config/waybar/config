@@ -41,10 +41,6 @@
         "max-length": 50,
         "separate-outputs": true
     },
-    "hyprland/language": {
-        "format": "{}",
-        "max-length": 18
-    },
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
