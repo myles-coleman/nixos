@@ -210,10 +210,10 @@
     "custom/keyboard": {
         "format": "{icon}",
         "format-icons": {
-            "on": "⌨",
-            "off": "⌨"
+            "on": "󰌌",
+            "off": "󰌐"
         },
-        "tooltip-format": "Keyboard: {}",
+        "tooltip-format": "Virtual Keyboard: {}",
         "interval": 2,
         "exec": "if pgrep -x wvkbd-deskintl > /dev/null; then echo '{\"text\": \"On\", \"class\": \"on\", \"alt\": \"on\"}'; else echo '{\"text\": \"Off\", \"class\": \"off\", \"alt\": \"off\"}'; fi",
         "return-type": "json",
