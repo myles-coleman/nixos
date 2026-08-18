@@ -210,8 +210,8 @@
     "custom/keyboard": {
         "format": "{icon}",
         "format-icons": {
-            "on": "x",
-            "off": "x"
+            "on": "⌨",
+            "off": "⌨"
         },
         "tooltip-format": "Keyboard: {}",
         "interval": 2,
