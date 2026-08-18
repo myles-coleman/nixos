@@ -318,11 +318,13 @@ in {
     # Emulators
     xenia-edge
     xenia-canary
+
+    # Misc
     remmina
   ];
 
   # Enable KDE Connect
-  programs.kdeconnect.enable = true;
+  programs.kdeconnect.enable = false;
 
   # Enable LACT service for AMD GPU control
   systemd.packages = with pkgs; [lact];
