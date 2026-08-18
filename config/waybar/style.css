@@ -127,3 +127,19 @@
 #custom-redshift.off {
   color: @base04;
 }
+
+#custom-keyboard {
+  margin: 4px 2px;
+  padding: 0 6px;
+  background-color: @base02;
+  border-radius: 4px;
+  min-width: 20px;
+}
+
+#custom-keyboard.on {
+  color: @base0B;
+}
+
+#custom-keyboard.off {
+  color: @base04;
+}
