@@ -22,10 +22,6 @@ in {
     # drop invalid packets
     ct state invalid drop
 
-    # allow ssh from bee-gpd
-    ip saddr 192.168.1.2 tcp dport 22 accept
-    ip saddr 10.0.0.124 tcp dport 22 accept
-
            # SAFETY: management port always allowed (lockout protection)
            iifname "${mgmt}" accept comment "SAFETY: management port always allowed"
 
