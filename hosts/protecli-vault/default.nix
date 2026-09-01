@@ -12,6 +12,7 @@ in {
     ./modules/networking.nix
     ./modules/firewall.nix
     ./modules/services.nix
+    # ./modules/wifi.nix
   ];
 
   # Legacy BIOS boot with GRUB (FW6C with coreboot uses legacy boot)

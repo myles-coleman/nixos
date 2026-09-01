@@ -15,55 +15,61 @@ in {
 
   # ── Complete nftables ruleset ──────────────────────────────────────
   networking.nftables.ruleset = ''
-    table inet filter {
-      chain input {
-        type filter hook input priority 0; policy drop;
+       table inet filter {
+         chain input {
+           type filter hook input priority 0; policy drop;
 
-        # SAFETY: management port always allowed (lockout protection)
-        iifname "${mgmt}" accept comment "SAFETY: management port always allowed"
+    # drop invalid packets
+    ct state invalid drop
 
-        # Loopback
-        iifname "lo" accept comment "allow loopback"
+    # allow ssh from bee-gpd
+    ip saddr 192.168.1.2 tcp dport 22 accept
 
-        # LAN traffic to router
-        iifname "br-lan" accept comment "allow LAN traffic to router"
+           # SAFETY: management port always allowed (lockout protection)
+           iifname "${mgmt}" accept comment "SAFETY: management port always allowed"
 
-        # Tailscale
-        iifname "tailscale0" accept comment "allow Tailscale traffic"
+           # Loopback
+           iifname "lo" accept comment "allow loopback"
 
-        # WAN: only established/related connections
-        iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
+           # LAN traffic to router
+           iifname "br-lan" accept comment "allow LAN traffic to router"
 
-        # WAN: select ICMP types
-        iifname "${wan}" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "allow select ICMP from WAN"
+           # Tailscale
+           iifname "tailscale0" accept comment "allow Tailscale traffic"
 
-        # WAN: log and drop everything else (rate-limited)
-        iifname "${wan}" counter log prefix "dropped: " limit rate 5/minute drop comment "log and drop all other WAN input"
-      }
+           # WAN: only established/related connections
+           iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
 
-      chain forward {
-        type filter hook forward priority 0; policy drop;
+           # WAN: select ICMP types
+           iifname "${wan}" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "allow select ICMP from WAN"
 
-        # LAN to WAN
-        iifname "br-lan" oifname "${wan}" accept comment "allow LAN to WAN"
+           # WAN: log and drop everything else (rate-limited)
+           iifname "${wan}" counter log prefix "dropped: " limit rate 5/minute drop comment "log and drop all other WAN input"
+         }
 
-        # WAN to LAN: only established/related
-        iifname "${wan}" oifname "br-lan" ct state { established, related } accept comment "allow established WAN to LAN"
+         chain forward {
+           type filter hook forward priority 0; policy drop;
 
-        # Log and drop everything else (rate-limited)
-        counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
-      }
+           # LAN to WAN
+           iifname "br-lan" oifname "${wan}" accept comment "allow LAN to WAN"
 
-      chain output {
-        type filter hook output priority 0; policy accept;
-      }
-    }
+           # WAN to LAN: only established/related
+           iifname "${wan}" oifname "br-lan" ct state { established, related } accept comment "allow established WAN to LAN"
 
-    table ip nat {
-      chain postrouting {
-        type nat hook postrouting priority 100; policy accept;
-        oifname "${wan}" masquerade comment "NAT LAN traffic to WAN"
-      }
-    }
+           # Log and drop everything else (rate-limited)
+           counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
+         }
+
+         chain output {
+           type filter hook output priority 0; policy accept;
+         }
+       }
+
+       table ip nat {
+         chain postrouting {
+           type nat hook postrouting priority 100; policy accept;
+           oifname "${wan}" masquerade comment "NAT LAN traffic to WAN"
+         }
+       }
   '';
 }

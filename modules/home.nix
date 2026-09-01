@@ -36,8 +36,9 @@ in {
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
-        font_size = 14;
+        font_size = 16;
         background_opacity = "0.9";
+        window_padding_width = 10;
       };
     };
 
