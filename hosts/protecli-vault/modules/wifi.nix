@@ -17,6 +17,11 @@ in {
           mode = "wpa2-sha256";
           wpaPassword = password;
         };
+        settings = {
+          channel = 6;
+          hw_mode = "g";
+          ieee80211n = 1;
+        };
       };
     };
   };
