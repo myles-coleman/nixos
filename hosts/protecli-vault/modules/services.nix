@@ -31,8 +31,10 @@
     containers = {
       pihole = {
         image = "pihole/pihole@sha256:f7d1be836e3bc608b56d82fc9904f5a831cdfbc0dc9c6d58f94e4c985c70038b";
-        extraOptions = ["--network=host"]; # Required for DHCP broadcast traffic on br-lan
-
+        extraOptions = [
+          "--network=host"
+          "--cap-add=NET_ADMIN"
+        ];
         environment = {
           TZ = "America/Los_Angeles";
           WEBPASSWORD = ""; # Empty -- set manually post-deploy for security
@@ -48,7 +50,6 @@
           FTLCONF_dhcp_router = "192.168.1.1";
           FTLCONF_dhcp_leaseTime = "24";
         };
-
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"
           "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
