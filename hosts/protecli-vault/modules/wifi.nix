@@ -14,8 +14,10 @@ in {
       networks."${interface}" = {
         ssid = ssid;
         authentication = {
-          mode = "wpa2-sha256";
-          wpaPassword = password;
+          mode = "wpa3-sae";
+          saePasswords = [
+            {password = password;}
+          ];
         };
         settings = {
           channel = 6;
