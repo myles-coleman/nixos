@@ -35,22 +35,13 @@
 
         environment = {
           TZ = "America/Los_Angeles";
-          DNSMASQ_LISTENING = "all"; # Listen on all interfaces
-          PIHOLE_INTERFACE = "br-lan"; # Listen on br-lan interface
-          PIHOLE_DNS_ = "127.0.0.1#5335"; # Point to Unbound
-          DHCP_ACTIVE = "true";
-          DHCP_START = "192.168.1.50";
-          DHCP_END = "192.168.1.254";
-          DHCP_ROUTER = "192.168.1.1";
-          PIHOLE_DOMAIN = "lan";
-          DHCP_LEASETIME = "24";
-          REV_SERVER = "false";
           WEBPASSWORD = ""; # Empty -- set manually post-deploy for security
         };
 
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"
           "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
+          "${../pihole.toml}:/etc/pihole/pihole.toml"
         ];
       };
     };
