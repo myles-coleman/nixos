@@ -4,9 +4,9 @@
   lib,
   ...
 }: let
-  # Must match interface names in networking.nix
   wan = "enp1s0";
   mgmt = "enp6s0";
+  wifi = "wlp7s0";
 in {
   # ── Enable nftables, disable default NixOS firewall ────────────────
   networking.nftables.enable = true;
@@ -15,58 +15,64 @@ in {
 
   # ── Complete nftables ruleset ──────────────────────────────────────
   networking.nftables.ruleset = ''
-       table inet filter {
-         chain input {
-           type filter hook input priority 0; policy drop;
+    table inet filter {
+      chain input {
+        type filter hook input priority 0; policy drop;
 
-    # drop invalid packets
-    ct state invalid drop
+        # drop invalid packets
+        ct state invalid drop
 
-           # SAFETY: management port always allowed (lockout protection)
-           iifname "${mgmt}" accept comment "SAFETY: management port always allowed"
+        # SAFETY: management port always allowed (lockout protection)
+        iifname "${mgmt}" accept comment "SAFETY: management port always allowed"
 
-           # Loopback
-           iifname "lo" accept comment "allow loopback"
+        # Loopback
+        iifname "lo" accept comment "allow loopback"
 
-           # LAN traffic to router
-           iifname "br-lan" accept comment "allow LAN traffic to router"
+        # LAN and WiFi traffic to router
+        iifname "br-lan" accept comment "allow LAN traffic to router"
+        iifname "${wifi}" accept comment "allow WiFi traffic to router"
 
-           # Tailscale
-           iifname "tailscale0" accept comment "allow Tailscale traffic"
+        # Allow DHCP and DNS from WiFi interface
+        iifname "${wifi}" udp dport { 67, 68, 53 } accept comment "allow DHCP/DNS from WiFi"
 
-           # WAN: only established/related connections
-           iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
+        # Tailscale
+        iifname "tailscale0" accept comment "allow Tailscale traffic"
 
-           # WAN: select ICMP types
-           iifname "${wan}" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "allow select ICMP from WAN"
+        # WAN: only established/related connections
+        iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
 
-           # WAN: log and drop everything else (rate-limited)
-           iifname "${wan}" counter log prefix "dropped: " limit rate 5/minute drop comment "log and drop all other WAN input"
-         }
+        # WAN: select ICMP types
+        iifname "${wan}" icmp type { echo-request, destination-unreachable, time-exceeded } counter accept comment "allow select ICMP from WAN"
 
-         chain forward {
-           type filter hook forward priority 0; policy drop;
+        # WAN: log and drop everything else (rate-limited)
+        iifname "${wan}" counter log prefix "dropped: " limit rate 5/minute drop comment "log and drop all other WAN input"
+      }
 
-           # LAN to WAN
-           iifname "br-lan" oifname "${wan}" accept comment "allow LAN to WAN"
+      chain forward {
+        type filter hook forward priority 0; policy drop;
 
-           # WAN to LAN: only established/related
-           iifname "${wan}" oifname "br-lan" ct state { established, related } accept comment "allow established WAN to LAN"
+        # LAN and WiFi to WAN
+        iifname "br-lan" oifname "${wan}" accept comment "allow LAN to WAN"
+        iifname "${wifi}" oifname "${wan}" accept comment "allow WiFi to WAN"
 
-           # Log and drop everything else (rate-limited)
-           counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
-         }
+        # WAN to LAN/WiFi: only established/related
+        iifname "${wan}" oifname "br-lan" ct state { established, related } accept comment "allow established WAN to LAN"
+        iifname "${wan}" oifname "${wifi}" ct state { established, related } accept comment "allow established WAN to WiFi"
 
-         chain output {
-           type filter hook output priority 0; policy accept;
-         }
-       }
+        # Log and drop everything else (rate-limited)
+        counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
+      }
 
-       table ip nat {
-         chain postrouting {
-           type nat hook postrouting priority 100; policy accept;
-           oifname "${wan}" masquerade comment "NAT LAN traffic to WAN"
-         }
-       }
+      chain output {
+        type filter hook output priority 0; policy accept;
+      }
+    }
+
+    table ip nat {
+      chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+        oifname "${wan}" masquerade comment "NAT LAN traffic to WAN"
+      }
+    }
   '';
 }
