@@ -41,7 +41,6 @@
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"
           "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
-          "${../pihole.toml}:/etc/pihole/pihole.toml"
         ];
       };
     };
@@ -57,5 +56,10 @@
   systemd.services.docker-pihole = {
     after = ["unbound.service"];
     requires = ["unbound.service"];
+    preStart = ''
+      mkdir -p /var/lib/pihole/etc-pihole
+      cp ${../pihole.toml} /var/lib/pihole/etc-pihole/pihole.toml
+      chown 1000:1000 /var/lib/pihole/etc-pihole/pihole.toml
+    '';
   };
 }
