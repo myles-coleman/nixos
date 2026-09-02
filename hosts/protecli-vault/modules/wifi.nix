@@ -22,6 +22,7 @@ in {
           # wpaPassword = password;
         };
         settings = {
+          bridge = "br-lan";
           channel = 6;
           hw_mode = "g";
           ieee80211n = 1;
