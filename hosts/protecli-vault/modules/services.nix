@@ -51,6 +51,7 @@
   systemd.tmpfiles.rules = [
     "d /var/lib/pihole/etc-pihole 0755 root root -"
     "d /var/lib/pihole/etc-dnsmasq.d 0755 root root -"
+    "d ${../pihole.toml} 0755 root root -"
   ];
 
   # ── Service dependencies: Unbound starts before Pi-hole ────────────
