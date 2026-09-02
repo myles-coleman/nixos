@@ -9,6 +9,7 @@
   lan2 = "enp3s0";
   lan3 = "enp4s0";
   lan4 = "enp5s0";
+  wifi = "wlp7s0";
   mgmt = "enp6s0";
 
   # Helper: enslave a LAN interface to the br-lan bridge
@@ -64,7 +65,7 @@ in {
     # ── Network configurations ─────────────────────────────────────
     networks =
       # Enslave LAN interfaces to the bridge
-      lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])
+      lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4 wifi])
       // {
         # WAN: DHCP from upstream ISP router
         "10-wan" = {
