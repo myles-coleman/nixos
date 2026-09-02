@@ -35,7 +35,7 @@
 
         environment = {
           TZ = "America/Los_Angeles";
-          DNSMASQ_LISTENING = "bind"; # Bind only to specific interfaces (br-lan), not all
+          DNSMASQ_LISTENING = "all"; # Listen on all interfaces
           PIHOLE_INTERFACE = "br-lan"; # Listen on br-lan interface
           PIHOLE_DNS_ = "127.0.0.1#5335"; # Point to Unbound
           DHCP_ACTIVE = "true";
