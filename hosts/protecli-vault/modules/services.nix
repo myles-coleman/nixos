@@ -3,7 +3,20 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  piholeConfig = pkgs.writeText "pihole.toml" ''
+    [dns]
+    interface = "br-lan"
+    upstream = ["127.0.0.1#5335"]
+
+    [dhcp]
+    enabled = true
+    range = ["192.168.1.50", "192.168.1.254"]
+    router = "192.168.1.1"
+    domain = "lan"
+    lease_time = 24
+  '';
+in {
   # ── Unbound NixOS Service (Recursive DNS Resolver) ─────────────────
   services.unbound = {
     enable = true;
@@ -41,7 +54,6 @@
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"
           "/var/lib/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
-          "${../pihole.toml}:/etc/pihole/pihole.toml"
         ];
       };
     };
@@ -51,12 +63,16 @@
   systemd.tmpfiles.rules = [
     "d /var/lib/pihole/etc-pihole 0755 root root -"
     "d /var/lib/pihole/etc-dnsmasq.d 0755 root root -"
-    "d ${../pihole.toml} 0755 root root -"
   ];
 
   # ── Service dependencies: Unbound starts before Pi-hole ────────────
   systemd.services.docker-pihole = {
     after = ["unbound.service"];
     requires = ["unbound.service"];
+    preStart = ''
+      mkdir -p /var/lib/pihole/etc-pihole
+      cp ${piholeConfig} /var/lib/pihole/etc-pihole/pihole.toml
+      chown 1000:1000 /var/lib/pihole/etc-pihole/pihole.toml
+    '';
   };
 }
