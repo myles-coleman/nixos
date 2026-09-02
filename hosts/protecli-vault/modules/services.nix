@@ -40,11 +40,13 @@
           # Pi-hole v6 Configuration via FTLCONF_ environment variables
           FTLCONF_dns_interface = "br-lan";
           FTLCONF_dns_upstreams = "127.0.0.1#5335";
-          FTLCONF_dhcp_enabled = "true";
-          FTLCONF_dhcp_range = "192.168.1.50;192.168.1.254";
+          FTLCONF_dns_domain_name = "lan";
+
+          FTLCONF_dhcp_active = "true";
+          FTLCONF_dhcp_start = "192.168.1.50";
+          FTLCONF_dhcp_end = "192.168.1.254";
           FTLCONF_dhcp_router = "192.168.1.1";
-          FTLCONF_dhcp_domain = "lan";
-          FTLCONF_dhcp_lease_time = "24";
+          FTLCONF_dhcp_leaseTime = "24";
         };
 
         volumes = [
