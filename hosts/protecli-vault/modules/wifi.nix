@@ -28,16 +28,6 @@ in {
     };
   };
 
-  # Ensure the wireless interface is bridged to br-lan
-  systemd.network.networks."30-wifi" = {
-    matchConfig.Name = interface;
-    networkConfig = {
-      Bridge = "br-lan";
-      ConfigureWithoutCarrier = true;
-    };
-    linkConfig.RequiredForOnline = "enslaved";
-  };
-
   # Add hostapd to system packages
   environment.systemPackages = [pkgs.hostapd];
 }
