@@ -29,6 +29,9 @@ in {
     description = mainUser;
     extraGroups = ["wheel" "docker"];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAbRhFuBN78VkdBT6v/SAdPYxqqBWqthWqf6mWLQL8I bee@bee-gpd"
+    ];
   };
 
   # SSH
