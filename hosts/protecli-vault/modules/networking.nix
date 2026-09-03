@@ -9,8 +9,8 @@
   lan2 = "enp3s0";
   lan3 = "enp4s0";
   lan4 = "enp5s0";
-  wifi = "wlp7s0";
   mgmt = "enp6s0";
+  wifi = "wlp7s0";
 
   # Helper: enslave a LAN interface to the br-lan bridge
   enslaveToBridge = name: {
