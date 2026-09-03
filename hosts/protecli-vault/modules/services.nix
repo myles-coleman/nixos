@@ -43,6 +43,8 @@
           FTLCONF_dns_interface = "br-lan";
           FTLCONF_dns_upstreams = "127.0.0.1#5335";
           FTLCONF_dns_domain_name = "lan";
+          FTLCONF_dns_listeningMode = "ALL";
+          FTLCONF_dhcp_logging = "true";
 
           FTLCONF_dhcp_active = "true";
           FTLCONF_dhcp_start = "192.168.1.50";
