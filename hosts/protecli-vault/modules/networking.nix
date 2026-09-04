@@ -65,7 +65,7 @@ in {
     # ── Network configurations ─────────────────────────────────────
     networks =
       # Enslave LAN interfaces to the bridge
-      lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4 wifi])
+      lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])
       // {
         # WAN: DHCP from upstream ISP router
         "10-wan" = {

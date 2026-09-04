@@ -8,12 +8,10 @@
   mgmt = "enp6s0";
   wifi = "wlp7s0";
 in {
-  # ── Enable nftables, disable default NixOS firewall ────────────────
   networking.nftables.enable = true;
   networking.nftables.checkRuleset = false;
   networking.firewall.enable = lib.mkForce false;
 
-  # ── Complete nftables ruleset ──────────────────────────────────────
   networking.nftables.ruleset = ''
     table inet filter {
       chain input {

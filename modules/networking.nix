@@ -14,9 +14,9 @@
     dnssec = "allow-downgrade";
     domains = ["~."]; # Claim root DNS zone so Tailscale MagicDNS doesn't hijack all queries
     fallbackDns = ["192.168.1.1"];
-    extraConfig = ''
-      DNS=192.168.1.1
-    '';
+    # extraConfig = ''
+    #  DNS=192.168.1.1
+    # '';
   };
 
   services.tailscale = {

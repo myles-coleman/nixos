@@ -6,8 +6,9 @@
 }: let
   interface = "wlp7s0";
   ssid = "beans-test";
-  password = "1password23";
 in {
+  sops.secrets.wifi_password = {};
+
   services.hostapd = {
     enable = true;
     radios."${interface}" = {
@@ -16,10 +17,8 @@ in {
         authentication = {
           mode = "wpa3-sae";
           saePasswords = [
-            {password = password;}
+            {password = config.sops.secrets.wifi_password.result;}
           ];
-          # mode = "wpa2-sha256";
-          # wpaPassword = password;
         };
         settings = {
           bridge = "br-lan";
@@ -31,6 +30,5 @@ in {
     };
   };
 
-  # Add hostapd to system packages
   environment.systemPackages = [pkgs.hostapd];
 }
