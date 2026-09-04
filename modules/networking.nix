@@ -13,9 +13,9 @@
     enable = true;
     dnssec = "allow-downgrade";
     domains = ["~."]; # Claim root DNS zone so Tailscale MagicDNS doesn't hijack all queries
-    fallbackDns = ["1.1.1.1" "8.8.8.8"];
+    fallbackDns = ["192.168.1.1"];
     extraConfig = ''
-      DNS=1.1.1.1#cloudflare-dns.com 8.8.8.8#dns.google
+      DNS=192.168.1.1
     '';
   };
 
