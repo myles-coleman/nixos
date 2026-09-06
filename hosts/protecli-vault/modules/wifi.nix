@@ -7,7 +7,7 @@
   interface = "wlp7s0";
   ssid = "beans-test";
 in {
-  sops.secrets.wifi_password = {};
+  sops.secrets.ap_password = {};
 
   services.hostapd = {
     enable = true;
@@ -17,7 +17,7 @@ in {
         authentication = {
           mode = "wpa3-sae";
           saePasswords = [
-            {password = config.sops.secrets.wifi_password.result;}
+            {password = config.sops.secrets.ap_password.path;}
           ];
         };
         settings = {

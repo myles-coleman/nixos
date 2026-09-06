@@ -13,7 +13,7 @@ in {
     ./modules/firewall.nix
     ./modules/services.nix
     ./modules/wifi.nix
-    # ./modules/sops.nix
+    ../../modules/sops.nix
   ];
 
   # Legacy BIOS boot with GRUB (FW6C with coreboot uses legacy boot)
@@ -77,8 +77,6 @@ in {
   # System packages
   environment.systemPackages = with pkgs; [
     vim
-    wget
-    curl
     git
     gh
     htop
