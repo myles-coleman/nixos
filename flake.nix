@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,6 +17,7 @@
     nixpkgs,
     nixpkgs-unstable,
     home-manager,
+    sops-nix,
     ...
   }: let
     system = "x86_64-linux";
@@ -80,6 +82,7 @@
           {nixpkgs.overlays = [unstableOverlay];}
           home-manager.nixosModules.default
           ./hosts/protecli-vault
+          sops-nix.nixosModules.sops
         ];
       };
 
