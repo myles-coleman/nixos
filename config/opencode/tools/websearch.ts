@@ -7,8 +7,19 @@ export default tool({
   },
   async execute(args) {
     try {
-      const url = `https://searxng.cowlab.org/search?q=${encodeURIComponent(args.query)}&format=json`
-      const response = await fetch(url)
+      if (!args.query) {
+        return "Error: Query is required."
+      }
+
+      const url = new URL("https://searxng.cowlab.org/search")
+      url.searchParams.append("q", args.query)
+      url.searchParams.append("format", "json")
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+      })
       
       if (!response.ok) {
         return `Error fetching from SearXNG: ${response.statusText}`
