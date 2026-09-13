@@ -202,7 +202,7 @@ in {
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      qwen-flash-next = {
+      gemma-4-26b = {
         image = "beebecomebigbee/llama-cpp-vulkan:latest";
         ports = [
           "8080:8080/tcp"
