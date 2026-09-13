@@ -138,6 +138,7 @@
     remmina
     wvkbd
     # maliit-framework
+    python3
   ];
 
   services.openssh = {
