@@ -17,16 +17,39 @@ in {
         authentication = {
           mode = "wpa3-sae";
           saePasswords = [
-            {password = "/run/secrets/ap_password";}
+            {password = "dummy-password-to-satisfy-nix-validation";}
           ];
         };
-        settings = {
-          bridge = "br-lan";
-          channel = 6;
-          hw_mode = "g";
-          ieee80211n = 1;
-        };
       };
+    };
+  };
+
+  sops.templates."hostapd.conf" = {
+    path = "/run/hostapd/hostapd.conf.template";
+    content = ''
+      interface=${interface}
+      ssid=${ssid}
+      driver=nl80211
+      hw_mode=g
+      ieee80211n=1
+      wpa=3
+      wpa_key_mgmt=SAE
+      sae_password=PASSWORD_PLACEHOLDER
+      bridge=br-lan
+      channel=6
+    '';
+  };
+
+  systemd.services."hostapd@${interface}.service" = {
+    after = ["sops-nix.service"];
+    serviceConfig = {
+      ExecStartPre = ''
+        mkdir -p /run/hostapd
+        sed "s|PASSWORD_PLACEHOLDER|$(cat /run/secrets/ap_password)|g" /run/hostapd/hostapd.conf.template > /run/hostapd/hostapd.conf
+      '';
+      ExecStart = ''
+        ${pkgs.hostapd}/bin/hostapd /run/hostapd/hostapd.conf
+      '';
     };
   };
 
