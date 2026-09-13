@@ -17,7 +17,7 @@ in {
         authentication = {
           mode = "wpa3-sae";
           saePasswords = [
-            {password = config.sops.secrets.ap_password.path;}
+            {password = "PASSWORD_PLACEHOLDER";}
           ];
         };
         settings = {
@@ -29,6 +29,10 @@ in {
       };
     };
   };
+
+  systemd.services."hostapd@${interface}".serviceConfig.ExecStartPre = [
+    "bash -c 'sed -i \"s|PASSWORD_PLACEHOLDER|$(cat /run/secrets/ap_password)|\" /etc/hostapd/hostapd.conf'"
+  ];
 
   environment.systemPackages = [pkgs.hostapd];
 }
