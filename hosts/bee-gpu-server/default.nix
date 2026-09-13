@@ -202,7 +202,7 @@ in {
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      gemma-4-26b = {
+      qwen-flash-next = {
         image = "beebecomebigbee/llama-cpp-vulkan:latest";
         ports = [
           "8080:8080/tcp"
@@ -225,37 +225,20 @@ in {
           "--port"
           "8080"
           "-m"
-          "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
-          # GPU offloading
-          "-ngl"
-          "99"
-          # Context window: 80K (Gemma 4 26B supports up to 256K)
-          # Uses ~20.7GB VRAM with 3.3GB headroom - excellent balance
-          "-c"
-          "81920"
-          # KV cache quantization: reduce VRAM usage by ~50-60%
-          "--cache-type-k"
-          "q4_0"
-          "--cache-type-v"
-          "q8_0"
-          # Batch and generation limits: prevent memory spikes
-          "-b"
+          "/models/Qwen3.8-Flash-Next-Q8_0.gguf"
+          "--n-gpu-layers"
+          "48"
+          "--ctx-size"
+          "262144"
+          "--spec-type"
+          "draft-mtp"
+          "--n-ubatch"
+          "128"
+          "--batch-size"
           "512"
-          "-ub"
-          "512"
-          "-n"
-          "512"
-          "--n-predict"
-          "2048"
-          # Automatic KV cache defragmentation
-          "--defrag-thold"
-          "0.1"
-          # Parallel processing (adjust based on workload)
-          "-np"
-          "1"
-          # Enable Jinja templating
+          "--flash-attn"
+          "--mmap"
           "--jinja"
-          # Metrics endpoint for monitoring
           "--metrics"
         ];
       };
