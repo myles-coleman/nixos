@@ -195,6 +195,12 @@ in {
     openFirewall = true;
   };
 
+  # Mullvad VPN
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+
   # Docker
   virtualisation.docker.enable = true;
 
@@ -302,6 +308,9 @@ in {
 
     # Misc
     remmina
+
+    # VPN
+    mullvad-vpn
   ];
 
   # Enable KDE Connect
