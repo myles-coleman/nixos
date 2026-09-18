@@ -259,8 +259,6 @@ in {
           "--no-warmup"
           "--spec-type"
           "ngram-mod"
-          "-ts"
-          "8,1"
           "--n-cpu-moe"
           "16"
           "--load-mode"
