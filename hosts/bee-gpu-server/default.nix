@@ -255,8 +255,6 @@ in {
           "q4_0"
           "-t"
           "6"
-          "--tb"
-          "6"
           "--no-warmup"
           "--spec-type"
           "ngram-mod"
