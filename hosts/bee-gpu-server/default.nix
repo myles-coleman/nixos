@@ -323,6 +323,7 @@ in {
     alejandra
     ranger
     brave
+    bat
 
     # Hardware monitoring
     lm_sensors
