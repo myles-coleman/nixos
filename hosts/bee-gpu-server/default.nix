@@ -235,7 +235,7 @@ in {
           # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
           # GPU offloading - start with 0 (CPU only) to test
           "-ngl"
-          "33"
+          "0"
           # Context window
           "-c"
           "40000"
