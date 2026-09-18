@@ -235,25 +235,15 @@ in {
           # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
           # GPU offloading - start with 0 (CPU only) to test
           "-ngl"
-          "0"
-          # Context window: reduced to 8K for testing
+          "33"
+          # Context window
           "-c"
-          # "8192"
           "40000"
-          # KV cache quantization: reduce VRAM usage by ~50-60%
-          # "--cache-type-k"
-          # "q4_0"
-          # "--cache-type-v"
-          # "q8_0"
           # Batch and generation limits: prevent memory spikes
           "-b"
-          "1024"
-          "-ub"
           "512"
-          "-ctk"
-          "q4_0"
-          "-ctv"
-          "q4_0"
+          "-ub"
+          "256"
           "-t"
           "6"
           "--no-warmup"
