@@ -208,7 +208,7 @@ in {
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      qwen-flash-next = {
+      gemma-4-26b = {
         image = "beebecomebigbee/llama-cpp-vulkan:latest";
         ports = [
           "8080:8080/tcp"
@@ -219,8 +219,11 @@ in {
         extraOptions = [
           "--device=/dev/dri/renderD128:/dev/dri/renderD128"
           "--device=/dev/dri/card1:/dev/dri/card1"
-          # Memory limits removed for Qwen 3.8 Flash Next (176GB model with mmap)
+          # Stability improvements: memory limits
           # Note: NixOS handles restart via systemd, --restart flag conflicts with --rm
+          "--memory=20g"
+          "--memory-swap=24g"
+          "--oom-kill-disable=false"
         ];
         cmd = [
           "--host"
@@ -228,21 +231,68 @@ in {
           "--port"
           "8080"
           "-m"
-          "/models/qwen-flash-next/Qwen3.8-Flash-Next-Q8_0/Qwen3.8-Flash-Next-Q8_0-00001-of-00006.gguf"
+          "/models/qwen-177b-atomic/qwen-177b/Qwen3.8-Flash-Next-AD-3.84bpw-IQ4_XS-M64-00001-of-00028.gguf"
+          # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+          # GPU offloading
           "-ngl"
-          "48"
+          "99"
+          # Context window: 80K
           "-c"
-          "8192"
-          "-ub"
-          "128"
+          "81920"
+          # KV cache quantization: reduce VRAM usage by ~50-60%
+          # "--cache-type-k"
+          # "q4_0"
+          # "--cache-type-v"
+          # "q8_0"
+          # Batch and generation limits: prevent memory spikes
           "-b"
+          "1024"
+          "-ub"
           "512"
+          "-ctk"
+          "q4_0"
+          "-ctv"
+          "q4_0"
+          "-t"
+          "6"
+          "--tb"
+          "6"
+          "--no-warmup"
+          "--spec-type"
+          "ngram-mod"
+          "-ts"
+          "8,1"
+          "--n-cpu-moe"
+          "6"
+          "--temp"
+          "1"
+          "--top-k"
+          "20"
+          "--min-p"
+          "0"
+          "--top-p"
+          "0.95"
+          "--load-mode"
+          "none"
+          "--lazy-mode"
+          "on"
+          "--fit"
+          "on"
           "-fa"
           "on"
-          "--mmap"
-          "--parallel"
-          "1"
-          "--jinja"
+          # "-n"
+          # "512"
+          # "--n-predict"
+          # "2048"
+          # Automatic KV cache defragmentation
+          # "--defrag-thold"
+          # "0.1"
+          # Parallel processing (adjust based on workload)
+          # "-np"
+          # "1"
+          # Enable Jinja templating
+          # "--jinja"
+          # Metrics endpoint for monitoring
           "--metrics"
         ];
       };
