@@ -209,7 +209,7 @@ in {
     backend = "docker";
     containers = {
       gemma-4-26b = {
-        image = "beebecomebigbee/llama-cpp-vulkan:latest";
+        image = "ghcr.io/ggml-org/llama.cpp:server-rocm";
         ports = [
           "8080:8080/tcp"
         ];
@@ -235,7 +235,7 @@ in {
           # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
           # GPU offloading - start with 0 (CPU only) to test
           "-ngl"
-          "0"
+          "10"
           # Context window
           "-c"
           "40000"
