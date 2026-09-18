@@ -231,7 +231,7 @@ in {
           "--port"
           "8080"
           "-m"
-          "/models/qwen-177b-atomic/qwen-177b/Qwen3.8-Flash-Next-AD-3.84bpw-IQ4_XS-M64-00001-of-00028.gguf"
+          "/models/qwen-177b-atomic/Qwen3.8-Flash-Next-AD-3.84bpw-IQ4_XS-M64-00001-of-00028.gguf"
           # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
           # GPU offloading
           "-ngl"
