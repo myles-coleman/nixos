@@ -238,7 +238,8 @@ in {
           "0"
           # Context window: reduced to 8K for testing
           "-c"
-          "8192"
+          # "8192"
+          "40000"
           # KV cache quantization: reduce VRAM usage by ~50-60%
           # "--cache-type-k"
           # "q4_0"
