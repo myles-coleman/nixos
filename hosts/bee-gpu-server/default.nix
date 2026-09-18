@@ -219,6 +219,12 @@ in {
         extraOptions = [
           "--device=/dev/dri/renderD128:/dev/dri/renderD128"
           "--device=/dev/dri/card1:/dev/dri/card1"
+          "--device=/dev/kfd:/dev/kfd"
+          "--group-add=video"
+          "--group-add=render"
+          "--ipc=host"
+          "--cap-add=SYS_PTRACE"
+          "--security-opt=seccomp=unconfined"
           # Stability improvements: memory limits
           # Note: NixOS handles restart via systemd, --restart flag conflicts with --rm
           "--memory=20g"
