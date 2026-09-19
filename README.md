@@ -109,3 +109,7 @@ Dotfiles are managed by [home-manager](https://github.com/nix-community/home-man
 This replaces the old `dotfiles` repo which used per-machine branches.
 Shared dotfiles (kitty, rofi, mangohud, waybar, oh-my-posh) live in `modules/home.nix`.
 Anything that differs between machines (e.g. hyprland.conf, start.sh) goes in the host's `home/` directory.
+
+## AI Artifacts
+
+SDD specs and research notes for this repo live in the private AI artifacts vault: `~/ai-artifacts-vault/nixos/docs/` (https://github.com/myles-coleman/ai-artifacts-vault).
