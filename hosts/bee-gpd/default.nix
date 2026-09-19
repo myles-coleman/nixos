@@ -140,6 +140,7 @@
     # maliit-framework
     python3
     typora
+    bat
   ];
 
   services.openssh = {
