@@ -95,6 +95,16 @@ in {
             };
           };
         };
+        mcp.filesystem = {
+          type = "local";
+          command = [
+            "npx"
+            "-y"
+            "@modelcontextprotocol/server-filesystem@2026.8.31"
+            "${config.users.users.${mainUser}.home}/ai-artifacts-vault"
+          ];
+          enabled = true;
+        };
       };
     };
   };
