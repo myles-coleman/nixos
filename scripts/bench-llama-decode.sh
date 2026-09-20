@@ -107,7 +107,7 @@ run_once() {
   bf="$(mktemp)"
   printf '%s' "$prompt" > "$pf"
   jq -nc --rawfile p "$pf" --arg m "$MODEL" --argjson n "$N_PREDICT" \
-    '{prompt:$p, model:$m, n_predict:$n, temperature:0, cache_prompt:false, stream:false}' > "$bf"
+    '{prompt:$p, model:$m, n_predict:$n, temperature:0, cache_prompt:false, stream:false, ignore_eos:true}' > "$bf"
   out="$(curl -s --max-time "$CURL_TIMEOUT" "$SERVER_URL/completion" \
     -H 'Content-Type: application/json' --data-binary @"$bf")"
   rm -f "$pf" "$bf"
