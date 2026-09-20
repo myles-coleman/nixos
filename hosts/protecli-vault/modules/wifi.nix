@@ -7,51 +7,42 @@
   interface = "wlp7s0";
   ssid = "beans-test";
 in {
+  # The AP password lives in sops; sops-nix materializes it at
+  # /run/secrets/ap_password before multi-user.target.
   sops.secrets.ap_password = {};
 
   services.hostapd = {
     enable = true;
     radios."${interface}" = {
+      band = "2g";
+      countryCode = "US";
+      # iwlwifi on this box cannot do ACS ("Unable to collect survey data"),
+      # and the module defaults channel to 0 (= ACS). Pin the channel.
+      channel = 6;
+      # Add wlp7s0 to the LAN bridge so wireless clients share the
+      # 192.168.1.0/24 network and Pi-hole DHCP. hostapd enslaves the
+      # interface itself; networkd must not manage wlp7s0 (it doesn't).
+      settings.bridge = "br-lan";
       networks."${interface}" = {
         ssid = ssid;
         authentication = {
           mode = "wpa3-sae";
+          # Read the password from the sops secret at service start instead
+          # of embedding it (which would land plaintext in the nix store).
           saePasswords = [
-            {password = "dummy-password-to-satisfy-nix-validation";}
+            {passwordFile = "/run/secrets/ap_password";}
           ];
         };
       };
     };
   };
 
-  sops.templates."hostapd.conf" = {
-    path = "/run/hostapd/hostapd.conf.template";
-    content = ''
-      interface=${interface}
-      ssid=${ssid}
-      driver=nl80211
-      hw_mode=g
-      ieee80211n=1
-      wpa=3
-      wpa_key_mgmt=SAE
-      sae_password=PASSWORD_PLACEHOLDER
-      bridge=br-lan
-      channel=6
-    '';
+  # hostapd needs br-lan (created by systemd-networkd) to exist before it
+  # can enslave wlp7s0.
+  systemd.services.hostapd = {
+    after = ["systemd-networkd.service"];
+    wants = ["systemd-networkd.service"];
   };
 
-  systemd.services."hostapd@${interface}.service" = {
-    after = ["sops-nix.service"];
-    serviceConfig = {
-      ExecStartPre = ''
-        mkdir -p /run/hostapd
-        sed "s|PASSWORD_PLACEHOLDER|$(cat /run/secrets/ap_password)|g" /run/hostapd/hostapd.conf.template > /run/hostapd/hostapd.conf
-      '';
-      ExecStart = ''
-        ${pkgs.hostapd}/bin/hostapd /run/hostapd/hostapd.conf
-      '';
-    };
-  };
-
-  environment.systemPackages = [pkgs.hostapd];
+  environment.systemPackages = [pkgs.iw];
 }
