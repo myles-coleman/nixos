@@ -81,16 +81,16 @@ in {
               };
             };
           };
-          gemma-local = {
+          qwen-local = {
             npm = "@ai-sdk/openai-compatible";
             options = {
-              baseURL = "http://10.0.0.148:8080/v1";
+              baseURL = "http://10.0.0.156:8080/v1";
               includeUsage = true;
             };
             models = {
-              "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf" = {
-                name = "Gemma 4 26B MoE (RX 7900 XTX)";
-                contextWindow = 262144;
+              "qwen3.8-flash-next" = {
+                name = "Qwen3.8 Flash Next (RX 7900 XTX)";
+                contextWindow = 100000;
               };
             };
           };
