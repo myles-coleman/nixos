@@ -217,7 +217,7 @@ in {
     backend = "docker";
     containers = {
       qwen-177b = {
-        image = "ghcr.io/ggml-org/llama.cpp:server-rocm";
+        image = "ghcr.io/ggml-org/llama.cpp:server-rocm@sha256:b54c5c6adb542a396885b4b07a5159e9ab0c649e007cc9f7f088799043cc9e4f";
         ports = [
           "8080:8080/tcp"
         ];
