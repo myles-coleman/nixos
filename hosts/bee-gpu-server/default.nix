@@ -111,6 +111,14 @@ in {
   networking.hostName = "bee-gpu-server";
   networking.networkmanager.enable = true;
 
+  # GPU server must stay reachable — block suspend/hibernate from any source
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
+
   # Enable Plasma 6 Desktop Environment
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
