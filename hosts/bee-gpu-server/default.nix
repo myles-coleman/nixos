@@ -216,7 +216,7 @@ in {
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      gemma-4-26b = {
+      qwen-177b = {
         image = "ghcr.io/ggml-org/llama.cpp:server-rocm";
         ports = [
           "8080:8080/tcp"
@@ -226,18 +226,13 @@ in {
         ];
         extraOptions = [
           "--device=/dev/dri/renderD128:/dev/dri/renderD128"
-          "--device=/dev/dri/card1:/dev/dri/card1"
           "--device=/dev/kfd:/dev/kfd"
           "--group-add=video"
           "--group-add=render"
           "--ipc=host"
           "--cap-add=SYS_PTRACE"
           "--security-opt=seccomp=unconfined"
-          # Stability improvements: memory limits
-          # Note: NixOS handles restart via systemd, --restart flag conflicts with --rm
-          "--memory=20g"
-          "--memory-swap=24g"
-          "--oom-kill-disable=false"
+          "--ulimit=memlock=-1"
         ];
         cmd = [
           "--host"
@@ -246,35 +241,39 @@ in {
           "8080"
           "-m"
           "/models/qwen-177b-atomic/Qwen3.8-Flash-Next-AD-3.84bpw-IQ4_XS-M64-00001-of-00028.gguf"
-          # "/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
-          # GPU offloading
+          "--jinja"
+          "--alias"
+          "qwen3.8-flash-next"
           "-ngl"
-          "0"
-          # Context window
+          "99"
+          "-ncmoe"
+          "40"
+          "-fit"
+          "off"
+          "-fa"
+          "on"
           "-c"
-          "8192"
-          # Batch size
+          "100000"
+          "-ctk"
+          "q4_0"
+          "-ctv"
+          "q4_0"
           "-b"
-          "512"
+          "1024"
           "-ub"
-          "256"
+          "512"
           "-t"
           "6"
-          "--n-cpu-moe"
-          "16"
-          # "-n"
-          # "512"
-          # "--n-predict"
-          # "2048"
-          # Automatic KV cache defragmentation
-          # "--defrag-thold"
-          # "0.1"
-          # Parallel processing (adjust based on workload)
-          # "-np"
-          # "1"
-          # Enable Jinja templating
-          # "--jinja"
-          # Metrics endpoint for monitoring
+          "-np"
+          "1"
+          "--temp"
+          "1"
+          "--top-k"
+          "20"
+          "--min-p"
+          "0"
+          "--top-p"
+          "0.95"
           "--metrics"
         ];
       };
