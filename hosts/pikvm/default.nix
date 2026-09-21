@@ -72,11 +72,18 @@
   # ── Tailscale client ─────────────────────────────────────────────────
   # Exit-node and subnet-router roles were retired: the Vault
   # (protecli-vault) is the single source of truth for tailnet egress.
+  # extraSetFlags actively clears the previously-advertised routes from the
+  # node's persisted state (removing extraUpFlags alone does not un-advertise
+  # an already-authenticated node).
   services.tailscale = {
     enable = true;
     package = pkgs.unstable.tailscale;
     useRoutingFeatures = "both";
     openFirewall = true;
+    extraSetFlags = [
+      "--advertise-exit-node=false"
+      "--advertise-routes="
+    ];
   };
 
   # IP forwarding retained (still enabled by useRoutingFeatures); exit-node
