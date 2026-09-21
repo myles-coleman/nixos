@@ -205,10 +205,18 @@ plain-WAN egress. To roll back manually:
 - **Device limit**: the Mullvad account allows a limited number of devices
   (currently 5); all tailnet identities that exit through the Vault share this
   account, so keep tailnet grants tight.
-- **DNS fallback**: if Mullvad anti-abuse limits interfere with recursive
-  Unbound on port 53, the reversible fallback is to point Unbound upstream at
-  `10.64.0.1` (Mullvad's in-tunnel resolver) and adjust the policy rules so
-  that traffic takes table 100. This is a manual, reversible change.
+- **DNS fallback (ACTIVE)**: Mullvad refuses iterative (RD=0) DNS to root
+  servers over the tunnel, which breaks full recursion, so Unbound is
+  configured to **forward** to `10.64.0.1` (Mullvad's in-tunnel resolver) via a
+  `forward-zone` for `.`. Unbound still caches and can validate DNSSEC. To
+  return to full recursion, remove the `forward-zone` block in
+  `hosts/protecli-vault/modules/services.nix` (only do this if Mullvad starts
+  answering iterative queries).
+- **Tailscale flags**: `extraUpFlags` only apply on a fresh login. For an
+  already-authenticated node, the same flags are re-applied on every boot via
+  `extraSetFlags`. If the node is ever logged out and re-authenticated, both
+  paths converge. Verify with `tailscale debug prefs` (`NetfilterMode` must be
+  `0`, `AdvertiseRoutes` must include `0.0.0.0/0` and `192.168.1.0/24`).
 - **App-only features**: DAITA, multihop, quantum-resistant tunnels, and
   obfuscation are implemented in Mullvad's userspace client and are not
   available on this kernel-WireGuard design.
