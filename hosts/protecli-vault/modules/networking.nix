@@ -76,6 +76,16 @@ in {
           };
           # Use upstream DNS servers for the Vault itself (before Pi-hole is running)
           dns = ["8.8.8.8" "1.1.1.1"];
+          # Transitional: the upstream LAN (10.0.0.0/24) is advertised as a
+          # tailnet subnet route, so tailnet traffic to it must leave via the
+          # WAN interface instead of the table-100 default (wg0).
+          routes = [
+            {
+              Destination = "10.0.0.0/24";
+              Table = 100;
+              Scope = "link";
+            }
+          ];
           linkConfig.RequiredForOnline = "routable";
         };
 
@@ -121,6 +131,14 @@ in {
             }
           ];
           routes = [
+            # LAN-destined tailnet traffic (subnet routing) must leave via
+            # br-lan, not the table-100 default (wg0). Without this, an
+            # advertised 192.168.1.0/24 route would be tunneled into Mullvad.
+            {
+              Destination = "192.168.1.0/24";
+              Table = 100;
+              Scope = "link";
+            }
             # Persistent blackhole: when wg0 is down its metric-0 default
             # disappears and this catches the lookup instead of falling
             # through to main -> WAN.
