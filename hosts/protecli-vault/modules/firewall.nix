@@ -7,6 +7,14 @@
   wan = "enp1s0";
   mgmt = "enp6s0";
   wifi = "wlp7s0";
+
+  # Unbound runs as the `unbound` user. NixOS may assign that uid dynamically,
+  # so fall back to the user name (nft resolves names at ruleset load time).
+  unboundUid = config.users.users.unbound.uid;
+  unboundMatch =
+    if unboundUid == null
+    then "\"unbound\""
+    else toString unboundUid;
 in {
   networking.nftables.enable = true;
   networking.nftables.checkRuleset = false;
@@ -30,11 +38,13 @@ in {
         iifname "br-lan" accept comment "allow LAN traffic to router"
         iifname "${wifi}" accept comment "allow WiFi traffic to router"
 
-        # Allow DHCP and DNS from WiFi interface
-        iifname "${wifi}" udp dport { 67, 68, 53 } accept comment "allow DHCP/DNS from WiFi"
+        # Tailscale: --netfilter-mode=off means the Vault owns the path,
+        # so accept tailnet input and the Tailscale transport port here.
+        iifname "tailscale0" accept comment "allow Tailscale input"
+        iifname "tailscale0" udp dport 41641 accept comment "allow Tailscale transport"
 
-        # Tailscale
-        iifname "tailscale0" accept comment "allow Tailscale traffic"
+        # CGNAT anti-spoof: Tailscale normally installs this; we must, too.
+        iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
 
         # WAN: only established/related connections
         iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
@@ -49,13 +59,27 @@ in {
       chain forward {
         type filter hook forward priority 0; policy drop;
 
-        # LAN and WiFi to WAN
-        iifname "br-lan" oifname "${wan}" accept comment "allow LAN to WAN"
-        iifname "${wifi}" oifname "${wan}" accept comment "allow WiFi to WAN"
+        # HARD KILL SWITCH: forwarded client/tailnet traffic never falls back
+        # to the WAN, regardless of tunnel state.
+        iifname { "br-lan", "tailscale0" } oifname "${wan}" drop comment "HARD KILL SWITCH: no WAN fallback"
 
-        # WAN to LAN/WiFi: only established/related
-        iifname "${wan}" oifname "br-lan" ct state { established, related } accept comment "allow established WAN to LAN"
-        iifname "${wan}" oifname "${wifi}" ct state { established, related } accept comment "allow established WAN to WiFi"
+        # IPv6 is actively blackholed, not merely ignored.
+        meta nfproto ipv6 drop comment "IPv6 blackholed"
+
+        # CGNAT anti-spoof for forwarded traffic.
+        iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
+
+        # Client/tailnet egress through the Mullvad tunnel.
+        iifname { "br-lan", "tailscale0" } oifname "wg0" accept comment "clients/tailnet to Mullvad"
+        iifname "wg0" oifname "br-lan" accept comment "Mullvad return to LAN"
+        iifname "wg0" oifname "tailscale0" accept comment "Mullvad return to tailnet"
+
+        # Subnet routing between the tailnet and the LAN.
+        iifname "tailscale0" oifname "br-lan" accept comment "tailnet to LAN (subnet routing)"
+        iifname "br-lan" oifname "tailscale0" accept comment "LAN to tailnet (subnet routing replies)"
+
+        # Return traffic for the above flows.
+        ct state { established, related } accept comment "allow return traffic"
 
         # Log and drop everything else (rate-limited)
         counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
@@ -63,13 +87,27 @@ in {
 
       chain output {
         type filter hook output priority 0; policy accept;
+
+        # HARD KILL SWITCH: locally generated recursive DNS must not leak to
+        # the WAN when wg0 is down.
+        oifname "${wan}" meta skuid ${unboundMatch} drop comment "HARD KILL SWITCH: Unbound DNS cannot leak to WAN"
       }
     }
 
     table ip nat {
       chain postrouting {
         type nat hook postrouting priority 100; policy accept;
-        oifname "${wan}" masquerade comment "NAT LAN traffic to WAN"
+        oifname "wg0" masquerade comment "NAT client traffic into the Mullvad tunnel"
+        oifname "tailscale0" masquerade comment "SNAT tailnet exit/subnet traffic"
+        oifname "${wan}" masquerade comment "NAT Vault host traffic to WAN"
+      }
+    }
+
+    table inet mss {
+      chain forward {
+        type filter hook forward priority mangle; policy accept;
+        oifname "wg0" tcp flags syn tcp option maxseg size set 1360 comment "MSS clamp for Mullvad tunnel"
+        oifname "tailscale0" tcp flags syn tcp option maxseg size set 1380 comment "MSS clamp for tailnet"
       }
     }
   '';

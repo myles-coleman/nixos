@@ -69,19 +69,18 @@
     settings.PasswordAuthentication = false;
   };
 
-  # ── Tailscale exit node + subnet router ──────────────────────────────
+  # ── Tailscale client ─────────────────────────────────────────────────
+  # Exit-node and subnet-router roles were retired: the Vault
+  # (protecli-vault) is the single source of truth for tailnet egress.
   services.tailscale = {
     enable = true;
     package = pkgs.unstable.tailscale;
     useRoutingFeatures = "both";
     openFirewall = true;
-    extraUpFlags = [
-      "--advertise-exit-node"
-      "--advertise-routes=10.0.0.0/24"
-    ];
   };
 
-  # IP forwarding required for exit node and subnet routing
+  # IP forwarding retained (still enabled by useRoutingFeatures); exit-node
+  # and subnet-router duties now live on the Vault.
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;

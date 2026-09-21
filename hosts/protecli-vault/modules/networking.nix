@@ -90,12 +90,47 @@ in {
         };
 
         # LAN bridge: main internal network
+        #
+        # Policy routing for the Mullvad tunnel lives on this *persistent*
+        # link, not on wg0: networkd drops rules attached to a link when it
+        # goes down. Table 100 must stay in sync with
+        # hosts/protecli-vault/modules/mullvad.nix (wgTable).
         "40-br-lan" = {
           matchConfig.Name = "br-lan";
           address = ["192.168.1.1/24"];
           networkConfig = {
             ConfigureWithoutCarrier = true;
           };
+          routingPolicyRules = [
+            # LAN clients: AND the source subnet with the ingress interface
+            # so the Vault's own 192.168.1.1 host traffic is NOT matched.
+            {
+              From = "192.168.1.0/24";
+              IncomingInterface = "br-lan";
+              Table = 100;
+            }
+            # Tailnet clients using the Vault as exit node / subnet router.
+            {
+              IncomingInterface = "tailscale0";
+              Table = 100;
+            }
+            # Locally generated recursive Unbound DNS.
+            {
+              User = "unbound";
+              Table = 100;
+            }
+          ];
+          routes = [
+            # Persistent blackhole: when wg0 is down its metric-0 default
+            # disappears and this catches the lookup instead of falling
+            # through to main -> WAN.
+            {
+              Destination = "0.0.0.0/0";
+              Table = 100;
+              Metric = 1000;
+              Type = "blackhole";
+            }
+          ];
           linkConfig.RequiredForOnline = "no";
         };
       };

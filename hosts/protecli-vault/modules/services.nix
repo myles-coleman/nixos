@@ -18,6 +18,10 @@
         verbosity = 1;
         num-threads = 2; # Match i5-7200U's 2 cores
 
+        # IPv6 is actively blackholed on the Vault; make sure Unbound never
+        # tries to resolve over it.
+        do-ip6 = false;
+
         # Security hardening
         hide-identity = true;
         hide-version = true;
