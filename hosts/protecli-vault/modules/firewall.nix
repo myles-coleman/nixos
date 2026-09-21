@@ -98,6 +98,12 @@ in {
       chain output {
         type filter hook output priority 0; policy accept;
 
+        # WireGuard's own encapsulated packets inherit the sending socket's
+        # uid and carry the tunnel fwmark. Exempt them, otherwise the
+        # uid-scoped DNS kill switch below drops the tunnel itself for
+        # Unbound (its queries would never leave the box).
+        meta mark 51820 accept comment "allow WireGuard encapsulated packets"
+
         # HARD KILL SWITCH: locally generated recursive DNS must not leak to
         # the WAN when wg0 is down.
         oifname "${wan}" meta skuid ${unboundMatch} drop comment "HARD KILL SWITCH: Unbound DNS cannot leak to WAN"
