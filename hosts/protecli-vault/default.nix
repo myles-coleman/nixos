@@ -12,6 +12,8 @@ in {
     ./modules/networking.nix
     ./modules/firewall.nix
     ./modules/services.nix
+    ./modules/mullvad.nix
+    ./modules/watchdog.nix
     ./modules/wifi.nix
     ../../modules/sops.nix
   ];
@@ -44,12 +46,31 @@ in {
     };
   };
 
-  # Tailscale
+  # Tailscale: exit node + subnet router. The Vault owns forwarding and SNAT
+  # (--netfilter-mode=off) so its custom nftables ruleset is the only data path.
   services.tailscale = {
     enable = true;
     package = pkgs.unstable.tailscale;
     openFirewall = true;
+    useRoutingFeatures = "both";
+    authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+    extraUpFlags = [
+      "--netfilter-mode=off"
+      "--advertise-exit-node"
+      "--advertise-routes=192.168.1.0/24"
+    ];
   };
+
+  # Tailscale auth key lives in sops; only root needs to read it.
+  sops.secrets.tailscale_auth_key = {
+    owner = "root";
+    group = "root";
+    mode = "0400";
+    restartUnits = ["tailscaled.service"];
+  };
+
+  # Alert-only watchdog: never fails open, never rolls back a generation.
+  services.mullvadWatchdog.enable = true;
 
   # Docker (for Pi-hole container)
   virtualisation.docker = {
@@ -87,6 +108,7 @@ in {
     dnsutils
     nftables
     iperf3
+    wireguard-tools
   ];
 
   # Swap
