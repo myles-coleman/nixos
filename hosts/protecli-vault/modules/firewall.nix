@@ -34,6 +34,15 @@ in {
         # Loopback
         iifname "lo" accept comment "allow loopback"
 
+        # CGNAT anti-spoof: Tailscale normally installs this; we must, too.
+        # Kept before the general established accept so spoofed packets cannot
+        # ride an existing conntrack entry.
+        iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
+
+        # Return traffic for host-initiated connections (e.g. Unbound queries
+        # that egress via wg0 and recursive replies that arrive back on wg0).
+        ct state { established, related } accept comment "allow established/related input"
+
         # LAN and WiFi traffic to router
         iifname "br-lan" accept comment "allow LAN traffic to router"
         iifname "${wifi}" accept comment "allow WiFi traffic to router"
@@ -43,8 +52,9 @@ in {
         iifname "tailscale0" accept comment "allow Tailscale input"
         iifname "tailscale0" udp dport 41641 accept comment "allow Tailscale transport"
 
-        # CGNAT anti-spoof: Tailscale normally installs this; we must, too.
-        iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
+        # Mullvad tunnel: accept return traffic for the Vault's own host
+        # traffic (Unbound DNS, nix, NTP, tailscaled control plane).
+        iifname "wg0" accept comment "allow Mullvad tunnel input to the host"
 
         # WAN: only established/related connections
         iifname "${wan}" ct state { established, related } accept comment "allow established WAN traffic"
