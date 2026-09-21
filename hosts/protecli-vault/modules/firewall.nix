@@ -50,7 +50,9 @@ in {
         # Tailscale: --netfilter-mode=off means the Vault owns the path,
         # so accept tailnet input and the Tailscale transport port here.
         iifname "tailscale0" accept comment "allow Tailscale input"
-        iifname "tailscale0" udp dport 41641 accept comment "allow Tailscale transport"
+        # With --netfilter-mode=off the Vault must accept the Tailscale
+        # transport port itself; it arrives on the WAN interface, not tailscale0.
+        udp dport 41641 accept comment "allow Tailscale transport"
 
         # Mullvad tunnel: accept return traffic for the Vault's own host
         # traffic (Unbound DNS, nix, NTP, tailscaled control plane).

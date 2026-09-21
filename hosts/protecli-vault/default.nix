@@ -59,6 +59,14 @@ in {
       "--advertise-exit-node"
       "--advertise-routes=192.168.1.0/24"
     ];
+    # extraUpFlags only apply on a fresh login. extraSetFlags re-applies the
+    # same settings on every boot, which is required for an already-authenticated
+    # node (otherwise NetfilterMode stays at the default and nothing is advertised).
+    extraSetFlags = [
+      "--netfilter-mode=off"
+      "--advertise-exit-node"
+      "--advertise-routes=192.168.1.0/24"
+    ];
   };
 
   # Tailscale auth key lives in sops; only root needs to read it.
