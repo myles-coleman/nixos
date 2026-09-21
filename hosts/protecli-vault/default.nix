@@ -57,7 +57,7 @@ in {
     extraUpFlags = [
       "--netfilter-mode=off"
       "--advertise-exit-node"
-      "--advertise-routes=192.168.1.0/24"
+      "--advertise-routes=192.168.1.0/24,10.0.0.0/24"
     ];
     # extraUpFlags only apply on a fresh login. extraSetFlags re-applies the
     # same settings on every boot, which is required for an already-authenticated
@@ -65,7 +65,7 @@ in {
     extraSetFlags = [
       "--netfilter-mode=off"
       "--advertise-exit-node"
-      "--advertise-routes=192.168.1.0/24"
+      "--advertise-routes=192.168.1.0/24,10.0.0.0/24"
     ];
   };
 
