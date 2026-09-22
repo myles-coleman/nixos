@@ -70,24 +70,6 @@ in {
       "opencode/opencode.json".text = builtins.toJSON {
         "$schema" = "https://opencode.ai/config.json";
         provider = {
-          ollama = {
-            npm = "@ai-sdk/openai-compatible";
-            options = {
-              baseURL = "http://localhost:11434/v1";
-              includeUsage = true;
-            };
-            models = {
-              "qwen2.5-coder:7b" = {
-                name = "Qwen2.5 Coder 7B (Tool Calling)";
-              };
-              "qwen2.5:7b" = {
-                name = "Qwen2.5 7B (Chat)";
-              };
-              "llama3.1:8b" = {
-                name = "Llama 3.1 8B (Chat)";
-              };
-            };
-          };
           llama-cpp = {
             npm = "@ai-sdk/openai-compatible";
             options = {

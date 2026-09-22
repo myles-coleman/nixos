@@ -41,7 +41,7 @@ in {
     ntfs3g #for mounting ntfs drives
     alejandra #for formatting in rebuild script
     libnotify #for system notifications
-    neofetch
+    fastfetch
     htop
     gnumake
     krisp-patcher

@@ -28,7 +28,7 @@
     nixos-anywhere
     argocd
     go-task
-    nodejs_20
+    nodejs_24
     dig
     slack
     uv
