@@ -16,10 +16,6 @@
 
   networking.hostName = "bee-pc";
 
-  programs.zsh.shellAliases = {
-    windsurf = "windsurf 2>/dev/null"; # hide windsurf warnings
-  };
-
   environment.systemPackages = with pkgs; [
     obs-studio
     obs-studio-plugins.obs-vkcapture
