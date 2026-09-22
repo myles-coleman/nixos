@@ -38,7 +38,6 @@ in {
     obsidian
     discord
     brave
-    unstable.windsurf
     ntfs3g #for mounting ntfs drives
     alejandra #for formatting in rebuild script
     libnotify #for system notifications
