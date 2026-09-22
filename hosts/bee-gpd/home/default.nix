@@ -7,6 +7,24 @@
   mainUser = "bee";
 in {
   home-manager.users.${mainUser} = {
+    programs.alacritty = {
+      enable = true;
+      theme = "catppuccin_mocha";
+      settings = {
+        font = {
+          size = 16;
+          normal.family = "MesloLGS Nerd Font Mono";
+        };
+        window = {
+          opacity = 0.9;
+          padding = {
+            x = 10;
+            y = 10;
+          };
+        };
+      };
+    };
+
     services.hyprpaper = {
       enable = true;
       settings = {
