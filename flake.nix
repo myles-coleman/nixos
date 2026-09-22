@@ -102,20 +102,6 @@
           ./hosts/pikvm
         ];
       };
-
-      # Custom installer ISO for bee-gpu-server
-      bee-gpu-server-installer = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          {nixpkgs.overlays = [unstableOverlay];}
-          ./hosts/bee-gpu-server-installer/configuration.nix
-        ];
-      };
-    };
-
-    # ISO image output for easy building
-    packages.x86_64-linux = {
-      bee-gpu-server-iso = self.nixosConfigurations.bee-gpu-server-installer.config.system.build.isoImage;
     };
   };
 }
