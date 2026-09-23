@@ -220,7 +220,7 @@ in {
     tmux
     tree
     tldr
-    neofetch
+    fastfetch
     gnumake
     gcc
     gnupg

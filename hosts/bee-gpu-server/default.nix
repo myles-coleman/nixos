@@ -59,7 +59,7 @@
       version = "v6.0.0";
       src = pkgs.fetchurl {
         url = "https://github.com/AdrianCassar/xenia-canary/releases/download/v6.0.0/xenia_canary_netplay_windows.zip";
-        hash = "sha256-vxgon+bQXgxfq34pPrUDoEkyaGUjXF0MNsk6w+VlBZU=";
+        hash = "sha256-FwCOyChnrF6D764E+vTG6tXbolaGW4H94mf4D8rADZc=";
       };
       nativeBuildInputs = [pkgs.unzip];
       sourceRoot = ".";
@@ -112,12 +112,12 @@ in {
   networking.networkmanager.enable = true;
 
   # GPU server must stay reachable — block suspend/hibernate from any source
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+    AllowSuspendThenHibernate = "no";
+  };
 
   # Enable Plasma 6 Desktop Environment
   services.xserver.enable = true;
@@ -161,7 +161,7 @@ in {
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       nerd-fonts.meslo-lg
       font-awesome
       liberation_ttf
@@ -297,7 +297,7 @@ in {
     tmux
     tree
     tldr
-    neofetch
+    fastfetch
     gnumake
     gcc
     gnupg
