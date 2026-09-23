@@ -164,8 +164,8 @@ jobs:
           # Server hosts only: desktops (bee-pc/bee-gpd) never auto-deploy and are
           # diffed locally, not from CI.
           declare -A HOSTS=(
-            [homelab]="10.0.0.150"
-            [bee-gpu-server]="192.168.1.10"
+            [homelab]="100.110.170.34"
+            [bee-gpu-server]="100.127.170.8"
             [protecli-vault]="100.112.185.27"
           )
           DIFF_DIR=$(mktemp -d)

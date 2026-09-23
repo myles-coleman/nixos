@@ -5,9 +5,9 @@
 # so that protected `main` and CI can verify them before deploy.
 set -e
 
-HOMELAB_HOST="bee@10.0.0.150"
-PIKVM_HOST="bee@10.0.0.175"
-BEE_GPU_SERVER_HOST="bee@192.168.1.10"
+HOMELAB_HOST="bee@100.110.170.34"
+PIKVM_HOST="bee@100.116.132.19"
+BEE_GPU_SERVER_HOST="bee@100.127.170.8"
 PROTECLI_VAULT_HOST="bee@100.112.185.27"
 HOMELAB=false
 PIKVM=false
