@@ -79,7 +79,7 @@
       export WINEARCH=win64
       export WINEDLLOVERRIDES="mscoree,mshtml="
       export WINEDEBUG=-all
-      exec ${pkgs.wineWowPackages.staging}/bin/wine "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
+      exec ${pkgs.wineWow64Packages.staging}/bin/wine "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
     '';
   in
     pkgs.stdenv.mkDerivation {
