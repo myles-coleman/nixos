@@ -163,5 +163,11 @@
     checks = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (
       checkSystem: deploy-rs.lib.${checkSystem}.deployChecks self.deploy
     );
+
+    apps = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (
+      appSystem: {
+        deploy = deploy-rs.apps.${appSystem}.deploy-rs;
+      }
+    );
   };
 }
