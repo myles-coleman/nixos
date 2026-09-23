@@ -5,99 +5,6 @@
   ...
 }: let
   mainUser = "bee";
-  xenia-edge = let
-    xenia-src = pkgs.stdenv.mkDerivation {
-      pname = "xenia-edge-src";
-      version = "c0e1129";
-      src = pkgs.fetchurl {
-        url = "https://github.com/has207/xenia-edge/releases/download/c0e1129/xenia_edge_windows.zip";
-        hash = "sha256-lG3FK6hj1SmyfS44RYefHz0NYVn6UaJ1wPBq+KHLIbo=";
-      };
-      nativeBuildInputs = [pkgs.unzip];
-      sourceRoot = ".";
-      installPhase = ''
-        mkdir -p $out
-        cp -r * $out/
-      '';
-    };
-    launcher = pkgs.writeShellScript "xenia-edge-launcher" ''
-      XENIA_DIR="$HOME/.local/share/xenia-edge-win"
-      mkdir -p "$XENIA_DIR"
-      cp -u ${xenia-src}/*.exe "$XENIA_DIR/" 2>/dev/null || true
-      cp -u ${xenia-src}/*.dll "$XENIA_DIR/" 2>/dev/null || true
-      cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
-      cd "$XENIA_DIR"
-      export WINEPREFIX="$HOME/.local/share/xenia-edge-prefix"
-      export GAMEID="xenia-edge"
-      export PROTONPATH="${pkgs.proton-ge-bin.steamcompattool}"
-      # Force 2x DPI scaling for Wine/Proton (192 DPI = 200% scale)
-      export WINE_LARGE_ADDRESS_AWARE=1
-      export PROTON_DPI_SCALE=2.0
-      export WINE_SCALE_FACTOR=2.0
-      exec ${pkgs.umu-launcher}/bin/umu-run "$XENIA_DIR/xenia_edge.exe" "$@"
-    '';
-  in
-    pkgs.stdenv.mkDerivation {
-      pname = "xenia-edge";
-      version = "c0e1129";
-      dontUnpack = true;
-      installPhase = ''
-        mkdir -p $out/bin
-        ln -s ${launcher} $out/bin/xenia-edge
-      '';
-      meta = {
-        description = "Xbox 360 Emulator (Edge fork, D3D12 via Proton)";
-        homepage = "https://github.com/has207/xenia-edge";
-        license = lib.licenses.bsd3;
-        platforms = ["x86_64-linux"];
-        mainProgram = "xenia-edge";
-      };
-    };
-  xenia-canary = let
-    xenia-src = pkgs.stdenv.mkDerivation {
-      pname = "xenia-canary-netplay-src";
-      version = "v6.0.0";
-      src = pkgs.fetchurl {
-        url = "https://github.com/AdrianCassar/xenia-canary/releases/download/v6.0.0/xenia_canary_netplay_windows.zip";
-        hash = "sha256-FwCOyChnrF6D764E+vTG6tXbolaGW4H94mf4D8rADZc=";
-      };
-      nativeBuildInputs = [pkgs.unzip];
-      sourceRoot = ".";
-      installPhase = ''
-        mkdir -p $out
-        cp -r * $out/
-      '';
-    };
-    launcher = pkgs.writeShellScript "xenia-canary-launcher" ''
-      XENIA_DIR="$HOME/.local/share/xenia-canary-win"
-      mkdir -p "$XENIA_DIR"
-      cp -u ${xenia-src}/*.exe "$XENIA_DIR/" 2>/dev/null || true
-      cp -u ${xenia-src}/*.dll "$XENIA_DIR/" 2>/dev/null || true
-      cp -un ${xenia-src}/* "$XENIA_DIR/" 2>/dev/null || true
-      cd "$XENIA_DIR"
-      export WINEPREFIX="$HOME/.local/share/xenia-canary-prefix"
-      export WINEARCH=win64
-      export WINEDLLOVERRIDES="mscoree,mshtml="
-      export WINEDEBUG=-all
-      exec ${pkgs.wineWow64Packages.staging}/bin/wine "$XENIA_DIR/xenia_canary_netplay.exe" "$@"
-    '';
-  in
-    pkgs.stdenv.mkDerivation {
-      pname = "xenia-canary-netplay";
-      version = "v6.0.0";
-      dontUnpack = true;
-      installPhase = ''
-        mkdir -p $out/bin
-        ln -s ${launcher} $out/bin/xenia-canary
-      '';
-      meta = {
-        description = "Xbox 360 Emulator (Canary Netplay fork with network emulation)";
-        homepage = "https://github.com/AdrianCassar/xenia-canary";
-        license = lib.licenses.bsd3;
-        platforms = ["x86_64-linux"];
-        mainProgram = "xenia-canary";
-      };
-    };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -333,10 +240,6 @@ in {
     kdePackages.filelight
     kdePackages.kcalc
     kdePackages.partitionmanager
-
-    # Emulators
-    xenia-edge
-    xenia-canary
 
     # Misc
     remmina
