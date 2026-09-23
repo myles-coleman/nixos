@@ -77,6 +77,7 @@
           {nixpkgs.overlays = [unstableOverlay];}
           home-manager.nixosModules.default
           ./hosts/bee-gpu-server
+          ./modules/steam-remote-play-client.nix
         ];
       };
 
