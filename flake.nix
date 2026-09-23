@@ -14,6 +14,10 @@
       url = "github:nvmd/nixos-raspberrypi/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs/e760371d631165e7d8de5b0dcf148e21ec4c16f0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -22,6 +26,7 @@
     nixpkgs-unstable,
     home-manager,
     sops-nix,
+    deploy-rs,
     ...
   }: let
     system = "x86_64-linux";
@@ -108,5 +113,55 @@
         ];
       };
     };
+
+    deploy.nodes = {
+      homelab = {
+        hostname = "10.0.0.150";
+        sshUser = "bee";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.homelab;
+        };
+      };
+
+      bee-gpu-server = {
+        hostname = "10.0.0.156";
+        sshUser = "bee";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.bee-gpu-server;
+        };
+      };
+
+      protecli-vault = {
+        hostname = "100.112.185.27";
+        sshUser = "bee";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          activationTimeout = 600;
+          confirmTimeout = 300;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.protecli-vault;
+        };
+      };
+
+      pikvm = {
+        hostname = "10.0.0.175";
+        sshUser = "bee";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          activationTimeout = 600;
+          confirmTimeout = 300;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pikvm;
+        };
+      };
+    };
+
+    checks = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (
+      checkSystem: deploy-rs.lib.${checkSystem}.deployChecks self.deploy
+    );
   };
 }
