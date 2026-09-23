@@ -179,11 +179,21 @@ jobs:
             fi
             nix path-info -r "$new_path" | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/new-${host}.txt"
 
-            if ! ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${ip}" \
-              "nix --extra-experimental-features nix-command path-info -r /run/current-system" 2>/dev/null \
-              | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/current-${host}.txt" \
-              || [ ! -s "${DIFF_DIR}/current-${host}.txt" ]; then
-              echo "unreachable" > "${DIFF_DIR}/status-${host}"; echo "::endgroup::"; continue
+            ssh_err="${DIFF_DIR}/ssh-${host}.err"
+            if ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${ip}" \
+              "nix --extra-experimental-features nix-command path-info -r /run/current-system" \
+              > "${DIFF_DIR}/raw-${host}.txt" 2>"$ssh_err"; then
+              if [ -s "${DIFF_DIR}/raw-${host}.txt" ]; then
+                sed 's|^/nix/store/[a-z0-9]\{32\}-||' "${DIFF_DIR}/raw-${host}.txt" | sort -u > "${DIFF_DIR}/current-${host}.txt"
+              else
+                echo "unreachable" > "${DIFF_DIR}/status-${host}"
+                echo "no closure output from ${host} (${ip})"
+                echo "::endgroup::"; continue
+              fi
+            else
+              echo "unreachable" > "${DIFF_DIR}/status-${host}"
+              echo "ssh failed for ${host} (${ip}): $(head -1 "$ssh_err" 2>/dev/null)"
+              echo "::endgroup::"; continue
             fi
 
             removed=$(comm -23 "${DIFF_DIR}/current-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
