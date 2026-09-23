@@ -8,7 +8,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
         user = "greeter";
       };
     };
@@ -34,7 +34,7 @@
   environment.systemPackages = with pkgs; [
     dunst
     kitty
-    rofi-wayland
+    rofi
     swww
     networkmanagerapplet
     pamixer
@@ -81,7 +81,7 @@
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       nerd-fonts.meslo-lg
       meslo-lgs-nf
       font-awesome

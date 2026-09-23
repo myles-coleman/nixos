@@ -77,12 +77,6 @@
   #   };
   # };
 
-  # Ollama needs the eGPU driver loaded before it can use CUDA
-  systemd.services.ollama = {
-    after = ["nvidia-egpu.service"];
-    wants = ["nvidia-egpu.service"];
-  };
-
   # udev rules for eGPU hotplug + Joy-Con hidraw access
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TAG+="systemd", ENV{SYSTEMD_WANTS}="nvidia-egpu.service"
@@ -124,7 +118,6 @@
     python313Packages.cmake
     mpv
     unstable.opencode
-    ollama
     ffmpeg
     redshift #blue light filter
     freecad
