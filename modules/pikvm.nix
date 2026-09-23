@@ -75,6 +75,8 @@
     pname = "ustreamer";
     version = ustreamer.version;
     src = ustreamer.src;
+    pyproject = true;
+    build-system = with pkgs.python3.pkgs; [setuptools];
     prePatch = ''
       cd python
     '';
@@ -111,12 +113,12 @@
       setproctitle
       psutil
       netifaces
-      systemd
+      systemd-python
       dbus-python
       dbus-next
       pygments
       pyghmi
-      pam
+      python-pam
       pillow
       xlib
       zstandard
