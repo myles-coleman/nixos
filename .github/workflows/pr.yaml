@@ -136,8 +136,17 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-      - name: Use protecli-vault as exit node
-        run: sudo tailscale set --exit-node=100.112.185.27 --exit-node-allow-lan-access
+      - name: Configure Tailscale egress
+        run: |
+          # Prefer routing all egress (incl. DNS) through protecli-vault's exit node.
+          if sudo tailscale set --exit-node=100.112.185.27 --exit-node-allow-lan-access; then
+            echo "Egress via protecli-vault exit node"
+          else
+            echo "Exit node unavailable for tag:ci; falling back to advertised routes + public DNS"
+            sudo tailscale set --accept-routes
+            echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+            echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
+          fi
       - name: Build and diff x86_64 hosts
         id: diff
         shell: bash
