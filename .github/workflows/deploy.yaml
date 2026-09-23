@@ -1,0 +1,134 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      hosts:
+        description: 'Space-separated hosts to deploy (homelab, bee-gpu-server, protecli-vault, pikvm)'
+        required: true
+        default: 'protecli-vault'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    # Auto-deploy only on a merged PR; manual otherwise.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - name: Build deploy matrix
+        id: gen
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_HOSTS: ${{ github.event.inputs.hosts }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            hosts="$INPUT_HOSTS"
+          else
+            # Pilot: only bee-gpu-server auto-deploys until homelab is promoted.
+            hosts="bee-gpu-server"
+          fi
+
+          ip_for() {
+            case "$1" in
+              homelab) echo "10.0.0.150" ;;
+              bee-gpu-server) echo "10.0.0.156" ;;
+              protecli-vault) echo "100.112.185.27" ;;
+              pikvm) echo "10.0.0.175" ;;
+              *) echo "" ;;
+            esac
+          }
+          runner_for() {
+            case "$1" in
+              pikvm) echo "ubuntu-24.04-arm" ;;
+              *) echo "ubuntu-24.04" ;;
+            esac
+          }
+
+          json="["
+          sep=""
+          for host in $hosts; do
+            case "$host" in
+              bee-pc | bee-gpd)
+                echo "refusing to deploy desktop host: $host" >&2
+                exit 1
+                ;;
+            esac
+            ip="$(ip_for "$host")"
+            if [ -z "$ip" ]; then
+              echo "unknown host: $host" >&2
+              exit 1
+            fi
+            json="${json}${sep}{\"host\":\"${host}\",\"ip\":\"${ip}\",\"runner\":\"$(runner_for "$host")\"}"
+            sep=","
+          done
+          json="${json}]"
+          echo "matrix=${json}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: plan
+    environment: production
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install Nix
+        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            extra-substituters = https://nixos-raspberrypi.cachix.org
+            extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
+      - name: Setup Cachix
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        with:
+          name: nixos-monorepo
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          cat > ~/.ssh/config <<'EOF'
+          Host *
+            IdentityFile ~/.ssh/id_ed25519
+            IdentitiesOnly yes
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+            ControlMaster no
+          EOF
+          chmod 600 ~/.ssh/config
+      - name: Tailscale
+        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Accept Tailscale routes
+        run: sudo tailscale set --accept-routes
+      - name: Deploy ${{ matrix.host }}
+        run: |
+          nix run .#deploy -- .#${HOST} -L
+        env:
+          HOST: ${{ matrix.host }}
+      - name: Verify ${{ matrix.host }} is reachable after deploy
+        run: |
+          ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${IP}" "readlink -f /run/current-system"
+        env:
+          IP: ${{ matrix.ip }}
