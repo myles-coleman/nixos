@@ -42,10 +42,10 @@ jobs:
 
           ip_for() {
             case "$1" in
-              homelab) echo "10.0.0.150" ;;
-              bee-gpu-server) echo "192.168.1.10" ;;
+              homelab) echo "100.110.170.34" ;;
+              bee-gpu-server) echo "100.127.170.8" ;;
               protecli-vault) echo "100.112.185.27" ;;
-              pikvm) echo "10.0.0.175" ;;
+              pikvm) echo "100.116.132.19" ;;
               *) echo "" ;;
             esac
           }

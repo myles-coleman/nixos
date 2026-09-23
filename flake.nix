@@ -117,7 +117,7 @@
 
     deploy.nodes = {
       homelab = {
-        hostname = "10.0.0.150";
+        hostname = "100.110.170.34";
         sshUser = "bee";
         profiles.system = {
           user = "root";
@@ -127,7 +127,7 @@
       };
 
       bee-gpu-server = {
-        hostname = "192.168.1.10";
+        hostname = "100.127.170.8";
         sshUser = "bee";
         profiles.system = {
           user = "root";
@@ -149,7 +149,7 @@
       };
 
       pikvm = {
-        hostname = "10.0.0.175";
+        hostname = "100.116.132.19";
         sshUser = "bee";
         profiles.system = {
           user = "root";
