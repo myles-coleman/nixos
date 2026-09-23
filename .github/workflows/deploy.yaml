@@ -121,17 +121,14 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
           version: 1.102.4
-      - name: Configure Tailscale egress
+      - name: Configure Tailscale routing
         run: |
-          # Prefer routing all egress (incl. DNS) through protecli-vault's exit node.
-          if sudo tailscale set --exit-node=100.112.185.27 --exit-node-allow-lan-access; then
-            echo "Egress via protecli-vault exit node"
-          else
-            echo "Exit node unavailable for tag:ci; falling back to advertised routes + public DNS"
-            sudo tailscale set --accept-routes
-            echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
-            echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
-          fi
+          # Reach the LAN via protecli-vault's advertised subnet routes only.
+          # No exit node and no autogroup:internet grant; public DNS avoids the
+          # route-accept DNS breakage.
+          sudo tailscale set --accept-routes
+          echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
       - name: Deploy ${{ matrix.host }}
         run: |
           nix run .#deploy -- .#${HOST} -L
