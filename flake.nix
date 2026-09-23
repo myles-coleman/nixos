@@ -127,7 +127,7 @@
       };
 
       bee-gpu-server = {
-        hostname = "10.0.0.156";
+        hostname = "192.168.1.10";
         sshUser = "bee";
         profiles.system = {
           user = "root";

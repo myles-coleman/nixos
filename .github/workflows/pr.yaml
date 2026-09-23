@@ -165,7 +165,7 @@ jobs:
           # diffed locally, not from CI.
           declare -A HOSTS=(
             [homelab]="10.0.0.150"
-            [bee-gpu-server]="10.0.0.156"
+            [bee-gpu-server]="192.168.1.10"
             [protecli-vault]="100.112.185.27"
           )
           DIFF_DIR=$(mktemp -d)

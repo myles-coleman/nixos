@@ -43,7 +43,7 @@ jobs:
           ip_for() {
             case "$1" in
               homelab) echo "10.0.0.150" ;;
-              bee-gpu-server) echo "10.0.0.156" ;;
+              bee-gpu-server) echo "192.168.1.10" ;;
               protecli-vault) echo "100.112.185.27" ;;
               pikvm) echo "10.0.0.175" ;;
               *) echo "" ;;
