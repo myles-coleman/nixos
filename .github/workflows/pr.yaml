@@ -136,8 +136,8 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-      - name: Accept Tailscale routes
-        run: sudo tailscale set --accept-routes
+      - name: Use protecli-vault as exit node
+        run: sudo tailscale set --exit-node=100.112.185.27 --exit-node-allow-lan-access
       - name: Build and diff x86_64 hosts
         id: diff
         shell: bash
