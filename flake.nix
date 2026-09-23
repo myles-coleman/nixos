@@ -169,5 +169,19 @@
         deploy = deploy-rs.apps.${appSystem}.deploy-rs;
       }
     );
+
+    # Host toplevels for CI build lanes (`nix-fast-build --flake .#packages.<system>`).
+    packages = {
+      x86_64-linux = {
+        bee-pc = self.nixosConfigurations.bee-pc.config.system.build.toplevel;
+        bee-gpd = self.nixosConfigurations.bee-gpd.config.system.build.toplevel;
+        homelab = self.nixosConfigurations.homelab.config.system.build.toplevel;
+        bee-gpu-server = self.nixosConfigurations.bee-gpu-server.config.system.build.toplevel;
+        protecli-vault = self.nixosConfigurations.protecli-vault.config.system.build.toplevel;
+      };
+      aarch64-linux = {
+        pikvm = self.nixosConfigurations.pikvm.config.system.build.toplevel;
+      };
+    };
   };
 }

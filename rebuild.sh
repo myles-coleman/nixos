@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# A rebuild script that commits on a successful build
+# A rebuild script that formats and builds/switches locally.
+# It no longer commits or pushes; changes go through a branch and pull request
+# so that protected `main` and CI can verify them before deploy.
 set -e
 
 HOMELAB_HOST="bee@10.0.0.150"
@@ -84,11 +86,10 @@ fi
 # Get current generation metadata
 current=$(nixos-rebuild list-generations | grep current)
 
-# Commit all changes with the generation metadata
-git commit -am "$current"
-
 # Back to where you were
 popd
 
 # Notify all OK!
 notify-send -e "NixOS Rebuilt OK!" --icon=software-update-available
+
+echo "Build complete (${current}). Changes are NOT committed; open a pull request to deploy."

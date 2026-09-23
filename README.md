@@ -81,7 +81,17 @@ Update flake inputs:
 nix flake update
 ```
 
-The rebuild script auto-formats with `alejandra`, skips if no changes are detected (unless `--force`), and auto-commits on success with the NixOS generation metadata as the commit message.
+The rebuild script auto-formats with `alejandra`, skips if no changes are detected (unless `--force`), and builds/switches locally. It no longer commits or pushes: changes go through a branch and pull request so CI can verify and deploy them.
+
+## Deployment (CI)
+
+Changes reach the fleet through GitHub Actions, not `rebuild.sh`:
+
+- **Pull requests** build every in-scope host (`ubuntu-24.04` for x86_64, `ubuntu-24.04-arm` for `pikvm`), post a per-host closure diff, and enforce the `nixpkgs` pin-alignment guard.
+- **Merges to `main`** deploy the server set with `deploy-rs` (magic rollback enabled) behind the protected `production` GitHub Environment. `protecli-vault` and `pikvm` are manual (`workflow_dispatch`) only; `bee-pc`/`bee-gpd` never auto-deploy.
+- `main` is protected: pull requests and required checks are mandatory, and force-pushes are blocked.
+
+Deploy tooling is `deploy-rs` (pinned in `flake.nix`). Run it locally with `nix run .#deploy -- .#<host>`.
 
 ## New Devices
 

@@ -1,0 +1,243 @@
+name: PR Build & Diff
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Detect relevant changes
+        id: filter
+        run: |
+          set -euo pipefail
+          base="origin/${{ github.base_ref }}"
+          git fetch --no-tags origin "${{ github.base_ref }}" --depth=1
+          if git diff --name-only "$base"...HEAD | grep -qE '(\.nix$|^flake\.lock$|^\.sops\.yaml$|^secrets/|^scripts/|^\.github/workflows/)'; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  build-x86:
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install Nix
+        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            extra-substituters = https://nixos-raspberrypi.cachix.org
+            extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
+      - name: Setup Cachix
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        with:
+          name: nixos-monorepo
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Build all x86_64 hosts
+        run: |
+          nix run nixpkgs#nix-fast-build -- \
+            --flake .#packages.x86_64-linux \
+            --skip-cached --no-nom
+
+  build-arm:
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install Nix
+        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            extra-substituters = https://nixos-raspberrypi.cachix.org
+            extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
+      - name: Setup Cachix
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        with:
+          name: nixos-monorepo
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Build aarch64 hosts
+        run: |
+          nix run nixpkgs#nix-fast-build -- \
+            --flake .#packages.aarch64-linux \
+            --skip-cached --no-nom
+
+  pin-guard:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify root nixpkgs is aligned with nixos-raspberrypi
+        run: scripts/repin-nixpkgs-from-rpi.sh
+
+  closure-diff:
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install Nix
+        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            extra-substituters = https://nixos-raspberrypi.cachix.org
+            extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
+      - name: Setup Cachix
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        with:
+          name: nixos-monorepo
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          cat > ~/.ssh/config <<'EOF'
+          Host *
+            IdentityFile ~/.ssh/id_ed25519
+            IdentitiesOnly yes
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+            ControlMaster no
+          EOF
+          chmod 600 ~/.ssh/config
+      - name: Tailscale
+        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Accept Tailscale routes
+        run: sudo tailscale set --accept-routes
+      - name: Build and diff x86_64 hosts
+        id: diff
+        shell: bash
+        run: |
+          set +e
+          # Server hosts only: desktops (bee-pc/bee-gpd) never auto-deploy and are
+          # diffed locally, not from CI.
+          declare -A HOSTS=(
+            [homelab]="10.0.0.150"
+            [bee-gpu-server]="10.0.0.156"
+            [protecli-vault]="100.112.185.27"
+          )
+          DIFF_DIR=$(mktemp -d)
+
+          for host in "${!HOSTS[@]}"; do
+            ip="${HOSTS[$host]}"
+            echo "::group::${host} (${ip})"
+
+            if ! new_path=$(nix build ".#packages.x86_64-linux.${host}" --print-out-paths --no-link -L); then
+              echo "build-failed" > "${DIFF_DIR}/status-${host}"; echo "::endgroup::"; continue
+            fi
+            nix path-info -r "$new_path" | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/new-${host}.txt"
+
+            if ! ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${ip}" \
+              "nix --extra-experimental-features nix-command path-info -r /run/current-system" 2>/dev/null \
+              | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/current-${host}.txt" \
+              || [ ! -s "${DIFF_DIR}/current-${host}.txt" ]; then
+              echo "unreachable" > "${DIFF_DIR}/status-${host}"; echo "::endgroup::"; continue
+            fi
+
+            removed=$(comm -23 "${DIFF_DIR}/current-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
+            added=$(comm -13 "${DIFF_DIR}/current-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
+            if [ -z "$removed" ] && [ -z "$added" ]; then
+              echo "no-changes" > "${DIFF_DIR}/status-${host}"
+            else
+              echo "changed" > "${DIFF_DIR}/status-${host}"
+              { [ -n "$removed" ] && echo "$removed" | sed 's/^/- /'; [ -n "$added" ] && echo "$added" | sed 's/^/+ /'; } > "${DIFF_DIR}/diff-${host}.txt"
+            fi
+            echo "::endgroup::"
+          done
+
+          COMMENT_FILE="${DIFF_DIR}/comment.md"
+          {
+            echo '<!-- nixos-diff -->'
+            echo '## NixOS Config Diff'
+            echo ''
+            for host in homelab bee-gpu-server protecli-vault; do
+              ip="${HOSTS[$host]}"
+              status=$(cat "${DIFF_DIR}/status-${host}" 2>/dev/null || echo unknown)
+              case "$status" in
+                changed)
+                  added_count=$(grep -c '^+ ' "${DIFF_DIR}/diff-${host}.txt" || true)
+                  removed_count=$(grep -c '^- ' "${DIFF_DIR}/diff-${host}.txt" || true)
+                  echo "### ${host} (${ip}) — ${added_count} added, ${removed_count} removed"
+                  echo ''; echo '```diff'
+                  lines=$(wc -l < "${DIFF_DIR}/diff-${host}.txt")
+                  if [ "$lines" -gt 80 ]; then head -80 "${DIFF_DIR}/diff-${host}.txt"; echo "... and $((lines - 80)) more packages"; else cat "${DIFF_DIR}/diff-${host}.txt"; fi
+                  echo '```'; echo ''
+                  ;;
+                no-changes) echo "### ${host} (${ip}) — no changes"; echo '' ;;
+                unreachable) echo "### ${host} (${ip}) — unreachable, skipped"; echo '' ;;
+                build-failed) echo "### ${host} (${ip}) — build failed"; echo '' ;;
+              esac
+            done
+          } > "$COMMENT_FILE"
+          echo "comment_file=${COMMENT_FILE}" >> "$GITHUB_OUTPUT"
+      - name: Post PR comment
+        if: always() && steps.diff.outputs.comment_file != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          pr="${{ github.event.pull_request.number }}"
+          file="${{ steps.diff.outputs.comment_file }}"
+          [ -f "$file" ] || exit 0
+          existing=$(gh api "repos/${{ github.repository }}/issues/${pr}/comments" --paginate \
+            --jq '.[] | select(.body | startswith("<!-- nixos-diff -->")) | .id' | head -1)
+          if [ -n "$existing" ]; then
+            jq -n --rawfile body "$file" '{"body": $body}' | gh api "repos/${{ github.repository }}/issues/comments/${existing}" -X PATCH --input -
+          else
+            gh pr comment "$pr" --body-file "$file"
+          fi
+
+  gate:
+    if: always()
+    needs: [changes, build-x86, build-arm, pin-guard, closure-diff]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require build and guard jobs to pass or skip
+        env:
+          CHANGES: ${{ needs.changes.result }}
+          BUILD_X86: ${{ needs.build-x86.result }}
+          BUILD_ARM: ${{ needs.build-arm.result }}
+          PIN_GUARD: ${{ needs.pin-guard.result }}
+          CLOSURE_DIFF: ${{ needs.closure-diff.result }}
+        run: |
+          set -euo pipefail
+          fail=0
+          for result in "$CHANGES" "$BUILD_X86" "$BUILD_ARM" "$PIN_GUARD" "$CLOSURE_DIFF"; do
+            case "$result" in
+              success|skipped) ;;
+              *) echo "required job result: $result"; fail=1 ;;
+            esac
+          done
+          [ "$fail" = 0 ] || exit 1
+          echo "All required jobs passed or were skipped."
