@@ -142,12 +142,43 @@ jobs:
           # closure, including pikvm's aarch64 activation, which cannot build on
           # this runner. Validate the schema by evaluation only instead.
           nix flake check --no-build -L
+      - name: Detect closure change for ${{ matrix.host }}
+        id: change
+        # Manual dispatches always deploy; merges only deploy when the built
+        # toplevel differs from what the host is already running.
+        if: github.event_name != 'workflow_dispatch'
+        shell: bash
+        env:
+          HOST: ${{ matrix.host }}
+          IP: ${{ matrix.ip }}
+        run: |
+          set +e
+          case "$HOST" in
+            pikvm) system="aarch64-linux" ;;
+            *) system="x86_64-linux" ;;
+          esac
+          new_path="$(nix build ".#packages.${system}.${HOST}" --print-out-paths --no-link -L | tail -1)"
+          if [ -z "$new_path" ]; then
+            echo "build produced no path; proceeding to deploy"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          current="$(ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${IP}" "readlink -f /run/current-system" 2>/dev/null)"
+          echo "new:     ${new_path}"
+          echo "current: ${current:-<unreachable>}"
+          if [ -n "$current" ] && [ "$new_path" = "$current" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Deploy ${{ matrix.host }}
+        if: github.event_name == 'workflow_dispatch' || steps.change.outputs.changed == 'true'
         run: |
           nix run .#deploy -- .#${HOST} --skip-checks -- -L
         env:
           HOST: ${{ matrix.host }}
       - name: Verify ${{ matrix.host }} is reachable after deploy
+        if: github.event_name == 'workflow_dispatch' || steps.change.outputs.changed == 'true'
         run: |
           ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${IP}" "readlink -f /run/current-system"
         env:
