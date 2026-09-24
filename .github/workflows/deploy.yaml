@@ -136,9 +136,15 @@ jobs:
             echo "DNS not ready (attempt $i)"; sleep 2
           done
           echo "DNS failed; /etc/resolv.conf:"; cat /etc/resolv.conf; exit 1
+      - name: Validate deploy schema (evaluate only)
+        run: |
+          # deploy-rs's own pre-build check builds every node's activation
+          # closure, including pikvm's aarch64 activation, which cannot build on
+          # this runner. Validate the schema by evaluation only instead.
+          nix flake check --no-build -L
       - name: Deploy ${{ matrix.host }}
         run: |
-          nix run .#deploy -- .#${HOST} -- -L
+          nix run .#deploy -- .#${HOST} --skip-checks -- -L
         env:
           HOST: ${{ matrix.host }}
       - name: Verify ${{ matrix.host }} is reachable after deploy
