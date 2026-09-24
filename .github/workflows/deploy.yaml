@@ -42,10 +42,10 @@ jobs:
 
           ip_for() {
             case "$1" in
-              homelab) echo "10.0.0.150" ;;
-              bee-gpu-server) echo "10.0.0.156" ;;
+              homelab) echo "100.110.170.34" ;;
+              bee-gpu-server) echo "100.127.170.8" ;;
               protecli-vault) echo "100.112.185.27" ;;
-              pikvm) echo "10.0.0.175" ;;
+              pikvm) echo "100.116.132.19" ;;
               *) echo "" ;;
             esac
           }
@@ -100,6 +100,7 @@ jobs:
         with:
           name: nixos-monorepo
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          useDaemon: true
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
@@ -115,13 +116,20 @@ jobs:
           EOF
           chmod 600 ~/.ssh/config
       - name: Tailscale
-        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
+        uses: tailscale/github-action@d1b6cd204f8dceda5b3eaad7f1f767be390056cd # v4.2.0
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-      - name: Accept Tailscale routes
-        run: sudo tailscale set --accept-routes
+          version: 1.102.4
+      - name: Configure Tailscale routing
+        run: |
+          # Reach the LAN via protecli-vault's advertised subnet routes only.
+          # No exit node and no autogroup:internet grant; public DNS avoids the
+          # route-accept DNS breakage.
+          sudo tailscale set --accept-routes
+          echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
       - name: Deploy ${{ matrix.host }}
         run: |
           nix run .#deploy -- .#${HOST} -L
