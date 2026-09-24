@@ -141,6 +141,11 @@ jobs:
             ControlMaster no
           EOF
           chmod 600 ~/.ssh/config
+      - name: Debug SSH key identity
+        run: |
+          ssh-keygen -y -f ~/.ssh/id_ed25519 > /tmp/ci_pubkey
+          echo "CI public key: $(cat /tmp/ci_pubkey)"
+          echo "CI fingerprint: $(ssh-keygen -lf /tmp/ci_pubkey)"
       - name: Tailscale
         uses: tailscale/github-action@d1b6cd204f8dceda5b3eaad7f1f767be390056cd # v4.2.0
         with:
