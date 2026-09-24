@@ -35,7 +35,7 @@ in {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAbRhFuBN78VkdBT6v/SAdPYxqqBWqthWqf6mWLQL8I bee@bee-gpd"
       # CI deploy key (public half of the `SSH_PRIVATE_KEY` Environment secret)
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFwn9u4rjBjifRODlycmjtEJRKfV2bSnwvDa5sC5Hpp bee@bee-gpd"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGzbHiGJguieUhUnv5ktHoLjOhN9TqEUJS/zwDFZqrsC github-actions"
     ];
   };
 
