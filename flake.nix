@@ -1,4 +1,3 @@
-# Temporary: PR lane exercise (Spec 08 T3.9) — safe to discard.
 {
   description = "NixOS configurations for my machines";
 
