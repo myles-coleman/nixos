@@ -192,7 +192,7 @@ jobs:
               fi
             else
               echo "unreachable" > "${DIFF_DIR}/status-${host}"
-              echo "ssh failed for ${host} (${ip}): $(head -1 "$ssh_err" 2>/dev/null)"
+              echo "ssh failed for ${host} (${ip}): $(grep -v 'Permanently added' "$ssh_err" 2>/dev/null | tail -1)"
               echo "::endgroup::"; continue
             fi
 
