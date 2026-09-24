@@ -132,7 +132,7 @@ jobs:
           echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
       - name: Deploy ${{ matrix.host }}
         run: |
-          nix run .#deploy -- .#${HOST} -L
+          nix run .#deploy -- .#${HOST} -- -L
         env:
           HOST: ${{ matrix.host }}
       - name: Verify ${{ matrix.host }} is reachable after deploy
