@@ -36,8 +36,8 @@ jobs:
           if [ "$EVENT" = "workflow_dispatch" ]; then
             hosts="$INPUT_HOSTS"
           else
-            # Pilot: only bee-gpu-server auto-deploys until homelab is promoted.
-            hosts="bee-gpu-server"
+            # Auto-deploy set: homelab promoted after the green bee-gpu-server pilot.
+            hosts="homelab bee-gpu-server"
           fi
 
           ip_for() {
