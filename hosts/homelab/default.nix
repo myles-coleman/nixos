@@ -21,6 +21,7 @@ in {
   boot.swraid = {
     enable = true;
     mdadmConf = ''
+      MAILADDR root
       ARRAY /dev/md0 UUID=318cdb9d:d17fa19d:5750ae54:f4e4e0f2
     '';
   };
