@@ -88,7 +88,7 @@ The rebuild script auto-formats with `alejandra`, skips if no changes are detect
 Changes reach the fleet through GitHub Actions, not `rebuild.sh`:
 
 - **Pull requests** build every in-scope host (`ubuntu-24.04` for x86_64, `ubuntu-24.04-arm` for `pikvm`), post a per-host closure diff, and enforce the `nixpkgs` pin-alignment guard.
-- **Merges to `main`** deploy the server set with `deploy-rs` (magic rollback enabled) behind the protected `production` GitHub Environment. `protecli-vault` and `pikvm` are manual (`workflow_dispatch`) only; `bee-pc`/`bee-gpd` never auto-deploy.
+- **Merges to `main`** deploy the auto-deploy set (`homelab`, `bee-gpu-server`) with `deploy-rs` (magic rollback enabled) behind the protected `production` GitHub Environment; a host is activated only when its built toplevel differs from what it is already running. `protecli-vault` and `pikvm` are manual (`workflow_dispatch`) only; `bee-pc`/`bee-gpd` never auto-deploy.
 - `main` is protected: pull requests and required checks are mandatory, and force-pushes are blocked.
 
 Deploy tooling is `deploy-rs` (pinned in `flake.nix`). Run it locally with `nix run .#deploy -- .#<host>`.
