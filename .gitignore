@@ -2,3 +2,8 @@ nixos-switch.log
 result
 docs/specs
 docs/research
+
+# Never commit private keys or age identities
+*.key
+keys.txt
+
