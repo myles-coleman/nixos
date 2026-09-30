@@ -4,9 +4,9 @@
   lib,
   ...
 }: {
+  # Each host selects its own ciphertext via `sops.defaultSopsFile`.
   sops = {
     age.keyFile = "/var/lib/sops-nix/key.txt";
-    defaultSopsFile = ../secrets/secrets.yaml;
   };
 
   # The per-host age key is provisioned out-of-band at this path. Only the

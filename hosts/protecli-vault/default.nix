@@ -71,8 +71,12 @@ in {
     ];
   };
 
-  # Tailscale auth key lives in sops; only root needs to read it.
+  # Host-unique ciphertext for this machine (Mullvad WG key, hostapd AP password).
+  sops.defaultSopsFile = ../../secrets/hosts/protecli-vault.yaml;
+
+  # Tailscale auth key is shared material in common.yaml; only root needs it.
   sops.secrets.tailscale_auth_key = {
+    sopsFile = ../../secrets/common.yaml;
     owner = "root";
     group = "root";
     mode = "0400";
