@@ -23,7 +23,7 @@ NixOS system configurations for 4 machines, managed with flakes and home-manager
 - **Force rebuild** (skip change detection): Add `--force`
 - **Update flake inputs**: `nix flake update`
 - **Format code**: `alejandra .` (never use nixfmt)
-- **Deploy a host**: `nix run .#deploy -- .#<host>` (deploy-rs; server hosts only)
+- **Deploy a host**: `nix run .#deploy -- .#<host> --skip-checks -- -L` (deploy-rs; server hosts only; `--skip-checks` avoids building `pikvm`'s aarch64 kernel on x86_64 — validate schema with `nix flake check --no-build`)
 
 ## Architecture
 

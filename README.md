@@ -91,7 +91,7 @@ Changes reach the fleet through GitHub Actions, not `rebuild.sh`:
 - **Merges to `main`** deploy the auto-deploy set (`homelab`, `bee-gpu-server`) with `deploy-rs` (magic rollback enabled) behind the protected `production` GitHub Environment; a host is activated only when its built toplevel differs from what it is already running. `protecli-vault` and `pikvm` are manual (`workflow_dispatch`) only; `bee-pc`/`bee-gpd` never auto-deploy.
 - `main` is protected: pull requests and required checks are mandatory, and force-pushes are blocked.
 
-Deploy tooling is `deploy-rs` (pinned in `flake.nix`). Run it locally with `nix run .#deploy -- .#<host>`.
+Deploy tooling is `deploy-rs` (pinned in `flake.nix`). Run it locally with `nix run .#deploy -- .#<host> --skip-checks -- -L`. The `--skip-checks` flag is required locally: without it, deploy-rs's pre-build check builds every node's activation, including `pikvm`'s aarch64 `linux-rpi` kernel, which cannot build on an x86_64 host. Validate the deploy schema separately with `nix flake check --no-build`.
 
 ## New Devices
 
