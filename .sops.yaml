@@ -6,6 +6,13 @@ keys:
   - &bee-gpu-server age1kehh6wftfs8rzeuf4nm0529sx99qvmwrqrhguq78lqj9m4lgps7smn9ews
   - &protecli-vault age1dvqhwcxjyyxpr20vgq8wlx3w3hkr53tnvt8v4j94aczu3pza74zs4j3q2r
   - &pikvm age1nh8efacqgngy4amz75ygaqps4x5fszd28k5975tdl3qj9lp854tq4evgrz
+  # k3s cluster nodes (imported in program Phase 4); recipients staged here so
+  # the rotated token can be added to common.yaml in task 3.5.
+  - &node0 age10sxlp9r0ekxzsnzx8qlq7kyxg02k83njl292gwzvcf8unrtqu4vsz7w9yf
+  - &node1 age1tl35vtthslcfhwl8lzvxj7r7vqmas9f357hfhwtd9wmlzcy9kgks2uwpns
+  - &node2 age1dd6arr566mx72mgphrhcznhuj9r330l7aeeavefrrcvzwpnsw92s0jk3h3
+  - &node3 age1yz5f8lj2wqlx54fy97llge2vpgtvx57aq47dratqzp2cqls6sgtsxpfqxs
+  - &node4 age1e9w9q6cdpjfuc876se6h5xdhj0mtynnum50gjqu0g7qtl4wcl5dq4sk9h6
 
 creation_rules:
   # Legacy single-file ciphertext, retained until task 2.0 retires it.
@@ -21,6 +28,11 @@ creation_rules:
           - *admin
           - *homelab
           - *protecli-vault
+          - *node0
+          - *node1
+          - *node2
+          - *node3
+          - *node4
   # Host-unique material.
   - path_regex: ^secrets/hosts/bee-pc\.yaml$
     key_groups:
