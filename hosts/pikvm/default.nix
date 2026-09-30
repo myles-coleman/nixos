@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/pikvm.nix
+    ../../modules/sops.nix
   ];
 
   # ── Boot ────────────────────────────────────────────────────────────

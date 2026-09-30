@@ -1,4 +1,42 @@
+keys:
+  - &admin age1vtxkrd54h3wzlclsg9ru260alytruyr54zsv65s9rultmyywjqyspalgwx
+  - &bee-pc age1kpx2kkqpvk2slrahsnswf65hgsswtpcucffq3sl2g8d2v0z0cytqgagdt7
+  - &bee-gpd age1e5s5hyfr8q4zmnkg6slxp0wjtcdswjekqqat4a302szpvlz739vq3wl8xs
+  - &homelab age1u4g0lerzumk2yeju2khf0py44fkzym0zk6c7q50qcuk6few6q38smrmewf
+  - &bee-gpu-server age1kehh6wftfs8rzeuf4nm0529sx99qvmwrqrhguq78lqj9m4lgps7smn9ews
+  - &protecli-vault age1dvqhwcxjyyxpr20vgq8wlx3w3hkr53tnvt8v4j94aczu3pza74zs4j3q2r
+  - &pikvm age1nh8efacqgngy4amz75ygaqps4x5fszd28k5975tdl3qj9lp854tq4evgrz
+
 creation_rules:
-  - path_regex: .*secrets\.yaml
-    age:
-      - age1vtxkrd54h3wzlclsg9ru260alytruyr54zsv65s9rultmyywjqyspalgwx
+  # Legacy single-file ciphertext, retained until task 2.0 retires it.
+  - path_regex: ^secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin
+  # Shared material (Tailscale auth key, k3s server token). k3s recipients are
+  # added in task 3.5.
+  - path_regex: ^secrets/common\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *homelab
+          - *protecli-vault
+  # Host-unique material.
+  - path_regex: ^secrets/hosts/bee-pc\.yaml$
+    key_groups:
+      - age: [*admin, *bee-pc]
+  - path_regex: ^secrets/hosts/bee-gpd\.yaml$
+    key_groups:
+      - age: [*admin, *bee-gpd]
+  - path_regex: ^secrets/hosts/homelab\.yaml$
+    key_groups:
+      - age: [*admin, *homelab]
+  - path_regex: ^secrets/hosts/bee-gpu-server\.yaml$
+    key_groups:
+      - age: [*admin, *bee-gpu-server]
+  - path_regex: ^secrets/hosts/protecli-vault\.yaml$
+    key_groups:
+      - age: [*admin, *protecli-vault]
+  - path_regex: ^secrets/hosts/pikvm\.yaml$
+    key_groups:
+      - age: [*admin, *pikvm]

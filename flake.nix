@@ -43,6 +43,7 @@
       ./modules/networking.nix
       ./modules/dev-tools.nix
       ./modules/gaming.nix
+      sops-nix.nixosModules.sops
       home-manager.nixosModules.default
       ./modules/home.nix
     ];
@@ -72,6 +73,7 @@
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
           home-manager.nixosModules.default
+          sops-nix.nixosModules.sops
           ./hosts/homelab
         ];
       };
@@ -81,6 +83,7 @@
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
           home-manager.nixosModules.default
+          sops-nix.nixosModules.sops
           ./hosts/bee-gpu-server
           ./modules/steam-remote-play-client.nix
         ];
@@ -109,6 +112,7 @@
               })
             ];
           }
+          sops-nix.nixosModules.sops
           ./hosts/pikvm
         ];
       };

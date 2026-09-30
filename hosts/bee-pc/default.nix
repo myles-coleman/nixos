@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./home
+    ../../modules/sops.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
