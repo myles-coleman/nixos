@@ -6,6 +6,17 @@
     nixos-raspberrypi.nixosModules.raspberry-pi-5.display-vc4
   ];
 
+  # The 16K-page-size jemalloc overlay (node0-node3) changes the Rust toolchain
+  # closure, so `zram-generator` is rebuilt from source rather than substituted.
+  # Its test harness requires working user namespaces (`unshare` + `/proc/self`
+  # writes), which the ARM build runner does not provide; the check is a
+  # build-time-only concern and does not affect the runtime system.
+  nixpkgs.overlays = [
+    (final: prev: {
+      zram-generator = prev.zram-generator.overrideAttrs (_: {doCheck = false;});
+    })
+  ];
+
   users.users.pi = {
     isNormalUser = true;
     description = "pi";
