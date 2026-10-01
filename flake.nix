@@ -154,6 +154,17 @@
         specialArgs = inputs;
         modules = rpiK3sModules ++ [./hosts/node4];
       };
+
+      # rpi3 Chromium kiosk (program Phase 4). Migrated from rpi3-nixos onto
+      # the vendor `raspberry-pi-3` board and SD-image modules.
+      rpi3 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = [
+          sops-nix.nixosModules.sops
+          ./hosts/rpi3
+        ];
+      };
     };
 
     deploy.nodes = {

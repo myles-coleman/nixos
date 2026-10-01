@@ -12,6 +12,7 @@ NixOS system configurations for 4 machines, managed with flakes and home-manager
 - **bee-gpd** — GPD handheld (x86_64, AMD + NVIDIA)
 - **homelab** — Home server at 10.0.0.150 (x86_64, Docker, NFS, Samba, Intel Arc)
 - **pikvm** — Raspberry Pi 4 KVM at 10.0.0.175 (aarch64, cross-compiled)
+- **rpi3** — Raspberry Pi 3B Chromium kiosk (aarch64, `nixos-raspberrypi`, SD image)
 - **home-manager** — User-level config management (dotfiles, shell, packages)
 
 ## Commands
@@ -46,6 +47,8 @@ All x86_64 hosts share a common module set. PiKVM has its own minimal config.
 ## Guardrails
 
 - Never modify `hardware-configuration.nix` files (auto-generated)
+- `rpi3` intentionally enables SSH password authentication (preserved from its
+  source config); this is a known hardening follow-up, not a bug
 - Never hardcode passwords or keys in .nix files
 - Test with `--dry-run` before applying changes to remote hosts (homelab, pikvm)
 - PiKVM changes require cross-compilation (slow) — verify changes locally first if possible

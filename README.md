@@ -31,7 +31,8 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │   └── SETUP.md       # PiKVM setup guide
 │   ├── node0/             # k3s control plane (aarch64, NVMe)
 │   ├── node1/ … node3/    # k3s agents (aarch64, NVMe)
-│   └── node4/             # k3s agent (aarch64, SD card)
+│   ├── node4/             # k3s agent (aarch64, SD card)
+│   └── rpi3/              # Chromium kiosk (aarch64, SD card)
 ├── modules/
 │   ├── common.nix         # User, shell, locale, base packages
 │   ├── desktop.nix        # Hyprland, audio, bluetooth, fonts
@@ -111,6 +112,23 @@ out-of-band (the deploy identity is `pi`):
 
 ```bash
 scripts/provision-host-key.sh 10.0.0.140 pi
+```
+
+## rpi3 kiosk
+
+The `rpi3` Chromium kiosk is imported from the former `rpi3-nixos` repository
+(program Phase 4). It builds on the `nixos-raspberrypi` `raspberry-pi-3` board and
+SD-image modules, replacing `nixos-hardware` and the hand-rolled firmware-config
+oneshot with declarative `hardware.raspberry-pi.config`. The kiosk launches
+`greetd` → `cage` → Chromium in kiosk mode as user `bee`.
+
+SSH password authentication remains enabled on `rpi3` (preserved from the source
+config, and a follow-up hardening item); the old `rpi3-nixos` `AGENTS.md` claimed
+key-only access, which was inaccurate. Provision its age key before first
+activation with the `bee` deploy identity:
+
+```bash
+scripts/provision-host-key.sh <rpi3-ip> bee
 ```
 
 ## New Devices
