@@ -25,10 +25,13 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │   ├── default.nix
 │   │   ├── hardware-configuration.nix
 │   │   └── home/          # Homelab home-manager config
-│   └── pikvm/             # Raspberry Pi 4 KVM (aarch64-linux)
-│       ├── default.nix
-│       ├── hardware-configuration.nix
-│       └── SETUP.md       # PiKVM setup guide
+│   ├── pikvm/             # Raspberry Pi 4 KVM (aarch64-linux)
+│   │   ├── default.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── SETUP.md       # PiKVM setup guide
+│   ├── node0/             # k3s control plane (aarch64, NVMe)
+│   ├── node1/ … node3/    # k3s agents (aarch64, NVMe)
+│   └── node4/             # k3s agent (aarch64, SD card)
 ├── modules/
 │   ├── common.nix         # User, shell, locale, base packages
 │   ├── desktop.nix        # Hyprland, audio, bluetooth, fonts
@@ -37,7 +40,8 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   ├── home.nix           # Shared home-manager config
 │   ├── networking.nix     # Tailscale, Mullvad, NFS, mDNS
 │   ├── nvidia.nix         # NVIDIA drivers, Ollama w/ CUDA
-│   └── pikvm.nix          # PiKVM module (kvmd, ustreamer, Janus)
+│   ├── pikvm.nix          # PiKVM module (kvmd, ustreamer, Janus)
+│   └── rpi/               # Shared modules for the k3s cluster (base, k3s-*, node-health, disko)
 ├── config/                # Vendored configs and dotfiles
 │   ├── mangohud/          # MangoHud configs
 │   ├── pikvm/             # PiKVM YAML configs (main, logging, meta)
@@ -92,6 +96,22 @@ Changes reach the fleet through GitHub Actions, not `rebuild.sh`:
 - `main` is protected: pull requests and required checks are mandatory, and force-pushes are blocked.
 
 Deploy tooling is `deploy-rs` (pinned in `flake.nix`). Run it locally with `nix run .#deploy -- .#<host> --skip-checks -- -L`. The `--skip-checks` flag is required locally: without it, deploy-rs's pre-build check builds every node's activation, including `pikvm`'s aarch64 `linux-rpi` kernel, which cannot build on an x86_64 host. Validate the deploy schema separately with `nix flake check --no-build`.
+
+## k3s cluster (node0–node4)
+
+The five-node Raspberry Pi 5 k3s cluster is imported from the former `rpi5-nixos`
+repository (program Phase 4). `node0` is the control plane, `node1`–`node3` are NVMe
+agents, and `node4` is an SD-card agent. They build with the `nixos-raspberrypi`
+vendor modules and use `disko` for NVMe partitioning. The cluster join token is
+supplied at activation by `sops-nix` (`k3s_server_token` in `secrets/common.yaml`);
+it is never written into the Nix store or the SD images.
+
+Before a node's first activation under the monorepo, provision its per-host age key
+out-of-band (the deploy identity is `pi`):
+
+```bash
+scripts/provision-host-key.sh 10.0.0.140 pi
+```
 
 ## New Devices
 

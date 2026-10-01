@@ -23,12 +23,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # geerlingguy's RPi 6.17 kernel branch with the ARM64 eGPU patches used by
-    # node4 (`flake = false`: consumed as a kernel source tree, not a flake).
-    rpi-linux-gpu = {
-      url = "github:geerlingguy/linux/rpi-6.17.y-gpu";
-      flake = false;
-    };
   };
 
   outputs = inputs @ {
@@ -61,6 +55,12 @@
       sops-nix.nixosModules.sops
       home-manager.nixosModules.default
       ./modules/home.nix
+    ];
+    # Shared module set for the imported k3s cluster nodes (program Phase 4).
+    rpiK3sModules = [
+      ./modules/sops.nix
+      sops-nix.nixosModules.sops
+      ./modules/rpi/base.nix
     ];
   in {
     nixosConfigurations = {
@@ -121,6 +121,38 @@
           sops-nix.nixosModules.sops
           ./hosts/pikvm
         ];
+      };
+
+      # k3s cluster (program Phase 4). Imported from rpi5-nixos; node0 is the
+      # control plane, node1-node4 are agents, and node4 boots from an SD card.
+      node0 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = rpiK3sModules ++ [./hosts/node0];
+      };
+
+      node1 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = rpiK3sModules ++ [./hosts/node1];
+      };
+
+      node2 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = rpiK3sModules ++ [./hosts/node2];
+      };
+
+      node3 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = rpiK3sModules ++ [./hosts/node3];
+      };
+
+      node4 = nixos-raspberrypi.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = inputs;
+        modules = rpiK3sModules ++ [./hosts/node4];
       };
     };
 
