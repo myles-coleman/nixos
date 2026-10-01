@@ -18,24 +18,39 @@
       url = "github:serokell/deploy-rs/e760371d631165e7d8de5b0dcf148e21ec4c16f0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Declarative disk partitioning for the k3s NVMe nodes (program Phase 4).
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # geerlingguy's RPi 6.17 kernel branch with the ARM64 eGPU patches used by
+    # node4 (`flake = false`: consumed as a kernel source tree, not a flake).
+    rpi-linux-gpu = {
+      url = "github:geerlingguy/linux/rpi-6.17.y-gpu";
+      flake = false;
+    };
   };
 
-  outputs = {
+  outputs = inputs @ {
     self,
     nixpkgs,
     nixpkgs-unstable,
     home-manager,
     sops-nix,
+    nixos-raspberrypi,
     deploy-rs,
     ...
   }: let
     system = "x86_64-linux";
-    unstableOverlay = final: prev: {
+    # System-parameterized so the same overlay shape can serve x86_64 and
+    # aarch64 hosts without a second nixpkgs instantiation.
+    mkUnstableOverlay = targetSystem: _final: _prev: {
       unstable = import nixpkgs-unstable {
-        inherit system;
+        system = targetSystem;
         config.allowUnfree = true;
       };
     };
+    unstableOverlay = mkUnstableOverlay system;
     commonModules = [
       {nixpkgs.overlays = [unstableOverlay];}
       ./modules/common.nix
@@ -102,16 +117,7 @@
       pikvm = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [
-          {
-            nixpkgs.overlays = [
-              (final: prev: {
-                unstable = import nixpkgs-unstable {
-                  system = "aarch64-linux";
-                  config.allowUnfree = true;
-                };
-              })
-            ];
-          }
+          {nixpkgs.overlays = [(mkUnstableOverlay "aarch64-linux")];}
           sops-nix.nixosModules.sops
           ./hosts/pikvm
         ];

@@ -39,6 +39,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789770686,
+        "narHash": "sha256-uZkBR7yHdIKUFB5SZdfgh1qkGfI3XmYmI/lTiquxbck=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "725ea35e410ad83be4931d1bff7e090eacaf3563",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -176,11 +196,30 @@
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
+        "disko": "disko",
         "home-manager": "home-manager",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "rpi-linux-gpu": "rpi-linux-gpu",
         "sops-nix": "sops-nix"
+      }
+    },
+    "rpi-linux-gpu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759353156,
+        "narHash": "sha256-p0u82w93JcjMHWU6DW3Nwa3DVx0n1+Syj0flyQP0CWA=",
+        "owner": "geerlingguy",
+        "repo": "linux",
+        "rev": "93f7c26f98535659c899ad4b2270e0b70a569d6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "geerlingguy",
+        "ref": "rpi-6.17.y-gpu",
+        "repo": "linux",
+        "type": "github"
       }
     },
     "sops-nix": {
