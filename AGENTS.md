@@ -61,3 +61,5 @@ vendor modules.
 - Test with `--dry-run` before applying changes to remote hosts (homelab, pikvm, the k3s nodes, `rpi3`)
 - PiKVM and Raspberry Pi changes require cross-compilation (slow) — verify changes locally first if possible
 - The k3s nodes and `rpi3` are manual-deploy only; never add them to the merge-triggered auto-deploy set (currently `homelab`, `bee-gpu-server`)
+- The RPi `build-arm` lane frees runner disk first: `node0`–`node3` carry the 16K-page jemalloc overlay, which changes the Rust toolchain closure and misses every binary cache, so they build the kernel + full closure from source
+- `zram-generator`'s build-time check is disabled on the k3s nodes: its test harness needs user namespaces that the ARM CI runner does not provide
