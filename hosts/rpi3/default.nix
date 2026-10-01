@@ -19,9 +19,28 @@ in {
 
   networking = {
     hostName = "rpi3";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      # Fixed LAN address so deploy-rs can target rpi3 like the k3s nodes.
+      # Predictable names are disabled below so the onboard USB ethernet is
+      # reliably `eth0`, which this profile matches.
+      ensureProfiles.profiles.wired = {
+        connection = {
+          id = "wired";
+          type = "ethernet";
+          interface-name = "eth0";
+          autoconnect = true;
+        };
+        ipv4 = {
+          method = "manual";
+          address1 = "10.0.0.145/24,10.0.0.1";
+          dns = "1.1.1.1;";
+        };
+      };
+    };
     # `networking.wireless.enable` is managed by NetworkManager on 26.05;
     # forcing it off here conflicts with the NM module.
+    usePredictableInterfaceNames = false;
   };
 
   users.users.bee = {

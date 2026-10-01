@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       hosts:
-        description: 'Space-separated hosts to deploy (homelab, bee-gpu-server, protecli-vault, pikvm)'
+        description: 'Space-separated hosts to deploy (homelab, bee-gpu-server, protecli-vault, pikvm, node0-node4, rpi3)'
         required: true
         default: 'protecli-vault'
 
@@ -46,13 +46,26 @@ jobs:
               bee-gpu-server) echo "100.127.170.8" ;;
               protecli-vault) echo "100.112.185.27" ;;
               pikvm) echo "100.116.132.19" ;;
+              node0) echo "10.0.0.140" ;;
+              node1) echo "10.0.0.141" ;;
+              node2) echo "10.0.0.142" ;;
+              node3) echo "10.0.0.143" ;;
+              node4) echo "10.0.0.144" ;;
+              rpi3) echo "10.0.0.145" ;;
               *) echo "" ;;
             esac
           }
           runner_for() {
             case "$1" in
-              pikvm) echo "ubuntu-24.04-arm" ;;
+              pikvm | node0 | node1 | node2 | node3 | node4 | rpi3) echo "ubuntu-24.04-arm" ;;
               *) echo "ubuntu-24.04" ;;
+            esac
+          }
+          # SSH user matches each deploy-rs node's sshUser.
+          user_for() {
+            case "$1" in
+              node0 | node1 | node2 | node3 | node4) echo "pi" ;;
+              *) echo "bee" ;;
             esac
           }
 
@@ -70,7 +83,7 @@ jobs:
               echo "unknown host: $host" >&2
               exit 1
             fi
-            json="${json}${sep}{\"host\":\"${host}\",\"ip\":\"${ip}\",\"runner\":\"$(runner_for "$host")\"}"
+            json="${json}${sep}{\"host\":\"${host}\",\"ip\":\"${ip}\",\"runner\":\"$(runner_for "$host")\",\"user\":\"$(user_for "$host")\"}"
             sep=","
           done
           json="${json}]"
@@ -151,10 +164,11 @@ jobs:
         env:
           HOST: ${{ matrix.host }}
           IP: ${{ matrix.ip }}
+          SSH_USER: ${{ matrix.user }}
         run: |
           set +e
           case "$HOST" in
-            pikvm) system="aarch64-linux" ;;
+            pikvm | node0 | node1 | node2 | node3 | node4 | rpi3) system="aarch64-linux" ;;
             *) system="x86_64-linux" ;;
           esac
           new_path="$(nix build ".#packages.${system}.${HOST}" --print-out-paths --no-link -L | tail -1)"
@@ -163,7 +177,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          current="$(ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${IP}" "readlink -f /run/current-system" 2>/dev/null)"
+          current="$(ssh -o ConnectTimeout=15 -o BatchMode=yes "${SSH_USER}@${IP}" "readlink -f /run/current-system" 2>/dev/null)"
           echo "new:     ${new_path}"
           echo "current: ${current:-<unreachable>}"
           if [ -n "$current" ] && [ "$new_path" = "$current" ]; then
@@ -180,6 +194,7 @@ jobs:
       - name: Verify ${{ matrix.host }} is reachable after deploy
         if: github.event_name == 'workflow_dispatch' || steps.change.outputs.changed == 'true'
         run: |
-          ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${IP}" "readlink -f /run/current-system"
+          ssh -o ConnectTimeout=15 -o BatchMode=yes "${SSH_USER}@${IP}" "readlink -f /run/current-system"
         env:
           IP: ${{ matrix.ip }}
+          SSH_USER: ${{ matrix.user }}

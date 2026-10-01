@@ -4,14 +4,19 @@ This file provides guidance to AI coding agents working in this repository.
 
 ## Purpose
 
-NixOS system configurations for 4 machines, managed with flakes and home-manager.
+NixOS system configurations for a fleet of x86_64, aarch64, and Raspberry Pi
+hosts, managed with flakes and home-manager.
 
 ## Domain Glossary
 
 - **bee-pc** — Desktop PC (x86_64, AMD, no discrete GPU)
 - **bee-gpd** — GPD handheld (x86_64, AMD + NVIDIA)
-- **homelab** — Home server at 10.0.0.150 (x86_64, Docker, NFS, Samba, Intel Arc)
-- **pikvm** — Raspberry Pi 4 KVM at 10.0.0.175 (aarch64, cross-compiled)
+- **homelab** — Home server (x86_64, Docker, NFS, Samba, Intel Arc)
+- **bee-gpu-server** — GPU server (x86_64, NVIDIA, Steam remote-play client)
+- **protecli-vault** — Tailscale subnet-router / egress gateway (x86_64)
+- **pikvm** — Raspberry Pi 4 KVM (aarch64, cross-compiled)
+- **node0**–**node4** — five-node Raspberry Pi 5 k3s cluster (aarch64); `node0`
+  is the control plane, `node1`–`node3` are NVMe agents, `node4` an SD-card agent
 - **rpi3** — Raspberry Pi 3B Chromium kiosk (aarch64, `nixos-raspberrypi`, SD image)
 - **home-manager** — User-level config management (dotfiles, shell, packages)
 
@@ -24,18 +29,21 @@ NixOS system configurations for 4 machines, managed with flakes and home-manager
 - **Force rebuild** (skip change detection): Add `--force`
 - **Update flake inputs**: `nix flake update`
 - **Format code**: `alejandra .` (never use nixfmt)
-- **Deploy a host**: `nix run .#deploy -- .#<host> --skip-checks -- -L` (deploy-rs; server hosts only; `--skip-checks` avoids building `pikvm`'s aarch64 kernel on x86_64 — validate schema with `nix flake check --no-build`)
+- **Deploy a host**: `nix run .#deploy -- .#<host> --skip-checks -- -L` (deploy-rs; server hosts only; `--skip-checks` avoids building `pikvm`'s aarch64 kernel on x86_64 — validate schema with `nix flake check --no-build`). The k3s nodes and `rpi3` are manual (`workflow_dispatch`) only, reached over the LAN as `pi@10.0.0.140`–`144` and `bee@10.0.0.145`.
 
 ## Architecture
 
-All x86_64 hosts share a common module set. PiKVM has its own minimal config.
+All x86_64 hosts share a common module set. PiKVM and the Raspberry Pi fleet use
+their own minimal configs; the RPi hosts build with the `nixos-raspberrypi`
+vendor modules.
 
-- `flake.nix` — Host definitions and flake inputs (nixpkgs 25.05, nixpkgs-unstable, home-manager)
+- `flake.nix` — Host definitions and flake inputs (nixpkgs 26.05, nixpkgs-unstable, home-manager, sops-nix, nixos-raspberrypi, deploy-rs, disko)
 - `hosts/<hostname>/` — Per-machine hardware config and host-specific settings
 - `modules/` — Shared NixOS modules imported by hosts:
-  - `common.nix` (base system), `desktop.nix` (Hyprland/Wayland), `networking.nix`, `dev-tools.nix`, `gaming.nix` (Steam, Lutris), `home.nix` (home-manager), `nvidia.nix` (bee-gpd only), `pikvm.nix`
+  - `common.nix` (base system), `desktop.nix` (Hyprland/Wayland), `networking.nix`, `dev-tools.nix`, `gaming.nix` (Steam, Lutris), `home.nix` (home-manager), `nvidia.nix` (bee-gpd only), `pikvm.nix`, `sops.nix`, `steam-remote-play-client.nix`
+  - `modules/rpi/` — RPi fleet modules: `base.nix`, `k3s-common.nix`, `k3s-server.nix`, `k3s-agent.nix`, `k3s-token-sops.nix`, `node-health.nix`, `disko-config.nix`
 - `config/` — Vendored dotfiles (MangoHUD, Rofi, Waybar, PiKVM YAML)
-- `rebuild.sh` — Build script that formats, builds, and auto-commits
+- `rebuild.sh` — Build script that formats and builds/switches; it does not commit
 
 ## Conventions
 
@@ -50,5 +58,6 @@ All x86_64 hosts share a common module set. PiKVM has its own minimal config.
 - `rpi3` intentionally enables SSH password authentication (preserved from its
   source config); this is a known hardening follow-up, not a bug
 - Never hardcode passwords or keys in .nix files
-- Test with `--dry-run` before applying changes to remote hosts (homelab, pikvm)
-- PiKVM changes require cross-compilation (slow) — verify changes locally first if possible
+- Test with `--dry-run` before applying changes to remote hosts (homelab, pikvm, the k3s nodes, `rpi3`)
+- PiKVM and Raspberry Pi changes require cross-compilation (slow) — verify changes locally first if possible
+- The k3s nodes and `rpi3` are manual-deploy only; never add them to the merge-triggered auto-deploy set (currently `homelab`, `bee-gpu-server`)

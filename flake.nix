@@ -211,6 +211,76 @@
           path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pikvm;
         };
       };
+
+      # k3s cluster + rpi3 (program Phase 4). Manual (`workflow_dispatch`) only:
+      # they are deliberately kept out of the merge auto-deploy set. Deploy
+      # reaches them over the LAN via protecli-vault's advertised subnet routes.
+      node0 = {
+        hostname = "10.0.0.140";
+        sshUser = "pi";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.node0;
+        };
+      };
+
+      node1 = {
+        hostname = "10.0.0.141";
+        sshUser = "pi";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.node1;
+        };
+      };
+
+      node2 = {
+        hostname = "10.0.0.142";
+        sshUser = "pi";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.node2;
+        };
+      };
+
+      node3 = {
+        hostname = "10.0.0.143";
+        sshUser = "pi";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.node3;
+        };
+      };
+
+      # SD-card boot: allow a longer activation/confirmation window.
+      node4 = {
+        hostname = "10.0.0.144";
+        sshUser = "pi";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          activationTimeout = 600;
+          confirmTimeout = 300;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.node4;
+        };
+      };
+
+      # rpi3's only user is `bee` (preserved from its source config); sshUser is
+      # `bee` rather than the k3s nodes' `pi`. SD-card boot.
+      rpi3 = {
+        hostname = "10.0.0.145";
+        sshUser = "bee";
+        profiles.system = {
+          user = "root";
+          magicRollback = true;
+          activationTimeout = 600;
+          confirmTimeout = 300;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.rpi3;
+        };
+      };
     };
 
     checks = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (
@@ -234,6 +304,12 @@
       };
       aarch64-linux = {
         pikvm = self.nixosConfigurations.pikvm.config.system.build.toplevel;
+        node0 = self.nixosConfigurations.node0.config.system.build.toplevel;
+        node1 = self.nixosConfigurations.node1.config.system.build.toplevel;
+        node2 = self.nixosConfigurations.node2.config.system.build.toplevel;
+        node3 = self.nixosConfigurations.node3.config.system.build.toplevel;
+        node4 = self.nixosConfigurations.node4.config.system.build.toplevel;
+        rpi3 = self.nixosConfigurations.rpi3.config.system.build.toplevel;
       };
     };
   };
