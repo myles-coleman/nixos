@@ -9,6 +9,7 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./home
+    ../../modules/sops.nix
   ];
 
   # UEFI boot with systemd-boot

@@ -9,6 +9,7 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./home
+    ../../modules/sops.nix
   ];
 
   # BIOS/Legacy boot with GRUB
@@ -74,13 +75,22 @@ in {
     };
   };
 
+  # Tailscale auth key is shared material in common.yaml; only root needs it.
+  sops.defaultSopsFile = ../../secrets/common.yaml;
+  sops.secrets.tailscale_auth_key = {
+    owner = "root";
+    group = "root";
+    mode = "0400";
+    restartUnits = ["tailscaled.service"];
+  };
+
   # Tailscale
   services.tailscale = {
     enable = true;
     package = pkgs.unstable.tailscale;
     useRoutingFeatures = "client"; # Changed from "both" to "client" to avoid routing conflicts
     openFirewall = true;
-    authKeyFile = "/var/lib/tailscale/authkey";
+    authKeyFile = config.sops.secrets.tailscale_auth_key.path;
   };
 
   # Docker
