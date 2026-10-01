@@ -101,6 +101,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Free disk space
+        # The RPi aarch64 toplevels build a kernel + full closure from source,
+        # which exceeds the runner's default disk. Free the toolchains first.
+        if: matrix.runner == 'ubuntu-24.04-arm'
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache
+          df -h /
       - name: Install Nix
         uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
         with:
