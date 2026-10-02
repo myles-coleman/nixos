@@ -73,10 +73,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: [pikvm]
+        host: [pikvm, node0, node1, node2, node3, node4, rpi3]
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Free disk space
+        # node0-node3 build the aarch64 kernel + full system closure from
+        # source (their page-size-16k overlay misses every binary cache), which
+        # exceeds the runner's default disk. Free the preinstalled toolchains.
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache
+          df -h /
       - name: Install Nix
         uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
         with:

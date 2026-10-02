@@ -13,6 +13,8 @@ keys:
   - &node2 age1dd6arr566mx72mgphrhcznhuj9r330l7aeeavefrrcvzwpnsw92s0jk3h3
   - &node3 age1yz5f8lj2wqlx54fy97llge2vpgtvx57aq47dratqzp2cqls6sgtsxpfqxs
   - &node4 age1e9w9q6cdpjfuc876se6h5xdhj0mtynnum50gjqu0g7qtl4wcl5dq4sk9h6
+  # rpi3 kiosk holds no shared secrets; it only needs its own host file rule.
+  - &rpi3 age149em7uxv82m72h9w9qydsl6a7c4rwx668mmj9p5q9nylt8vu3uvsffxsva
 
 creation_rules:
   # Legacy single-file ciphertext, retained until task 2.0 retires it.
@@ -52,3 +54,6 @@ creation_rules:
   - path_regex: ^secrets/hosts/pikvm\.yaml$
     key_groups:
       - age: [*admin, *pikvm]
+  - path_regex: ^secrets/hosts/rpi3\.yaml$
+    key_groups:
+      - age: [*admin, *rpi3]
