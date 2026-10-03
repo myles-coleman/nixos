@@ -8,7 +8,6 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ./home
     ../../modules/sops.nix
   ];
 
@@ -67,11 +66,6 @@ in {
     enableDefaultPackages = true;
     fontDir.enable = true;
     packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-      nerd-fonts.meslo-lg
-      font-awesome
       liberation_ttf
     ];
     fontconfig = {
@@ -199,33 +193,14 @@ in {
   # System packages
   environment.systemPackages = with pkgs; [
     # Core tools
-    vim
-    wget
-    curl
-    git
-    htop
     tmux
-    tree
-    tldr
-    fastfetch
-    gnumake
-    gcc
-    gnupg
-    alejandra
-    ranger
     brave
     bat
-
-    # Hardware monitoring
-    lm_sensors
 
     # AMD GPU tools
     amdgpu_top
     radeontop
     lact
-
-    # Development
-    gh
 
     # Languages / runtimes
     python3
@@ -250,6 +225,12 @@ in {
     # VPN
     mullvad-vpn
   ];
+
+  my.roles.cli-core.enable = true;
+  my.roles.cli-extras.enable = true;
+  my.roles.server-base.enable = true;
+  my.roles.fonts.enable = true;
+  my.roles.home-zsh.enable = true;
 
   # Enable KDE Connect
   programs.kdeconnect.enable = false;

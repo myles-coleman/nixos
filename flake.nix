@@ -47,6 +47,7 @@
     unstableOverlay = mkUnstableOverlay system;
     commonModules = [
       {nixpkgs.overlays = [unstableOverlay];}
+      ./modules/roles
       ./modules/common.nix
       ./modules/desktop.nix
       ./modules/networking.nix
@@ -87,6 +88,7 @@
         inherit system;
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
+          ./modules/roles
           home-manager.nixosModules.default
           sops-nix.nixosModules.sops
           ./hosts/homelab
@@ -97,6 +99,7 @@
         inherit system;
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
+          ./modules/roles
           home-manager.nixosModules.default
           sops-nix.nixosModules.sops
           ./hosts/bee-gpu-server
@@ -108,6 +111,7 @@
         inherit system;
         modules = [
           {nixpkgs.overlays = [unstableOverlay];}
+          ./modules/roles
           home-manager.nixosModules.default
           ./hosts/protecli-vault
           sops-nix.nixosModules.sops

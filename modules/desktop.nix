@@ -74,17 +74,14 @@
   };
   services.blueman.enable = true;
 
+  my.roles.fonts.enable = true;
+
   # Font configuration
   fonts = {
     enableDefaultPackages = true;
     fontDir.enable = true;
     packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-      nerd-fonts.meslo-lg
       meslo-lgs-nf
-      font-awesome
       material-icons
       material-design-icons
     ];

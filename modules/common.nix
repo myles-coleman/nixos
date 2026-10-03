@@ -33,25 +33,21 @@ in {
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
-    vim
-    wget
     obsidian
     discord
     brave
     ntfs3g #for mounting ntfs drives
-    alejandra #for formatting in rebuild script
     libnotify #for system notifications
-    fastfetch
-    htop
-    gnumake
     krisp-patcher
     hyprshot
     grim #screenshot tool for wayland (hyprshot dependency)
     slurp #region selection tool (hyprshot dependency)
     direnv
-    tree
-    gh
   ];
+
+  my.roles.cli-core.enable = true;
+  my.roles.cli-extras.enable = true;
+  my.roles.k8s.enable = true;
 
   swapDevices = [
     {

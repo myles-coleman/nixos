@@ -24,11 +24,6 @@
     r2modman
     goverlay
     xorg.libX11
-    nerd-fonts.meslo-lg
-    meslo-lgs-nf
-    font-awesome
-    material-icons
-    material-design-icons
     unstable.opencode
   ];
 

@@ -13,13 +13,10 @@
 
   environment.systemPackages = with pkgs; [
     prisma-engines
-    kubectl
-    kustomize
     wl-clipboard
     jq
     kubernetes-helm
     helmfile
-    k9s
     docker
     terraform
     unstable.opentofu
@@ -33,6 +30,5 @@
     slack
     uv
     openssl
-    ranger
   ];
 }

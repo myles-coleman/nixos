@@ -6,15 +6,9 @@
 }: let
   mainUser = "bee";
 in {
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.backupFileExtension = "backup";
+  my.roles.home-zsh.enable = true;
 
   home-manager.users.${mainUser} = {
-    home.username = mainUser;
-    home.homeDirectory = "/home/${mainUser}";
-    home.stateVersion = "25.05";
-
     home.pointerCursor = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Classic";
@@ -42,35 +36,17 @@ in {
       };
     };
 
-    programs.zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-      enableCompletion = true;
-      shellAliases = {
-        rebuild = "sh ~/nixos/rebuild.sh";
-      };
-      oh-my-zsh = {
-        enable = true;
-        plugins = [
-          "colored-man-pages"
-          "colorize"
-          "history-substring-search"
-        ];
-      };
-      initContent = ''
-        # Initialize Oh My Posh with custom theme
-        eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.json)"
+    # bee-pc/bee-gpd append their extra init content (direnv hook + ssh alias)
+    # after the shared oh-my-posh block provided by my.roles.home-zsh.
+    programs.zsh.initContent = lib.mkOrder 1010 ''
+      # Re-initialize direnv hook after oh-my-posh to prevent precmd clobbering
+      eval "$(direnv hook zsh)"
 
-        # Re-initialize direnv hook after oh-my-posh to prevent precmd clobbering
-        eval "$(direnv hook zsh)"
+      # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
+      alias ssh="TERM=xterm-256color ssh"
+    '';
 
-        # Fix kitty TERM issue on remote machines that lack xterm-kitty terminfo
-        alias ssh="TERM=xterm-256color ssh"
-      '';
-    };
-
-    home.packages = [pkgs.oh-my-posh pkgs.hyprpaper];
+    home.packages = [pkgs.hyprpaper];
 
     programs.git = {
       enable = true;
@@ -113,8 +89,6 @@ in {
 
       "MangoHud/MangoHud.conf".source = ../config/mangohud/MangoHud.conf;
       "MangoHud/custom.conf".source = ../config/mangohud/custom.conf;
-
-      "oh-my-posh/config.json".source = ../config/oh-my-posh-theme.json;
     };
   };
 }
