@@ -30,6 +30,10 @@
 
   security.sudo.wheelNeedsPassword = false;
 
+  # deploy-rs copies the CI-built closure as `pi` over `ssh-ng://`; the target
+  # must trust that user or `require-sigs = true` rejects the unsigned paths.
+  nix.settings.trusted-users = ["root" "pi"];
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
