@@ -1,4 +1,8 @@
-{nixos-raspberrypi, ...}: {
+{
+  nixos-raspberrypi,
+  lib,
+  ...
+}: {
   # Shared Raspberry Pi 5 base for every k3s cluster node (node0-node4).
   # Ported from the rpi5-nixos repository's `sharedConfig`.
   imports = [
@@ -60,6 +64,13 @@
   # running) dhcpcd churns on them and never signals ready, hanging activation.
   networking.useDHCP = false;
   networking.dhcpcd.enable = false;
+
+  # 26.05 defaults to dbus-broker. During the 25.05->26.05 switch the aliased
+  # dbus.service is reloaded (Type=notify-reload) while the old classic
+  # dbus-daemon is still running, so the reload times out and fails the
+  # activation. Restart the broker instead of reloading it.
+  systemd.services.dbus-broker.reloadIfChanged = lib.mkForce false;
+  systemd.user.services.dbus-broker.reloadIfChanged = lib.mkForce false;
 
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
