@@ -54,6 +54,13 @@
     };
   };
 
+  # Every k3s node uses a static address on `end0`. The vendor board module
+  # defaults `networking.useDHCP = true`, which makes dhcpcd manage the k8s
+  # `veth*`/`flannel.1`/`cni0` interfaces; during an online switch (k8s already
+  # running) dhcpcd churns on them and never signals ready, hanging activation.
+  networking.useDHCP = false;
+  networking.dhcpcd.enable = false;
+
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
 
