@@ -14,11 +14,12 @@ key_dir="${AGE_KEY_DIR:-$HOME/.config/sops/age/hosts}"
 
 resolve_name() {
   case "$1" in
-    homelab | bee-gpu-server | protecli-vault | pikvm | bee-pc | bee-gpd | node0 | node1 | node2 | node3 | node4) echo "$1" ;;
+    homelab | bee-gpu-server | protecli-vault | pikvm | bee-pc | bee-gpd | node0 | node1 | node2 | node3 | node4 | rpi3) echo "$1" ;;
     100.110.170.34) echo "homelab" ;;
     100.127.170.8) echo "bee-gpu-server" ;;
     100.112.185.27) echo "protecli-vault" ;;
     100.116.132.19) echo "pikvm" ;;
+    10.0.0.145) echo "rpi3" ;;
     *) echo "" ;;
   esac
 }
