@@ -17,6 +17,11 @@ in {
     ../../modules/sops.nix
   ];
 
+  # Wi-Fi PSK for the `beans-test` AP, encrypted to the admin and rpi3 keys.
+  sops.defaultSopsFile = ../../secrets/hosts/rpi3.yaml;
+  sops.secrets.wifi_psk = {};
+  sops.templates."wifi.env".content = "WIFI_PSK=${config.sops.placeholder.wifi_psk}";
+
   networking = {
     hostName = "rpi3";
     networkmanager = {
@@ -24,17 +29,41 @@ in {
       # Fixed LAN address so deploy-rs can target rpi3 like the k3s nodes.
       # Predictable names are disabled below so the onboard USB ethernet is
       # reliably `eth0`, which this profile matches.
-      ensureProfiles.profiles.wired = {
-        connection = {
-          id = "wired";
-          type = "ethernet";
-          interface-name = "eth0";
-          autoconnect = true;
-        };
-        ipv4 = {
-          method = "manual";
-          address1 = "10.0.0.145/24,10.0.0.1";
-          dns = "1.1.1.1;";
+      ensureProfiles = {
+        # The Wi-Fi PSK lives in sops and is injected by envsubst at activation,
+        # so it never lands in the public repo or the Nix store.
+        environmentFiles = [config.sops.templates."wifi.env".path];
+        profiles = {
+          wired = {
+            connection = {
+              id = "wired";
+              type = "ethernet";
+              interface-name = "eth0";
+              autoconnect = true;
+            };
+            ipv4 = {
+              method = "manual";
+              address1 = "10.0.0.145/24,10.0.0.1";
+              dns = "1.1.1.1;";
+            };
+          };
+          "beans-test" = {
+            connection = {
+              id = "beans-test";
+              type = "wifi";
+              autoconnect = true;
+            };
+            wifi = {
+              ssid = "beans-test";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_PSK";
+            };
+            ipv4.method = "auto";
+            ipv6.method = "auto";
+          };
         };
       };
     };
