@@ -56,6 +56,10 @@ in {
 
   security.sudo.wheelNeedsPassword = false;
 
+  # deploy-rs copies the CI-built closure as `bee` over `ssh-ng://`; the target
+  # must trust that user or `require-sigs = true` rejects the unsigned paths.
+  nix.settings.trusted-users = ["root" "bee"];
+
   # Password auth is intentionally preserved from the source repo even though
   # the old AGENTS.md claimed key-only access (see task 3.6).
   services.openssh = {
