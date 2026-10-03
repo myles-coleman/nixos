@@ -8,7 +8,6 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ./home
     ./modules/networking.nix
     ./modules/firewall.nix
     ./modules/services.nix
@@ -111,12 +110,7 @@ in {
 
   # System packages
   environment.systemPackages = with pkgs; [
-    vim
     git
-    gh
-    htop
-    tree
-    alejandra
     ethtool
     tcpdump
     dnsutils
@@ -124,6 +118,9 @@ in {
     iperf3
     wireguard-tools
   ];
+
+  my.roles.cli-core.enable = true;
+  my.roles.home-zsh.enable = true;
 
   # Swap
   swapDevices = [

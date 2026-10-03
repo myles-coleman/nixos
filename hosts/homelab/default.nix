@@ -8,7 +8,6 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ./home
     ../../modules/sops.nix
   ];
 
@@ -228,23 +227,9 @@ in {
   # hardware.fancontrol.enable = true;
   environment.systemPackages = with pkgs; [
     # Core tools
-    vim
-    wget
-    curl
-    git
-    htop
     tmux
-    tree
-    tldr
-    fastfetch
-    gnumake
-    gcc
-    gnupg
-    alejandra #for formatting in rebuild script
-    ranger
 
     # Hardware monitoring
-    lm_sensors
     ethtool
     smartmontools
     mdadm
@@ -256,19 +241,18 @@ in {
     # Docker / Kubernetes / IaC
     docker-compose
     helm
-    k9s
-    kustomize
     opentofu
     terraform
-    kubectl
 
     # Languages / runtimes
     python3
-
-    # Networking / infra
-    # net-tools
-    gh
   ];
+
+  my.roles.cli-core.enable = true;
+  my.roles.cli-extras.enable = true;
+  my.roles.server-base.enable = true;
+  my.roles.k8s.enable = true;
+  my.roles.home-zsh.enable = true;
 
   # RAID10 mount
   fileSystems."/mnt/md0" = {
