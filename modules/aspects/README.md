@@ -69,12 +69,21 @@ merged into the synthetic `all-aspects` check.
 
 ## Status and deferred scope
 
-Spec 14 converted one pilot host, `homelab`. Still deferred to a follow-up spec:
+All five x86_64 hosts are now aspect-composed: spec 14 converted the `homelab`
+pilot, and spec 15 converted `bee-pc`, `bee-gpd`, `bee-gpu-server`, and
+`protecli-vault`. Shared concerns that used to live as wholesale-imported
+`modules/*.nix` files (`common`, `desktop`, `networking`, `dev-tools`, `gaming`,
+`nvidia`, `home`) are now aspects, and the legacy files were removed.
 
-- converting `bee-pc`, `bee-gpd`, `bee-gpu-server`, and `protecli-vault`;
+Still out of scope:
+
 - the unmerged spec 11 `my.roles.*` abstraction (PR #17) is superseded and never
   lands;
 - migrating the RPi/k3s/pikvm hosts, which keep using plain modules and the
-  vendor `nixos-raspberrypi.lib.nixosSystem` path.
+  vendor `nixos-raspberrypi.lib.nixosSystem` path;
+- a typed `configurations.nixos.<host>.module` registry (spec 14's
+  `flake.modules.nixos.<host>` shape is retained for all hosts); this is a
+  possible future spec.
 
-`modules/sops.nix` stays path-imported (a plain module) until the RPi migration.
+`modules/sops.nix` stays path-imported (a plain module) until the RPi migration,
+as does `modules/steam-remote-play-client.nix` and `modules/pikvm.nix`.
