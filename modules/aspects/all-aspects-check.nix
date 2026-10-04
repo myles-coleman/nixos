@@ -11,7 +11,13 @@
   flake.checks = lib.genAttrs ["x86_64-linux" "aarch64-linux"] (system:
     lib.genAttrs ["all-aspects"] (_: let
       nixpkgs = inputs.nixpkgs;
-      nixosAspects = builtins.attrValues config.flake.modules.nixos;
+      # Host aspects are full NixOS configurations (they set boot/loader and
+      # other concrete host options) and must not be merged into the dummy
+      # config. Only shared aspects are type-checked here.
+      hostAspectNames = ["homelab"];
+      nixosAspects = builtins.attrValues (
+        builtins.removeAttrs config.flake.modules.nixos hostAspectNames
+      );
       hmAspects = builtins.attrValues config.flake.modules.homeManager;
       base = nixpkgs.lib.nixosSystem {
         inherit system;
