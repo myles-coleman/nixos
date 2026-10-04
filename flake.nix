@@ -46,9 +46,11 @@
 
       imports = [
         (inputs.import-tree ./modules/aspects)
-        # Host aspects. `import-tree` only scans `modules/aspects/**`, so the
-        # pilot host aspect file is imported explicitly (spec 14).
+        # Host aspects. `import-tree` only scans `modules/aspects/**`, so host
+        # aspect files are imported explicitly (spec 14 pilot, spec 15 fleet).
         ./hosts/homelab
+        ./hosts/bee-pc
+        ./hosts/bee-gpd
       ];
 
       flake = let
@@ -83,21 +85,12 @@
         nixosConfigurations = {
           bee-pc = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules =
-              commonModules
-              ++ [
-                ./hosts/bee-pc
-              ];
+            modules = [config.flake.modules.nixos.bee-pc];
           };
 
           bee-gpd = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules =
-              commonModules
-              ++ [
-                ./hosts/bee-gpd
-                ./modules/nvidia.nix
-              ];
+            modules = [config.flake.modules.nixos.bee-gpd];
           };
 
           # Pilot host (spec 14): composed from its host aspect, which lists
