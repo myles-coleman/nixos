@@ -7,23 +7,30 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 ```
 ├── flake.nix              # Entry point: defines each host
 ├── hosts/
-│   ├── bee-pc/            # Desktop PC (AMD, no discrete GPU)
-│   │   ├── default.nix
+│   ├── bee-pc/            # Desktop PC (AMD, no discrete GPU); host aspect
+│   │   ├── default.nix    # Host aspect: lists shared aspects + host-local imports
 │   │   ├── hardware-configuration.nix
 │   │   └── home/          # PC-specific dotfiles
 │   │       ├── default.nix
 │   │       ├── hyprland.conf
 │   │       └── start.sh
-│   ├── bee-gpd/           # GPD handheld (AMD + NVIDIA)
-│   │   ├── default.nix
+│   ├── bee-gpd/           # GPD handheld (AMD + NVIDIA); host aspect
+│   │   ├── default.nix    # Host aspect (lists the `nvidia` aspect)
 │   │   ├── hardware-configuration.nix
 │   │   └── home/          # GPD-specific dotfiles
 │   │       ├── default.nix
 │   │       ├── hyprland.conf
 │   │       └── start.sh
-│   ├── homelab/           # Server (Docker, NFS, Samba, Intel Arc); aspect pilot
+│   ├── homelab/           # Server (Docker, NFS, Samba, Intel Arc); host aspect
 │   │   ├── default.nix    # Host aspect: lists shared aspects + host-local imports
 │   │   └── hardware-configuration.nix
+│   ├── bee-gpu-server/    # GPU server (AMD, ROCm, Steam remote-play); host aspect
+│   │   ├── default.nix    # Host aspect
+│   │   └── hardware-configuration.nix
+│   ├── protecli-vault/    # Tailscale subnet-router / egress gateway; host aspect
+│   │   ├── default.nix    # Host aspect (keeps host-unique modules as plain imports)
+│   │   ├── hardware-configuration.nix
+│   │   └── modules/       # Host-unique plain modules (firewall, mullvad, ...)
 │   ├── pikvm/             # Raspberry Pi 4 KVM (aarch64-linux)
 │   │   ├── default.nix
 │   │   ├── hardware-configuration.nix
@@ -34,13 +41,15 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   └── rpi3/              # Chromium kiosk (aarch64, SD card)
 ├── modules/
 │   ├── aspects/           # flake-parts aspect registry (see aspects/README.md)
-│   ├── common.nix         # User, shell, locale, base packages
-│   ├── desktop.nix        # Hyprland, audio, bluetooth, fonts
-│   ├── dev-tools.nix      # Docker, k8s, terraform, AWS
-│   ├── gaming.nix         # Steam, gamemode, proton
-│   ├── home.nix           # Shared home-manager config
-│   ├── networking.nix     # Tailscale, Mullvad, NFS, mDNS
-│   ├── nvidia.nix         # NVIDIA drivers, Ollama w/ CUDA
+│   │   ├── common.nix     # Base system (user, locale, base packages)
+│   │   ├── desktop.nix    # Hyprland, audio, bluetooth, fonts
+│   │   ├── dev-tools.nix  # Docker, k8s, terraform, AWS
+│   │   ├── gaming.nix     # Steam, gamemode, proton
+│   │   ├── home-desktop.nix  # Shared desktop Home Manager base
+│   │   ├── home-zsh.nix   # Shared zsh/oh-my-posh (NixOS + Home Manager)
+│   │   ├── network.nix    # Tailscale, Mullvad, NFS, mDNS
+│   │   ├── nvidia.nix     # NVIDIA drivers
+│   │   └── …              # cli-core, cli-extras, server-base, k8s, unstable
 │   ├── pikvm.nix          # PiKVM module (kvmd, ustreamer, Janus)
 │   ├── sops.nix           # sops-nix per-host key path wiring
 │   ├── steam-remote-play-client.nix  # Steam remote-play client
@@ -169,7 +178,7 @@ To add a new machine:
 
 Dotfiles are managed by [home-manager](https://github.com/nix-community/home-manager) instead of a separate repo.
 This replaces the old `dotfiles` repo which used per-machine branches.
-Shared dotfiles (kitty, rofi, mangohud, waybar, oh-my-posh) live in `modules/home.nix`.
+Shared dotfiles (zsh, oh-my-posh) live in the `home-zsh` aspect and the shared desktop home config in the `home-desktop` aspect (`modules/aspects/`).
 Anything that differs between machines (e.g. hyprland.conf, start.sh) goes in the host's `home/` directory.
 
 ## AI Artifacts

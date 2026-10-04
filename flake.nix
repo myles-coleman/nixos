@@ -46,9 +46,13 @@
 
       imports = [
         (inputs.import-tree ./modules/aspects)
-        # Host aspects. `import-tree` only scans `modules/aspects/**`, so the
-        # pilot host aspect file is imported explicitly (spec 14).
+        # Host aspects. `import-tree` only scans `modules/aspects/**`, so host
+        # aspect files are imported explicitly (spec 14 pilot, spec 15 fleet).
         ./hosts/homelab
+        ./hosts/bee-pc
+        ./hosts/bee-gpd
+        ./hosts/bee-gpu-server
+        ./hosts/protecli-vault
       ];
 
       flake = let
@@ -61,18 +65,6 @@
             config.allowUnfree = true;
           };
         };
-        unstableOverlay = mkUnstableOverlay system;
-        commonModules = [
-          {nixpkgs.overlays = [unstableOverlay];}
-          ./modules/common.nix
-          ./modules/desktop.nix
-          ./modules/networking.nix
-          ./modules/dev-tools.nix
-          ./modules/gaming.nix
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.default
-          ./modules/home.nix
-        ];
         # Shared module set for the imported k3s cluster nodes (program Phase 4).
         rpiK3sModules = [
           ./modules/sops.nix
@@ -83,21 +75,12 @@
         nixosConfigurations = {
           bee-pc = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules =
-              commonModules
-              ++ [
-                ./hosts/bee-pc
-              ];
+            modules = [config.flake.modules.nixos.bee-pc];
           };
 
           bee-gpd = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules =
-              commonModules
-              ++ [
-                ./hosts/bee-gpd
-                ./modules/nvidia.nix
-              ];
+            modules = [config.flake.modules.nixos.bee-gpd];
           };
 
           # Pilot host (spec 14): composed from its host aspect, which lists
@@ -109,23 +92,12 @@
 
           bee-gpu-server = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules = [
-              {nixpkgs.overlays = [unstableOverlay];}
-              home-manager.nixosModules.default
-              sops-nix.nixosModules.sops
-              ./hosts/bee-gpu-server
-              ./modules/steam-remote-play-client.nix
-            ];
+            modules = [config.flake.modules.nixos.bee-gpu-server];
           };
 
           protecli-vault = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules = [
-              {nixpkgs.overlays = [unstableOverlay];}
-              home-manager.nixosModules.default
-              ./hosts/protecli-vault
-              sops-nix.nixosModules.sops
-            ];
+            modules = [config.flake.modules.nixos.protecli-vault];
           };
 
           pikvm = nixpkgs.lib.nixosSystem {
