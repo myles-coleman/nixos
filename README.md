@@ -21,10 +21,9 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │       ├── default.nix
 │   │       ├── hyprland.conf
 │   │       └── start.sh
-│   ├── homelab/           # Server (Docker, NFS, Samba, Intel Arc)
-│   │   ├── default.nix
-│   │   ├── hardware-configuration.nix
-│   │   └── home/          # Homelab home-manager config
+│   ├── homelab/           # Server (Docker, NFS, Samba, Intel Arc); aspect pilot
+│   │   ├── default.nix    # Host aspect: lists shared aspects + host-local imports
+│   │   └── hardware-configuration.nix
 │   ├── pikvm/             # Raspberry Pi 4 KVM (aarch64-linux)
 │   │   ├── default.nix
 │   │   ├── hardware-configuration.nix
@@ -34,6 +33,7 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   ├── node4/             # k3s agent (aarch64, SD card)
 │   └── rpi3/              # Chromium kiosk (aarch64, SD card)
 ├── modules/
+│   ├── aspects/           # flake-parts aspect registry (see aspects/README.md)
 │   ├── common.nix         # User, shell, locale, base packages
 │   ├── desktop.nix        # Hyprland, audio, bluetooth, fonts
 │   ├── dev-tools.nix      # Docker, k8s, terraform, AWS
