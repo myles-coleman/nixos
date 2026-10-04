@@ -46,6 +46,9 @@
 
       imports = [
         (inputs.import-tree ./modules/aspects)
+        # Host aspects. `import-tree` only scans `modules/aspects/**`, so the
+        # pilot host aspect file is imported explicitly (spec 14).
+        ./hosts/homelab
       ];
 
       flake = let
@@ -97,14 +100,11 @@
               ];
           };
 
+          # Pilot host (spec 14): composed from its host aspect, which lists
+          # the shared aspects it enables.
           homelab = nixpkgs.lib.nixosSystem {
             inherit system;
-            modules = [
-              {nixpkgs.overlays = [unstableOverlay];}
-              home-manager.nixosModules.default
-              sops-nix.nixosModules.sops
-              ./hosts/homelab
-            ];
+            modules = [config.flake.modules.nixos.homelab];
           };
 
           bee-gpu-server = nixpkgs.lib.nixosSystem {
