@@ -47,7 +47,10 @@
         "overlay"
       ];
 
-      boot.kernelParams = [
+      # `mkBefore` pins these cgroup params ahead of the vendor board module's
+      # `console=` params, reproducing the pre-migration ordering exactly so the
+      # host closure stays unchanged (spec 16 closure-preservation gate).
+      boot.kernelParams = lib.mkBefore [
         "cgroup_enable=cpuset"
         "cgroup_memory=1"
         "cgroup_enable=memory"

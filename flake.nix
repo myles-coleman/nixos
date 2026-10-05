@@ -53,6 +53,13 @@
         ./hosts/bee-gpd
         ./hosts/bee-gpu-server
         ./hosts/protecli-vault
+        # RPi fleet host aspects (spec 16).
+        ./hosts/node0
+        ./hosts/node1
+        ./hosts/node2
+        ./hosts/node3
+        ./hosts/node4
+        ./hosts/rpi3
       ];
 
       flake = let
@@ -65,12 +72,6 @@
             config.allowUnfree = true;
           };
         };
-        # Shared module set for the imported k3s cluster nodes (program Phase 4).
-        rpiK3sModules = [
-          ./modules/sops.nix
-          sops-nix.nixosModules.sops
-          ./modules/rpi/base.nix
-        ];
       in {
         nixosConfigurations = {
           bee-pc = nixpkgs.lib.nixosSystem {
@@ -109,47 +110,48 @@
             ];
           };
 
-          # k3s cluster (program Phase 4). Imported from rpi5-nixos; node0 is the
-          # control plane, node1-node4 are agents, and node4 boots from an SD card.
+          # k3s cluster + rpi3 (program Phase 4, migrated to host aspects in
+          # spec 16). node0 is the control plane, node1-node4 are agents, and
+          # node4 boots from an SD card. The vendor library accepts a
+          # `config.flake.modules.nixos.<host>` value directly; vendor board and
+          # kernel modules are listed inside each host aspect.
           node0 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = rpiK3sModules ++ [./hosts/node0];
+            modules = [config.flake.modules.nixos.node0];
           };
 
           node1 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = rpiK3sModules ++ [./hosts/node1];
+            modules = [config.flake.modules.nixos.node1];
           };
 
           node2 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = rpiK3sModules ++ [./hosts/node2];
+            modules = [config.flake.modules.nixos.node2];
           };
 
           node3 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = rpiK3sModules ++ [./hosts/node3];
+            modules = [config.flake.modules.nixos.node3];
           };
 
           node4 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = rpiK3sModules ++ [./hosts/node4];
+            modules = [config.flake.modules.nixos.node4];
           };
 
-          # rpi3 Chromium kiosk (program Phase 4). Migrated from rpi3-nixos onto
-          # the vendor `raspberry-pi-3` board and SD-image modules.
+          # rpi3 Chromium kiosk (program Phase 4, migrated to a host aspect in
+          # spec 16). Builds on the vendor `raspberry-pi-3` board and SD-image
+          # modules; shares no k3s aspects.
           rpi3 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
-            modules = [
-              sops-nix.nixosModules.sops
-              ./hosts/rpi3
-            ];
+            modules = [config.flake.modules.nixos.rpi3];
           };
         };
 
