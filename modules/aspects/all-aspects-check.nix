@@ -24,7 +24,15 @@
       nixpkgs = inputs.nixpkgs;
       # Explicit x86-only allowlist. Keep this list in sync when a new shared
       # x86 aspect is added; aarch64/RPi aspects intentionally do not appear.
+      #
+      # NOTE: `networkmanager` and `tailscale` are intentionally absent: the
+      # `network` aspect composes both, and the NixOS module system applies a
+      # module once per reference, so listing them here as well would apply each
+      # aspect twice and make unique options (e.g. `services.tailscale.package`)
+      # conflict. They are still fully type-checked transitively through
+      # `network`.
       x86AspectNames = [
+        "access"
         "common"
         "desktop"
         "dev-tools"
@@ -33,6 +41,7 @@
         "home-zsh"
         "network"
         "nvidia"
+        "sudo"
         "cli-core"
         "cli-extras"
         "server-base"

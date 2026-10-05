@@ -1,16 +1,17 @@
-{
+{config, ...}: {
+  # Desktop network delta. The shared invariants live in the `networkmanager`
+  # and `tailscale` aspects; this aspect composes them and adds the
+  # desktop-only behavior (systemd-resolved DNS backend, exit-node routing,
+  # Mullvad, mDNS, rpcbind).
   flake.modules.nixos.network = {pkgs, ...}: {
-    networking.networkmanager = {
-      enable = true;
-      dns = "systemd-resolved"; # Use systemd-resolved as DNS backend
-    };
+    imports = [
+      config.flake.modules.nixos.networkmanager
+      config.flake.modules.nixos.tailscale
+    ];
 
-    services.tailscale = {
-      enable = true;
-      package = pkgs.unstable.tailscale;
-      useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
-      openFirewall = true;
-    };
+    networking.networkmanager.dns = "systemd-resolved"; # Use systemd-resolved as DNS backend
+
+    services.tailscale.useRoutingFeatures = "both"; # Allow this machine to use AND be an exit node
 
     services.mullvad-vpn = {
       enable = true;
