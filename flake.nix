@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # opencode v2 (the dev branch of the upstream flake is still 1.x, so pin a v2 tag).
+    opencodeV2.url = "github:anomalyco/opencode/v2.0.23";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {

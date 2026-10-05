@@ -139,7 +139,7 @@ in {
       pcmanfm #file manager
       python313Packages.cmake
       mpv
-      unstable.opencode
+      opencodeV2 # opencode v2 (pinned flake input), replaces unstable.opencode
       ffmpeg
       redshift #blue light filter
       freecad
