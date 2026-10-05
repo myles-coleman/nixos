@@ -69,21 +69,37 @@ merged into the synthetic `all-aspects` check.
 
 ## Status and deferred scope
 
-All five x86_64 hosts are now aspect-composed: spec 14 converted the `homelab`
+All five x86_64 hosts are aspect-composed: spec 14 converted the `homelab`
 pilot, and spec 15 converted `bee-pc`, `bee-gpd`, `bee-gpu-server`, and
 `protecli-vault`. Shared concerns that used to live as wholesale-imported
 `modules/*.nix` files (`common`, `desktop`, `networking`, `dev-tools`, `gaming`,
 `nvidia`, `home`) are now aspects, and the legacy files were removed.
 
+The RPi k3s fleet (`node0`–`node4`) and the `rpi3` kiosk are also
+aspect-composed as of spec 16. Their shared concerns are **flat** aspects
+(`rpi-base`, `k3s-common`, `k3s-server`, `k3s-agent`, `k3s-token-sops`,
+`node-health`) ported verbatim from the former `modules/rpi/*.nix`; each host
+lists every leaf aspect it enables. Because flattening removed the former
+`k3s-server → k3s-common → node-health` import edges, the k3s role aspects carry
+an evaluation-time assertion (`k3sCommon.enabled`) that fails loudly if a role is
+listed without `k3s-common`. The RPi host-aspect shape differs from the x86 shape
+in that it has **no `hardware-configuration.nix`** — vendor board/kernel modules
+(`raspberry-pi-5.base`, `page-size-16k`, `raspberry-pi-3.base`, `sd-image`) are
+plain host imports or live inside `rpi-base`, and `specialArgs = inputs` is
+retained on the vendor `nixos-raspberrypi.lib.nixosSystem` calls. `disko-config.nix`
+and `modules/sops.nix` remain plain host imports.
+
 Still out of scope:
 
 - the unmerged spec 11 `my.roles.*` abstraction (PR #17) is superseded and never
   lands;
-- migrating the RPi/k3s/pikvm hosts, which keep using plain modules and the
-  vendor `nixos-raspberrypi.lib.nixosSystem` path;
+- migrating `pikvm`, which is aarch64 but not on the vendor
+  `nixos-raspberrypi` library (it uses the plain `nixpkgs.lib.nixosSystem` path);
+- a synthetic aarch64 `all-aspects` check — dropped as non-composable and
+  redundant with the `build-arm` lane that builds every RPi host;
 - a typed `configurations.nixos.<host>.module` registry (spec 14's
   `flake.modules.nixos.<host>` shape is retained for all hosts); this is a
   possible future spec.
 
-`modules/sops.nix` stays path-imported (a plain module) until the RPi migration,
-as does `modules/steam-remote-play-client.nix` and `modules/pikvm.nix`.
+`modules/sops.nix` stays path-imported (a plain module), as do
+`modules/steam-remote-play-client.nix` and `modules/pikvm.nix`.
