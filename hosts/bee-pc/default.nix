@@ -39,6 +39,8 @@ in {
 
     networking.hostName = "bee-pc";
 
+    # Fonts come from the `desktop` aspect's `fonts.packages`; only the
+    # non-font host-local packages remain here.
     environment.systemPackages = with pkgs; [
       obs-studio
       obs-studio-plugins.obs-vkcapture
@@ -46,11 +48,6 @@ in {
       r2modman
       goverlay
       xorg.libX11
-      nerd-fonts.meslo-lg
-      meslo-lgs-nf
-      font-awesome
-      material-icons
-      material-design-icons
       unstable.opencode
     ];
 
