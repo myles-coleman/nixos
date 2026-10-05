@@ -59,13 +59,62 @@ adding a file here registers its aspects with no edits to `flake.nix`.
    `nix store diff-closures <old-toplevel> <new-toplevel>` (no added/removed
    packages), not the name-only CI diff.
 
+## Shared user and network aspects (spec 17)
+
+Spec 17 extracted the blocks that were copy-pasted across hosts into four
+invariant-only aspects:
+
+- `access.nix` — the `bee` user base (`isNormalUser`/`description`/`shell`),
+  `programs.zsh.enable`, and the `services.openssh` block. It deliberately does
+  **not** set `extraGroups`, `openssh.authorizedKeys.keys`, user `packages`, or
+  any sudo rule (those differ per host). Because `common.nix` also declares the
+  user base for hosts that must not gain sshd/sudo, `access` re-declares the
+  unique-merge scalars at priority 500: `common`'s normal definition wins where
+  both are listed, and `access` alone beats the built-in bash-shell default.
+- `sudo.nix` — the passwordless `security.sudo.extraRules` entry for `bee`.
+  `security.sudo.extraRules` concatenates, so a host that lists `sudo` must
+  remove any inline rule.
+- `tailscale.nix` — the `services.tailscale` invariants (`enable`, `package =
+  pkgs.unstable.tailscale`, `openFirewall`); it composes `unstable`. Scalar
+  settings such as `useRoutingFeatures`, `authKeyFile`, and the extra flags stay
+  host-local.
+- `networkmanager.nix` — `networking.networkmanager.enable = true`. Scalar
+  settings such as `dns` stay host-local (or in `network`).
+
+`network.nix` now **composes** `networkmanager` + `tailscale` and retains only
+its desktop deltas (systemd-resolved DNS backend, `useRoutingFeatures = "both"`,
+Mullvad, avahi, rpcbind). This is the reference example of one aspect importing
+others.
+
+Because `network` transitively applies `networkmanager` and `tailscale`, those
+two names are intentionally **not** listed in the `all-aspects` allowlist: the
+NixOS module system applies a module once per reference, so listing them
+directly *and* transitively would define unique options twice. They are still
+fully type-checked through `network`.
+
+## Host-local modules (`hosts/<host>/modules/`)
+
+Host-local concerns that do not belong in a shared aspect live in
+`hosts/<host>/modules/*.nix` and are imported explicitly from
+`hosts/<host>/default.nix` (plain imports; `import-tree` only scans
+`modules/aspects/**`). Each module takes only `{config, pkgs, lib, ...}` and must
+not receive `inputs` or the flake-level `config`; any `inputs.*` or
+`config.flake.modules` reference stays in `hosts/<host>/default.nix`. Moving a
+file into `modules/` adds one directory level, so re-base relative imports
+(`../../modules/...` → `../../../modules/...`, `../../secrets/...` →
+`../../../secrets/...`). `hosts/protecli-vault/modules/` was the original
+reference; spec 17 applied the same pattern to `bee-gpu-server`, `homelab`,
+`bee-gpd`, and `rpi3`.
+
 ## Host aspects
 
 A host aspect lives at `hosts/<host>/default.nix` and defines
 `config.flake.modules.nixos.<host>`, listing the aspects it composes plus its
 host-local plain imports (`hardware-configuration.nix`, `../../modules/sops.nix`,
 host-specific modules). It is a full NixOS configuration, so it is **not**
-merged into the synthetic `all-aspects` check.
+merged into the synthetic `all-aspects` check. Hosts list a package-providing
+aspect (for dedup) only when every package it provides is already in the host's
+closure; hosts never gain a package from a dedup aspect.
 
 ## Status and deferred scope
 

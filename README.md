@@ -17,16 +17,19 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   ├── bee-gpd/           # GPD handheld (AMD + NVIDIA); host aspect
 │   │   ├── default.nix    # Host aspect (lists the `nvidia` aspect)
 │   │   ├── hardware-configuration.nix
+│   │   ├── modules/       # Host-local plain modules (egpu, input, automation, networking, packages)
 │   │   └── home/          # GPD-specific dotfiles
 │   │       ├── default.nix
 │   │       ├── hyprland.conf
 │   │       └── start.sh
 │   ├── homelab/           # Server (Docker, NFS, Samba, Intel Arc); host aspect
 │   │   ├── default.nix    # Host aspect: lists shared aspects + host-local imports
-│   │   └── hardware-configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── modules/       # Host-local plain modules (containers, storage, networking)
 │   ├── bee-gpu-server/    # GPU server (AMD, ROCm, Steam remote-play); host aspect
 │   │   ├── default.nix    # Host aspect
-│   │   └── hardware-configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── modules/       # Host-local plain modules (desktop, gpu, containers, mullvad)
 │   ├── protecli-vault/    # Tailscale subnet-router / egress gateway; host aspect
 │   │   ├── default.nix    # Host aspect (keeps host-unique modules as plain imports)
 │   │   ├── hardware-configuration.nix
@@ -39,15 +42,21 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   ├── node1/ … node3/    # k3s agents (aarch64, NVMe); host aspects
 │   ├── node4/             # k3s agent (aarch64, SD card); host aspect
 │   └── rpi3/              # Chromium kiosk (aarch64, SD card); host aspect
+│       ├── default.nix
+│       └── modules/       # Host-local plain modules (kiosk, firmware, users)
 ├── modules/
 │   ├── aspects/           # flake-parts aspect registry (see aspects/README.md)
+│   │   ├── access.nix     # `bee` user base, zsh, sshd invariants
+│   │   ├── sudo.nix       # passwordless sudo for `bee`
+│   │   ├── tailscale.nix  # tailscale invariants (composes `unstable`)
+│   │   ├── networkmanager.nix  # NetworkManager enable
 │   │   ├── common.nix     # Base system (user, locale, base packages)
 │   │   ├── desktop.nix    # Hyprland, audio, bluetooth, fonts
 │   │   ├── dev-tools.nix  # Docker, k8s, terraform, AWS
 │   │   ├── gaming.nix     # Steam, gamemode, proton
 │   │   ├── home-desktop.nix  # Shared desktop Home Manager base
 │   │   ├── home-zsh.nix   # Shared zsh/oh-my-posh (NixOS + Home Manager)
-│   │   ├── network.nix    # Tailscale, Mullvad, NFS, mDNS
+│   │   ├── network.nix    # Composes networkmanager + tailscale; Mullvad, mDNS
 │   │   ├── nvidia.nix     # NVIDIA drivers
 │   │   ├── rpi-base.nix   # RPi 5 base (vendor board + pi user)
 │   │   ├── k3s-*.nix      # k3s common/server/agent/token-sops aspects
