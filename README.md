@@ -35,10 +35,10 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │   ├── default.nix
 │   │   ├── hardware-configuration.nix
 │   │   └── SETUP.md       # PiKVM setup guide
-│   ├── node0/             # k3s control plane (aarch64, NVMe)
-│   ├── node1/ … node3/    # k3s agents (aarch64, NVMe)
-│   ├── node4/             # k3s agent (aarch64, SD card)
-│   └── rpi3/              # Chromium kiosk (aarch64, SD card)
+│   ├── node0/             # k3s control plane (aarch64, NVMe); host aspect
+│   ├── node1/ … node3/    # k3s agents (aarch64, NVMe); host aspects
+│   ├── node4/             # k3s agent (aarch64, SD card); host aspect
+│   └── rpi3/              # Chromium kiosk (aarch64, SD card); host aspect
 ├── modules/
 │   ├── aspects/           # flake-parts aspect registry (see aspects/README.md)
 │   │   ├── common.nix     # Base system (user, locale, base packages)
@@ -49,11 +49,14 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │   ├── home-zsh.nix   # Shared zsh/oh-my-posh (NixOS + Home Manager)
 │   │   ├── network.nix    # Tailscale, Mullvad, NFS, mDNS
 │   │   ├── nvidia.nix     # NVIDIA drivers
+│   │   ├── rpi-base.nix   # RPi 5 base (vendor board + pi user)
+│   │   ├── k3s-*.nix      # k3s common/server/agent/token-sops aspects
+│   │   ├── node-health.nix  # journald, watchdog, zram
 │   │   └── …              # cli-core, cli-extras, server-base, k8s, unstable
 │   ├── pikvm.nix          # PiKVM module (kvmd, ustreamer, Janus)
 │   ├── sops.nix           # sops-nix per-host key path wiring
 │   ├── steam-remote-play-client.nix  # Steam remote-play client
-│   └── rpi/               # RPi fleet modules (base, k3s-*, k3s-token-sops, node-health, disko)
+│   └── rpi/               # RPi plain host import (disko-config.nix)
 ├── config/                # Vendored configs and dotfiles
 │   ├── mangohud/          # MangoHud configs
 │   ├── pikvm/             # PiKVM YAML configs (main, logging, meta)
