@@ -27,6 +27,10 @@ in {
         inputs.home-manager.nixosModules.default
       ]
       ++ (with aspects; [
+        access
+        sudo
+        tailscale
+        cli-core
         home-zsh
         unstable
       ]);
@@ -41,10 +45,7 @@ in {
 
     # Users
     users.users.${mainUser} = {
-      isNormalUser = true;
-      description = mainUser;
       extraGroups = ["wheel" "docker"];
-      shell = pkgs.zsh;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAbRhFuBN78VkdBT6v/SAdPYxqqBWqthWqf6mWLQL8I bee@bee-gpd"
         # CI deploy key (public half of the `SSH_PRIVATE_KEY` Environment secret)
@@ -52,21 +53,11 @@ in {
       ];
     };
 
-    # SSH
-    services.openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = true;
-      };
-    };
-
-    # Tailscale: exit node + subnet router. The Vault owns forwarding and SNAT
-    # (--netfilter-mode=off) so its custom nftables ruleset is the only data path.
+    # Tailscale: exit node + subnet router. enable/package/openFirewall come
+    # from the `tailscale` aspect; the flags below are host-specific. The Vault
+    # owns forwarding and SNAT (--netfilter-mode=off) so its custom nftables
+    # ruleset is the only data path.
     services.tailscale = {
-      enable = true;
-      package = pkgs.unstable.tailscale;
-      openFirewall = true;
       useRoutingFeatures = "both";
       authKeyFile = config.sops.secrets.tailscale_auth_key.path;
       extraUpFlags = [
@@ -107,29 +98,9 @@ in {
       };
     };
 
-    programs.zsh.enable = true;
-
-    # Allow passwordless sudo for remote deploys
-    security.sudo.extraRules = [
-      {
-        users = ["${mainUser}"];
-        commands = [
-          {
-            command = "ALL";
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
-
-    # System packages
+    # System packages (shared CLI packages come from the `cli-core` aspect)
     environment.systemPackages = with pkgs; [
-      vim
       git
-      gh
-      htop
-      tree
-      alejandra
       ethtool
       tcpdump
       dnsutils
