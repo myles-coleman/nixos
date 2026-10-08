@@ -4,10 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # opencode v2 (the dev branch of the upstream flake is still 1.x, so pin a v2 tag).
     opencodeV2.url = "github:anomalyco/opencode/v2.0.23";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,15 +21,14 @@
       url = "github:serokell/deploy-rs/e760371d631165e7d8de5b0dcf148e21ec4c16f0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Declarative disk partitioning for the k3s NVMe nodes (program Phase 4).
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Aspect registry (spec 14): flake-parts provides the class-tagged
-    # `flake.modules` store, and import-tree auto-imports modules/aspects/**.
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     import-tree.url = "github:denful/import-tree";
   };
 
@@ -48,14 +48,11 @@
 
       imports = [
         (inputs.import-tree ./modules/aspects)
-        # Host aspects. `import-tree` only scans `modules/aspects/**`, so host
-        # aspect files are imported explicitly (spec 14 pilot, spec 15 fleet).
         ./hosts/homelab
         ./hosts/bee-pc
         ./hosts/bee-gpd
         ./hosts/bee-gpu-server
         ./hosts/protecli-vault
-        # RPi fleet host aspects (spec 16).
         ./hosts/node0
         ./hosts/node1
         ./hosts/node2
@@ -66,8 +63,6 @@
 
       flake = let
         system = "x86_64-linux";
-        # System-parameterized so the same overlay shape can serve x86_64 and
-        # aarch64 hosts without a second nixpkgs instantiation.
         mkUnstableOverlay = targetSystem: _final: _prev: {
           unstable = import nixpkgs-unstable {
             system = targetSystem;
@@ -86,8 +81,6 @@
             modules = [config.flake.modules.nixos.bee-gpd];
           };
 
-          # Pilot host (spec 14): composed from its host aspect, which lists
-          # the shared aspects it enables.
           homelab = nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [config.flake.modules.nixos.homelab];
@@ -112,11 +105,6 @@
             ];
           };
 
-          # k3s cluster + rpi3 (program Phase 4, migrated to host aspects in
-          # spec 16). node0 is the control plane, node1-node4 are agents, and
-          # node4 boots from an SD card. The vendor library accepts a
-          # `config.flake.modules.nixos.<host>` value directly; vendor board and
-          # kernel modules are listed inside each host aspect.
           node0 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
@@ -147,9 +135,6 @@
             modules = [config.flake.modules.nixos.node4];
           };
 
-          # rpi3 Chromium kiosk (program Phase 4, migrated to a host aspect in
-          # spec 16). Builds on the vendor `raspberry-pi-3` board and SD-image
-          # modules; shares no k3s aspects.
           rpi3 = nixos-raspberrypi.lib.nixosSystem {
             system = "aarch64-linux";
             specialArgs = inputs;
@@ -202,9 +187,6 @@
             };
           };
 
-          # k3s cluster + rpi3 (program Phase 4). Manual (`workflow_dispatch`) only:
-          # they are deliberately kept out of the merge auto-deploy set. Deploy
-          # reaches them over the LAN via protecli-vault's advertised subnet routes.
           node0 = {
             hostname = "10.0.0.140";
             sshUser = "pi";
@@ -245,7 +227,6 @@
             };
           };
 
-          # SD-card boot: allow a longer activation/confirmation window.
           node4 = {
             hostname = "10.0.0.144";
             sshUser = "pi";
@@ -258,8 +239,6 @@
             };
           };
 
-          # rpi3's only user is `bee` (preserved from its source config); sshUser is
-          # `bee` rather than the k3s nodes' `pi`. SD-card boot.
           rpi3 = {
             hostname = "10.0.0.145";
             sshUser = "bee";
@@ -283,7 +262,6 @@
           }
         );
 
-        # Host toplevels for CI build lanes (`nix-fast-build --flake .#packages.<system>`).
         packages = {
           x86_64-linux = {
             bee-pc = self.nixosConfigurations.bee-pc.config.system.build.toplevel;

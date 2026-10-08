@@ -32,7 +32,6 @@
     unstable.prismlauncher
     remmina
     wvkbd
-    # maliit-framework
     python3
     typora
     bat

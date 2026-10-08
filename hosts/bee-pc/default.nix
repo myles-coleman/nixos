@@ -49,6 +49,7 @@ in {
       goverlay
       xorg.libX11
       unstable.opencode
+      ripgrep
     ];
 
     # fileSystems."/mnt/harddrive" = {
