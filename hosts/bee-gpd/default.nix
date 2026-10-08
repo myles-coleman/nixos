@@ -15,7 +15,7 @@ in {
       [
         ./hardware-configuration.nix
         ./home
-        ./modules/egpu.nix
+        # ./modules/egpu.nix
         ./modules/input.nix
         ./modules/automation.nix
         ./modules/networking.nix
@@ -40,15 +40,8 @@ in {
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 1;
     boot.loader.efi.canTouchEfiVariables = true;
-
-    # Allow running armv6l binaries via QEMU (for cross-deploying to RPi 1)
-    boot.binfmt.emulatedSystems = ["armv6l-linux"];
-
     networking.hostName = "bee-gpd";
-
-    # Extra groups specific to bee-gpd
     users.users.bee.extraGroups = ["video"];
-
     system.stateVersion = "25.05";
   };
 }
