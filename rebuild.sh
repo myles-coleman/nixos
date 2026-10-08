@@ -37,9 +37,20 @@ if ! $FORCE && git diff --quiet -- '**/*.nix' 'flake.lock'; then
     exit 0
 fi
 
-# Autoformat your nix files
-alejandra . &>/dev/null \
-  || ( alejandra . ; echo "formatting failed!" && exit 1)
+# Autoformat your nix files. When alejandra hits a parse error it reports a raw
+# byte range (e.g. `flake.nix: unexpected TOKEN_ASSIGN at 369..434`), which does
+# not point at a line. On failure, re-parse the flagged files with Nix itself
+# for a `file:line:column` message that shows the offending line.
+if ! alejandra . &>/dev/null; then
+    flagged=$(alejandra --check . 2>&1 | sed -n 's/^- \(\.\/\)\?\(.*\.nix\):.*/\2/p')
+    if [ -n "$flagged" ] && ! nix-instantiate --parse $flagged; then
+        echo "formatting failed!" >&2
+        exit 1
+    fi
+    alejandra . || true
+    echo "formatting failed!" >&2
+    exit 1
+fi
 
 # Shows your changes
 git diff -U0 -- '**/*.nix' 'flake.lock'
