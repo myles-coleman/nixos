@@ -80,10 +80,38 @@
       ".config/opencode/skills/sdd-2-generate-task-list-from-spec/SKILL.md".source = ../../config/claude-commands/SDD-2-generate-task-list-from-spec.md;
       ".config/opencode/skills/sdd-3-manage-tasks/SKILL.md".source = ../../config/claude-commands/SDD-3-manage-tasks.md;
       ".config/opencode/skills/sdd-4-validate-spec-implementation/SKILL.md".source = ../../config/claude-commands/SDD-4-validate-spec-implementation.md;
+
+      # OpenCode status-bar TUI plugin (branch / model / session cost)
+      ".config/opencode/plugins/status/tui.tsx".source = ../../config/opencode/plugins/status/tui.tsx;
     };
 
     xdg.configFile = {
       "wallpaper1.jpg".source = ../../config/wallpaper1.jpg;
+
+      # OpenCode CLI settings. `plugins` passes options to the status-bar plugin;
+      # the key is the plugin's path under the config dir, not its `id`.
+      "opencode/cli.json".text = builtins.toJSON {
+        "$schema" = "https://opencode.ai/v2/cli.json";
+        animations = true;
+        diffs.wrap = "word";
+        session = {
+          sidebar = "auto";
+          scrollbar = false;
+          thinking = "show";
+        };
+        plugins = [
+          {
+            package = "./plugins/status";
+            options = {
+              branch = true;
+              model = true;
+              cost = true;
+              version = false;
+              separator = "  ·  ";
+            };
+          }
+        ];
+      };
 
       "rofi/config.rasi".source = ../../config/rofi/config.rasi;
       "rofi/catppuccin-mocha.rasi".source = ../../config/rofi/catppuccin-mocha.rasi;
