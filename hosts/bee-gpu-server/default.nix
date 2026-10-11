@@ -20,6 +20,8 @@ in {
         ./modules/gpu.nix
         ./modules/containers.nix
         ./modules/mullvad.nix
+        ./modules/opencode-agents.nix
+        ./modules/opencode-egress.nix
         ../../modules/sops.nix
         ../../modules/steam-remote-play-client.nix
         inputs.sops-nix.nixosModules.sops
@@ -63,6 +65,12 @@ in {
     # Tailscale: host-local scalar; enable/package/openFirewall come from the
     # `tailscale` aspect.
     services.tailscale.useRoutingFeatures = "both";
+
+    # Per-instance OpenCode sandbox secrets (server password + scoped git PAT).
+    sops.defaultSopsFile = ../../secrets/hosts/bee-gpu-server.yaml;
+    # Install secrets via the systemd unit rather than the activation script so
+    # container@nixos can be ordered after sops-install-secrets.service.
+    sops.useSystemdActivation = true;
 
     # System packages (shared CLI/server tools come from aspects)
     environment.systemPackages = with pkgs; [
