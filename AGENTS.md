@@ -41,7 +41,22 @@ vendor modules.
 - `hosts/<hostname>/` — Per-machine host aspect (lists the aspects it enables) or plain config; hardware config and host-specific settings
 - `modules/` — Shared modules imported by hosts:
   - `modules/aspects/` — flake-parts aspect registry (see `aspects/README.md`); x86 shared aspects `access`, `sudo`, `tailscale`, `networkmanager`, `common`, `desktop`, `network`, `dev-tools`, `gaming`, `nvidia`, `home-desktop`, `home-zsh`, `cli-core`, `cli-extras`, `server-base`, `k8s`, `unstable`, plus the RPi aspects `rpi-base`, `k3s-common`, `k3s-server`, `k3s-agent`, `k3s-token-sops`, `node-health`. `network` composes `networkmanager` + `tailscale`; `tailscale` composes `unstable`. Composition references `config.flake.modules.nixos.<name>`, never `inputs.self`.
-  - `hosts/<hostname>/modules/` — optional host-local plain modules (e.g. `bee-gpu-server/modules/{desktop,gpu,containers,mullvad}.nix`, `homelab/modules/{containers,storage,networking}.nix`, `bee-gpd/modules/{egpu,input,automation,networking,packages}.nix`, `rpi3/modules/{kiosk,firmware,users}.nix`), imported explicitly from `hosts/<hostname>/default.nix`. They take only `{config, pkgs, lib, ...}`; `inputs.*`/flake-`config` stay in `default.nix`, and relative imports re-base one level (`../../` → `../../../`).
+  - `hosts/<hostname>/modules/` — optional host-local plain modules (e.g. `bee-gpu-server/modules/{desktop,gpu,containers,mullvad,opencode-agents,opencode-egress}.nix`, `homelab/modules/{containers,storage,networking}.nix`, `bee-gpd/modules/{egpu,input,automation,networking,packages}.nix`, `rpi3/modules/{kiosk,firmware,users}.nix`), imported explicitly from `hosts/<hostname>/default.nix`. They take only `{config, pkgs, lib, ...}`; `inputs.*`/flake-`config` stay in `default.nix`, and relative imports re-base one level (`../../` → `../../../`).
+
+### OpenCode sandbox instances (bee-gpu-server)
+
+`hosts/bee-gpu-server/modules/opencode-agents.nix` defines a roster-driven
+`mkOpencodeInstance` helper that emits one unprivileged `systemd-nspawn`
+container per entry (default pilot: one entry, `name = "nixos"`); each runs the
+pinned OpenCode v2 build as the unprivileged `agent` user with its clone under
+`/srv/oc/<name>`. `hosts/bee-gpu-server/modules/opencode-egress.nix` enforces
+egress on the host (allowlisting squid forward proxy + per-instance nftables
+rules + tailnet DNAT) and exposes the derived roster through the internal
+`opencodeSandbox.instances` option. To add an instance: append a roster entry in
+`opencode-agents.nix` with the next free `index` (derives uid base, ports,
+addresses), add `<name>_server_password`/`<name>_git_pat` to
+`secrets/hosts/bee-gpu-server.yaml`, extend the Tailscale ACL range, deploy, and
+restart `container@<name>` (see the Spec 18 runbook in the vault).
   - `modules/rpi/` — the remaining plain RPi host import `disko-config.nix` (the former `base.nix`/`k3s-*.nix`/`node-health.nix` are now aspects)
   - `sops.nix`, `pikvm.nix`, `steam-remote-play-client.nix` — plain modules (not aspects)
 - `config/` — Vendored dotfiles (MangoHUD, Rofi, Waybar, PiKVM YAML)
