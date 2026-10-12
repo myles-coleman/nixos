@@ -37,6 +37,11 @@
   # Sentinel used until the operator provisions a scoped PAT (see the runbook).
   # While it is in place the container clones the (public) repo anonymously.
   gitPatPlaceholder = "REPLACE_WITH_SCOPED_PAT";
+  # Sentinel used until the operator provisions a dedicated OpenCode Go key
+  # (Spec 19). While it is in place the container installs the base
+  # (`qwen-local`-only) config and never exports the key, so the sandbox stays
+  # fully usable on the local model.
+  opencodeGoPlaceholder = "REPLACE_WITH_OPENCODE_API_KEY";
 
   agentUid = 1000;
   agentGid = 1000;
@@ -72,7 +77,20 @@
 
   instances = map derive roster;
 
-  opencodeJson = inst: {
+  # Opt-in hosted provider (Spec 19). Declared in the config only when a real key
+  # is provisioned (see opencode-setup); the default `model` always stays local.
+  opencodeGoProvider = {
+    npm = "@ai-sdk/openai-compatible";
+    name = "OpenCode Go";
+    options = {
+      baseURL = "https://opencode.ai/zen/go/v1";
+      # The key is delivered out of band and exported by the serve wrapper; this
+      # template is resolved at runtime, so no key value is ever written here.
+      apiKey = "{env:OPENCODE_API_KEY}";
+    };
+  };
+
+  baseOpencodeJson = inst: {
     "$schema" = "https://opencode.ai/config.json";
     username = "opencode-${inst.name}";
     model = "qwen-local/${modelAlias}";
@@ -113,9 +131,26 @@
     };
   };
 
+  # The opt-in variant: the base config plus the hosted provider. Installed only
+  # when a real key is present; `model` stays `qwen-local/...`.
+  opencodeGoJson = inst:
+    baseOpencodeJson inst
+    // {
+      enabled_providers = ["qwen-local" "opencode-go"];
+      provider =
+        (baseOpencodeJson inst).provider
+        // {
+          opencode-go = opencodeGoProvider;
+        };
+    };
+
+  baseConfigJson = inst: builtins.toJSON (baseOpencodeJson inst);
+  opencodeGoConfigJson = inst: builtins.toJSON (opencodeGoJson inst);
+
   mkOpencodeInstance = inst: let
     serverPasswordSecret = "${inst.name}_server_password";
     gitPatSecret = "${inst.name}_git_pat";
+    opencodeApiKeySecret = "${inst.name}_opencode_api_key";
   in {
     systemd.tmpfiles.rules = [
       "d /srv/oc 0755 root root -"
@@ -134,6 +169,14 @@
       restartUnits = ["container@${inst.name}.service"];
     };
     sops.secrets.${gitPatSecret} = {
+      owner = "root";
+      mode = "0400";
+      restartUnits = ["container@${inst.name}.service"];
+    };
+    # Dedicated OpenCode Go key (Spec 19). Holds the sentinel until the operator
+    # provisions one; the container only installs the hosted provider when this
+    # value is a real key.
+    sops.secrets.${opencodeApiKeySecret} = {
       owner = "root";
       mode = "0400";
       restartUnits = ["container@${inst.name}.service"];
@@ -163,6 +206,7 @@
         "--private-users-ownership=chown"
         "--load-credential=opencode-server-password:${config.sops.secrets.${serverPasswordSecret}.path}"
         "--load-credential=git-pat:${config.sops.secrets.${gitPatSecret}.path}"
+        "--load-credential=opencode-api-key:${config.sops.secrets.${opencodeApiKeySecret}.path}"
       ];
       # /nix/store, the Nix DB and the host Nix daemon socket are already
       # bind-mounted read-only (and idmap-aware) by the nixos-containers
@@ -173,7 +217,8 @@
       };
 
       config = {pkgs, ...}: let
-        configFile = pkgs.writeText "opencode.json" (builtins.toJSON (opencodeJson inst));
+        configFile = pkgs.writeText "opencode.json" (baseConfigJson inst);
+        opencodeGoConfigFile = pkgs.writeText "opencode-opencode-go.json" (opencodeGoConfigJson inst);
         askpass = pkgs.writeShellScript "opencode-git-askpass" ''
           case "$1" in
             Username*) printf '%s' "x-access-token" ;;
@@ -194,6 +239,14 @@
         serveScript = pkgs.writeShellScript "opencode-serve-${inst.name}" ''
           set -eu
           export OPENCODE_SERVER_PASSWORD="$(cat "$CREDENTIALS_DIRECTORY/opencode-server-password")"
+          # Export the hosted key only when a real one is present. The sentinel
+          # keeps OPENCODE_API_KEY unset and the hosted provider disabled.
+          if [ -r "$CREDENTIALS_DIRECTORY/opencode-api-key" ]; then
+            key="$(cat "$CREDENTIALS_DIRECTORY/opencode-api-key")"
+            if [ -n "$key" ] && [ "$key" != "${opencodeGoPlaceholder}" ]; then
+              export OPENCODE_API_KEY="$key"
+            fi
+          fi
           exec ${opencodePkg}/bin/opencode serve --hostname ${inst.localIp} --port ${toString inst.serverPort}
         '';
       in {
@@ -250,7 +303,9 @@
         # Create the XDG directories and write opencode.json. Runs as root so it
         # can fix ownership deterministically regardless of what a previous run
         # left behind; the server depends on it directly, and it needs no
-        # network.
+        # network. It installs the opt-in OpenCode Go config only when the
+        # credential holds a real key; otherwise the base (`qwen-local`-only)
+        # config, so a missing/revoked key degrades gracefully.
         systemd.services.opencode-setup = {
           description = "Write the OpenCode config (${inst.name})";
           wantedBy = ["multi-user.target"];
@@ -259,6 +314,7 @@
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
+            LoadCredential = ["opencode-api-key"];
           };
           script = ''
             set -eu
@@ -268,7 +324,15 @@
             install -d -m 0700 ${inst.dataDir}/.local/share
             install -d -m 0700 ${inst.dataDir}/.local/state
             chown -R agent:agent ${inst.dataDir}/.config ${inst.dataDir}/.cache ${inst.dataDir}/.local
-            install -m 0644 -o agent -g agent ${configFile} ${inst.dataDir}/.config/opencode/opencode.json
+            key=""
+            if [ -r "$CREDENTIALS_DIRECTORY/opencode-api-key" ]; then
+              key="$(cat "$CREDENTIALS_DIRECTORY/opencode-api-key")"
+            fi
+            if [ -n "$key" ] && [ "$key" != "${opencodeGoPlaceholder}" ]; then
+              install -m 0644 -o agent -g agent ${opencodeGoConfigFile} ${inst.dataDir}/.config/opencode/opencode.json
+            else
+              install -m 0644 -o agent -g agent ${configFile} ${inst.dataDir}/.config/opencode/opencode.json
+            fi
           '';
         };
 
@@ -328,6 +392,9 @@
               OPENCODE_DISABLE_LSP_DOWNLOAD = "1";
               OPENCODE_DISABLE_AUTOUPDATE = "1";
               OPENCODE_SERVER_USERNAME = "opencode";
+              # Name only: the value is exported by the serve wrapper from
+              # $CREDENTIALS_DIRECTORY, never set here or in argv.
+              OPENCODE_API_KEY = "";
               HOME = inst.dataDir;
             };
           serviceConfig = {
@@ -336,7 +403,7 @@
             Restart = "always";
             RestartSec = 5;
             WorkingDirectory = inst.repoDir;
-            LoadCredential = ["opencode-server-password"];
+            LoadCredential = ["opencode-server-password" "opencode-api-key"];
             ExecStart = serveScript;
           };
         };
@@ -351,9 +418,24 @@ in {
     description = "Derived OpenCode sandbox instance roster, consumed by opencode-egress.nix.";
   };
 
+  # Rendered `opencode.json` variants per instance, exposed so the config can be
+  # verified by `nix eval` without a running container (Spec 19).
+  options.opencodeSandbox.configJson = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.attrsOf lib.types.str);
+    readOnly = true;
+    internal = true;
+    description = "Rendered OpenCode config JSON per instance: `base` (qwen-local only) and `opencodeGo` (adds the hosted provider).";
+  };
+
   config = lib.mkMerge ([
       {
         opencodeSandbox.instances = instances;
+        opencodeSandbox.configJson = lib.listToAttrs (map (i:
+          lib.nameValuePair i.name {
+            base = baseConfigJson i;
+            opencodeGo = opencodeGoConfigJson i;
+          })
+        instances);
 
         assertions = [
           {
