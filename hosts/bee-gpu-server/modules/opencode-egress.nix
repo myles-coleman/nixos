@@ -23,6 +23,8 @@
     "cache.nixos.org"
     "channels.nixos.org"
     "registry.npmjs.org"
+    # Opt-in OpenCode Go provider endpoint (Spec 19).
+    "opencode.ai"
   ];
   domainList = lib.concatStringsSep " " allowDomains;
 
