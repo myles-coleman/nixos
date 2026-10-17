@@ -4,7 +4,10 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+          # Launch via start-hyprland, not the Hyprland binary directly: the wrapper
+          # sets up XDG/portals and avoids Hyprland's "launched without
+          # start-hyprland" error overlay (https://wiki.hypr.land/Getting-Started/Master-Tutorial/)
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd start-hyprland";
           user = "greeter";
         };
       };
