@@ -180,9 +180,9 @@
         },
         "tooltip-format": "KVM: {}",
         "interval": 2,
-        "exec": "if pgrep -f 'mpv.*kvm-input' > /dev/null; then echo '{\"text\": \"Active\", \"class\": \"active\", \"alt\": \"active\"}'; else echo '{\"text\": \"Inactive\", \"class\": \"inactive\", \"alt\": \"inactive\"}'; fi",
+        "exec": "s=/home/bee/.config/waybar/kvm-switch.sh; if [ -x \"$s\" ]; then \"$s\" status; else echo '{\"text\": \"Inactive\", \"class\": \"inactive\", \"alt\": \"inactive\"}'; fi",
         "return-type": "json",
-        "on-click": "/home/bee/dotfiles/waybar/.config/waybar/kvm-switch.sh"
+        "on-click": "/home/bee/.config/waybar/kvm-switch.sh"
         // "on-click-right": "/home/bee/nixos/kvm-escape.sh"
     },
     "custom/screenshot": {
