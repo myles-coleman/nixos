@@ -23,6 +23,7 @@ in {
         k3s-common
         k3s-token-sops
         node-health
+        tailscale
         k3s-server
       ])
       ++ (with aspects; [
@@ -38,5 +39,21 @@ in {
     ];
     networking.defaultGateway = "10.0.0.1";
     networking.nameservers = ["1.1.1.1"];
+
+    # Tailscale (spec 20, Units 2-3): the fleet-wide model path needs a route on
+    # every node. The shared auth key lives in secrets/common.yaml, which the k3s
+    # nodes are already recipients of.
+    sops.secrets.tailscale_auth_key = {
+      sopsFile = ../../secrets/common.yaml;
+      owner = "root";
+      mode = "0400";
+      restartUnits = ["tailscaled.service"];
+    };
+    services.tailscale.authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+
+    # Server-side (spec 20): agents — the four Pi workers and the microvm sandbox
+    # node — join with the shared agent token, which cannot be used to join as a
+    # server. Passed as a *file* so the token never lands in argv or the Nix store.
+    services.k3s.agentTokenFile = config.sops.secrets.k3s_agent_token.path;
   };
 }

@@ -30,6 +30,11 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     import-tree.url = "github:denful/import-tree";
+    # Pinned to a commit: microvm.nix has had no tagged release since v0.5.0.
+    microvm = {
+      url = "github:microvm-nix/microvm.nix/f13928fe9900e91709d7ce581eefa47eaafa79e1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

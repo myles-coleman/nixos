@@ -19,6 +19,7 @@ in {
         ./modules/desktop.nix
         ./modules/gpu.nix
         ./modules/containers.nix
+        ./modules/strata.nix
         ./modules/mullvad.nix
         ./modules/opencode-agents.nix
         ./modules/opencode-egress.nix

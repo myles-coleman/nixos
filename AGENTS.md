@@ -62,6 +62,22 @@ restart `container@<name>` (see the Spec 18 runbook in the vault).
 - `config/` — Vendored dotfiles (MangoHUD, Rofi, Waybar, PiKVM YAML)
 - `rebuild.sh` — Build script that formats and builds/switches; it does not commit
 
+### Kubernetes Agent Sandbox (spec 20)
+
+The nspawn instance above is being superseded by a Kubernetes Agent Sandbox running on a
+dedicated amd64 k3s node — a `microvm.nix` guest on `homelab` named `sandbox-node`
+(`hosts/homelab/modules/sandbox-node.nix`, declared under `microvm.vms.sandbox-node` in
+`hosts/homelab/default.nix`). The guest lists `k3s-common` + `k3s-agent` + `tailscale` (and
+**not** `rpi-base` or `k3s-token-sops`), attaches to `homelab`'s `br0` bridge, renames its NIC
+to `end0`, and carries the `sandbox.node/runtime=gvisor` label with a matching `NoSchedule`
+taint. Agents run as plain `Sandbox` objects under gVisor (`RuntimeClass gvisor`) in the
+cluster repo's `manifests/cluster/agent-sandbox/`, with egress through the in-cluster
+allowlisting squid (`manifests/cluster/squid/`) and the model reached via
+`manifests/cluster/strata/`. The sandbox is **edit-only — no Nix**; see
+`images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the vault. Guest restarts are an
+explicit runbook step (`restartIfChanged = false`), and the `br0` migration plus the k3s
+agent-token rollout are operator, console-access steps.
+
 ## Conventions
 
 - Formatter is `alejandra` (rebuild.sh runs it automatically before build)
