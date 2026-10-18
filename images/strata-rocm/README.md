@@ -47,6 +47,11 @@ host network:
 docker build --network=host -t ghcr.io/myles-coleman/strata-rocm:gfx1100 .
 ```
 
+**Do not clone the build context into the data volume.** `/home/bee/strata` on `bee-gpu-server` is
+the container's `/data` (created `0700 root` by tmpfiles). Clone to a scratch path instead, e.g.
+`/var/tmp/strata-build` — cloning into the data dir collides with it and leaves the whole source tree
+inside the volume.
+
 The package is **public**, so the host pulls it anonymously — there is no pull credential to
 provision.
 
