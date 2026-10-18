@@ -101,11 +101,12 @@ in {
             mountPoint = "/etc/rancher/node";
             size = 64;
           }
-          {
-            image = "${volumeDir}/etc-ssh.img";
-            mountPoint = "/etc/ssh";
-            size = 64;
-          }
+          # NOTE: /etc/ssh is deliberately NOT persisted. A volume mounted over it
+          # shadows NixOS-managed /etc/ssh/sshd_config (a store symlink), so sshd
+          # fails to start ("Failed to start SSH Daemon", port 22 closed) — which
+          # also blocks host-key provisioning. The guest's SSH host key therefore
+          # regenerates each boot; reach it by IP with
+          # `-o StrictHostKeyChecking=accept-new`.
         ];
       };
 
