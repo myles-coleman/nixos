@@ -32,9 +32,23 @@ fast-moving, no-CI project). Record that commit here when the image is built:
 
 | Item | Value |
 | --- | --- |
-| Strata commit built | _to be recorded at build time_ |
-| ROCm / hipBLASLt pairing | _to be recorded at build time (the engine refuses a mismatched hipBLASLt table)_ |
-| Published image digest | _to be pinned in `hosts/bee-gpu-server/modules/strata.nix`_ |
+| Strata commit built | `477ac13cbe8e582c20484871ce459d20d82df09d` (tag `v0.1.45`) |
+| Engine build | `source: local-hip`, `backend: hip`, `archs: [gfx1100]`, `vision: none` (from `engine/BUILD.json`) |
+| ROCm pairing | TheRock `rocm[libraries,devel]==7.10.0a20251120` (the wheels `setup.py` pins; the engine refuses a mismatched hipBLASLt table) |
+| Published image digest | `ghcr.io/myles-coleman/strata-rocm@sha256:…` — pinned in `hosts/bee-gpu-server/modules/strata.nix` |
+
+## Build gotcha on `bee-gpu-server`
+
+The host resolves `archive.ubuntu.com` to **IPv6**, and Docker's default bridge network has no
+IPv6, so `apt-get update` inside the build silently `Ign`ores every repo and hangs. Build with the
+host network:
+
+```bash
+docker build --network=host -t ghcr.io/myles-coleman/strata-rocm:gfx1100 .
+```
+
+The package is **public**, so the host pulls it anonymously — there is no pull credential to
+provision.
 
 ## Build
 
