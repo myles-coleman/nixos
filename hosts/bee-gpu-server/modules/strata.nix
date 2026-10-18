@@ -38,6 +38,12 @@
 
   apiKeySecret = "strata_api_key";
 in {
+  # The host's containers run on Docker. This must be set explicitly: the
+  # oci-containers default is `podman` for stateVersion >= 22.05, which names the
+  # unit `podman-strata.service` and breaks the sops `restartUnits` wiring (and
+  # would run a second container runtime alongside the host's Docker).
+  virtualisation.oci-containers.backend = "docker";
+
   virtualisation.oci-containers.containers.strata = {
     inherit image;
 
