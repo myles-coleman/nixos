@@ -29,6 +29,17 @@
   # The guest's own ciphertext. Provisioned by sub-task 2.6 (the guest's age key
   # must be generated on the host and added to `.sops.yaml` first).
   sopsFile = ../../../secrets/hosts/sandbox-node.yaml;
+
+  # Containerd 2.x runtime config template. `{{ template "base" . }}` extends the
+  # k3s base template; the `gvisor` handler is a new table, so appending it does
+  # not create a duplicate table. `runtime_type` is `io.containerd.runsc.v1` with
+  # no `BinaryName` (the shim is found on the service PATH).
+  containerdTemplate = pkgs.writeText "k3s-containerd-config-v3.toml.tmpl" ''
+    {{ template "base" . }}
+
+    [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.gvisor]
+      runtime_type = "io.containerd.runsc.v1"
+  '';
 in {
   config = lib.mkMerge [
     {
@@ -137,6 +148,20 @@ in {
       ];
 
       system.stateVersion = "25.05";
+
+      # ── gVisor runtime handler (spec 20, Unit 3) ────────────────────────────
+      # Installed as a containerd runtime handler. nixpkgs' k3s module only writes
+      # the containerd 2.x v2 path, so the v3 template is placed declaratively by
+      # tmpfiles instead — and being under the persistent /var/lib/rancher volume
+      # it is faithfully re-created on every boot.
+      systemd.tmpfiles.rules = [
+        "d /var/lib/rancher/k3s/agent/etc/containerd 0755 root root -"
+        "C /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl 0644 root root - ${containerdTemplate}"
+      ];
+
+      # NixOS systemd services do not inherit /run/current-system/sw/bin, so the
+      # `containerd-shim-runsc-v1` binary would not otherwise be found.
+      systemd.services.k3s.path = [pkgs.gvisor];
     }
 
     # ── secrets ───────────────────────────────────────────────────────────────
