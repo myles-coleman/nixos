@@ -28,6 +28,9 @@ in {
         ../../modules/sops.nix
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default
+        # microvm.nix host module: lets homelab declare and build MicroVM guests
+        # as part of its own closure.
+        inputs.microvm.nixosModules.host
       ]
       ++ (with aspects; [
         access
@@ -41,6 +44,40 @@ in {
         home-zsh
         unstable
       ]);
+
+    # ── microvm guest: the dedicated amd64 k3s node (spec 20, Unit 2) ──────────
+    #
+    # Fully declarative, so the guest is evaluated with homelab and shares its
+    # /nix/store. `restartIfChanged = false` is deliberate: a deploy updates the
+    # guest *image* while the running guest keeps the *old* config, so guest
+    # restarts are an explicit runbook step and stale-guest detection is a
+    # deliberate check.
+    #
+    # The guest lists `k3s-common` + `k3s-agent` + `tailscale` — deliberately NOT
+    # `rpi-base` (vendor board modules) and NOT `k3s-token-sops` (which would put
+    # the cluster *server* token on the untrusted node).
+    microvm.vms.sandbox-node = {
+      autostart = true;
+      restartIfChanged = false;
+      config = {
+        imports =
+          [
+            ./modules/sandbox-node.nix
+            ../../modules/sops.nix
+            inputs.sops-nix.nixosModules.sops
+          ]
+          ++ (with aspects; [
+            k3s-common
+            k3s-agent
+            tailscale
+          ]);
+      };
+    };
+
+    # The guest's volume images live beside microvm.nix's per-VM state dir.
+    systemd.tmpfiles.rules = [
+      "d /var/lib/microvms/sandbox-node/volumes 0700 root root -"
+    ];
 
     # BIOS/Legacy boot with GRUB
     boot.loader.grub = {

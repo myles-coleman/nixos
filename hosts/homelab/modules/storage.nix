@@ -16,8 +16,14 @@
   # NFS server
   services.nfs.server = {
     enable = true;
+    # Narrowed from `10.0.0.0/24` (spec 20, Unit 2) so neither the microvm guest
+    # (10.0.0.146) nor a compromised agent can mount the RAID share read-write.
+    # The brief said "four Pi node IPs"; the cluster has five nodes and the
+    # in-cluster media apps can be scheduled on any of them, so this lists all five
+    # (node0-node4) to preserve every current consumer while still excluding the
+    # guest. Confirm or reduce to four if node4 has no NFS consumer.
     exports = ''
-      /mnt/md0/data 10.0.0.0/24(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000)
+      /mnt/md0/data 10.0.0.140(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000) 10.0.0.141(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000) 10.0.0.142(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000) 10.0.0.143(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000) 10.0.0.144(rw,sync,no_root_squash,all_squash,anonuid=1000,anongid=1000)
     '';
   };
   services.rpcbind.enable = true;
