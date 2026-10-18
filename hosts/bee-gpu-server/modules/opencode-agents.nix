@@ -83,7 +83,10 @@
       options = {
         # An IP literal so the container needs no DNS to reach the model.
         baseURL = "http://${inst.hostAddress}:${toString modelPort}/v1";
-        apiKey = "not-needed";
+        # Delivered out-of-band: the serve wrapper reads the credential into
+        # STRATA_API_KEY and OpenCode substitutes {env:...} when it loads the config,
+        # so the key never lands in the Nix store or the unit environment.
+        apiKey = "{env:STRATA_API_KEY}";
       };
       models.${modelAlias} = {
         name = "Qwen3.8 Flash Next (local)";
@@ -163,6 +166,7 @@
         "--private-users-ownership=chown"
         "--load-credential=opencode-server-password:${config.sops.secrets.${serverPasswordSecret}.path}"
         "--load-credential=git-pat:${config.sops.secrets.${gitPatSecret}.path}"
+        "--load-credential=strata-api-key:${config.sops.secrets.strata_api_key.path}"
       ];
       # /nix/store, the Nix DB and the host Nix daemon socket are already
       # bind-mounted read-only (and idmap-aware) by the nixos-containers
@@ -194,6 +198,7 @@
         serveScript = pkgs.writeShellScript "opencode-serve-${inst.name}" ''
           set -eu
           export OPENCODE_SERVER_PASSWORD="$(cat "$CREDENTIALS_DIRECTORY/opencode-server-password")"
+          export STRATA_API_KEY="$(cat "$CREDENTIALS_DIRECTORY/strata-api-key")"
           exec ${opencodePkg}/bin/opencode serve --hostname ${inst.localIp} --port ${toString inst.serverPort}
         '';
       in {
@@ -336,7 +341,7 @@
             Restart = "always";
             RestartSec = 5;
             WorkingDirectory = inst.repoDir;
-            LoadCredential = ["opencode-server-password"];
+            LoadCredential = ["opencode-server-password" "strata-api-key"];
             ExecStart = serveScript;
           };
         };

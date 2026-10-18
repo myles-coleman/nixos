@@ -108,7 +108,9 @@ in {
   sops.secrets.${apiKeySecret} = {
     owner = "root";
     mode = "0400";
-    restartUnits = ["docker-strata.service"];
+    # The nspawn instance consumes the same key (via a LoadCredential), so a
+    # rotation must restart it as well as the container.
+    restartUnits = ["docker-strata.service" "container@nixos.service"];
   };
 
   # Render the container environment file from the decrypted API key. `partOf`
