@@ -15,6 +15,10 @@ keys:
   - &node4 age1e9w9q6cdpjfuc876se6h5xdhj0mtynnum50gjqu0g7qtl4wcl5dq4sk9h6
   # rpi3 kiosk holds no shared secrets; it only needs its own host file rule.
   - &rpi3 age149em7uxv82m72h9w9qydsl6a7c4rwx668mmj9p5q9nylt8vu3uvsffxsva
+  # k8s agent sandbox node (spec 20). Holds ONLY its own tailscale auth key (a copy
+  # of the shared value, so it never decrypts common.yaml's k3s_server_token) and a
+  # scoped k3s agent token.
+  - &sandbox-node age1d6l6yxj7ym6gpv2qx0fsqr2medq9ty8vf4juyesylhdwtuyzy4usncafrq
 
 creation_rules:
   # Legacy single-file ciphertext, retained until task 2.0 retires it.
@@ -57,3 +61,8 @@ creation_rules:
   - path_regex: ^secrets/hosts/rpi3\.yaml$
     key_groups:
       - age: [*admin, *rpi3]
+  # Dedicated, deliberately narrow: the sandbox node must never be able to decrypt
+  # the server token or the shared tailscale key in common.yaml.
+  - path_regex: ^secrets/hosts/sandbox-node\.yaml$
+    key_groups:
+      - age: [*admin, *sandbox-node]
