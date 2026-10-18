@@ -29,13 +29,13 @@
   # re-download.
   dataDir = "/home/bee/strata";
 
-  # Digest-pinned private GHCR image (built from ./images/strata-rocm/Dockerfile).
+  # Digest-pinned PUBLIC GHCR image (built from ./images/strata-rocm/Dockerfile),
+  # so no pull credential is needed on the host.
   # REPLACE the placeholder digest with the real one after the image is built and
-  # pushed; the pull credential comes from `login` below.
+  # pushed. The package is public, so there is no pull credential.
   image = "ghcr.io/myles-coleman/strata-rocm@sha256:0000000000000000000000000000000000000000000000000000000000000000";
 
   apiKeySecret = "strata_api_key";
-  ghcrTokenSecret = "ghcr_pull_token";
 in {
   virtualisation.oci-containers.containers.strata = {
     inherit image;
@@ -44,13 +44,9 @@ in {
 
     volumes = ["${dataDir}:/data"];
 
-    # Pull the private image with the GHCR credential (kept out of argv and the
-    # Nix store by sops-nix's decrypted secret file).
-    login = {
-      registry = "ghcr.io";
-      username = "myles-coleman";
-      passwordFile = config.sops.secrets.${ghcrTokenSecret}.path;
-    };
+    # The GHCR package is PUBLIC, so no pull credential is needed. (A public
+    # package removes a whole credential from the host; the image contains only
+    # our build of an open-source project.)
 
     # Model settings. `MODEL` is the swappable quant value; `API_KEY` is NOT set
     # here (it would land in the Nix store and in `docker run --env` argv) — it is
@@ -94,14 +90,10 @@ in {
   };
 
   # ── Secrets ──────────────────────────────────────────────────────────────────
-  # Both live in secrets/hosts/bee-gpu-server.yaml (see .sops.yaml). A rotation
-  # restarts the container so the new credential is picked up.
+  # The Strata API key lives in secrets/hosts/bee-gpu-server.yaml (see .sops.yaml).
+  # A rotation restarts the container so the new credential is picked up. No GHCR
+  # credential is needed: the image package is public.
   sops.secrets.${apiKeySecret} = {
-    owner = "root";
-    mode = "0400";
-    restartUnits = ["docker-strata.service"];
-  };
-  sops.secrets.${ghcrTokenSecret} = {
     owner = "root";
     mode = "0400";
     restartUnits = ["docker-strata.service"];
