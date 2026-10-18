@@ -79,10 +79,10 @@ in {
       };
     };
 
-    # The guest's volume images live beside microvm.nix's per-VM state dir.
-    systemd.tmpfiles.rules = [
-      "d /var/lib/microvms/sandbox-node/volumes 0700 root root -"
-    ];
+    # NOTE: do NOT create /var/lib/microvms/<name>/volumes here. microvm.nix's
+    # runner creates it as the unprivileged `microvm` user (uid 994:kvm); a root
+    # 0700 tmpfiles rule blocks it and the VM dies with
+    #   touch: cannot touch '.../volumes/var-lib-rancher.img': Permission denied
 
     # BIOS/Legacy boot with GRUB
     boot.loader.grub = {
