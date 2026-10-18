@@ -85,8 +85,13 @@ in {
       # this card.
       "--device=/dev/kfd"
       "--device=/dev/dri/renderD128"
-      "--group-add=video"
-      "--group-add=render"
+      # Numeric GIDs, not names: Docker resolves `--group-add <name>` against the
+      # *container's* /etc/group, and the Ubuntu-based Strata image has no
+      # `render`/`video` entries, so the names fail with "no matching entries in
+      # group file". These GIDs come from NixOS's own group definitions. (The
+      # container runs as root, so these are belt-and-braces for the devices.)
+      "--group-add=${toString config.users.groups.video.gid}"
+      "--group-add=${toString config.users.groups.render.gid}"
       "--ipc=host"
       "--security-opt=seccomp=unconfined"
       "--ulimit=memlock=-1"
