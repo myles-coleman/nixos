@@ -172,6 +172,28 @@ in {
       # NixOS systemd services do not inherit /run/current-system/sw/bin, so the
       # `containerd-shim-runsc-v1` binary would not otherwise be found.
       systemd.services.k3s.path = [pkgs.gvisor];
+
+      # ── operator access: tailnet-only, never a NodePort/IngressRoute ─────────
+      # `tailscale serve` on this (pinned) node proxies the tailnet to the sandbox
+      # ClusterIP. A NodePort would listen on every node's LAN IP and have its
+      # source rewritten to the node — which most NetworkPolicy implementations
+      # always allow — and an IngressRoute would publish an agent code-execution
+      # endpoint LAN-wide via Traefik's wildcard DNS + Cloudflare tunnel.
+      #
+      # The Service has a pinned ClusterIP because the guest's resolver is not
+      # cluster DNS, so a Service *name* would not resolve here.
+      systemd.services.tailscale-serve-sandbox = {
+        description = "Expose the OpenCode sandbox on the tailnet (operator only)";
+        wantedBy = ["multi-user.target"];
+        wants = ["tailscaled.service"];
+        after = ["tailscaled.service" "network-online.target"];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${config.services.tailscale.package}/bin/tailscale serve --bg --https=443 http://10.43.0.251:4096";
+          ExecStop = "${config.services.tailscale.package}/bin/tailscale serve --https=443 off";
+        };
+      };
     }
 
     # ── secrets ───────────────────────────────────────────────────────────────
