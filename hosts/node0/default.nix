@@ -50,5 +50,10 @@ in {
       restartUnits = ["tailscaled.service"];
     };
     services.tailscale.authKeyFile = config.sops.secrets.tailscale_auth_key.path;
+
+    # Server-side (spec 20): agents — the four Pi workers and the microvm sandbox
+    # node — join with the shared agent token, which cannot be used to join as a
+    # server. Passed as a *file* so the token never lands in argv or the Nix store.
+    services.k3s.agentTokenFile = config.sops.secrets.k3s_agent_token.path;
   };
 }
