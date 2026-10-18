@@ -147,6 +147,16 @@ in {
         "--node-taint=sandbox=gvisor:NoSchedule"
       ];
 
+      # ── operator access ─────────────────────────────────────────────────────
+      # `access` provides sshd + the bee user; password auth is off because this is
+      # the untrusted node, so key-only SSH is the only way in.
+      # `access` sets PasswordAuthentication = true at normal priority; force it off
+      # here because this is the untrusted node, so key-only SSH is the way in.
+      services.openssh.settings.PasswordAuthentication = lib.mkForce false;
+      users.users.bee.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFwn9u4rjBjifRODlycmjtEJRKfV2bSnwvDa5sC5Hpp bee@bee-gpd"
+      ];
+
       system.stateVersion = "25.05";
 
       # ── gVisor runtime handler (spec 20, Unit 3) ────────────────────────────

@@ -70,6 +70,11 @@ in {
             k3s-common
             k3s-agent
             tailscale
+            # Reachable as `bee` (sshd + zsh) and able to sudo, so the host key can
+            # be provisioned with scripts/provision-host-key.sh. Password auth is
+            # turned off in ./modules/sandbox-node.nix (this is the untrusted node).
+            access
+            sudo
           ]);
       };
     };
