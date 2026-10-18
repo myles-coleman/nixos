@@ -31,9 +31,10 @@
 
   # Digest-pinned PUBLIC GHCR image (built from ./images/strata-rocm/Dockerfile),
   # so no pull credential is needed on the host.
-  # REPLACE the placeholder digest with the real one after the image is built and
-  # pushed. The package is public, so there is no pull credential.
-  image = "ghcr.io/myles-coleman/strata-rocm@sha256:0000000000000000000000000000000000000000000000000000000000000000";
+  #
+  # Built from Strata tag v0.1.45 (commit 477ac13) with HIP_ARCHITECTURES=gfx1100;
+  # engine/BUILD.json inside the image reads source=local-hip, backend=hip.
+  image = "ghcr.io/myles-coleman/strata-rocm@sha256:3e126d5eeac41c687decc05147fd5bec9ef9676b5bb1c4008db0b35dfbd1a521";
 
   apiKeySecret = "strata_api_key";
 in {
