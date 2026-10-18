@@ -27,6 +27,12 @@ in {
 
     services.hyprpaper = {
       enable = true;
+      # Config only: still generate hypr/hyprpaper.conf, but don't create the
+      # systemd user service. hyprpaper is launched by ~/.config/hypr/start.sh
+      # (exec-once in hyprland.conf); `package = null` avoids a second daemon
+      # fighting over the IPC socket once graphical-session.target is up. The
+      # binary itself is on PATH via the `home-desktop` aspect's home.packages.
+      package = null;
       settings = {
         ipc = "on";
         splash = false;
