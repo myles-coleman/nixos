@@ -37,6 +37,13 @@
       ipv6 = {
         method = "ignore";
       };
+      # A flat LAN: one uplink plus VM taps, no loops. STP's default forward delay
+      # keeps the port in `listening` for ~30s after a bridge comes up, during which
+      # the host has no LAN at all. Disable it so the port forwards immediately.
+      bridge = {
+        stp = "false";
+        forward-delay = "0";
+      };
     };
     br0-eno1 = {
       connection = {
