@@ -84,7 +84,10 @@ in {
           qwen-local = {
             npm = "@ai-sdk/openai-compatible";
             options = {
-              baseURL = "http://10.0.0.156:8080/v1";
+              # Strata on bee-gpu-server, reached over the tailnet (the two LANs
+              # have no forwarding path). Replaces the dead 10.0.0.156:8080 that
+              # served the retired qwen-177b container (spec 20).
+              baseURL = "http://100.127.170.8:8080/v1";
               includeUsage = true;
             };
             models = {
