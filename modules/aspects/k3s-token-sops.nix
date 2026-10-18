@@ -17,6 +17,7 @@
   flake.modules.nixos.k3s-token-sops = {
     config,
     lib,
+    pkgs,
     ...
   }: {
     sops.secrets.k3s_server_token = {
@@ -45,6 +46,26 @@
     # missing file makes k3s exit immediately — and activation ordering is not a
     # reliable guarantee of that.
     sops.useSystemdActivation = true;
+
+    # k3s reads --agent-token-file at CONFIG LOAD: if the file is absent it exits 1
+    # with no log line at all, so a race (k3s starting before sops finishes) looks
+    # like a silent crash and deploy-rs rolls back with nothing to diagnose.
+    # `requires` makes a sops failure stop k3s instead of half-starting it, and the
+    # ExecStartPre waits for the file and fails LOUDLY if it never appears.
+    systemd.services.k3s = {
+      requires = ["sops-install-secrets.service"];
+      serviceConfig.ExecStartPre = [
+        (pkgs.writeShellScript "k3s-wait-for-token" ''
+          for _ in $(seq 1 60); do
+            if [ -s "${toString config.services.k3s.tokenFile}" ]; then exit 0; fi
+            sleep 1
+          done
+          echo "k3s: ${toString config.services.k3s.tokenFile} is missing after 60s;" >&2
+          echo "     sops-install-secrets did not install it — check its journal." >&2
+          exit 1
+        '')
+      ];
+    };
 
     services.k3s.tokenFile =
       if config.services.k3s.role == "server"
