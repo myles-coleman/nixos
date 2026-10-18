@@ -30,8 +30,21 @@
       sopsFile = ../../secrets/common.yaml;
       owner = "root";
       mode = "0600";
-      restartUnits = ["k3s.service"];
+      # Deliberately NOT restarted automatically. Setting --agent-token makes k3s
+      # rewrite `server/cred/passwd`; if a restart lands between that write and the
+      # datastore reconcile, k3s then refuses to start with
+      #   "passwd newer than datastore and could cause a cluster outage.
+      #    Remove the file(s) from disk and restart to be recreated from datastore."
+      # and the API server stays down (this took the cluster out once). Rotating the
+      # agent token is a documented manual step instead.
+      restartUnits = [];
     };
+
+    # Install secrets from a SERVICE ordered before k3s, not from the stage-2
+    # activation script. `--agent-token-file` must exist before k3s starts — a
+    # missing file makes k3s exit immediately — and activation ordering is not a
+    # reliable guarantee of that.
+    sops.useSystemdActivation = true;
 
     services.k3s.tokenFile =
       if config.services.k3s.role == "server"
