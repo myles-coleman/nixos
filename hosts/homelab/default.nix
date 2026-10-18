@@ -79,10 +79,14 @@ in {
       };
     };
 
-    # NOTE: do NOT create /var/lib/microvms/<name>/volumes here. microvm.nix's
-    # runner creates it as the unprivileged `microvm` user (uid 994:kvm); a root
-    # 0700 tmpfiles rule blocks it and the VM dies with
-    #   touch: cannot touch '.../volumes/var-lib-rancher.img': Permission denied
+    # microvm.nix creates <stateDir> and <stateDir>/<name> owned by microvm:kvm, but
+    # NOT the `volumes` subdir — and the runner only `touch`es the image files inside
+    # it, so the directory must already exist with the runner's ownership. A
+    # root-owned dir fails with "Permission denied"; a missing one with
+    # "No such file or directory". Both abort the whole activation.
+    systemd.tmpfiles.rules = [
+      "d /var/lib/microvms/sandbox-node/volumes 0775 microvm kvm -"
+    ];
 
     # BIOS/Legacy boot with GRUB
     boot.loader.grub = {
