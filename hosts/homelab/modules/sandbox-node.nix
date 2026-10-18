@@ -209,6 +209,12 @@ in {
     # committing `secrets/hosts/sandbox-node.yaml` activates the block.
     (lib.mkIf (builtins.pathExists sopsFile) {
       sops.defaultSopsFile = sopsFile;
+
+      # Install secrets from a SERVICE, not the stage-2 activation script: the age
+      # key lives on a volume, and activation runs before volumes mount, so with the
+      # default (`false`) the key is absent and k3s blocks forever on
+      #   Waiting for file "/run/secrets/k3s_agent_token" to be created
+      sops.useSystemdActivation = true;
       sops.secrets.tailscale_auth_key = {
         owner = "root";
         mode = "0400";
