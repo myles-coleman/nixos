@@ -72,8 +72,10 @@ dedicated amd64 k3s node — a `microvm.nix` guest on `homelab` named `sandbox-n
 to `end0`, and carries the `sandbox.node/runtime=gvisor` label with a matching `NoSchedule`
 taint. Agents run as plain `Sandbox` objects under gVisor (`RuntimeClass gvisor`) in the
 cluster repo's `manifests/cluster/agent-sandbox/`, with egress through the in-cluster
-allowlisting squid (`manifests/cluster/squid/`) and the model reached via
-`manifests/cluster/strata/`. The sandbox is **edit-only — no Nix**; see
+allowlisting squid (`manifests/cluster/squid/`) and the model reached by Strata's tailnet IP
+literal (`100.127.170.8:8080` — not a Kubernetes Service; the cluster's ArgoCD config excludes
+`EndpointSlice`, so a selectorless Service would have no endpoints). The sandbox is
+**edit-only — no Nix**; see
 `images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the vault. Guest restarts are an
 explicit runbook step (`restartIfChanged = false`), and the `br0` migration plus the k3s
 agent-token rollout are operator, console-access steps.
