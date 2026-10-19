@@ -48,6 +48,13 @@ in {
         # Deterministic identity; also initialises /etc/machine-id.
         machineId = "5a0d0000-0000-4000-8000-000000000001";
 
+        # Explicit sizing (spec 20, Unit 2). microvm.nix defaults to 512 MiB / 1
+        # vCPU, which cannot hold a k3s agent *plus* the sandbox pod (the pod was
+        # Unschedulable: "Insufficient memory"). homelab has 16 cores and ~15 GiB
+        # and also runs Jellyfin and the RAID, so the guest takes a fixed slice.
+        mem = 6144;
+        vcpu = 4;
+
         # Attach to homelab's `br0` through QEMU's bridge helper. The guest lands
         # on the cluster's broadcast domain — required for flannel VXLAN, kubelet
         # and MetalLB's L2 ARP — and host<->guest traffic keeps working.
