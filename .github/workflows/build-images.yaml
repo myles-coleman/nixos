@@ -53,6 +53,8 @@ jobs:
           if [ "$EVENT" = "workflow_dispatch" ] && [ "$INPUT_IMAGE" != "all" ]; then
             all=$(jq -c --arg n "$INPUT_IMAGE" '[.[] | select(.name == $n)]' <<<"$all")
           fi
+          # GITHUB_OUTPUT needs a single-line value.
+          all=$(jq -c . <<<"$all")
           echo "images=$all" >> "$GITHUB_OUTPUT"
 
   build:
