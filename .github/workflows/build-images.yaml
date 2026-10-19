@@ -1,0 +1,108 @@
+name: Build images
+
+# Builds the amd64 sandbox image (spec 20, Unit 4) and the multi-arch allowlisting
+# squid image (spec 20, Unit 3) and pushes them to GHCR. Both job digests are
+# printed in the run summary so they can be pinned in ~/homelab-cluster.
+#
+# GHCR is authenticated with the workflow's own GITHUB_TOKEN, so no personal
+# credential (and no `write:packages` OAuth scope) is needed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'Image to build'
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - opencode-sandbox
+          - squid
+  push:
+    branches: [main]
+    paths:
+      - 'images/**'
+      - '.github/workflows/build-images.yaml'
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: build-images-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.gen.outputs.images }}
+    steps:
+      - name: Build image matrix
+        id: gen
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_IMAGE: ${{ github.event.inputs.image }}
+        run: |
+          set -euo pipefail
+          all='[
+            {"name":"opencode-sandbox","context":"./images/opencode-sandbox","platforms":"linux/amd64"},
+            {"name":"squid","context":"./images/squid","platforms":"linux/amd64,linux/arm64"}
+          ]'
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$INPUT_IMAGE" != "all" ]; then
+            all=$(jq -c --arg n "$INPUT_IMAGE" '[.[] | select(.name == $n)]' <<<"$all")
+          fi
+          echo "images=$all" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(needs.matrix.outputs.images) }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve version tag
+        id: version
+        run: |
+          set -euo pipefail
+          case "${{ matrix.image.name }}" in
+            opencode-sandbox) tag=2.0.23 ;;
+            squid) tag=6.14 ;;
+            *) echo "unknown image ${{ matrix.image.name }}" >&2; exit 1 ;;
+          esac
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          context: ${{ matrix.image.context }}
+          platforms: ${{ matrix.image.platforms }}
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.image.name }}:${{ steps.version.outputs.tag }}
+
+      - name: Record digest
+        run: |
+          set -euo pipefail
+          ref="ghcr.io/${{ github.repository_owner }}/${{ matrix.image.name }}"
+          echo "digest=${{ steps.build.outputs.digest }}"
+          {
+            echo "### ${{ matrix.image.name }}"
+            echo '```'
+            echo "${ref}@${{ steps.build.outputs.digest }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
