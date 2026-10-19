@@ -193,11 +193,26 @@ in {
       systemd.services.tailscale-serve-sandbox = {
         description = "Expose the OpenCode sandbox on the tailnet (operator only)";
         wantedBy = ["multi-user.target"];
-        wants = ["tailscaled.service"];
+        wants = ["tailscaled.service" "network-online.target"];
         after = ["tailscaled.service" "network-online.target"];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
+          # `after = tailscaled.service` only orders the start. tailscaled can still
+          # be at `NoState` when `tailscale serve` runs, which then fails with
+          # "unexpected state: NoState" — and a oneshot cannot `Restart=`, so the
+          # unit stays failed for the whole boot. Wait for the backend to actually
+          # report Running (up to 2 minutes).
+          ExecStartPre = pkgs.writeShellScript "wait-tailscaled-running" ''
+            for _ in $(seq 1 60); do
+              if ${config.services.tailscale.package}/bin/tailscale status >/dev/null 2>&1; then
+                exit 0
+              fi
+              sleep 2
+            done
+            echo "tailscaled did not reach Running within 120s" >&2
+            exit 1
+          '';
           ExecStart = "${config.services.tailscale.package}/bin/tailscale serve --bg --https=443 http://10.43.0.251:4096";
           ExecStop = "${config.services.tailscale.package}/bin/tailscale serve --https=443 off";
         };
