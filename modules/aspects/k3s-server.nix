@@ -131,6 +131,16 @@
         role = "server";
         # `tokenFile` is provided by k3s-token-sops.nix (sops-managed).
         extraFlags = toString [
+          # The node IP must be explicit. kube-vip (ARP mode) adds the 10.0.0.200
+          # VIP as a /32 to end0, so the interface carries TWO global addresses and
+          # k3s refuses to auto-detect one:
+          #   "interface end0 does not have a correct global unicast ip: multiple
+          #    global unicast addresses defined for end0, please set ip from one of
+          #    [10.0.0.140 10.0.0.200]"
+          # Without this, k3s cannot restart while kube-vip holds the VIP — which is
+          # why every deploy of this node failed. The Pi agents already set this.
+          "--node-ip=${(builtins.elemAt config.networking.interfaces.end0.ipv4.addresses 0).address}"
+          "--node-external-ip=${(builtins.elemAt config.networking.interfaces.end0.ipv4.addresses 0).address}"
           "--flannel-iface=end0"
           "--tls-san 10.0.0.200"
           "--disable servicelb"
