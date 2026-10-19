@@ -67,6 +67,15 @@
       networking.firewall.enable = false;
       networking.nftables.enable = false;
 
+      # Tailscale is used by these nodes for ROUTES (to reach the model over the
+      # tailnet), not for name resolution. Left at its default, accept-dns rewrites
+      # /etc/resolv.conf to 100.100.100.100 and external lookups then fail:
+      #   Failed to pull image "registry.k8s.io/...": dial tcp:
+      #   lookup registry.k8s.io: device or resource busy
+      # which breaks every new image pull on the cluster. Keep the nodes' own
+      # resolvers.
+      services.tailscale.extraUpFlags = ["--accept-dns=false"];
+
       services.openiscsi = {
         enable = true;
         name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
