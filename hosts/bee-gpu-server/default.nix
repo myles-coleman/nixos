@@ -21,8 +21,6 @@ in {
         ./modules/containers.nix
         ./modules/strata.nix
         ./modules/mullvad.nix
-        ./modules/opencode-agents.nix
-        ./modules/opencode-egress.nix
         ../../modules/sops.nix
         ../../modules/steam-remote-play-client.nix
         inputs.sops-nix.nixosModules.sops
