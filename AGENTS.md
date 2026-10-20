@@ -43,20 +43,32 @@ vendor modules.
   - `modules/aspects/` — flake-parts aspect registry (see `aspects/README.md`); x86 shared aspects `access`, `sudo`, `tailscale`, `networkmanager`, `common`, `desktop`, `network`, `dev-tools`, `gaming`, `nvidia`, `home-desktop`, `home-zsh`, `cli-core`, `cli-extras`, `server-base`, `k8s`, `unstable`, plus the RPi aspects `rpi-base`, `k3s-common`, `k3s-server`, `k3s-agent`, `k3s-token-sops`, `node-health`. `network` composes `networkmanager` + `tailscale`; `tailscale` composes `unstable`. Composition references `config.flake.modules.nixos.<name>`, never `inputs.self`.
   - `hosts/<hostname>/modules/` — optional host-local plain modules (e.g. `bee-gpu-server/modules/{desktop,gpu,containers,mullvad,opencode-agents,opencode-egress}.nix`, `homelab/modules/{containers,storage,networking}.nix`, `bee-gpd/modules/{egpu,input,automation,networking,packages}.nix`, `rpi3/modules/{kiosk,firmware,users}.nix`), imported explicitly from `hosts/<hostname>/default.nix`. They take only `{config, pkgs, lib, ...}`; `inputs.*`/flake-`config` stay in `default.nix`, and relative imports re-base one level (`../../` → `../../../`).
 
-### OpenCode sandbox instances (bee-gpu-server)
+### Kubernetes Agent Sandbox (spec 20)
 
-`hosts/bee-gpu-server/modules/opencode-agents.nix` defines a roster-driven
-`mkOpencodeInstance` helper that emits one unprivileged `systemd-nspawn`
-container per entry (default pilot: one entry, `name = "nixos"`); each runs the
-pinned OpenCode v2 build as the unprivileged `agent` user with its clone under
-`/srv/oc/<name>`. `hosts/bee-gpu-server/modules/opencode-egress.nix` enforces
-egress on the host (allowlisting squid forward proxy + per-instance nftables
-rules + tailnet DNAT) and exposes the derived roster through the internal
-`opencodeSandbox.instances` option. To add an instance: append a roster entry in
-`opencode-agents.nix` with the next free `index` (derives uid base, ports,
-addresses), add `<name>_server_password`/`<name>_git_pat` to
-`secrets/hosts/bee-gpu-server.yaml`, extend the Tailscale ACL range, deploy, and
-restart `container@<name>` (see the Spec 18 runbook in the vault).
+Agents run in a Kubernetes Agent Sandbox on a dedicated amd64 k3s node — a `microvm.nix` guest
+on `homelab` named `sandbox-node`
+(`hosts/homelab/modules/sandbox-node.nix`, declared under `microvm.vms.sandbox-node` in
+`hosts/homelab/default.nix`). The guest lists `k3s-common` + `k3s-agent` + `tailscale` (and
+**not** `rpi-base` or `k3s-token-sops`), attaches to `homelab`'s `br0` bridge, renames its NIC
+to `end0`, and carries the `sandbox.node/runtime=gvisor` label with a matching `NoSchedule`
+taint. Agents run as plain `Sandbox` objects in the cluster repo's
+`manifests/cluster/agent-sandbox/`, with egress through the in-cluster allowlisting squid
+(`manifests/cluster/squid/`) and the model reached by Strata's tailnet IP literal
+(`100.127.170.8:8080` — not a Kubernetes Service; the cluster's ArgoCD config excludes
+`EndpointSlice`, so a selectorless Service would have no endpoints). The sandbox is
+**edit-only — no Nix**; see `images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the
+vault.
+
+The pilot currently runs on the node's **default runtime**, not gVisor: Bun/OpenCode is
+unstable under gVisor (exit 130 on a ~75 s cycle), which is the spec's recorded fallback
+(DEV-3). The `RuntimeClass` and gVisor handler remain installed, so re-enabling
+`runtimeClassName: gvisor` in the Sandbox restores the boundary.
+
+The legacy **systemd-nspawn** path on `bee-gpu-server` (`opencode-agents.nix` +
+`opencode-egress.nix`, unit `container@nixos`, tailnet DNAT) was **retired in the spec 20
+cutover**. Do not reintroduce it; add agent capacity by scaling the Kubernetes Sandbox. Guest
+restarts are an explicit runbook step (`restartIfChanged = false`), and the `br0` migration
+plus the k3s agent-token rollout are operator, console-access steps.
   - `modules/rpi/` — the remaining plain RPi host import `disko-config.nix` (the former `base.nix`/`k3s-*.nix`/`node-health.nix` are now aspects)
   - `sops.nix`, `pikvm.nix`, `steam-remote-play-client.nix` — plain modules (not aspects)
 - `config/` — Vendored dotfiles (MangoHUD, Rofi, Waybar, PiKVM YAML)
