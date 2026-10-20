@@ -37,6 +37,7 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         bash ca-certificates coreutils curl git ripgrep tar unzip \
+        python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # The published v2 distribution: @opencode/cli pulls the matching
