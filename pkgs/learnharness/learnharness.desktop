@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LearnHarness
+Comment=Agent harness for learning: adaptive teaching, practice, and a persistent knowledge graph
+Exec=learnharness %U
+Terminal=false
+Type=Application
+Icon=learnharness
+StartupWMClass=learnharness
+Categories=Education;
+Keywords=learning;study;tutor;ai;
