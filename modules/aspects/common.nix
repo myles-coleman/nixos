@@ -62,6 +62,20 @@
     nix.settings.experimental-features = ["nix-command" "flakes"];
     nix.settings.trusted-users = ["root" "bee"];
 
+    # Read the CI-built cache. pr.yaml and deploy.yaml push every host build
+    # here through cachix-action, so a local rebuild substitutes instead of
+    # rebuilding the closure from source. The cache is public — no token.
+    # substituters/trusted-public-keys REPLACE the defaults, hence the
+    # explicit cache.nixos.org entries.
+    nix.settings.substituters = [
+      "https://nixos-monorepo.cachix.org"
+      "https://cache.nixos.org/"
+    ];
+    nix.settings.trusted-public-keys = [
+      "nixos-monorepo.cachix.org-1:MNAHi+V4EsMMYxVqib+wZUmMgR86yx0lPCkAFPaHqwI="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+
     time.timeZone = "America/Los_Angeles";
     i18n.defaultLocale = "en_US.UTF-8";
     i18n.extraLocaleSettings = {
