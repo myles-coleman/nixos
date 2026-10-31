@@ -5,6 +5,10 @@
   ...
 }: let
   wan = "enp1s0";
+  # Static WAN addressing on the upstream LAN. See the 10-wan block below for
+  # why this is not DHCP.
+  wanAddress = "10.0.0.227/24";
+  wanGateway = "10.0.0.1";
   lan1 = "enp2s0";
   lan2 = "enp3s0";
   lan3 = "enp4s0";
@@ -67,19 +71,35 @@ in {
       # Enslave LAN interfaces to the bridge
       lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])
       // {
-        # WAN: DHCP from upstream ISP router
+        # WAN: statically addressed on the upstream LAN.
+        #
+        # This was DHCP until 2026-10-28, when the Xfinity gateway stopped
+        # answering DISCOVERs (no OFFER was ever returned; other clients on the
+        # same segment went unanswered too). That left the Vault with no
+        # default route, no DNS, no wg0 handshake, and the hard kill switch
+        # holding every client offline -- a router should not need an upstream
+        # DHCP server in order to boot. The address the gateway used to lease
+        # (10.0.0.227, verified unused before pinning) is now static.
+        #
+        # If the upstream subnet moves, update wanAddress/wanGateway above and
+        # the 10.0.0.0/24 route below together.
         "10-wan" = {
           matchConfig.Name = wan;
+          address = [wanAddress];
           networkConfig = {
-            DHCP = "ipv4";
             IPv4Forwarding = true;
           };
           # Use upstream DNS servers for the Vault itself (before Pi-hole is running)
           dns = ["8.8.8.8" "1.1.1.1"];
-          # Transitional: the upstream LAN (10.0.0.0/24) is advertised as a
-          # tailnet subnet route, so tailnet traffic to it must leave via the
-          # WAN interface instead of the table-100 default (wg0).
           routes = [
+            # Default route for the Vault's own host traffic (main table).
+            {
+              Destination = "0.0.0.0/0";
+              Gateway = wanGateway;
+            }
+            # Transitional: the upstream LAN (10.0.0.0/24) is advertised as a
+            # tailnet subnet route, so tailnet traffic to it must leave via the
+            # WAN interface instead of the table-100 default (wg0).
             {
               Destination = "10.0.0.0/24";
               Table = 100;

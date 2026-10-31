@@ -198,6 +198,14 @@ plain-WAN egress. To roll back manually:
 
 ## Operational notes
 
+- **WAN addressing (static)**: `enp1s0` is statically addressed at
+  `10.0.0.227/24` via `10.0.0.1` (`wanAddress`/`wanGateway` in
+  `modules/networking.nix`). It was DHCP until 2026-10-28, when the upstream
+  Xfinity gateway stopped answering DISCOVERs and left the Vault with no
+  route, no DNS and no tunnel. A router must not depend on an upstream DHCP
+  server to boot, so the address the gateway used to lease is pinned. Change
+  `wanAddress` and `wanGateway` together if the upstream subnet moves, and
+  confirm the address is unused (ARP probe) before pinning it.
 - **Mullvad location change**: one-line edit of `mullvadEndpoint` plus rebuild.
 - **WireGuard key rotation**: Mullvad's exit-IP assignment can link sessions
   across server changes; rotate the key (log out/in on the account, or generate
