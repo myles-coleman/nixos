@@ -35,5 +35,9 @@
     python3
     typora
     bat
+
+    # Learning harness — local derivation repacking the upstream AppImage
+    # payload onto nixpkgs Electron (x86_64 only). See pkgs/learnharness.
+    (callPackage ../../../pkgs/learnharness {electron = unstable.electron_44;})
   ];
 }
