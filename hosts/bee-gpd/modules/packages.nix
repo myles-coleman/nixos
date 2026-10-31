@@ -28,6 +28,7 @@
     SDL2 #required for proper gamepad support in emulators
     wl-clipboard #clipboard sharing with Waydroid
     unstable.claude-code
+    unstable.herdr #agent/terminal multiplexer for coding agents
     zathura
     unstable.prismlauncher
     remmina
