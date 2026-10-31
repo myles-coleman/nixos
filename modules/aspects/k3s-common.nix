@@ -27,7 +27,11 @@
     config = {
       k3sCommon.enabled = true;
 
-      services.k3s.package = pkgs.k3s_1_33;
+      # 1.33 went end-of-life on 2026-06-28, and current nixpkgs refuses to
+      # evaluate it (meta.knownVulnerabilities), so the re-pinned nixpkgs
+      # (see flake.lock) requires the next minor. k3s only supports upgrading
+      # one minor at a time, so this is a deliberate 1.33 -> 1.34 step.
+      services.k3s.package = pkgs.k3s_1_34;
 
       environment.systemPackages = with pkgs; [
         k3s
