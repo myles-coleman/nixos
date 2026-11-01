@@ -24,10 +24,22 @@
   # entrypoint's setup writes. This name must not change when `modelQuant` changes.
   modelAlias = "qwen3.8-flash-next";
 
-  # ~68 GB model + ~10 GB ROCm venv + the per-card engine build live here, so a
-  # restart or an image change does not cost a 10-20 minute recompile plus a
-  # re-download.
-  dataDir = "/home/bee/strata";
+  # Two directories, deliberately split:
+  #
+  #   modelsDir — the GGUF weights only. It is the user's single model store,
+  #   shared with every other engine on this host, owned by `bee` and world
+  #   readable so the files can be inspected without sudo. Mounted at
+  #   /data/models, so Strata's internal paths (`/data/models/<MODEL>`) are
+  #   unchanged and no config regeneration is needed.
+  #
+  #   dataDir — everything the engine generates for itself: `config/` (which
+  #   holds the served API key in clear text), `packs/` (tokenizer, dense and
+  #   expert index), `mtp/`, and logs. Root-only 0700, out of the user's home.
+  #
+  # Both are on the NVMe; a model swap is a directory rename inside modelsDir,
+  # never a re-download.
+  modelsDir = "/home/bee/models";
+  dataDir = "/var/lib/strata";
 
   # Digest-pinned PUBLIC GHCR image (built from ./images/strata-rocm/Dockerfile),
   # so no pull credential is needed on the host.
@@ -49,7 +61,10 @@ in {
 
     ports = ["8080:8080/tcp"];
 
-    volumes = ["${dataDir}:/data"];
+    volumes = [
+      "${dataDir}:/data"
+      "${modelsDir}:/data/models"
+    ];
 
     # The GHCR package is PUBLIC, so no pull credential is needed. (A public
     # package removes a whole credential from the host; the image contains only
@@ -136,8 +151,11 @@ in {
     '';
   };
 
-  # The model files and engine build live on the NVMe under dataDir.
+  # The engine state lives under /var/lib/strata (root-only); the weights live in
+  # the user's model store and stay readable. tmpfiles creates both so a fresh
+  # host converges without a manual mkdir, and so `bee` can read modelsDir.
   systemd.tmpfiles.rules = [
     "d ${dataDir} 0700 root root -"
+    "d ${modelsDir} 0755 bee users -"
   ];
 }
