@@ -49,6 +49,23 @@
   image = "ghcr.io/myles-coleman/strata-rocm@sha256:3e126d5eeac41c687decc05147fd5bec9ef9676b5bb1c4008db0b35dfbd1a521";
 
   apiKeySecret = "strata_api_key";
+
+  # Rotates the key in the engine's OWN config files. Kept as a real file (not a
+  # shell heredoc) because alejandra re-indents heredoc bodies inside Nix
+  # strings, which breaks both the `PY` terminator and Python's indentation.
+  rotateKeyScript = pkgs.writeText "strata-rotate-key.py" ''
+    import glob, json, sys
+
+    key = sys.argv[1]
+    for path in glob.glob("${dataDir}/config/*.json"):
+        with open(path) as fh:
+            cfg = json.load(fh)
+        if cfg.get("api_key") != key:
+            cfg["api_key"] = key
+            with open(path, "w") as fh:
+                json.dump(cfg, fh, indent=2)
+            print(f"rotated api_key in {path}")
+  '';
 in {
   # The host's containers run on Docker. This must be set explicitly: the
   # oci-containers default is `podman` for stateVersion >= 22.05, which names the
@@ -149,8 +166,14 @@ in {
     };
     script = ''
       umask 077
-      printf 'API_KEY=%s\n' "$(cat ${config.sops.secrets.${apiKeySecret}.path})" \
-        > /run/strata/strata.env
+      key="$(cat ${config.sops.secrets.${apiKeySecret}.path})"
+      printf 'API_KEY=%s\n' "$key" > /run/strata/strata.env
+
+      # The engine persists its own config under ${dataDir}/config and takes the
+      # key from THERE at startup — the env file alone does not rotate it, because
+      # the entrypoint keeps an existing config. Without this, a sops rotation
+      # silently keeps serving the OLD key (observed 2026-11-01).
+      ${pkgs.python3}/bin/python3 ${rotateKeyScript} "$key"
     '';
   };
 
