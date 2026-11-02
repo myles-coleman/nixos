@@ -24,10 +24,22 @@
   # entrypoint's setup writes. This name must not change when `modelQuant` changes.
   modelAlias = "qwen3.8-flash-next";
 
-  # ~68 GB model + ~10 GB ROCm venv + the per-card engine build live here, so a
-  # restart or an image change does not cost a 10-20 minute recompile plus a
-  # re-download.
-  dataDir = "/home/bee/strata";
+  # Two directories, deliberately split:
+  #
+  #   modelsDir — the GGUF weights only. It is the user's single model store,
+  #   shared with every other engine on this host, owned by `bee` and world
+  #   readable so the files can be inspected without sudo. Mounted at
+  #   /data/models, so Strata's internal paths (`/data/models/<MODEL>`) are
+  #   unchanged and no config regeneration is needed.
+  #
+  #   dataDir — everything the engine generates for itself: `config/` (which
+  #   holds the served API key in clear text), `packs/` (tokenizer, dense and
+  #   expert index), `mtp/`, and logs. Root-only 0700, out of the user's home.
+  #
+  # Both are on the NVMe; a model swap is a directory rename inside modelsDir,
+  # never a re-download.
+  modelsDir = "/home/bee/models";
+  dataDir = "/var/lib/strata";
 
   # Digest-pinned PUBLIC GHCR image (built from ./images/strata-rocm/Dockerfile),
   # so no pull credential is needed on the host.
@@ -37,6 +49,23 @@
   image = "ghcr.io/myles-coleman/strata-rocm@sha256:3e126d5eeac41c687decc05147fd5bec9ef9676b5bb1c4008db0b35dfbd1a521";
 
   apiKeySecret = "strata_api_key";
+
+  # Rotates the key in the engine's OWN config files. Kept as a real file (not a
+  # shell heredoc) because alejandra re-indents heredoc bodies inside Nix
+  # strings, which breaks both the `PY` terminator and Python's indentation.
+  rotateKeyScript = pkgs.writeText "strata-rotate-key.py" ''
+    import glob, json, sys
+
+    key = sys.argv[1]
+    for path in glob.glob("${dataDir}/config/*.json"):
+        with open(path) as fh:
+            cfg = json.load(fh)
+        if cfg.get("api_key") != key:
+            cfg["api_key"] = key
+            with open(path, "w") as fh:
+                json.dump(cfg, fh, indent=2)
+            print(f"rotated api_key in {path}")
+  '';
 in {
   # The host's containers run on Docker. This must be set explicitly: the
   # oci-containers default is `podman` for stateVersion >= 22.05, which names the
@@ -49,7 +78,10 @@ in {
 
     ports = ["8080:8080/tcp"];
 
-    volumes = ["${dataDir}:/data"];
+    volumes = [
+      "${dataDir}:/data"
+      "${modelsDir}:/data/models"
+    ];
 
     # The GHCR package is PUBLIC, so no pull credential is needed. (A public
     # package removes a whole credential from the host; the image contains only
@@ -108,9 +140,12 @@ in {
   sops.secrets.${apiKeySecret} = {
     owner = "root";
     mode = "0400";
-    # The nspawn instance consumes the same key (via a LoadCredential), so a
-    # rotation must restart it as well as the container.
-    restartUnits = ["docker-strata.service" "container@nixos.service"];
+    # Only the container consumes this key. `container@nixos.service` (the retired
+    # nspawn sandbox from spec 20) must NOT be listed: it no longer exists, and
+    # `systemctl try-restart` on a missing unit exits 5, which fails
+    # sops-install-secrets outright — every secret change then leaves the host
+    # with a half-installed secret set and no restart.
+    restartUnits = ["docker-strata.service"];
   };
 
   # Render the container environment file from the decrypted API key. `partOf`
@@ -131,13 +166,22 @@ in {
     };
     script = ''
       umask 077
-      printf 'API_KEY=%s\n' "$(cat ${config.sops.secrets.${apiKeySecret}.path})" \
-        > /run/strata/strata.env
+      key="$(cat ${config.sops.secrets.${apiKeySecret}.path})"
+      printf 'API_KEY=%s\n' "$key" > /run/strata/strata.env
+
+      # The engine persists its own config under ${dataDir}/config and takes the
+      # key from THERE at startup — the env file alone does not rotate it, because
+      # the entrypoint keeps an existing config. Without this, a sops rotation
+      # silently keeps serving the OLD key (observed 2026-11-01).
+      ${pkgs.python3}/bin/python3 ${rotateKeyScript} "$key"
     '';
   };
 
-  # The model files and engine build live on the NVMe under dataDir.
+  # The engine state lives under /var/lib/strata (root-only); the weights live in
+  # the user's model store and stay readable. tmpfiles creates both so a fresh
+  # host converges without a manual mkdir, and so `bee` can read modelsDir.
   systemd.tmpfiles.rules = [
     "d ${dataDir} 0700 root root -"
+    "d ${modelsDir} 0755 bee users -"
   ];
 }
