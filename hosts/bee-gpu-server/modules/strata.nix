@@ -123,9 +123,12 @@ in {
   sops.secrets.${apiKeySecret} = {
     owner = "root";
     mode = "0400";
-    # The nspawn instance consumes the same key (via a LoadCredential), so a
-    # rotation must restart it as well as the container.
-    restartUnits = ["docker-strata.service" "container@nixos.service"];
+    # Only the container consumes this key. `container@nixos.service` (the retired
+    # nspawn sandbox from spec 20) must NOT be listed: it no longer exists, and
+    # `systemctl try-restart` on a missing unit exits 5, which fails
+    # sops-install-secrets outright — every secret change then leaves the host
+    # with a half-installed secret set and no restart.
+    restartUnits = ["docker-strata.service"];
   };
 
   # Render the container environment file from the decrypted API key. `partOf`
