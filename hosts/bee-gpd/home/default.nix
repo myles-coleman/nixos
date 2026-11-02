@@ -128,9 +128,10 @@ in {
         # the query verbatim. Leaving it enabled would mean the model sometimes
         # bypasses sanitization, so it is disabled in favour of mcp.searxng.
         #
-        # webfetch is disabled for a different reason: it cannot be proxied on
-        # its own, so it would be the one page-fetch path that leaks the home
-        # IP. fetch_page replaces it and honours fetch.proxy.
+        # webfetch is disabled because fetch_page is the stricter reader:
+        # it refuses private, loopback and link-local targets, so a
+        # prompt-injected page cannot use it to reach the cluster API or the
+        # tailnet. Two retrieval tools would mean the weaker one gets used.
         tools.websearch = false;
         tools.webfetch = false;
       };
@@ -172,19 +173,6 @@ in {
         # Agent-fetched URLs stay on the public internet by default so a
         # prompt-injected page cannot reach the cluster API or the tailnet.
         allow_private = false
-        # This host already routes all traffic through the tailnet exit node
-        # (protecli-vault -> Mullvad ca-van-wg-201), so page fetches are
-        # tunnelled without a proxy. `direct` also ignores HTTPS_PROXY, which
-        # keeps model calls and tailnet endpoints off any accidental proxy.
-        # Switch to "mullvad" (needs services.mullvad-http-proxy.enable) or
-        # "tailscale" (needs a proxy on the exit node) to make it explicit.
-        egress = "direct"
-
-        [fetch.proxies]
-        mullvad = "http://127.0.0.1:8118"
-        # Probe on a tailnet host whose own egress is the Mullvad tunnel:
-        #   gost -L http://:8118 -F direct
-        tailscale = "http://100.112.185.27:8118"
       '';
     };
   };
