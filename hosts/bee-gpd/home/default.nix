@@ -114,7 +114,66 @@ in {
           ];
           enabled = true;
         };
+        # SearXNG-backed search, with query sanitization in front of it.
+        # Displaces the built-in websearch tool (see tools.websearch below).
+        mcp.searxng = {
+          type = "local";
+          command = [
+            "${config.users.users.${mainUser}.home}/agent-websearch/bin/websearch"
+            "mcp"
+          ];
+          enabled = true;
+        };
+        # The built-in websearch queries a hosted Exa/Parallel backend and sends
+        # the query verbatim. Leaving it enabled would mean the model sometimes
+        # bypasses sanitization, so it is disabled in favour of mcp.searxng.
+        #
+        # webfetch is disabled because fetch_page is the stricter reader:
+        # it refuses private, loopback and link-local targets, so a
+        # prompt-injected page cannot use it to reach the cluster API or the
+        # tailnet. Two retrieval tools would mean the weaker one gets used.
+        tools.websearch = false;
+        tools.webfetch = false;
       };
+
+      # Config for the agent-websearch tool. Kept in Nix so the instance URL and
+      # the sanitization policy travel with the rest of the system config.
+      "websearch/config.toml".text = ''
+        [searxng]
+        url = "https://searxng.cowlab.org"
+
+        [search]
+        language = "en"
+        safesearch = 0
+        category = "general"
+        limit = 10
+        timeout = 25.0
+
+        [fallback]
+        enabled = true
+        min_results = 3
+        bangs = ["!mwm", "!br", "!ddg"]
+
+        [throttle]
+        min_interval_seconds = 1.0
+
+        [cache]
+        enabled = true
+        ttl_seconds = 300
+
+        [privacy]
+        enabled = true
+        strict = false
+        extra_domains = ["cowlab.org"]
+
+        [fetch]
+        timeout = 20.0
+        max_chars = 20000
+        max_bytes = 2097152
+        # Agent-fetched URLs stay on the public internet by default so a
+        # prompt-injected page cannot reach the cluster API or the tailnet.
+        allow_private = false
+      '';
     };
   };
 }
