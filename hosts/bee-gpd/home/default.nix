@@ -172,10 +172,19 @@ in {
         # Agent-fetched URLs stay on the public internet by default so a
         # prompt-injected page cannot reach the cluster API or the tailnet.
         allow_private = false
-        # Page reads egress through the gost bridge to Mullvad (see
-        # modules/mullvad-proxy.nix). Scoped to fetch_page on purpose: no
-        # HTTPS_PROXY, so model calls and tailnet endpoints stay direct.
-        proxy = "http://127.0.0.1:8118"
+        # This host already routes all traffic through the tailnet exit node
+        # (protecli-vault -> Mullvad ca-van-wg-201), so page fetches are
+        # tunnelled without a proxy. `direct` also ignores HTTPS_PROXY, which
+        # keeps model calls and tailnet endpoints off any accidental proxy.
+        # Switch to "mullvad" (needs services.mullvad-http-proxy.enable) or
+        # "tailscale" (needs a proxy on the exit node) to make it explicit.
+        egress = "direct"
+
+        [fetch.proxies]
+        mullvad = "http://127.0.0.1:8118"
+        # Probe on a tailnet host whose own egress is the Mullvad tunnel:
+        #   gost -L http://:8118 -F direct
+        tailscale = "http://100.112.185.27:8118"
       '';
     };
   };
