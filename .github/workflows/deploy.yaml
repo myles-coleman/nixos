@@ -1,8 +1,17 @@
 name: Deploy
 
+# Deploy on a push to `main` only (spec 21, Unit 1).
+#
+# The previous trigger was `pull_request: closed`. Combined with
+# `environment: production` and an environment branch policy that allowed
+# `refs/pull/*/merge`, that let any same-repo PR workflow request the production
+# environment and receive the deploy SSH key, the Tailscale OAuth pair and the
+# Cachix write token. Triggering on a push means the only way into this workflow is
+# a commit that is already on `main` — the merge is the human gate, and the
+# repository is solo-maintained with `enforce_admins` on, so a required review
+# would deadlock every merge including the one that fixes this.
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [main]
   workflow_dispatch:
     inputs:
@@ -20,8 +29,8 @@ concurrency:
 
 jobs:
   plan:
-    # Auto-deploy only on a merged PR; manual otherwise.
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    # Auto-deploy on a push to main; manual otherwise.
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.gen.outputs.matrix }}
