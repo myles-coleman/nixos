@@ -127,8 +127,12 @@ in {
         # The built-in websearch queries a hosted Exa/Parallel backend and sends
         # the query verbatim. Leaving it enabled would mean the model sometimes
         # bypasses sanitization, so it is disabled in favour of mcp.searxng.
-        # webfetch stays enabled: it is the page-retrieval path.
+        #
+        # webfetch is disabled for a different reason: it cannot be proxied on
+        # its own, so it would be the one page-fetch path that leaks the home
+        # IP. fetch_page replaces it and honours fetch.proxy.
         tools.websearch = false;
+        tools.webfetch = false;
       };
 
       # Config for the agent-websearch tool. Kept in Nix so the instance URL and
@@ -168,6 +172,10 @@ in {
         # Agent-fetched URLs stay on the public internet by default so a
         # prompt-injected page cannot reach the cluster API or the tailnet.
         allow_private = false
+        # Page reads egress through the gost bridge to Mullvad (see
+        # modules/mullvad-proxy.nix). Scoped to fetch_page on purpose: no
+        # HTTPS_PROXY, so model calls and tailnet endpoints stay direct.
+        proxy = "http://127.0.0.1:8118"
       '';
     };
   };
