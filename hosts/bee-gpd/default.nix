@@ -19,6 +19,7 @@ in {
         ./modules/input.nix
         ./modules/automation.nix
         ./modules/networking.nix
+        ./modules/mullvad-proxy.nix
         ./modules/packages.nix
         ../../modules/sops.nix
         inputs.sops-nix.nixosModules.sops

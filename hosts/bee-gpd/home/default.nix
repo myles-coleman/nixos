@@ -114,7 +114,78 @@ in {
           ];
           enabled = true;
         };
+        # SearXNG-backed search, with query sanitization in front of it.
+        # Displaces the built-in websearch tool (see tools.websearch below).
+        mcp.searxng = {
+          type = "local";
+          command = [
+            "${config.users.users.${mainUser}.home}/agent-websearch/bin/websearch"
+            "mcp"
+          ];
+          enabled = true;
+        };
+        # The built-in websearch queries a hosted Exa/Parallel backend and sends
+        # the query verbatim. Leaving it enabled would mean the model sometimes
+        # bypasses sanitization, so it is disabled in favour of mcp.searxng.
+        #
+        # webfetch is disabled for a different reason: it cannot be proxied on
+        # its own, so it would be the one page-fetch path that leaks the home
+        # IP. fetch_page replaces it and honours fetch.proxy.
+        tools.websearch = false;
+        tools.webfetch = false;
       };
+
+      # Config for the agent-websearch tool. Kept in Nix so the instance URL and
+      # the sanitization policy travel with the rest of the system config.
+      "websearch/config.toml".text = ''
+        [searxng]
+        url = "https://searxng.cowlab.org"
+
+        [search]
+        language = "en"
+        safesearch = 0
+        category = "general"
+        limit = 10
+        timeout = 25.0
+
+        [fallback]
+        enabled = true
+        min_results = 3
+        bangs = ["!mwm", "!br", "!ddg"]
+
+        [throttle]
+        min_interval_seconds = 1.0
+
+        [cache]
+        enabled = true
+        ttl_seconds = 300
+
+        [privacy]
+        enabled = true
+        strict = false
+        extra_domains = ["cowlab.org"]
+
+        [fetch]
+        timeout = 20.0
+        max_chars = 20000
+        max_bytes = 2097152
+        # Agent-fetched URLs stay on the public internet by default so a
+        # prompt-injected page cannot reach the cluster API or the tailnet.
+        allow_private = false
+        # This host already routes all traffic through the tailnet exit node
+        # (protecli-vault -> Mullvad ca-van-wg-201), so page fetches are
+        # tunnelled without a proxy. `direct` also ignores HTTPS_PROXY, which
+        # keeps model calls and tailnet endpoints off any accidental proxy.
+        # Switch to "mullvad" (needs services.mullvad-http-proxy.enable) or
+        # "tailscale" (needs a proxy on the exit node) to make it explicit.
+        egress = "direct"
+
+        [fetch.proxies]
+        mullvad = "http://127.0.0.1:8118"
+        # Probe on a tailnet host whose own egress is the Mullvad tunnel:
+        #   gost -L http://:8118 -F direct
+        tailscale = "http://100.112.185.27:8118"
+      '';
     };
   };
 }
