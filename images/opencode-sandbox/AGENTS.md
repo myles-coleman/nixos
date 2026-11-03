@@ -93,3 +93,15 @@ A write anywhere else fails with `Read-only file system`. That is the posture, n
 Your workspace and `$HOME` (including the OpenCode session DB and tool caches) are on a
 `local-path` PVC with reclaim `Retain`, pre-created so an ArgoCD prune or a `Sandbox` delete
 cannot wipe your work. Keep heavy artifacts on that volume, not in `/tmp`.
+
+## The kernel you see is not the host kernel
+
+Since spec 22 this sandbox runs under **gVisor**. `uname -r` and `/proc/version` report a
+synthetic `4.19.0-gvisor` kernel, not the node's NixOS kernel, and some `/proc` and `/sys`
+paths are emulated and thinner than on a real Linux host.
+
+- That is expected, not a misconfiguration. Do not try to "fix" it.
+- If a syscall or a `/proc` file behaves oddly, say so and stop; do not attempt workarounds
+  that assume a real kernel.
+- The boundary exists so that a container escape needs a gVisor bug rather than a Linux kernel
+  bug. Do not weaken it: no privileged flags, no host mounts, no changes to the runtime class.
