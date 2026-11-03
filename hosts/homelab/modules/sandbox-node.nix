@@ -33,9 +33,9 @@
   # The cluster nodes that must reach this guest's kubelet and VXLAN endpoint.
   clusterNodes = ["10.0.0.140" "10.0.0.141" "10.0.0.142" "10.0.0.143" "10.0.0.144"];
 
-  # Build one iptables rule per node, because the NixOS firewall's extra rules take
+  # Build one iptables rule per node, because the firewall's extra commands take
   # iptables syntax and cannot express a source set without an ipset.
-  perNodeRule = rule: lib.concatMapStringsSep "\n" (ip: "-s ${ip} ${rule} -j ACCEPT") clusterNodes;
+  perNodeRule = rule: lib.concatMapStringsSep "\n" (ip: "iptables -w -A nixos-fw -s ${ip} ${rule} -j nixos-fw-accept") clusterNodes;
 
   # Containerd 2.x runtime config template. `{{ template "base" . }}` extends the
   # k3s base template; the `gvisor` handler is a new table, so appending it does
@@ -177,25 +177,33 @@ in {
       #
       # NixOS firewalls filter inbound only, so this does not control egress — that
       # is the hypervisor's job (see hosts/homelab/modules/networking.nix).
+      #
+      # `networking.firewall.extraInputRules` is declared by the *nftables* backend
+      # only (nixos/modules/services/networking/firewall-nftables.nix). On the
+      # iptables backend it is accepted but silently ignored, which is why these
+      # rules use `extraCommands`: that option is inserted into the firewall script
+      # immediately before its final reject.
       networking.firewall = {
         enable = lib.mkForce true;
-        extraInputRules = ''
+        extraCommands = ''
           # kubelet and flannel, from cluster nodes only
           ${perNodeRule "-p tcp --dport 10250"}
           ${perNodeRule "-p udp --dport 8472"}
 
           # operator SSH: the tailnet, and homelab itself for provisioning
-          -s 100.64.0.0/10 -p tcp --dport 22 -j ACCEPT
-          -s 10.0.0.150 -p tcp --dport 22 -j ACCEPT
+          iptables -w -A nixos-fw -p tcp --dport 22 -s 100.64.0.0/10 -j nixos-fw-accept
+          iptables -w -A nixos-fw -p tcp --dport 22 -s 10.0.0.150 -j nixos-fw-accept
 
-          # Tailscale direct connections
-          -p udp --dport 41641 -j ACCEPT
-
-          # pod and service traffic, including cross-node pod-to-pod over br0
-          -s 10.42.0.0/16 -j ACCEPT
-          -s 10.43.0.0/16 -j ACCEPT
+          # pod and service traffic, including cross-node pod-to-pod over br0 and
+          # metrics-server scraping the kubelet from another node
+          iptables -w -A nixos-fw -s 10.42.0.0/16 -j nixos-fw-accept
+          iptables -w -A nixos-fw -s 10.43.0.0/16 -j nixos-fw-accept
         '';
       };
+
+      # `access` enables sshd; the NixOS module then opens 22 to any source. Turn
+      # that off so the scoped rules above are the only way in.
+      services.openssh.openFirewall = lib.mkForce false;
 
       # ── operator access ─────────────────────────────────────────────────────
       # `access` provides sshd + the bee user; password auth is off because this is
