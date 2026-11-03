@@ -59,12 +59,20 @@ taint. Agents run as plain `Sandbox` objects in the cluster repo's
 **edit-only — no Nix**; see `images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the
 vault.
 
-The sandbox now runs **under gVisor** (`runtimeClassName: gvisor`). The spec 20 fallback
-(DEV-3) recorded Bun/OpenCode exiting 130 on a ~75 s cycle under gVisor; a controlled spike in
-spec 21 re-tested the same image and env and it ran 33 minutes with zero restarts, so the
-fallback is retired. Consequence for verification: gVisor's sentry fakes `/proc`, so
-`Seccomp:` reads `0` and `NoNewPrivs:` is absent inside the pod — that is expected, not a
-regression. Capability fields still read `0000000000000000`.
+The pilot runs on the node's **default runtime (runc)**, not gVisor — and the spec 20
+fallback (DEV-3) is still the correct call, for a sharper reason than was recorded.
+
+Spec 21's spike tested gVisor twice with the same image and env. A throwaway Sandbox on an
+`emptyDir` workspace ran 33 minutes with zero restarts. The real pod — with the `local-path`
+PVC at `/home/agent` and the config ConfigMap at `~/.config/opencode` — exited **130** within
+~90 s and restarted on a ~90 s cycle (`lastState.terminated: Error/130`).
+
+So the failure is real and **mount-dependent**, not runtime-dependent. The difference is the
+hostPath-backed PVC and the watched config directory, both of which gVisor serves through a
+gofer with different filesystem and inotify semantics. Any future gVisor spike must test the
+PVC and ConfigMap mounts together; an `emptyDir` spike will reproduce the false pass that
+spec 21 initially shipped. `runtimeClassName: gvisor` stays commented in the Sandbox with that
+note.
 
 The sandbox holds **no repository write credential** (spec 21, Unit 1): the PAT was revoked,
 `GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under Pod
