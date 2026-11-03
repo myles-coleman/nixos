@@ -50,16 +50,6 @@
 
   apiKeySecret = "strata_api_key";
 
-  # The uid the container runs as (spec 21, Unit 4). `users.users.bee.uid` is
-  # null on NixOS unless a uid is pinned explicitly — the activation script
-  # allocates it — so it must not be interpolated directly (it renders as an
-  # empty string and produces `--user=:303`). bee is uid 1000 on every host in
-  # this fleet; pin it here and keep the fallback so a future explicit uid wins.
-  containerUid =
-    if config.users.users.bee.uid != null
-    then config.users.users.bee.uid
-    else 1000;
-
   # Rotates the key in the engine's OWN config files. Kept as a real file (not a
   # shell heredoc) because alejandra re-indents heredoc bodies inside Nix
   # strings, which breaks both the `PY` terminator and Python's indentation.
@@ -139,10 +129,17 @@ in {
       # container runs as root, so these are belt-and-braces for the devices.)
       "--group-add=${toString config.users.groups.video.gid}"
       "--group-add=${toString config.users.groups.render.gid}"
-      # Run as the operator's uid with the render group as primary, instead of
-      # root (spec 21, Unit 4). The device nodes are root:render / root:video at
-      # 0660, so the numeric groups above are what grant access.
-      "--user=${toString containerUid}:${toString config.users.groups.render.gid}"
+      # Non-root was attempted and REVERTED (deviation from spec 21, Unit 4).
+      # `--user=<uid>:<gid>` fails at container start because the image's
+      # entrypoint creates a symlink inside /opt/strata, which the image owns as
+      # root (0755):
+      #   ln: failed to create symbolic link '/opt/strata/strata-iq2_xs.json':
+      #   Permission denied
+      # Supporting a non-root uid needs an image change (chmod the install dir and
+      # add a user), which is out of this spec's scope and would invalidate the
+      # pinned digest. Tracked as a follow-up; the container therefore still runs
+      # as root, while the IPC, seccomp, mount and port restrictions below do
+      # apply.
       # `--ipc=host` is deliberately NOT used. A private IPC namespace is the
       # default; 2 GiB of /dev/shm covers HIP's buffers and is far above the
       # 64 MiB default that would otherwise apply.
@@ -205,11 +202,11 @@ in {
   # the user's model store and stay readable. tmpfiles creates both so a fresh
   # host converges without a manual mkdir, and so `bee` can read modelsDir.
   systemd.tmpfiles.rules = [
-    # Owned by the container's uid (spec 21, Unit 4). `Z` is recursive, so the
-    # config/packs/mtp trees written by earlier root runs are re-owned on boot;
-    # without it a non-root container cannot read its own engine config.
-    "d ${dataDir} 0700 ${toString containerUid} ${toString config.users.groups.render.gid} -"
-    "Z ${dataDir} 0700 ${toString containerUid} ${toString config.users.groups.render.gid} -"
+    # The container still runs as root (see the non-root note above), so the
+    # engine state stays root-owned. Kept as `d` only; the recursive `Z` was only
+    # needed for the reverted non-root attempt and would be a needless chown of
+    # every pack on each boot.
+    "d ${dataDir} 0700 root root -"
     "d ${modelsDir} 0755 bee users -"
   ];
 
@@ -232,10 +229,13 @@ in {
       RemainAfterExit = true;
     };
     script = ''
+      # iptables accepts only one --in-interface per rule. Loopback is not named:
+      # traffic the host sends to itself goes through OUTPUT and never traverses
+      # FORWARD, so it is unaffected either way.
       ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
-        -p tcp --dport 8080 ! -i tailscale0 ! -i lo -j DROP 2>/dev/null \
+        -p tcp --dport 8080 ! -i tailscale0 -j DROP 2>/dev/null \
         || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
-          -p tcp --dport 8080 ! -i tailscale0 ! -i lo -j DROP
+          -p tcp --dport 8080 ! -i tailscale0 -j DROP
     '';
   };
 }
