@@ -43,6 +43,21 @@
           # longer matches those hunks; drop the patch and let the tree's own go.mod
           # define the vendor set that `vendorHash` covers.
           patches = [];
+          # Since the 2026 releases, runsc resolves its sentry (and the optional
+          # metric server / checkpoint gofer) from a `gvisor-bin/` directory next to
+          # the runsc binary instead of embedding it. nixpkgs installs only `runsc`
+          # and the shim, so without this a pod fails at creation with
+          #   sidecar "gvisor_sentry" not usable:
+          #   stat .../bin/gvisor-bin/gvisor_sentry: no such file or directory
+          # Build them from the same source so their release labels always match.
+          postInstall =
+            (_old.postInstall or "")
+            + ''
+              mkdir -p $out/bin/gvisor-bin
+              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/gvisor_sentry ./runsc/cmd/sentry
+              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/runsc-metric-server ./runsc/cmd/metricserver
+              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/checkpointgofer ./runsc/checkpointgofer
+            '';
         });
     })
   ];
