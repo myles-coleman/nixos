@@ -25,6 +25,9 @@ in {
         ./modules/containers.nix
         ./modules/storage.nix
         ./modules/networking.nix
+        # gVisor pin for the sandbox node (spec 22, Unit 1). Host-level because
+        # microvm.nix hands the host's `pkgs` to the guest evaluation.
+        ./modules/gvisor.nix
         ../../modules/sops.nix
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default
