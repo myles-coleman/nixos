@@ -41,11 +41,34 @@
   # k3s base template; the `gvisor` handler is a new table, so appending it does
   # not create a duplicate table. `runtime_type` is `io.containerd.runsc.v1` with
   # no `BinaryName` (the shim is found on the service PATH).
+  #
+  # `pod_annotations` lets a pod request gVisor behaviour (mount hints, `strace`)
+  # without changing the node config, and `options`/`ConfigPath` is the only way to
+  # give runsc an explicit debug log — `debug` alone writes to io.Discard, which is
+  # why the spec 20/21 attempts produced no log at all (spec 22, Unit 3).
   containerdTemplate = pkgs.writeText "k3s-containerd-config-v3.toml.tmpl" ''
     {{ template "base" . }}
 
     [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.gvisor]
       runtime_type = "io.containerd.runsc.v1"
+      pod_annotations = ["dev.gvisor.*"]
+      [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.gvisor.options]
+        TypeUrl = "io.containerd.runsc.v1.options"
+        ConfigPath = "/etc/containerd/runsc-gvisor.toml"
+  '';
+
+  # runsc/shims flags. The `[runsc_config]` table is converted to `--flag="value"`
+  # on the runsc command line; the top-level keys are shim options. Logs must be on
+  # persistent storage because the guest root does not survive a restart.
+  runscConfig = ''
+    log_path = "/var/lib/runsc-logs/%ID%/shim.log"
+    log_level = "debug"
+
+    [runsc_config]
+      platform = "systrap"
+      debug = "true"
+      debug-log = "/var/lib/runsc-logs/%ID%/gvisor.%COMMAND%.log"
+      panic-log = "/var/lib/runsc-logs/%ID%/panic.%COMMAND%.log"
   '';
 in {
   config = lib.mkMerge [
@@ -115,6 +138,14 @@ in {
             image = "${volumeDir}/var-lib-sops-nix.img";
             mountPoint = "/var/lib/sops-nix";
             size = 64;
+          }
+          # gVisor's shim/runsc debug logs (spec 22, Unit 3). The guest root is
+          # not persistent, so a log written anywhere else is lost exactly when it
+          # is needed — after a crash loop or a guest restart.
+          {
+            image = "${volumeDir}/var-lib-runsc-logs.img";
+            mountPoint = "/var/lib/runsc-logs";
+            size = 512;
           }
           # the agent node password — losing it means k3s rejects the node with
           # "Node password rejected"
@@ -234,7 +265,13 @@ in {
       systemd.tmpfiles.rules = [
         "d /var/lib/rancher/k3s/agent/etc/containerd 0755 root root -"
         "C /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl 0644 root root - ${containerdTemplate}"
+        "d /var/lib/runsc-logs 0700 root root -"
       ];
+
+      # Declarative shim/gVisor flags. `environment.etc` (not tmpfiles) because
+      # this lives under NixOS-managed /etc; ConfigPath in the containerd template
+      # points here.
+      environment.etc."containerd/runsc-gvisor.toml".text = runscConfig;
 
       # NixOS systemd services do not inherit /run/current-system/sw/bin, so the
       # `containerd-shim-runsc-v1` binary would not otherwise be found.
