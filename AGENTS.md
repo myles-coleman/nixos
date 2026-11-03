@@ -59,20 +59,32 @@ taint. Agents run as plain `Sandbox` objects in the cluster repo's
 **edit-only — no Nix**; see `images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the
 vault.
 
-The pilot runs on the node's **default runtime (runc)**, not gVisor — and the spec 20
-fallback (DEV-3) is still the correct call, for a sharper reason than was recorded.
+The sandbox runs under **gVisor** (spec 22, 2026-11-03), pinned to gVisor
+`20261102.0` by `hosts/homelab/modules/gvisor.nix` — a release that contains the
+CVE-2026-96812 fix, which the nixpkgs pin (`20260406.0`, in both inputs) does not. The
+override is a **host** module on purpose: `microvm.nix` evaluates the guest with the host's
+`pkgs`, so an overlay inside `sandbox-node.nix` would be silently ignored.
 
-Spec 21's spike tested gVisor twice with the same image and env. A throwaway Sandbox on an
-`emptyDir` workspace ran 33 minutes with zero restarts. The real pod — with the `local-path`
-PVC at `/home/agent` and the config ConfigMap at `~/.config/opencode` — exited **130** within
-~90 s and restarted on a ~90 s cycle (`lastState.terminated: Error/130`).
+Spec 21's `exit 130` did not reproduce. Spec 22 re-ran the differential with all four mount
+topologies side by side on the new version — `emptyDir` and `local-path` PVC, each with and
+without the config ConfigMap, with `opencode` as PID 1 — and every row ran 35 minutes with
+zero restarts, including the production-equivalent row. The live pod then soaked on the real
+workspace. Evidence and the decision record: vault,
+`nixos/docs/specs/22-spec-gvisor-sandbox-runtime/`.
 
-So the failure is real and **mount-dependent**, not runtime-dependent. The difference is the
-hostPath-backed PVC and the watched config directory, both of which gVisor serves through a
-gofer with different filesystem and inotify semantics. Any future gVisor spike must test the
-PVC and ConfigMap mounts together; an `emptyDir` spike will reproduce the false pass that
-spec 21 initially shipped. `runtimeClassName: gvisor` stays commented in the Sandbox with that
-note.
+The likely reason is the runtime version, not the mounts: the old pin predates the CVE fix and
+several systrap fixes. That is stated as the likely cause because it is what changed — the
+diagnosis that would name a signal sender was never needed, since nothing failed.
+
+The node can explain a future failure. The gVisor containerd handler carries
+`pod_annotations = ["dev.gvisor.*"]` and an `options`/`ConfigPath` pointing at
+`/etc/containerd/runsc-gvisor.toml`, so `runsc` writes a real debug log to
+`/var/lib/runsc-logs/<container-id>/` on a persistent guest volume. Before spec 22 the
+handler had no `options` block at all, so `debug` went to `io.Discard` — which is why the
+earlier attempts produced no log. Two traps are recorded in `sandbox-node.nix`: the containerd
+template must be installed by `k3s.preStart` (tmpfiles `C`/`C+` will not replace it on the
+persistent volume), and gVisor 2026 releases need their `gvisor-bin/` sidecars — nixpkgs builds
+none of them, so the package comes from the upstream release tarball.
 
 The sandbox holds **no repository write credential** (spec 21, Unit 1): the PAT was revoked,
 `GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under Pod
