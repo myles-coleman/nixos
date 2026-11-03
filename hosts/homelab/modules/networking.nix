@@ -29,6 +29,23 @@
         ether saddr 02:00:00:00:5a:01 jump sandbox_node
       }
 
+      # Traffic from the guest to the hypervisor's *own* address is locally
+      # delivered and never reaches the forward hook, so a forward-only filter
+      # leaves the guest able to reach homelab's sshd, NFS and Samba. This chain
+      # closes that hole; nothing on the guest legitimately needs to reach the
+      # host itself.
+      chain input {
+        type filter hook input priority -150; policy accept;
+
+        iifname "tap0" jump sandbox_node_local
+        ether saddr 02:00:00:00:5a:01 jump sandbox_node_local
+      }
+
+      chain sandbox_node_local {
+        ct state established,related accept
+        drop
+      }
+
       chain sandbox_node {
         ct state established,related accept
 
