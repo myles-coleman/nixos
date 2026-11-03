@@ -30,6 +30,13 @@
   # must be generated on the host and added to `.sops.yaml` first).
   sopsFile = ../../../secrets/hosts/sandbox-node.yaml;
 
+  # The cluster nodes that must reach this guest's kubelet and VXLAN endpoint.
+  clusterNodes = ["10.0.0.140" "10.0.0.141" "10.0.0.142" "10.0.0.143" "10.0.0.144"];
+
+  # Build one iptables rule per node, because the NixOS firewall's extra rules take
+  # iptables syntax and cannot express a source set without an ipset.
+  perNodeRule = rule: lib.concatMapStringsSep "\n" (ip: "-s ${ip} ${rule} -j ACCEPT") clusterNodes;
+
   # Containerd 2.x runtime config template. `{{ template "base" . }}` extends the
   # k3s base template; the `gvisor` handler is a new table, so appending it does
   # not create a duplicate table. `runtime_type` is `io.containerd.runsc.v1` with
@@ -95,6 +102,14 @@ in {
             mountPoint = "/var/lib/tailscale";
             size = 256;
           }
+          # the SSH host key (spec 21, Unit 3) — a stable identity for an otherwise
+          # disposable guest, so operator tooling stops tripping over a changed key
+          # every boot
+          {
+            image = "${volumeDir}/var-lib-ssh.img";
+            mountPoint = "/var/lib/ssh";
+            size = 64;
+          }
           # the age key
           {
             image = "${volumeDir}/var-lib-sops-nix.img";
@@ -111,9 +126,9 @@ in {
           # NOTE: /etc/ssh is deliberately NOT persisted. A volume mounted over it
           # shadows NixOS-managed /etc/ssh/sshd_config (a store symlink), so sshd
           # fails to start ("Failed to start SSH Daemon", port 22 closed) — which
-          # also blocks host-key provisioning. The guest's SSH host key therefore
-          # regenerates each boot; reach it by IP with
-          # `-o StrictHostKeyChecking=accept-new`.
+          # also blocks host-key provisioning. The host key itself lives at
+          # /var/lib/ssh instead (spec 21, Unit 3), which keeps the identity across
+          # boots without shadowing the config directory.
         ];
       };
 
@@ -155,12 +170,48 @@ in {
         "--node-taint=sandbox=gvisor:NoSchedule"
       ];
 
+      # ── inbound firewall (spec 21, Unit 3) ─────────────────────────────────
+      # `k3s-common` disables the firewall for every cluster node. This guest
+      # re-enables it because it is the untrusted one: an escape from the sandbox
+      # pod lands on a host that should not be a general-purpose target.
+      #
+      # NixOS firewalls filter inbound only, so this does not control egress — that
+      # is the hypervisor's job (see hosts/homelab/modules/networking.nix).
+      networking.firewall = {
+        enable = lib.mkForce true;
+        extraInputRules = ''
+          # kubelet and flannel, from cluster nodes only
+          ${perNodeRule "-p tcp --dport 10250"}
+          ${perNodeRule "-p udp --dport 8472"}
+
+          # operator SSH: the tailnet, and homelab itself for provisioning
+          -s 100.64.0.0/10 -p tcp --dport 22 -j ACCEPT
+          -s 10.0.0.150 -p tcp --dport 22 -j ACCEPT
+
+          # Tailscale direct connections
+          -p udp --dport 41641 -j ACCEPT
+
+          # pod and service traffic, including cross-node pod-to-pod over br0
+          -s 10.42.0.0/16 -j ACCEPT
+          -s 10.43.0.0/16 -j ACCEPT
+        '';
+      };
+
       # ── operator access ─────────────────────────────────────────────────────
       # `access` provides sshd + the bee user; password auth is off because this is
       # the untrusted node, so key-only SSH is the only way in.
       # `access` sets PasswordAuthentication = true at normal priority; force it off
       # here because this is the untrusted node, so key-only SSH is the way in.
       services.openssh.settings.PasswordAuthentication = lib.mkForce false;
+      # A persistent host key on the /var/lib/ssh volume added above. NixOS generates
+      # a missing key at the configured path on boot, so no extra unit is needed, and
+      # the operator stops seeing a changed-key warning after every guest restart.
+      services.openssh.hostKeys = [
+        {
+          type = "ed25519";
+          path = "/var/lib/ssh/ssh_host_ed25519_key";
+        }
+      ];
       users.users.bee.openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFwn9u4rjBjifRODlycmjtEJRKfV2bSnwvDa5sC5Hpp bee@bee-gpd"
       ];
@@ -181,8 +232,7 @@ in {
       # `containerd-shim-runsc-v1` binary would not otherwise be found.
       systemd.services.k3s.path = [pkgs.gvisor];
 
-      # ── operator access: tailnet-only, never a NodePort/IngressRoute ─────────
-      # `tailscale serve` on this (pinned) node proxies the tailnet to the sandbox
+      # ── operator access: tailnet-only, never a NodePort/IngressRoute ─────────      # `tailscale serve` on this (pinned) node proxies the tailnet to the sandbox
       # ClusterIP. A NodePort would listen on every node's LAN IP and have its
       # source rewritten to the node — which most NetworkPolicy implementations
       # always allow — and an IngressRoute would publish an agent code-execution

@@ -3,7 +3,58 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  # ── sandbox guest egress filter (spec 21, Unit 3) ────────────────────────────
+  #
+  # `k3s-common` sets `networking.firewall.enable = false` on the cluster nodes and
+  # NixOS `networking.firewall` only filters *inbound* anyway, so the guest cannot
+  # be trusted to limit its own egress: a guest-root attacker would simply turn it
+  # off. The filter therefore lives here, on the hypervisor, where it survives guest
+  # root.
+  #
+  # It is loaded by a oneshot rather than through `networking.nftables.enable`,
+  # because switching the firewall backend would also take over the Docker and
+  # bridge rules this host already depends on.
+  #
+  # The guest is matched two ways: the QEMU tap it enters through, and its fixed
+  # MAC. `qemu-bridge-helper` allocates the first free `tapN`, so the name is not
+  # guaranteed, and the MAC alone is not enough because guest root can change it.
+  # Either match is sufficient to apply the policy.
+  sandboxEgressRules = pkgs.writeText "sandbox-egress.nft" ''
+    table inet sandbox_egress {
+      chain forward {
+        type filter hook forward priority -150; policy accept;
+
+        iifname "tap0" jump sandbox_node
+        ether saddr 02:00:00:00:5a:01 jump sandbox_node
+      }
+
+      chain sandbox_node {
+        ct state established,related accept
+
+        # The k3s API (kube-vip VIP) and flannel VXLAN to the cluster nodes.
+        ip daddr 10.0.0.200 tcp dport 6443 accept
+        ip daddr { 10.0.0.140, 10.0.0.141, 10.0.0.142, 10.0.0.143, 10.0.0.144 } udp dport 8472 accept
+
+        # The guest's own resolvers.
+        ip daddr { 1.1.1.1, 8.8.8.8 } udp dport 53 accept
+        ip daddr { 1.1.1.1, 8.8.8.8 } tcp dport 53 accept
+
+        # Everything else to the LAN is denied: SMB, NFS, the kubelets, the API on
+        # any other node, the Docker-published services. Pods (10.42.0.0/16) and
+        # services (10.43.0.0/16) sit outside these ranges and stay reachable, so
+        # cluster traffic and the squid hop are unaffected.
+        ip daddr { 10.0.0.0/24, 192.168.1.0/24 } drop
+
+        # Tailscale: control/DERP, STUN, and the direct endpoint.
+        tcp dport 443 accept
+        udp dport { 3478, 41641 } accept
+
+        return
+      }
+    }
+  '';
+in {
   # ── br0 bridge for the microvm guest (spec 20, Unit 2) ──────────────────────
   #
   # homelab's static address and default gateway move off `eno1` onto a Linux
@@ -81,4 +132,22 @@
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [2049 111];
   networking.firewall.allowedUDPPorts = [2049 111];
+
+  # Loader for the sandbox guest egress filter above. Deletes the table first so a
+  # rebuild converges instead of stacking duplicate rules, and stays ordered after
+  # Docker so the table exists alongside the bridge setup it depends on.
+  systemd.services.sandbox-node-egress-filter = {
+    description = "Load the sandbox guest egress filter (spec 21)";
+    wants = ["docker.service"];
+    after = ["docker.service" "network-online.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.nftables}/bin/nft delete table inet sandbox_egress 2>/dev/null || true
+      ${pkgs.nftables}/bin/nft -f ${sandboxEgressRules}
+    '';
+  };
 }
