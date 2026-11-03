@@ -38,7 +38,6 @@ jobs:
     needs: changes
     if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
-    environment: production
     strategy:
       fail-fast: false
       matrix:
@@ -57,7 +56,6 @@ jobs:
         uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: nixos-monorepo
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           useDaemon: true
       - name: Build ${{ matrix.host }}
         run: |
@@ -69,7 +67,6 @@ jobs:
     needs: changes
     if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04-arm
-    environment: production
     strategy:
       fail-fast: false
       matrix:
@@ -95,7 +92,6 @@ jobs:
         uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: nixos-monorepo
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           useDaemon: true
       - name: Build ${{ matrix.host }}
         run: |
@@ -117,10 +113,22 @@ jobs:
     needs: [changes, build-x86]
     if: needs.changes.outputs.code == 'true' && needs.build-x86.result == 'success' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
-    environment: production
+    # Spec 21, Unit 1. This job used to SSH into the live hosts over Tailscale and
+    # read /run/current-system, which put the deploy SSH key and the Tailscale OAuth
+    # pair inside a `pull_request` workflow — the exact secret surface a PR job must
+    # not have. The base closure is now built in CI from the PR's base ref, so the
+    # job needs no host access and no long-lived credential.
+    #
+    # Cost: this doubles the x86 build work per PR. Both sides substitute from the
+    # public nixos-monorepo cache, so a warm cache keeps it cheap and a cold cache
+    # makes it the slowest job. The base build is bounded by `timeout`, and a base
+    # failure degrades to a warning so it cannot block a PR on infrastructure alone.
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
       - name: Install Nix
         uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
         with:
@@ -132,85 +140,52 @@ jobs:
         uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: nixos-monorepo
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           useDaemon: true
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          cat > ~/.ssh/config <<'EOF'
-          Host *
-            IdentityFile ~/.ssh/id_ed25519
-            IdentitiesOnly yes
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-            ControlMaster no
-          EOF
-          chmod 600 ~/.ssh/config
-      - name: Tailscale
-        uses: tailscale/github-action@d1b6cd204f8dceda5b3eaad7f1f767be390056cd # v4.2.0
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-          version: 1.102.4
-      - name: Configure Tailscale routing
-        run: |
-          # Reach the LAN via protecli-vault's advertised subnet routes only.
-          # Disable Tailscale DNS management (--accept-dns=false) so it does not
-          # rewrite /etc/resolv.conf to the tailnet resolver; use public DNS and
-          # wait until it resolves before any nix fetch.
-          sudo tailscale set --accept-routes --accept-dns=false
-          echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
-          echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf > /dev/null
-          for i in 1 2 3 4 5; do
-            getent hosts api.github.com >/dev/null && { echo "DNS ok"; exit 0; }
-            echo "DNS not ready (attempt $i)"; sleep 2
-          done
-          echo "DNS failed; /etc/resolv.conf:"; cat /etc/resolv.conf; exit 1
-      - name: Build and diff x86_64 hosts
+      - name: Build and diff base vs PR closures
         id: diff
         shell: bash
         run: |
           set +e
-          # Server hosts only: desktops (bee-pc/bee-gpd) never auto-deploy and are
-          # diffed locally, not from CI.
-          declare -A HOSTS=(
-            [homelab]="100.110.170.34"
-            [bee-gpu-server]="100.127.170.8"
-            [protecli-vault]="100.112.185.27"
-          )
+          # Server hosts only: desktops (bee-pc/bee-gpd) never auto-deploy.
+          HOSTS="homelab bee-gpu-server protecli-vault"
           DIFF_DIR=$(mktemp -d)
 
-          for host in "${!HOSTS[@]}"; do
-            ip="${HOSTS[$host]}"
-            echo "::group::${host} (${ip})"
+          # Materialise the base revision as a detached worktree so both closures can
+          # be evaluated from one runner without touching the PR checkout.
+          BASE_DIR="${RUNNER_TEMP}/base"
+          rm -rf "$BASE_DIR"
+          if ! git worktree add --detach "$BASE_DIR" "origin/${{ github.base_ref }}"; then
+            echo "base-worktree-failed" > "${DIFF_DIR}/fatal"
+          fi
 
-            if ! new_path=$(nix build ".#packages.x86_64-linux.${host}" --print-out-paths --no-link -L); then
-              echo "build-failed" > "${DIFF_DIR}/status-${host}"; echo "::endgroup::"; continue
-            fi
-            nix path-info -r "$new_path" | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/new-${host}.txt"
+          for host in $HOSTS; do
+            echo "::group::${host}"
 
-            ssh_err="${DIFF_DIR}/ssh-${host}.err"
-            if ssh -o ConnectTimeout=15 -o BatchMode=yes "bee@${ip}" \
-              "nix --extra-experimental-features nix-command path-info -r /run/current-system" \
-              > "${DIFF_DIR}/raw-${host}.txt" 2>"$ssh_err"; then
-              if [ -s "${DIFF_DIR}/raw-${host}.txt" ]; then
-                sed 's|^/nix/store/[a-z0-9]\{32\}-||' "${DIFF_DIR}/raw-${host}.txt" | sort -u > "${DIFF_DIR}/current-${host}.txt"
-              else
-                echo "unreachable" > "${DIFF_DIR}/status-${host}"
-                echo "no closure output from ${host} (${ip})"
-                echo "::endgroup::"; continue
-              fi
-            else
-              echo "unreachable" > "${DIFF_DIR}/status-${host}"
-              echo "ssh failed for ${host} (${ip}): $(grep -v 'Permanently added' "$ssh_err" 2>/dev/null | tail -1)"
+            if [ -f "${DIFF_DIR}/fatal" ]; then
+              echo "base-build-failed" > "${DIFF_DIR}/status-${host}"
+              echo "base revision unavailable; diff skipped"
               echo "::endgroup::"; continue
             fi
 
-            removed=$(comm -23 "${DIFF_DIR}/current-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
-            added=$(comm -13 "${DIFF_DIR}/current-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
+            if ! new_path=$(timeout 1800 nix build ".#packages.x86_64-linux.${host}" --print-out-paths --no-link -L); then
+              echo "build-failed" > "${DIFF_DIR}/status-${host}"
+              echo "::endgroup::"; continue
+            fi
+
+            if ! base_out=$(cd "$BASE_DIR" && timeout 1800 nix build ".#packages.x86_64-linux.${host}" --print-out-paths --no-link -L 2>&1); then
+              # A base build failure is an infrastructure problem, not a defect in
+              # this PR. Warn and skip rather than failing the required gate.
+              echo "::warning::base closure build failed for ${host}; diff skipped"
+              echo "base-build-failed" > "${DIFF_DIR}/status-${host}"
+              echo "::endgroup::"; continue
+            fi
+            base_path=$(printf '%s\n' "$base_out" | tail -1)
+
+            nix path-info -r "$new_path" | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/new-${host}.txt"
+            nix path-info -r "$base_path" | sed 's|^/nix/store/[a-z0-9]\{32\}-||' | sort -u > "${DIFF_DIR}/base-${host}.txt"
+
+            removed=$(comm -23 "${DIFF_DIR}/base-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
+            added=$(comm -13 "${DIFF_DIR}/base-${host}.txt" "${DIFF_DIR}/new-${host}.txt")
             if [ -z "$removed" ] && [ -z "$added" ]; then
               echo "no-changes" > "${DIFF_DIR}/status-${host}"
             else
@@ -225,22 +200,23 @@ jobs:
             echo '<!-- nixos-diff -->'
             echo '## NixOS Config Diff'
             echo ''
-            for host in homelab bee-gpu-server protecli-vault; do
-              ip="${HOSTS[$host]}"
+            echo "Base: \`${{ github.base_ref }}\` built in CI. No host access."
+            echo ''
+            for host in $HOSTS; do
               status=$(cat "${DIFF_DIR}/status-${host}" 2>/dev/null || echo unknown)
               case "$status" in
                 changed)
                   added_count=$(grep -c '^+ ' "${DIFF_DIR}/diff-${host}.txt" || true)
                   removed_count=$(grep -c '^- ' "${DIFF_DIR}/diff-${host}.txt" || true)
-                  echo "### ${host} (${ip}) — ${added_count} added, ${removed_count} removed"
+                  echo "### ${host} — ${added_count} added, ${removed_count} removed"
                   echo ''; echo '```diff'
                   lines=$(wc -l < "${DIFF_DIR}/diff-${host}.txt")
                   if [ "$lines" -gt 80 ]; then head -80 "${DIFF_DIR}/diff-${host}.txt"; echo "... and $((lines - 80)) more packages"; else cat "${DIFF_DIR}/diff-${host}.txt"; fi
                   echo '```'; echo ''
                   ;;
-                no-changes) echo "### ${host} (${ip}) — no changes"; echo '' ;;
-                unreachable) echo "### ${host} (${ip}) — unreachable, skipped"; echo '' ;;
-                build-failed) echo "### ${host} (${ip}) — build failed"; echo '' ;;
+                no-changes) echo "### ${host} — no changes"; echo '' ;;
+                base-build-failed) echo "### ${host} — base build failed, diff skipped"; echo '' ;;
+                build-failed) echo "### ${host} — PR build failed"; echo '' ;;
               esac
             done
           } > "$COMMENT_FILE"
