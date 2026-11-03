@@ -13,52 +13,61 @@
 # guest module is silently ignored. `sandbox-node.nix` picks the new package up
 # through `systemd.services.k3s.path = [ pkgs.gvisor ]`.
 #
+# ── Why the upstream release tarball and not a source build ──────────────────
+# nixpkgs builds gVisor from its synthetic `go` branch, which carries only the Go
+# sources. Since the 2026 releases `runsc` no longer embeds the sentry: it spawns
+# `gvisor-bin/{gvisor_sentry, gvisor-sentry-prewarmer, runsc-fd-parking,
+# gvisor-proc-umounter, runsc-metric-server, checkpointgofer}` from beside the
+# binary. Four of those are C programs whose only build rules live in the Bazel
+# files that the `go` branch strips, so a source build produces a `runsc` that
+# cannot create a single sandbox. The published release tarball — the same
+# artifact `runsc install` downloads — contains the whole set with matching
+# release labels. It is hash-pinned here, so it is still a fixed, reproducible
+# input.
+#
 # Reverting is deleting this import from `hosts/homelab/default.nix` and
 # restarting the guest once.
 {...}: {
   nixpkgs.overlays = [
     (final: prev: {
-      gvisor =
-        (prev.gvisor.override {
-          # gVisor 20261102.0 requires Go >= 1.27.3; nixpkgs' default `buildGoModule`
-          # is the 1.26 wrapper (Go 1.26.8), which is too old. The tree also ships
-          # `buildGo127Module`, pinned to `go_1_27` (1.27.3) — exactly enough.
-          buildGoModule = prev.buildGo127Module;
-        }).overrideAttrs (_old: {
-          version = "20261102.0";
-          # gVisor's synthetic `go` branch (buildable without Bazel), pinned to the
-          # branch tip at release-20261102.0-25. To update, take a newer go-branch
-          # commit and refresh both hashes:
-          #   nix-prefetch-github google gvisor --rev <rev>   (src.hash)
-          #   nix build .../pkgs.gvisor                       (reports the vendorHash)
-          src = prev.fetchFromGitHub {
-            owner = "google";
-            repo = "gvisor";
-            rev = "1ff810cb4f8ebf85cf009c60c236ff9d14f07618";
-            hash = "sha256-oD2uS3PCQRQGLGtuF4/yter9I3t6Txn2oAPhDhvAscs=";
+      gvisor = prev.stdenv.mkDerivation {
+        pname = "gvisor";
+        version = "20261102.0";
+
+        src = prev.fetchurl {
+          url = "https://storage.googleapis.com/gvisor/releases/release/20261102.0/x86_64/gvisor.tar.bz2";
+          hash = "sha256-b2sajw9GZaQDI4E1Fn0NmQv66v9VRKv2j14Ngis1SEo=";
+        };
+
+        nativeBuildInputs = [prev.bzip2 prev.makeWrapper];
+
+        # The tarball is flat: runsc, containerd-shim-runsc-v1, and gvisor-bin/.
+        sourceRoot = ".";
+
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/bin
+          install -m 0755 runsc containerd-shim-runsc-v1 $out/bin/
+          cp -a gvisor-bin $out/bin/gvisor-bin
+          runHook postInstall
+        '';
+
+        # `runsc do` shells out to these; containerd does not need them, but the
+        # nixpkgs package provided them and dropping them would be a silent
+        # regression for anyone debugging on the node.
+        postFixup = ''
+          wrapProgram $out/bin/runsc \
+            --prefix PATH : ${prev.lib.makeBinPath [prev.iproute2 prev.iptables prev.procps]}
+        '';
+
+        meta =
+          (prev.gvisor.meta or {})
+          // {
+            # The release bucket publishes per-architecture tarballs, and the sandbox
+            # node is the fleet's one deliberate amd64 host.
+            platforms = ["x86_64-linux"];
           };
-          vendorHash = "sha256-Hk9wHVoaRmYXsKZNa7hy+Alstf6iUCP8zccZO4MKfjc=";
-          # nixpkgs carries a `go mod tidy` patch for the 20260406.0 tree (it drops
-          # requires that are absent from the vendor directory). The newer tree no
-          # longer matches those hunks; drop the patch and let the tree's own go.mod
-          # define the vendor set that `vendorHash` covers.
-          patches = [];
-          # Since the 2026 releases, runsc resolves its sentry (and the optional
-          # metric server / checkpoint gofer) from a `gvisor-bin/` directory next to
-          # the runsc binary instead of embedding it. nixpkgs installs only `runsc`
-          # and the shim, so without this a pod fails at creation with
-          #   sidecar "gvisor_sentry" not usable:
-          #   stat .../bin/gvisor-bin/gvisor_sentry: no such file or directory
-          # Build them from the same source so their release labels always match.
-          postInstall =
-            (_old.postInstall or "")
-            + ''
-              mkdir -p $out/bin/gvisor-bin
-              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/gvisor_sentry ./runsc/cmd/sentry
-              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/runsc-metric-server ./runsc/cmd/metricserver
-              go build -trimpath -buildvcs=false -o $out/bin/gvisor-bin/checkpointgofer ./runsc/checkpointgofer
-            '';
-        });
+      };
     })
   ];
 }
