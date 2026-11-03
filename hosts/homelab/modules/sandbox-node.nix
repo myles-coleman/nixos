@@ -264,7 +264,11 @@ in {
       # it is faithfully re-created on every boot.
       systemd.tmpfiles.rules = [
         "d /var/lib/rancher/k3s/agent/etc/containerd 0755 root root -"
-        "C /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl 0644 root root - ${containerdTemplate}"
+        # `C+` (not `C`): `C` only copies when the destination is missing or empty,
+        # so once the template exists on the persistent /var/lib/rancher volume an
+        # updated template never lands. That silently dropped the gVisor handler's
+        # `pod_annotations`/`options` after a rebuild.
+        "C+ /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl 0644 root root - ${containerdTemplate}"
         "d /var/lib/runsc-logs 0700 root root -"
       ];
 
