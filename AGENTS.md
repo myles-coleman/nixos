@@ -59,10 +59,12 @@ taint. Agents run as plain `Sandbox` objects in the cluster repo's
 **edit-only — no Nix**; see `images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the
 vault.
 
-The pilot currently runs on the node's **default runtime**, not gVisor: Bun/OpenCode is
-unstable under gVisor (exit 130 on a ~75 s cycle), which is the spec's recorded fallback
-(DEV-3). The `RuntimeClass` and gVisor handler remain installed, so re-enabling
-`runtimeClassName: gvisor` in the Sandbox restores the boundary.
+The sandbox now runs **under gVisor** (`runtimeClassName: gvisor`). The spec 20 fallback
+(DEV-3) recorded Bun/OpenCode exiting 130 on a ~75 s cycle under gVisor; a controlled spike in
+spec 21 re-tested the same image and env and it ran 33 minutes with zero restarts, so the
+fallback is retired. Consequence for verification: gVisor's sentry fakes `/proc`, so
+`Seccomp:` reads `0` and `NoNewPrivs:` is absent inside the pod — that is expected, not a
+regression. Capability fields still read `0000000000000000`.
 
 The sandbox holds **no repository write credential** (spec 21, Unit 1): the PAT was revoked,
 `GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under Pod
