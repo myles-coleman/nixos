@@ -64,6 +64,12 @@ unstable under gVisor (exit 130 on a ~75 s cycle), which is the spec's recorded 
 (DEV-3). The `RuntimeClass` and gVisor handler remain installed, so re-enabling
 `runtimeClassName: gvisor` in the Sandbox restores the boundary.
 
+The sandbox holds **no repository write credential** (spec 21, Unit 1): the PAT was revoked,
+`GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under Pod
+Security Admission `restricted` with seccomp, no capabilities and a read-only root filesystem.
+Work is handed back as patch files in `/home/agent/patches` and collected with
+`scripts/collect-sandbox-patches.sh` — never pushed.
+
 The legacy **systemd-nspawn** path on `bee-gpu-server` (`opencode-agents.nix` +
 `opencode-egress.nix`, unit `container@nixos`, tailnet DNAT) was **retired in the spec 20
 cutover**. Do not reintroduce it; add agent capacity by scaling the Kubernetes Sandbox. Guest
@@ -73,24 +79,6 @@ plus the k3s agent-token rollout are operator, console-access steps.
   - `sops.nix`, `pikvm.nix`, `steam-remote-play-client.nix` — plain modules (not aspects)
 - `config/` — Vendored dotfiles (MangoHUD, Rofi, Waybar, PiKVM YAML)
 - `rebuild.sh` — Build script that formats and builds/switches; it does not commit
-
-### Kubernetes Agent Sandbox (spec 20)
-
-The nspawn instance above is being superseded by a Kubernetes Agent Sandbox running on a
-dedicated amd64 k3s node — a `microvm.nix` guest on `homelab` named `sandbox-node`
-(`hosts/homelab/modules/sandbox-node.nix`, declared under `microvm.vms.sandbox-node` in
-`hosts/homelab/default.nix`). The guest lists `k3s-common` + `k3s-agent` + `tailscale` (and
-**not** `rpi-base` or `k3s-token-sops`), attaches to `homelab`'s `br0` bridge, renames its NIC
-to `end0`, and carries the `sandbox.node/runtime=gvisor` label with a matching `NoSchedule`
-taint. Agents run as plain `Sandbox` objects under gVisor (`RuntimeClass gvisor`) in the
-cluster repo's `manifests/cluster/agent-sandbox/`, with egress through the in-cluster
-allowlisting squid (`manifests/cluster/squid/`) and the model reached by Strata's tailnet IP
-literal (`100.127.170.8:8080` — not a Kubernetes Service; the cluster's ArgoCD config excludes
-`EndpointSlice`, so a selectorless Service would have no endpoints). The sandbox is
-**edit-only — no Nix**; see
-`images/opencode-sandbox/AGENTS.md` and the Spec 20 runbook in the vault. Guest restarts are an
-explicit runbook step (`restartIfChanged = false`), and the `br0` migration plus the k3s
-agent-token rollout are operator, console-access steps.
 
 ## Conventions
 
