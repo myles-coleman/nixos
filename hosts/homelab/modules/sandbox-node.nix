@@ -264,11 +264,6 @@ in {
       # it is faithfully re-created on every boot.
       systemd.tmpfiles.rules = [
         "d /var/lib/rancher/k3s/agent/etc/containerd 0755 root root -"
-        # `C+` (not `C`): `C` only copies when the destination is missing or empty,
-        # so once the template exists on the persistent /var/lib/rancher volume an
-        # updated template never lands. That silently dropped the gVisor handler's
-        # `pod_annotations`/`options` after a rebuild.
-        "C+ /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl 0644 root root - ${containerdTemplate}"
         "d /var/lib/runsc-logs 0700 root root -"
       ];
 
@@ -280,6 +275,17 @@ in {
       # NixOS systemd services do not inherit /run/current-system/sw/bin, so the
       # `containerd-shim-runsc-v1` binary would not otherwise be found.
       systemd.services.k3s.path = [pkgs.gvisor];
+
+      # Install the containerd template on every k3s start, not via tmpfiles.
+      # `tmpfiles` type `C` only copies when the destination is missing or empty,
+      # and the destination lives on the persistent /var/lib/rancher volume — so an
+      # updated template silently never landed (observed: the gVisor handler kept
+      # its old `runtime_type`-only table after the debug-log change).
+      # `preStart` runs after the volume is mounted and before containerd starts.
+      systemd.services.k3s.preStart = lib.mkAfter ''
+        install -D -m 0644 ${containerdTemplate} \
+          /var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl
+      '';
 
       # ── operator access: tailnet-only, never a NodePort/IngressRoute ─────────      # `tailscale serve` on this (pinned) node proxies the tailnet to the sandbox
       # ClusterIP. A NodePort would listen on every node's LAN IP and have its
