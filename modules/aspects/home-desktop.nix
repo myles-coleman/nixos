@@ -70,17 +70,6 @@
     };
 
     home.file = {
-      ".claude/commands/SDD-1-generate-spec.md".source = ../../config/claude-commands/SDD-1-generate-spec.md;
-      ".claude/commands/SDD-2-generate-task-list-from-spec.md".source = ../../config/claude-commands/SDD-2-generate-task-list-from-spec.md;
-      ".claude/commands/SDD-3-manage-tasks.md".source = ../../config/claude-commands/SDD-3-manage-tasks.md;
-      ".claude/commands/SDD-4-validate-spec-implementation.md".source = ../../config/claude-commands/SDD-4-validate-spec-implementation.md;
-
-      # OpenCode skills - each skill needs its own directory with SKILL.md inside
-      ".config/opencode/skills/sdd-1-generate-spec/SKILL.md".source = ../../config/claude-commands/SDD-1-generate-spec.md;
-      ".config/opencode/skills/sdd-2-generate-task-list-from-spec/SKILL.md".source = ../../config/claude-commands/SDD-2-generate-task-list-from-spec.md;
-      ".config/opencode/skills/sdd-3-manage-tasks/SKILL.md".source = ../../config/claude-commands/SDD-3-manage-tasks.md;
-      ".config/opencode/skills/sdd-4-validate-spec-implementation/SKILL.md".source = ../../config/claude-commands/SDD-4-validate-spec-implementation.md;
-
       # OpenCode status-bar TUI plugin (branch / model / session cost)
       ".config/opencode/plugins/status/tui.tsx".source = ../../config/opencode/plugins/status/tui.tsx;
     };
