@@ -49,8 +49,12 @@
       chain sandbox_node {
         ct state established,related accept
 
-        # The k3s API (kube-vip VIP) and flannel VXLAN to the cluster nodes.
-        ip daddr 10.0.0.200 tcp dport 6443 accept
+        # The k3s API, both ways it is addressed: the kube-vip VIP that agents use
+        # for normal operation, and the server node itself, which the k3s
+        # remotedialer dials directly (wss://10.0.0.140:6443). Without the second
+        # rule, `kubectl exec`/`logs` fail with 502 because the apiserver reaches
+        # the kubelet through that tunnel.
+        ip daddr { 10.0.0.200, 10.0.0.140 } tcp dport 6443 accept
         ip daddr { 10.0.0.140, 10.0.0.141, 10.0.0.142, 10.0.0.143, 10.0.0.144 } udp dport 8472 accept
 
         # The guest's own resolvers.
