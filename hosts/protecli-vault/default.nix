@@ -21,6 +21,7 @@ in {
         ./modules/services.nix
         ./modules/mullvad.nix
         ./modules/watchdog.nix
+        ./modules/qca6174-firmware.nix
         ./modules/wifi.nix
         ../../modules/sops.nix
         inputs.sops-nix.nixosModules.sops
