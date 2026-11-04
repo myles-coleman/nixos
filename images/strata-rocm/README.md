@@ -35,7 +35,8 @@ fast-moving, no-CI project). Record that commit here when the image is built:
 | Strata commit built | `477ac13cbe8e582c20484871ce459d20d82df09d` (tag `v0.1.45`) |
 | Engine build | `source: local-hip`, `backend: hip`, `archs: [gfx1100]`, `vision: none` (from `engine/BUILD.json`) |
 | ROCm pairing | TheRock `rocm[libraries,devel]==7.10.0a20251120` (the wheels `setup.py` pins; the engine refuses a mismatched hipBLASLt table) |
-| Published image digest | `ghcr.io/myles-coleman/strata-rocm@sha256:…` — pinned in `hosts/bee-gpu-server/modules/strata.nix` |
+| Published image digest | `ghcr.io/myles-coleman/strata-rocm@sha256:fe278ebdf547f53e15f7c55c49a9a245d840a779261ff4c08bec26fb49653a1d` — pinned in `hosts/bee-gpu-server/modules/strata.nix` |
+| Runtime identity | Non-root: user `strata`, uid 1000 (the base image's `ubuntu` account renamed), home `/home/strata`; `/opt/strata` is owned by that uid (directory only) so the entrypoint can create its config link. The container runs `--user=1000:303` with `--group-add` for `video`/`render`. |
 
 ## Build gotcha on `bee-gpu-server`
 
@@ -47,10 +48,10 @@ host network:
 docker build --network=host -t ghcr.io/myles-coleman/strata-rocm:gfx1100 .
 ```
 
-**Do not clone the build context into the data volume.** `/home/bee/strata` on `bee-gpu-server` is
-the container's `/data` (created `0700 root` by tmpfiles). Clone to a scratch path instead, e.g.
-`/var/tmp/strata-build` — cloning into the data dir collides with it and leaves the whole source tree
-inside the volume.
+**Do not clone the build context into the data volume.** `/var/lib/strata` on `bee-gpu-server` is
+the container's `/data` (created `0700` by tmpfiles, owned by the container's runtime uid). Clone to
+a scratch path instead, e.g. `/var/tmp/strata-build` — cloning into the data dir collides with it and
+leaves the whole source tree inside the volume.
 
 The package is **public**, so the host pulls it anonymously — there is no pull credential to
 provision.
