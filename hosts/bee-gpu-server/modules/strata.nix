@@ -41,12 +41,25 @@
   modelsDir = "/home/bee/models";
   dataDir = "/var/lib/strata";
 
+  # The uid the container runs as (spec 23, nixos#63). 1000 is `bee` on the host,
+  # so the read-only model store stays readable, and it is the value `--user`
+  # passes. The gid is the host's `render` group: /dev/kfd and
+  # /dev/dri/renderD128 are root-owned with group `render`, so membership is what
+  # grants GPU access. Kept as bindings so `--user` and tmpfiles cannot drift.
+  runtimeUid = 1000;
+  runtimeGid = config.users.groups.render.gid;
+
   # Digest-pinned PUBLIC GHCR image (built from ./images/strata-rocm/Dockerfile),
   # so no pull credential is needed on the host.
   #
   # Built from Strata tag v0.1.45 (commit 477ac13) with HIP_ARCHITECTURES=gfx1100;
   # engine/BUILD.json inside the image reads source=local-hip, backend=hip.
-  image = "ghcr.io/myles-coleman/strata-rocm@sha256:3e126d5eeac41c687decc05147fd5bec9ef9676b5bb1c4008db0b35dfbd1a521";
+  #
+  # Rebuilt for spec 23 (nixos#63): the image now carries the `strata` runtime
+  # user (uid 1000) and owns /opt/strata as that uid, so the entrypoint's config
+  # link works without root. Same upstream commit and engine; the ROCm pairing is
+  # unchanged.
+  image = "ghcr.io/myles-coleman/strata-rocm@sha256:fe278ebdf547f53e15f7c55c49a9a245d840a779261ff4c08bec26fb49653a1d";
 
   apiKeySecret = "strata_api_key";
 
@@ -125,21 +138,18 @@ in {
       # Numeric GIDs, not names: Docker resolves `--group-add <name>` against the
       # *container's* /etc/group, and the Ubuntu-based Strata image has no
       # `render`/`video` entries, so the names fail with "no matching entries in
-      # group file". These GIDs come from NixOS's own group definitions. (The
-      # container runs as root, so these are belt-and-braces for the devices.)
+      # group file" (gid 26 even shows up as `tape` inside the image). These GIDs
+      # come from NixOS's own group definitions and are load-bearing now that the
+      # container is non-root (spec 23).
       "--group-add=${toString config.users.groups.video.gid}"
       "--group-add=${toString config.users.groups.render.gid}"
-      # Non-root was attempted and REVERTED (deviation from spec 21, Unit 4).
-      # `--user=<uid>:<gid>` fails at container start because the image's
-      # entrypoint creates a symlink inside /opt/strata, which the image owns as
-      # root (0755):
-      #   ln: failed to create symbolic link '/opt/strata/strata-iq2_xs.json':
-      #   Permission denied
-      # Supporting a non-root uid needs an image change (chmod the install dir and
-      # add a user), which is out of this spec's scope and would invalidate the
-      # pinned digest. Tracked as a follow-up; the container therefore still runs
-      # as root, while the IPC, seccomp, mount and port restrictions below do
-      # apply.
+      # Non-root (spec 23, nixos#63). The image owns /opt/strata as this uid, so
+      # the entrypoint's `ln -sfn` and `cp -f` of the model's config link succeed,
+      # while the engine itself stays root-owned in the image. A quant swap still
+      # works: the directory is writable for any `strata-<tag>.json`, so no
+      # rebuild is needed to change models. The earlier attempt failed because
+      # /opt/strata was root-owned; see images/strata-rocm/Dockerfile.
+      "--user=${toString runtimeUid}:${toString runtimeGid}"
       # `--ipc=host` is deliberately NOT used. A private IPC namespace is the
       # default; 2 GiB of /dev/shm covers HIP's buffers and is far above the
       # 64 MiB default that would otherwise apply.
@@ -198,15 +208,17 @@ in {
     '';
   };
 
-  # The engine state lives under /var/lib/strata (root-only); the weights live in
-  # the user's model store and stay readable. tmpfiles creates both so a fresh
-  # host converges without a manual mkdir, and so `bee` can read modelsDir.
+  # The engine state lives under /var/lib/strata and belongs to the container's
+  # runtime uid; the weights live in the user's model store and stay readable.
+  # tmpfiles creates both so a fresh host converges without a manual mkdir, and so
+  # `bee` can read modelsDir.
   systemd.tmpfiles.rules = [
-    # The container still runs as root (see the non-root note above), so the
-    # engine state stays root-owned. Kept as `d` only; the recursive `Z` was only
-    # needed for the reverted non-root attempt and would be a needless chown of
-    # every pack on each boot.
-    "d ${dataDir} 0700 root root -"
+    # `Z` is recursive and idempotent on purpose (spec 23): the tree was written
+    # as root before the container went non-root, and a restored backup or a
+    # hand-run container can reintroduce root ownership, so the runtime uid is
+    # reasserted on every boot rather than migrated once.
+    "d ${dataDir} 0700 ${toString runtimeUid} ${toString runtimeGid} -"
+    "Z ${dataDir} 0700 ${toString runtimeUid} ${toString runtimeGid} -"
     "d ${modelsDir} 0755 bee users -"
   ];
 
