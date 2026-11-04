@@ -16,7 +16,8 @@ hosts, managed with flakes and home-manager.
 - **protecli-vault** — Tailscale subnet-router / egress gateway (x86_64)
 - **pikvm** — Raspberry Pi 4 KVM (aarch64, cross-compiled)
 - **node0**–**node4** — five-node Raspberry Pi 5 k3s cluster (aarch64); `node0`
-  is the control plane, `node1`–`node3` are NVMe agents, `node4` an SD-card agent
+  is the control plane, `node1`–`node4` are NVMe agents (`node4` runs the
+  default 4K page size; `node0`–`node3` use the 16K-page jemalloc overlay)
 - **rpi3** — Raspberry Pi 3B Chromium kiosk (aarch64, `nixos-raspberrypi`, SD image)
 - **home-manager** — User-level config management (dotfiles, shell, packages)
 
