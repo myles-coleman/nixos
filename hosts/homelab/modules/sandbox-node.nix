@@ -170,6 +170,23 @@ in {
         "--node-taint=sandbox=gvisor:NoSchedule"
       ];
 
+      # ── telemetry (issue #74) ──────────────────────────────────────────────
+      # Deliberately no node_exporter or OTel agent in this file. The cluster's
+      # `node-exporter` DaemonSet and `signoz-k8s-infra` agent tolerate the
+      # `sandbox=gvisor:NoSchedule` taint above and run on this guest, so the
+      # guest OS is observed without a second, NixOS-managed exporter to keep in
+      # sync. The taint is what keeps every other workload off the node.
+      #
+      # The Strata collector (`manifests/cluster/sandbox-telemetry` in the
+      # homelab-cluster repo) is pinned to this node for the same reason it is
+      # hostNetwork: this is the only cluster node that can reach
+      # bee-gpu-server's tailnet-only Strata port. Do not "fix" that by opening
+      # Strata to the pod network.
+      #
+      # The runsc logs persisted under /var/lib/runsc-logs below are the
+      # intended source for sampled gVisor telemetry. They are not ingested yet;
+      # retrieving them is an operator step until a filelog DaemonSet lands.
+
       # ── inbound firewall (spec 21, Unit 3) ─────────────────────────────────
       # `k3s-common` disables the firewall for every cluster node. This guest
       # re-enables it because it is the untrusted one: an escape from the sandbox
