@@ -31,7 +31,10 @@ a path to host root, not just to a commit.
 
 So the handoff is a patch file. Do this:
 
-1. Clone or fetch the public repository read-only. There is no token; the repository is public.
+1. Work on the copy that is already in the workspace (`/home/agent/nixos`). **You cannot
+   clone or fetch** — the sandbox has no internet (see Network below). It was seeded by the
+   operator at a pinned revision, so it may lag behind `main`. Say so in your final message if
+   that matters for the change.
 2. Create a branch and commit your work locally:
 
    ```bash
@@ -65,12 +68,17 @@ Rules:
 
 ## Network
 
-There is **no direct internet and no DNS** in this sandbox. Egress is an FQDN-allowlisted
-forward proxy, so only a small set of hosts is reachable, and only through the proxy:
+There is **no internet at all** in this sandbox. `HTTP_PROXY`/`HTTPS_PROXY` point at a forward
+proxy whose allowlist is empty: **every** outbound request is denied and logged. There is also
+no DNS.
 
-- Use `git`/`curl` normally; `HTTP_PROXY`/`HTTPS_PROXY` are set.
-- The model endpoint is reached by IP literal (no DNS).
-- A request to a non-allowlisted host is denied and logged.
+- **Do not** `git clone`, `git fetch`, `git pull`, `npm install`, `pip install`, `curl` or
+  `wget` anything external. They will fail, and the failure is the intended behaviour, not a
+  bug to work around.
+- The workspace copy is seeded by the operator. Work with what is there.
+- The model endpoint is reached by IP literal and bypasses the proxy; it is the only reachable
+  service.
+- If a task genuinely needs a dependency that is not present, say so and stop. Do not retry.
 
 ## Secrets
 
