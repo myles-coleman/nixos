@@ -175,6 +175,10 @@ in {
 
       networking.interfaces.end0.ipv4.addresses = [
         {
+          # Static, not DHCP. This address is also referenced in
+          # `homelab-cluster` manifests/cluster/agent-sandbox/sandbox.yaml (the
+          # OTLP exporter endpoint) and networkpolicy.yaml (its egress rule).
+          # Change all three together.
           address = "10.0.0.146";
           prefixLength = 24;
         }
