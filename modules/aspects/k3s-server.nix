@@ -26,6 +26,12 @@
         }
       ];
 
+      # `sqlite3` must exist on the control plane so `scripts/k3s-backup.sh` can
+      # take an online snapshot of `server/db/state.db` with the SQLite backup
+      # API. It was not installed before spec 28, which is why no backup of the
+      # datastore was possible at all.
+      environment.systemPackages = [pkgs.sqlite];
+
       environment.etc."rancher/k3s/server/manifests/kube-vip.yaml".text = ''
         apiVersion: v1
         kind: ServiceAccount
@@ -178,14 +184,20 @@
           RestartSec = "10s";
         };
         script = ''
+          # Use the service package's kubectl, never `pkgs.k3s` (spec 28, Unit 1):
+          # the nixpkgs alias is a different minor than the apiserver this oneshot
+          # is talking to, and `k3s --version` on node0 was lying about exactly
+          # that. `config.services.k3s.package` also provides kubectl.
+          KUBECTL="${config.services.k3s.package}/bin/kubectl"
+
           # Wait for k3s to be ready
-          until ${pkgs.k3s}/bin/kubectl --kubeconfig=/etc/rancher/k3s/k3s.yaml get nodes &>/dev/null; do
+          until $KUBECTL --kubeconfig=/etc/rancher/k3s/k3s.yaml get nodes &>/dev/null; do
             echo "Waiting for k3s to be ready..."
             sleep 5
           done
 
           # Apply the kube-vip manifest
-          ${pkgs.k3s}/bin/kubectl --kubeconfig=/etc/rancher/k3s/k3s.yaml apply -f /etc/rancher/k3s/server/manifests/kube-vip.yaml
+          $KUBECTL --kubeconfig=/etc/rancher/k3s/k3s.yaml apply -f /etc/rancher/k3s/server/manifests/kube-vip.yaml
         '';
       };
     };

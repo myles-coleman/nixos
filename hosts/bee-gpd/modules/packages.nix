@@ -36,6 +36,12 @@
     typora
     bat
 
+    # Spec 28: scripts/k3s-backup.sh runs from this workstation. `age` encrypts
+    # the datastore snapshot (and age-keygen drives its --self-test), and
+    # `sqlite3` verifies a restored artifact with PRAGMA integrity_check.
+    age
+    sqlite
+
     # Learning harness — local derivation repacking the upstream AppImage
     # payload onto nixpkgs Electron (x86_64 only). See pkgs/learnharness.
     (callPackage ../../../pkgs/learnharness {electron = unstable.electron_44;})

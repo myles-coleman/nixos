@@ -108,6 +108,11 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Verify root nixpkgs is aligned with nixos-raspberrypi
         run: scripts/repin-nixpkgs-from-rpi.sh
+      # Spec 28: keeps an unpinned `k3s`/`kubectl` from shadowing the pinned
+      # service package again, and keeps the server oneshot on the service
+      # package's kubectl. No cluster access, no secrets.
+      - name: Verify k3s version invariants
+        run: scripts/k3s-upgrade-check.sh --static
 
   closure-diff:
     needs: [changes, build-x86]
