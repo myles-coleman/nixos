@@ -196,13 +196,8 @@ in {
       # stated explicitly so the assumption is visible.
       k3sAgent.interface = "end0";
 
-      # Spec 28: hold the guest one minor BEHIND the control plane while a hop is
-      # in flight. `homelab` auto-deploys on every merge to `main`, so without an
-      # explicit pin a guest restart could put a 1.35 kubelet in front of a 1.34
-      # apiserver — the exact skew this feature removes. A plain assignment wins
-      # over `k3s-common`'s `lib.mkDefault`. Raise this after `node0` reports the
-      # new minor and the gate passes; remove it entirely when the fleet lands.
-      services.k3s.package = pkgs.k3s_1_35;
+      # Spec 28: the one-minor-behind pin was removed once every node reached
+      # 1.36.4, so the guest inherits `k3s-common`'s pin like any other node.
 
       # ── node identity in the cluster ────────────────────────────────────────
       # A label + NoSchedule taint mirroring the cluster's `gpu=amd:NoSchedule`
