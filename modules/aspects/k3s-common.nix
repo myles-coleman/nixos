@@ -69,7 +69,7 @@
       ];
 
       # K3s supports upgrading one minor at a time, so this is a deliberate
-      # 1.33 -> 1.34 step (spec 28). `mkDefault` lets a host override the minor
+      # 1.34 -> 1.35 step (spec 28). `mkDefault` lets a host override the minor
       # without editing this shared aspect; the sandbox guest uses that to stay
       # one minor behind the control plane while a hop is in flight.
       #
@@ -78,7 +78,7 @@
       # 1.33.13+k3s2 — so `permittedInsecurePackages` could pin it if a hop ever
       # needed to be split from the nixpkgs bump. The earlier comment claiming
       # nixpkgs "refuses to evaluate" it was wrong.
-      services.k3s.package = lib.mkDefault pkgs.k3s_1_34;
+      services.k3s.package = lib.mkDefault pkgs.k3s_1_35;
 
       # Do NOT add `k3s` or `kubectl` to this list. The NixOS k3s module already
       # puts `config.services.k3s.package` on PATH (it ships both binaries), so
