@@ -202,7 +202,7 @@ in {
       # apiserver — the exact skew this feature removes. A plain assignment wins
       # over `k3s-common`'s `lib.mkDefault`. Raise this after `node0` reports the
       # new minor and the gate passes; remove it entirely when the fleet lands.
-      services.k3s.package = pkgs.k3s_1_34;
+      services.k3s.package = pkgs.k3s_1_35;
 
       # ── node identity in the cluster ────────────────────────────────────────
       # A label + NoSchedule taint mirroring the cluster's `gpu=amd:NoSchedule`
