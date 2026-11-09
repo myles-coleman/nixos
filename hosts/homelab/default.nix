@@ -82,6 +82,16 @@ in {
       };
     };
 
+    # Spec 31, Unit 1: explicit cgroup bounds for the sandbox guest. `mem` sizes
+    # the guest's RAM; these bound the whole QEMU cgroup (RAM plus emulator
+    # overhead). The red-team broker and target get their own bounds when they
+    # are declared. Budget: host reserve ~3 GiB, sandbox-node 5 GiB, broker
+    # 1 GiB, target 1 GiB, leaving ~5.9 GiB of headroom on a ~15.9 GiB host.
+    systemd.services."microvm@sandbox-node".serviceConfig = {
+      MemoryHigh = "5376M";
+      MemoryMax = "5632M";
+    };
+
     # microvm.nix creates <stateDir> and <stateDir>/<name> owned by microvm:kvm, but
     # NOT the `volumes` subdir — and the runner only `touch`es the image files inside
     # it, so the directory must already exist with the runner's ownership. A
