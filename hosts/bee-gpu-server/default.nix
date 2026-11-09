@@ -20,6 +20,7 @@ in {
         ./modules/gpu.nix
         ./modules/containers.nix
         ./modules/strata.nix
+        ./modules/transcriber.nix
         ./modules/mullvad.nix
         ../../modules/sops.nix
         ../../modules/steam-remote-play-client.nix
