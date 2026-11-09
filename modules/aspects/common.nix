@@ -33,7 +33,8 @@
       wget
       obsidian
       discord
-      brave
+      # brave was removed from nixpkgs (no maintainers left to handle security
+      # updates). Add chromium or firefox here if a browser is wanted.
       ntfs3g #for mounting ntfs drives
       alejandra #for formatting in rebuild script
       libnotify #for system notifications
