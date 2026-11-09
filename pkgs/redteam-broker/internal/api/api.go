@@ -20,14 +20,16 @@ import (
 // Server is the broker's control plane. It holds the signed scope and catalog,
 // verifies approvals, evaluates policy, and calls the lab proxy.
 type Server struct {
-	Scope        *scope.Scope
-	Catalog      *catalog.Catalog
-	ApprovalPub  ed25519.PublicKey
-	ProxySocket  string
-	TargetScheme string
-	TargetPort   int
-	Emitter      evidence.Emitter
-	Now          func() time.Time
+	Scope         *scope.Scope
+	Catalog       *catalog.Catalog
+	ApprovalPub   ed25519.PublicKey
+	ProxySocket   string
+	TargetScheme  string
+	TargetPort    int
+	ScopeDigest   string
+	CatalogDigest string
+	Emitter       evidence.Emitter
+	Now           func() time.Time
 
 	used map[string]bool
 	mu   sync.Mutex
@@ -73,6 +75,7 @@ func (s *Server) Handler() http.Handler {
 func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	var req request
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		s.record("", req, policy.Decision{Reason: "bad_request"}, "", "")
 		writeJSON(w, http.StatusBadRequest, response{Decision: policy.Decision{Reason: "bad_request"}})
 		return
 	}
@@ -89,6 +92,7 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	}
 	path, ok := req.Parameters["path"]
 	if !ok || !strings.HasPrefix(path, "/") || strings.Contains(path, "://") {
+		s.record("", req, policy.Decision{Reason: "bad_parameters"}, "", "")
 		writeJSON(w, http.StatusBadRequest, response{Decision: policy.Decision{Reason: "bad_parameters"}})
 		return
 	}
@@ -141,6 +145,10 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	}
 	s.record(hash, req, decision, nonce, rationale)
 
+	if decision.Pause {
+		writeJSON(w, http.StatusAccepted, response{Decision: decision, ActionHash: hash})
+		return
+	}
 	if !decision.Allow {
 		writeJSON(w, http.StatusForbidden, response{Decision: decision, ActionHash: hash})
 		return
@@ -166,15 +174,32 @@ func (s *Server) record(hash string, req request, decision policy.Decision, nonc
 	if s.Emitter == nil {
 		return
 	}
+	name := "deny"
+	if decision.Allow {
+		name = "allow"
+	} else if decision.Pause {
+		name = "pause"
+	}
+	artifacts := map[string]string{}
+	if s.ScopeDigest != "" {
+		artifacts["scope_sha256"] = s.ScopeDigest
+	}
+	if s.CatalogDigest != "" {
+		artifacts["catalog_sha256"] = s.CatalogDigest
+	}
+	if s.Scope.TargetDigest != "" {
+		artifacts["target_digest"] = s.Scope.TargetDigest
+	}
 	_ = s.Emitter.Emit(evidence.Event{
 		ActionHash:   hash,
 		ScopeVersion: s.Scope.Version,
 		TechniqueID:  req.TechniqueID,
-		Decision:     map[bool]string{true: "allow", false: "deny"}[decision.Allow],
+		Decision:     name,
 		Reason:       decision.Reason,
 		Destination:  s.Scope.Target,
 		Nonce:        nonce,
 		Rationale:    rationale,
+		Artifacts:    artifacts,
 	})
 }
 

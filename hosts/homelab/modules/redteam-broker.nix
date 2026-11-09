@@ -104,6 +104,7 @@ in {
       ExecStart = "${pkgs.iproute2}/bin/ip netns exec redteam-proxy ${broker}/bin/broker proxy --socket /run/redteam/proxy.sock";
       Restart = "always";
       RestartSec = 2;
+      MemoryHigh = "192M";
       MemoryMax = "256M";
     };
   };
@@ -171,6 +172,7 @@ in {
       StateDirectory = "redteam-broker";
       Restart = "always";
       RestartSec = 2;
+      MemoryHigh = "448M";
       MemoryMax = "512M";
     };
   };

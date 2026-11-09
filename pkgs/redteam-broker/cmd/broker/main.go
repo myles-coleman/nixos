@@ -1,8 +1,10 @@
 package main
 
 import (
+	"crypto/sha256"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/hex"
 	"flag"
 	"fmt"
 	"log"
@@ -88,6 +90,14 @@ func serve(args []string) {
 		log.Fatalf("open evidence chain: %v", err)
 	}
 	server := api.New(s, c, approvalKey, *proxySocket, emitter)
+	server.ScopeDigest, err = sha256File(*scopePath)
+	if err != nil {
+		log.Fatalf("hash scope: %v", err)
+	}
+	server.CatalogDigest, err = sha256File(*catalogPath)
+	if err != nil {
+		log.Fatalf("hash catalog: %v", err)
+	}
 
 	httpServer := &http.Server{
 		Addr:              *addr,
@@ -140,4 +150,13 @@ func readVersion(dir string) int {
 
 func writeVersion(dir string, version int) error {
 	return os.WriteFile(filepath.Join(dir, "scope.version"), []byte(strconv.Itoa(version)), 0o644)
+}
+
+func sha256File(path string) (string, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:]), nil
 }

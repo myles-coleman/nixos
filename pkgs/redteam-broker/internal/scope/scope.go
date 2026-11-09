@@ -19,11 +19,13 @@ type Scope struct {
 	Version        int      `yaml:"version" json:"version"`
 	NotBefore      string   `yaml:"not_before" json:"not_before"`
 	NotAfter       string   `yaml:"not_after" json:"not_after"`
-	Target         string   `yaml:"target" json:"target"`
-	LabCIDRs       []string `yaml:"lab_cidrs" json:"lab_cidrs"`
-	AllowedClasses []string `yaml:"allowed_classes" json:"allowed_classes"`
-	CatalogVersion int      `yaml:"catalog_version" json:"catalog_version"`
-	HardDeny       []string `yaml:"hard_deny" json:"hard_deny"`
+	Target            string   `yaml:"target" json:"target"`
+	TargetCriticality string   `yaml:"target_criticality" json:"target_criticality"`
+	TargetDigest      string   `yaml:"target_digest" json:"target_digest"`
+	LabCIDRs          []string `yaml:"lab_cidrs" json:"lab_cidrs"`
+	AllowedClasses    []string `yaml:"allowed_classes" json:"allowed_classes"`
+	CatalogVersion    int      `yaml:"catalog_version" json:"catalog_version"`
+	HardDeny          []string `yaml:"hard_deny" json:"hard_deny"`
 }
 
 // Load verifies the detached signature, then parses the scope.

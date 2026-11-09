@@ -14,6 +14,8 @@ decision := {"allow": false, "reason": "hard_deny"} if {
 	not technique_known
 } else := {"allow": false, "reason": "class_not_allowed"} if {
 	not class_allowed
+} else := {"allow": false, "pause": true, "reason": "pause"} if {
+	not criticality_known
 } else := {"allow": false, "reason": "out_of_window"} if {
 	not in_window
 } else := {"allow": false, "reason": "out_of_scope"} if {
@@ -38,6 +40,12 @@ technique_known if {
 
 class_allowed if {
 	technique.class in input.scope.allowed_classes
+}
+
+# A missing or unknown human-assigned target criticality is scope uncertainty:
+# pause for the operator instead of allowing the action.
+criticality_known if {
+	input.scope.target_criticality in ["low", "medium", "high", "critical"]
 }
 
 in_window if {

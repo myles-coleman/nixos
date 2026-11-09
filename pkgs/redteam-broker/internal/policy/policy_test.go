@@ -20,8 +20,10 @@ func baseInput() Input {
 			"version":         1,
 			"not_before":      "2026-01-01T00:00:00Z",
 			"not_after":       "2027-01-01T00:00:00Z",
-			"target":          "10.99.0.2",
-			"lab_cidrs":       []any{"10.99.0.0/24"},
+			"target":             "10.99.0.2",
+			"target_criticality": "high",
+			"target_digest":      "sha256:test",
+			"lab_cidrs":          []any{"10.99.0.0/24"},
 			"allowed_classes": []any{"recon", "scan"},
 			"catalog_version": 1,
 			"hard_deny": []any{
@@ -101,6 +103,15 @@ func TestOutOfScope(t *testing.T) {
 	input.Destination = "192.168.1.10"
 	decision := evaluate(t, input)
 	if decision.Allow || decision.Reason != "out_of_scope" {
+		t.Fatalf("unexpected decision: %+v", decision)
+	}
+}
+
+func TestPauseOnUnknownCriticality(t *testing.T) {
+	input := baseInput()
+	input.Scope["target_criticality"] = "unknown"
+	decision := evaluate(t, input)
+	if decision.Allow || !decision.Pause || decision.Reason != "pause" {
 		t.Fatalf("unexpected decision: %+v", decision)
 	}
 }

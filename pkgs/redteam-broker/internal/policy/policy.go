@@ -12,9 +12,11 @@ import (
 //go:embed policy.rego
 var module string
 
-// Decision is the broker's single policy output.
+// Decision is the broker's single policy output. Pause is a distinct state: the
+// action is neither allowed nor denied, and the operator must clarify the scope.
 type Decision struct {
 	Allow  bool   `json:"allow"`
+	Pause  bool   `json:"pause,omitempty"`
 	Reason string `json:"reason"`
 }
 
