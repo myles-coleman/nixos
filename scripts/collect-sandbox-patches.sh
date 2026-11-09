@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
 # collect-sandbox-patches.sh — pull reviewable patch files out of the OpenCode
-# sandbox without trusting it (spec 21, Unit 2).
+# sandbox, judged against the same allowlist the validator enforces.
 #
 # The sandbox has no repository write credential. Its only handoff is a set of
-# `git format-patch` files on the workspace PVC. This script copies those files
-# out for the operator to review and apply.
+# `git format-patch` files on the workspace PVC. This script copies them out for
+# operator review.
 #
 # Trust model
 # -----------
@@ -13,14 +13,13 @@
 #   * only files matching `*.patch` in one flat directory are considered;
 #   * each file is read individually with `kubectl exec -- cat`, never
 #     `kubectl cp` and never a tar stream (tar has a path-traversal history);
-#   * a file name containing `/`, `\` or `..` is refused outright, so a hostile
-#     PVC cannot choose where the operator's disk gets written;
-#   * patches touching CI workflows, the flake lock, sops config, secrets, the
-#     guest module or authorized_keys are refused unless explicitly allowed.
+#   * a file name containing `/`, `\` or `..` is refused outright;
+#   * every touched path is judged against the canonical allowlist fetched from
+#     the validator (spec 30, FR-32). There is no local copy and no override:
+#     when the policy cannot be fetched, this script refuses to run.
 #
 # Usage:
-#   collect-sandbox-patches.sh [--out DIR] [--pod NAME] [--namespace NS]
-#                              [--from-dir DIR] [--allow-sensitive] [--help]
+#   collect-sandbox-patches.sh --repo <nixos|homelab-cluster> [options]
 set -euo pipefail
 
 NAMESPACE="${NAMESPACE:-agent-sandbox}"
@@ -29,25 +28,29 @@ REMOTE_DIR="${REMOTE_DIR:-/home/agent/patches}"
 OUT_DIR="./sandbox-patches"
 POD=""
 FROM_DIR=""
-ALLOW_SENSITIVE=0
+REPO=""
+POLICY_FILE=""
+VALIDATOR_URL="${VALIDATOR_URL:-https://validator.agent.internal:8443}"
 
 usage() {
-  sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
   cat <<'EOF'
 
 Options:
-  --out DIR          Where to write the collected patches (default ./sandbox-patches)
+  --repo NAME        Repository the patches target (required): nixos or
+                     homelab-cluster. Selects the allowlist section.
+  --out DIR          Where to write collected patches (default ./sandbox-patches)
   --pod NAME         Read from this pod instead of resolving the label selector
   --namespace NS     Namespace of the sandbox (default agent-sandbox)
-  --from-dir DIR     Read from a local directory instead of the cluster. Used for
-                     testing the guard; no kubectl involved.
-  --allow-sensitive  Permit patches that touch the protected paths (still reported)
+  --from-dir DIR     Read from a local directory instead of the cluster.
+  --policy-file FILE Test-only. Read the allowlist from a file instead of the
+                     validator; only accepted together with --from-dir.
   --help             Show this help
 
 Exit status:
   0  every patch was collected and none was refused
   1  a patch was refused, or a file failed validation
-  2  usage error, or no sandbox pod could be resolved
+  2  usage error, no sandbox pod, or the allowlist could not be fetched
 EOF
 }
 
@@ -58,68 +61,33 @@ die() {
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --out)
-      [ "$#" -ge 2 ] || die "--out needs a value"
-      OUT_DIR="$2"
-      shift 2
-      ;;
-    --pod)
-      [ "$#" -ge 2 ] || die "--pod needs a value"
-      POD="$2"
-      shift 2
-      ;;
-    --namespace)
-      [ "$#" -ge 2 ] || die "--namespace needs a value"
-      NAMESPACE="$2"
-      shift 2
-      ;;
-    --from-dir)
-      [ "$#" -ge 2 ] || die "--from-dir needs a value"
-      FROM_DIR="$2"
-      shift 2
-      ;;
-    --allow-sensitive)
-      ALLOW_SENSITIVE=1
-      shift
-      ;;
-    --help | -h)
-      usage
-      exit 0
-      ;;
+    --out) [ "$#" -ge 2 ] || die "--out needs a value"; OUT_DIR="$2"; shift 2 ;;
+    --pod) [ "$#" -ge 2 ] || die "--pod needs a value"; POD="$2"; shift 2 ;;
+    --namespace) [ "$#" -ge 2 ] || die "--namespace needs a value"; NAMESPACE="$2"; shift 2 ;;
+    --from-dir) [ "$#" -ge 2 ] || die "--from-dir needs a value"; FROM_DIR="$2"; shift 2 ;;
+    --repo) [ "$#" -ge 2 ] || die "--repo needs a value"; REPO="$2"; shift 2 ;;
+    --policy-file) [ "$#" -ge 2 ] || die "--policy-file needs a value"; POLICY_FILE="$2"; shift 2 ;;
+    --help | -h) usage; exit 0 ;;
     *)
-      die "unknown argument: $1 (try --help)"
+      # --allow-sensitive was removed in spec 30 (FR-32). Keep the diagnostic
+      # explicit so an old invocation fails loudly instead of silently running
+      # with a wider policy.
+      case "$1" in
+        --allow-sensitive) die "unknown option: --allow-sensitive (removed; the allowlist is canonical)" ;;
+        *) die "unknown option: $1 (try --help)" ;;
+      esac
       ;;
   esac
 done
 
-# ── protected paths ───────────────────────────────────────────────────────────
-#
-# A patch touching any of these changes the mechanism that deploys, the pin that
-# determines what gets built, the store that holds the secrets, the guest module
-# that defines the boundary this whole feature is about, or SSH access. Each one
-# turns "the operator reviews a diff" into "the operator must audit the harness".
-is_sensitive() {
-  local path="$1"
-  case "$path" in
-    .github/workflows/*) return 0 ;;
-    flake.lock) return 0 ;;
-    .sops.yaml) return 0 ;;
-    secrets/*) return 0 ;;
-    hosts/homelab/modules/sandbox-node.nix) return 0 ;;
-    */authorized_keys | authorized_keys) return 0 ;;
-  esac
-  return 1
-}
-
-# Extract every file path a patch touches. `diff --git a/X b/X` covers modified
-# and deleted files; the `+++ b/X` / `--- a/X` lines cover new files and renames.
-patch_paths() {
-  sed -n \
-    -e 's|^diff --git a/\(.*\) b/.*$|\1|p' \
-    -e 's|^+++ b/\(.*\)$|\1|p' \
-    -e 's|^--- a/\(.*\)$|\1|p' \
-    "$1" | grep -v '^/dev/null$' | sort -u
-}
+[ -n "$REPO" ] || die "--repo is required (nixos or homelab-cluster)"
+case "$REPO" in
+  nixos | homelab-cluster) ;;
+  *) die "unsupported repository: $REPO" ;;
+esac
+if [ -n "$POLICY_FILE" ] && [ -z "$FROM_DIR" ]; then
+  die "--policy-file is only allowed with --from-dir"
+fi
 
 # ── source ────────────────────────────────────────────────────────────────────
 if [ -n "$FROM_DIR" ]; then
@@ -145,6 +113,117 @@ else
   }
 fi
 
+# ── canonical allowlist (FR-32) ───────────────────────────────────────────────
+#
+# One source: the validator serves the same file it enforces. No local copy is
+# kept, and an unavailable policy is fatal — a manual path wider than the
+# automated one is exactly the drift this feature exists to remove.
+TMP_WORK="$(mktemp -d)"
+trap 'rm -rf "$TMP_WORK"' EXIT
+POLICY="$TMP_WORK/policy.yaml"
+
+fetch_policy() {
+  if [ -n "$POLICY_FILE" ]; then
+    cat -- "$POLICY_FILE"
+    return
+  fi
+  kubectl -n "$NAMESPACE" exec "$POD" -- \
+    curl -sS --fail --max-time 10 \
+    --cacert /certs/ca.crt --cert /certs/tls.crt --key /certs/tls.key \
+    "$VALIDATOR_URL/v1/policy"
+}
+
+if ! fetch_policy >"$POLICY" 2>/dev/null; then
+  die "policy unavailable: refusing to run without the validator allowlist"
+fi
+[ -s "$POLICY" ] || die "policy unavailable: the validator returned an empty allowlist"
+
+# ── path extraction and evaluation ────────────────────────────────────────────
+patch_paths() {
+  sed -n \
+    -e 's|^diff --git a/\(.*\) b/.*$|\1|p' \
+    -e 's|^+++ b/\(.*\)$|\1|p' \
+    -e 's|^--- a/\(.*\)$|\1|p' \
+    "$1" | grep -v '^/dev/null$' | sort -u
+}
+
+# Prints one denied path per line. Empty output means the patch is permitted.
+# The allowlist is parsed from the validator's YAML with a deliberately small
+# parser: this file's shape, no third-party dependency on the operator host.
+evaluate_paths() {
+  local patch="$1"
+  local -a paths=()
+  mapfile -t paths < <(patch_paths "$patch")
+  if [ "${#paths[@]}" -eq 0 ]; then
+    return 0
+  fi
+  python3 - "$REPO" "$POLICY" "${paths[@]}" <<'PY'
+import re
+import sys
+
+repo = sys.argv[1]
+text = open(sys.argv[2], encoding="utf-8").read()
+paths = sys.argv[3:]
+
+repos, cur, field = {}, None, None
+for raw in text.splitlines():
+    if not raw.strip() or raw.lstrip().startswith("#"):
+        continue
+    indent = len(raw) - len(raw.lstrip())
+    line = raw.strip()
+    if line == "repos:":
+        continue
+    if indent == 2 and line.endswith(":"):
+        cur = line[:-1]
+        repos[cur] = {"allow": [], "deny": []}
+        field = None
+    elif indent == 4 and line.endswith(":"):
+        field = line[:-1]
+    elif indent == 6 and line.startswith("- ") and cur and field in ("allow", "deny"):
+        repos[cur][field].append(line[2:].strip().strip('"'))
+
+if repo not in repos:
+    print("<unknown repository>")
+    sys.exit(0)
+
+def glob_to_re(pattern):
+    out, i = "", 0
+    while i < len(pattern):
+        c = pattern[i]
+        if c == "*":
+            if pattern[i:i + 2] == "**":
+                out += ".*"
+                i += 2
+                continue
+            out += "[^/]*"
+        elif c == "?":
+            out += "[^/]"
+        else:
+            out += re.escape(c)
+        i += 1
+    return "^" + out + "$"
+
+allow = [glob_to_re(p) for p in repos[repo]["allow"]]
+deny = [glob_to_re(p) for p in repos[repo]["deny"]]
+
+for path in paths:
+    if path in ("", "/dev/null"):
+        continue
+    base = path.rsplit("/", 1)[-1]
+    # Lock files are refused by a dedicated rule in the validator (FR-24), so the
+    # manual path refuses them too.
+    if base == "flake.lock" or path.endswith(".terraform.lock.hcl"):
+        print(path)
+        continue
+    if any(re.match(d, path) for d in deny):
+        print(path)
+        continue
+    if not any(re.match(a, path) for a in allow):
+        print(path)
+PY
+}
+
+# ── collection ────────────────────────────────────────────────────────────────
 mapfile -t FILES < <(list_files)
 
 if [ "${#FILES[@]}" -eq 0 ]; then
@@ -187,25 +266,13 @@ for src in "${FILES[@]}"; do
     continue
   fi
 
-  sensitive_hits=""
-  while IFS= read -r path; do
-    [ -n "$path" ] || continue
-    if is_sensitive "$path"; then
-      sensitive_hits="${sensitive_hits}${path}"$'\n'
-    fi
-  done < <(patch_paths "$dest")
-
-  if [ -n "$sensitive_hits" ]; then
-    if [ "$ALLOW_SENSITIVE" -eq 1 ]; then
-      echo "WARNING  $name touches protected paths (allowed by --allow-sensitive):" >&2
-      printf '%s' "$sensitive_hits" | sed 's/^/           /' >&2
-    else
-      echo "REFUSED  $name touches protected paths:" >&2
-      printf '%s' "$sensitive_hits" | sed 's/^/           /' >&2
-      rm -f "$dest"
-      refused=1
-      continue
-    fi
+  denied="$(evaluate_paths "$dest")"
+  if [ -n "$denied" ]; then
+    echo "REFUSED  $name touches paths outside the $REPO allowlist:" >&2
+    printf '%s\n' "$denied" | sed 's/^/           /' >&2
+    rm -f "$dest"
+    refused=1
+    continue
   fi
 
   echo
@@ -220,13 +287,9 @@ for src in "${FILES[@]}"; do
 done
 
 echo
-echo "Collected $collected patch(es) into $OUT_DIR."
-echo "Review the diff stat above, then apply the ones you accept with:"
-echo "  git am $OUT_DIR/<name>.patch      # keeps authorship and message"
-echo "  git apply $OUT_DIR/<name>.patch   # apply only, no commit"
+echo "Collected $collected, refused $((${#FILES[@]} - collected))."
 
 if [ "$refused" -ne 0 ]; then
-  echo >&2
-  echo "One or more patches were refused. Nothing was applied." >&2
   exit 1
 fi
+exit 0
