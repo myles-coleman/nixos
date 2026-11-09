@@ -115,6 +115,33 @@ in {
       };
     };
 
+    # ── microvm guest: Stage 1 broker (spec 31, Unit 4) ──────────────────────
+    #
+    # Two taps: the br0 leg stays in the guest's main namespace; the lab0 leg
+    # is moved into the proxy namespace by the guest module.
+    microvm.vms.redteam-broker = {
+      autostart = true;
+      restartIfChanged = false;
+      config = {
+        imports = [./modules/redteam-broker.nix];
+      };
+    };
+
+    systemd.services."microvm@redteam-broker" = {
+      wants = ["redteam-lab-taps.service"];
+      after = ["redteam-lab-taps.service"];
+      serviceConfig = {
+        ExecStartPre = [
+          "+${pkgs.iproute2}/bin/ip link set tap-br0-broker master br0"
+          "+${pkgs.iproute2}/bin/ip link set tap-br0-broker up"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-broker master lab0"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-broker up"
+        ];
+        MemoryHigh = "1152M";
+        MemoryMax = "1280M";
+      };
+    };
+
     # Spec 31, Unit 1: explicit cgroup bounds for the sandbox guest. `mem` sizes
     # the guest's RAM; these bound the whole QEMU cgroup (RAM plus emulator
     # overhead). The red-team broker and target get their own bounds when they
