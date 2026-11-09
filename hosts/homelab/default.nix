@@ -25,6 +25,9 @@ in {
         ./modules/containers.nix
         ./modules/storage.nix
         ./modules/networking.nix
+        # Isolated red-team target plane (spec 31, Unit 2). Additive: it creates
+        # `lab0` and its nftables boundary without changing `br0`.
+        ./modules/lab0.nix
         # gVisor pin for the sandbox node (spec 22, Unit 1). Host-level because
         # microvm.nix hands the host's `pkgs` to the guest evaluation.
         ./modules/gvisor.nix
