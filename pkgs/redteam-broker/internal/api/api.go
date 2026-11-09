@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/action"
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/approval"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/catalog"
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/evidence"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/policy"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/proxy"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/scope"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/evidence"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/token"
 )
 
 // Server is the broker's control plane. It holds the signed scope and catalog,
@@ -79,7 +79,7 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 
 	technique, known := s.Catalog.Find(req.TechniqueID)
 	if !known {
-		s.record("", req, policy.Decision{Reason: "unknown_technique"}, "")
+		s.record("", req, policy.Decision{Reason: "unknown_technique"}, "", "")
 		writeJSON(w, http.StatusForbidden, response{Decision: policy.Decision{Reason: "unknown_technique"}})
 		return
 	}
@@ -106,8 +106,17 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	detail := token.AuthorizationDetail{
+		Type:         "redteam_action",
+		EngagementID: s.Scope.EngagementID,
+		ScopeVersion: s.Scope.Version,
+		Phase:        "recon",
+		Target:       s.Scope.Target,
+		TechniqueID:  req.TechniqueID,
+		Parameters:   req.Parameters,
+	}
 	s.mu.Lock()
-	approvalErr := approval.Verify(req.Approval, s.ApprovalPub, act, s.Now(), s.used)
+	approved, approvalErr := token.Verify(req.Approval, s.ApprovalPub, detail, s.Now(), s.used)
 	s.mu.Unlock()
 
 	input := policy.Input{
@@ -125,10 +134,12 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nonce := ""
+	rationale := ""
 	if approvalErr == nil {
-		nonce = nonceFromToken(req.Approval)
+		nonce = approved.Nonce
+		rationale = approved.Rationale
 	}
-	s.record(hash, req, decision, nonce)
+	s.record(hash, req, decision, nonce, rationale)
 
 	if !decision.Allow {
 		writeJSON(w, http.StatusForbidden, response{Decision: decision, ActionHash: hash})
@@ -151,7 +162,7 @@ func (s *Server) handleAction(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, response{Decision: decision, ActionHash: hash, Result: &result})
 }
 
-func (s *Server) record(hash string, req request, decision policy.Decision, nonce string) {
+func (s *Server) record(hash string, req request, decision policy.Decision, nonce, rationale string) {
 	if s.Emitter == nil {
 		return
 	}
@@ -163,15 +174,8 @@ func (s *Server) record(hash string, req request, decision policy.Decision, nonc
 		Reason:       decision.Reason,
 		Destination:  s.Scope.Target,
 		Nonce:        nonce,
+		Rationale:    rationale,
 	})
-}
-
-func nonceFromToken(token string) string {
-	claims, err := approval.Decode(token)
-	if err != nil {
-		return ""
-	}
-	return claims.Nonce
 }
 
 func toMap(value any) map[string]any {
@@ -192,8 +196,8 @@ func writeJSON(w http.ResponseWriter, status int, value response) {
 	_ = json.NewEncoder(w).Encode(value)
 }
 
-// Decode is a small helper for tests and the CLI; it lives here so the token
+// Decode is a small helper for the CLI and tests; it lives here so the token
 // shape has one definition.
-func Decode(token string) (approval.Claims, error) {
-	return approval.Decode(token)
+func Decode(encoded string) (token.Token, error) {
+	return token.Decode(encoded)
 }

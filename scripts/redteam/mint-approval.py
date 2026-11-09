@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""mint-approval.py - mint a Stage 1 approval token.
+"""mint-approval.py - mint a Task 4 approval token (superseded).
 
-This is the small operator-side tool used before the Task 5 CLI exists. It signs
-the canonical claims with an OpenSSL Ed25519 key and prints the base64 token the
-broker expects. The private key never leaves the operator machine.
+Superseded by `redteam-cli` in Task 5. The Task 4 broker accepted this simple
+claims shape; the Task 5 broker expects the RFC 9396 `authorization_details`
+token. Kept as a historical reference for the Task 4 proof.
+
+This signs the canonical claims with an OpenSSL Ed25519 key and prints the
+base64 token. The private key never leaves the operator machine.
 """
 
 import argparse

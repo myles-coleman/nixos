@@ -15,9 +15,10 @@ import (
 
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/api"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/catalog"
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/evidence"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/proxy"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/scope"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/evidence"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/token"
 )
 
 func main() {
@@ -74,12 +75,18 @@ func serve(args []string) {
 	if err != nil {
 		log.Fatalf("load catalog: %v", err)
 	}
-	approvalKey, err := scope.LoadPublicKey(*approvalPub)
+	approvalKey, err := token.LoadPublicKey(*approvalPub)
 	if err != nil {
 		log.Fatalf("load approval key: %v", err)
 	}
 
-	emitter := &evidence.JSONL{Path: filepath.Join(*stateDir, "events.jsonl")}
+	emitter, err := evidence.Open(
+		filepath.Join(*stateDir, "events.jsonl"),
+		filepath.Join(*stateDir, "head.json"),
+	)
+	if err != nil {
+		log.Fatalf("open evidence chain: %v", err)
+	}
 	server := api.New(s, c, approvalKey, *proxySocket, emitter)
 
 	httpServer := &http.Server{

@@ -13,12 +13,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/action"
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/approval"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/catalog"
-	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/evidence"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/proxy"
 	"github.com/myles-coleman/nixos/pkgs/redteam-broker/internal/scope"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/evidence"
+	"github.com/myles-coleman/nixos/pkgs/redteam-broker/pkg/token"
 )
 
 type fixture struct {
@@ -77,25 +76,31 @@ func newFixture(t *testing.T, target string, hardDeny []string) fixture {
 
 func (f fixture) token(t *testing.T, technique string, parameters map[string]string, nonce string, expires time.Time) string {
 	t.Helper()
-	claims := approval.Claims{
-		EngagementID: "stage1-demo",
-		ScopeVersion: 1,
-		TechniqueID:  technique,
-		Target:       f.server.Scope.Target,
-		Parameters:   parameters,
-		Nonce:        nonce,
-		ExpiresAt:    expires.Unix(),
+	value := token.Token{
+		AuthorizationDetails: []token.AuthorizationDetail{{
+			Type:         "redteam_action",
+			EngagementID: "stage1-demo",
+			ScopeVersion: 1,
+			Phase:        "recon",
+			Target:       f.server.Scope.Target,
+			TechniqueID:  technique,
+			Parameters:   parameters,
+		}},
+		Nonce:     nonce,
+		IssuedAt:  time.Now().Unix(),
+		ExpiresAt: expires.Unix(),
+		Rationale: "test approval",
 	}
-	token, err := claims.Sign(f.priv)
+	encoded, err := value.Sign(f.priv)
 	if err != nil {
 		t.Fatal(err)
 	}
-	return token
+	return encoded
 }
 
-func (f fixture) post(t *testing.T, technique string, parameters map[string]string, token string) *httptest.ResponseRecorder {
+func (f fixture) post(t *testing.T, technique string, parameters map[string]string, encoded string) *httptest.ResponseRecorder {
 	t.Helper()
-	body := fmt.Sprintf(`{"technique_id":%q,"parameters":{"path":%q},"approval":%q}`, technique, parameters["path"], token)
+	body := fmt.Sprintf(`{"technique_id":%q,"parameters":{"path":%q},"approval":%q}`, technique, parameters["path"], encoded)
 	request := httptest.NewRequest(http.MethodPost, "/v1/actions", strings.NewReader(body))
 	recorder := httptest.NewRecorder()
 	f.server.Handler().ServeHTTP(recorder, request)
@@ -104,8 +109,8 @@ func (f fixture) post(t *testing.T, technique string, parameters map[string]stri
 
 func TestAllow(t *testing.T) {
 	f := newFixture(t, "127.0.0.1", []string{"10.0.0.0/24"})
-	token := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-allow", time.Now().Add(time.Minute))
-	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, token)
+	encoded := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-allow", time.Now().Add(time.Minute))
+	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, encoded)
 	if recorder.Code != http.StatusOK {
 		t.Fatalf("status=%d body=%s", recorder.Code, recorder.Body.String())
 	}
@@ -116,11 +121,11 @@ func TestAllow(t *testing.T) {
 
 func TestReplayRejected(t *testing.T) {
 	f := newFixture(t, "127.0.0.1", []string{"10.0.0.0/24"})
-	token := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-replay", time.Now().Add(time.Minute))
-	if recorder := f.post(t, "http.get", map[string]string{"path": "/"}, token); recorder.Code != http.StatusOK {
+	encoded := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-replay", time.Now().Add(time.Minute))
+	if recorder := f.post(t, "http.get", map[string]string{"path": "/"}, encoded); recorder.Code != http.StatusOK {
 		t.Fatalf("first request failed: %d", recorder.Code)
 	}
-	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, token)
+	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, encoded)
 	if recorder.Code != http.StatusForbidden || !strings.Contains(recorder.Body.String(), "approval_required") {
 		t.Fatalf("replay was not rejected: %d %s", recorder.Code, recorder.Body.String())
 	}
@@ -128,8 +133,8 @@ func TestReplayRejected(t *testing.T) {
 
 func TestUnknownTechniqueRejected(t *testing.T) {
 	f := newFixture(t, "127.0.0.1", []string{"10.0.0.0/24"})
-	token := f.token(t, "shell.exec", map[string]string{"path": "/"}, "nonce-unknown", time.Now().Add(time.Minute))
-	recorder := f.post(t, "shell.exec", map[string]string{"path": "/"}, token)
+	encoded := f.token(t, "shell.exec", map[string]string{"path": "/"}, "nonce-unknown", time.Now().Add(time.Minute))
+	recorder := f.post(t, "shell.exec", map[string]string{"path": "/"}, encoded)
 	if recorder.Code != http.StatusForbidden || !strings.Contains(recorder.Body.String(), "unknown_technique") {
 		t.Fatalf("unknown technique was not rejected: %d %s", recorder.Code, recorder.Body.String())
 	}
@@ -137,8 +142,8 @@ func TestUnknownTechniqueRejected(t *testing.T) {
 
 func TestHardDenyRejected(t *testing.T) {
 	f := newFixture(t, "10.0.0.5", []string{"10.0.0.0/24"})
-	token := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-hard", time.Now().Add(time.Minute))
-	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, token)
+	encoded := f.token(t, "http.get", map[string]string{"path": "/"}, "nonce-hard", time.Now().Add(time.Minute))
+	recorder := f.post(t, "http.get", map[string]string{"path": "/"}, encoded)
 	if recorder.Code != http.StatusForbidden || !strings.Contains(recorder.Body.String(), "hard_deny") {
 		t.Fatalf("hard deny was not applied: %d %s", recorder.Code, recorder.Body.String())
 	}
@@ -146,11 +151,9 @@ func TestHardDenyRejected(t *testing.T) {
 
 func TestFreeFormRejected(t *testing.T) {
 	f := newFixture(t, "127.0.0.1", []string{"10.0.0.0/24"})
-	token := f.token(t, "http.get", map[string]string{"path": "http://evil.example/"}, "nonce-free", time.Now().Add(time.Minute))
-	recorder := f.post(t, "http.get", map[string]string{"path": "http://evil.example/"}, token)
+	encoded := f.token(t, "http.get", map[string]string{"path": "http://evil.example/"}, "nonce-free", time.Now().Add(time.Minute))
+	recorder := f.post(t, "http.get", map[string]string{"path": "http://evil.example/"}, encoded)
 	if recorder.Code != http.StatusBadRequest {
 		t.Fatalf("free-form path was not rejected: %d %s", recorder.Code, recorder.Body.String())
 	}
 }
-
-var _ = action.Action{}

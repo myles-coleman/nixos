@@ -115,13 +115,42 @@ in {
     "redteam/techniques.json.sig".source = ../../../config/redteam/techniques.json.sig;
     "redteam/scope.pub".source = ../../../config/redteam/scope.pub;
     "redteam/approval.pub".source = ../../../config/redteam/approval.pub;
+    # Public operator CA. The broker uses it to verify client certificates; the
+    # CA private key never leaves bee-gpd.
+    "redteam/client-ca.crt".source = ../../../config/redteam/client-ca.crt;
+  };
+
+  # The broker's server certificate is self-signed and generated on the guest.
+  # The operator pins it in ~/.config/redteam/server.crt. The client certificate
+  # is signed by the operator CA, whose key stays on bee-gpd.
+  systemd.services.redteam-tls = {
+    description = "Generate the broker's self-signed TLS certificate";
+    wantedBy = ["multi-user.target"];
+    before = ["redteam-broker.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      StateDirectory = "redteam-broker";
+    };
+    path = [pkgs.openssl];
+    script = ''
+      set -eu
+      mkdir -p /var/lib/redteam-broker/tls
+      if [ ! -f /var/lib/redteam-broker/tls/server.crt ]; then
+        openssl req -x509 -newkey ed25519 -nodes \
+          -keyout /var/lib/redteam-broker/tls/server.key \
+          -out /var/lib/redteam-broker/tls/server.crt \
+          -days 30 -subj "/CN=redteam-broker" \
+          -addext "subjectAltName=IP:10.0.0.151"
+      fi
+    '';
   };
 
   systemd.services.redteam-broker = {
     description = "APTS Stage 1 red-team broker";
     wantedBy = ["multi-user.target"];
-    after = ["redteam-proxy.service" "network.target"];
-    requires = ["redteam-proxy.service"];
+    after = ["redteam-proxy.service" "redteam-tls.service" "network.target"];
+    requires = ["redteam-proxy.service" "redteam-tls.service"];
     serviceConfig = {
       Type = "simple";
       ExecStart = ''
@@ -134,7 +163,10 @@ in {
           --approval-pub /etc/redteam/approval.pub \
           --proxy-socket /run/redteam/proxy.sock \
           --addr 10.0.0.151:8443 \
-          --state-dir /var/lib/redteam-broker
+          --state-dir /var/lib/redteam-broker \
+          --tls-cert /var/lib/redteam-broker/tls/server.crt \
+          --tls-key /var/lib/redteam-broker/tls/server.key \
+          --client-ca /etc/redteam/client-ca.crt
       '';
       StateDirectory = "redteam-broker";
       Restart = "always";
