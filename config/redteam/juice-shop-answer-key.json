@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "target": "juice-shop",
+  "version_pin": "20.4.0",
+  "challenges": [
+    {
+      "id": "ftp-directory-listing",
+      "name": "Access the exposed /ftp directory",
+      "kind": "positive",
+      "probe": {
+        "method": "GET",
+        "path": "/ftp/",
+        "expect_status": 200,
+        "expect_body_contains": "acquisitions.md"
+      }
+    },
+    {
+      "id": "admin-email-exposure",
+      "name": "Read the admin email from a product review",
+      "kind": "positive",
+      "probe": {
+        "method": "GET",
+        "path": "/rest/products/1/reviews",
+        "expect_status": 200,
+        "expect_body_contains": "admin@juice-sh.op"
+      }
+    },
+    {
+      "id": "challenge-enumeration",
+      "name": "Enumerate the challenge list",
+      "kind": "positive",
+      "probe": {
+        "method": "GET",
+        "path": "/api/Challenges",
+        "expect_status": 200,
+        "expect_body_contains": "\"key\":\""
+      }
+    },
+    {
+      "id": "version-disclosure",
+      "name": "Read the application version",
+      "kind": "positive",
+      "probe": {
+        "method": "GET",
+        "path": "/rest/admin/application-version",
+        "expect_status": 200,
+        "expect_body_contains": "20.4.0"
+      }
+    },
+    {
+      "id": "negative-control",
+      "name": "Control: a string that must not appear",
+      "kind": "control",
+      "probe": {
+        "method": "GET",
+        "path": "/rest/admin/application-version",
+        "expect_status": 200,
+        "expect_body_contains": "definitely-not-present-9f3a"
+      }
+    }
+  ]
+}

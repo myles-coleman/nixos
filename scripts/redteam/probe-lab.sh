@@ -15,6 +15,7 @@ set -euo pipefail
 
 namespace=""
 lab_iface="lab0"
+skip_l3_check=false
 
 usage() {
   sed -n '2,14p' "$0"
@@ -31,6 +32,10 @@ while [ $# -gt 0 ]; do
       [ $# -ge 2 ] || { echo "--lab-iface requires a value" >&2; exit 2; }
       lab_iface="$2"
       shift 2
+      ;;
+    --skip-l3-check)
+      skip_l3_check=true
+      shift
       ;;
     -h|--help)
       usage
@@ -102,8 +107,9 @@ done
 # absence: the nftables policy is the boundary, and this check keeps a future
 # edit from quietly adding an address.
 # The no-L3 check applies to the host bridge, not to the probe endpoint inside
-# a namespace (which must have an address to generate traffic).
-if [ -z "$namespace" ] && run ip link show "$lab_iface" >/dev/null 2>&1; then
+# a namespace (which must have an address to generate traffic) or to a guest
+# that is itself a lab host.
+if [ "$skip_l3_check" != true ] && [ -z "$namespace" ] && run ip link show "$lab_iface" >/dev/null 2>&1; then
   if run ip -4 addr show dev "$lab_iface" | grep -q 'inet '; then
     echo "FAIL: $lab_iface has an IPv4 address" >&2
     failures=$((failures + 1))
@@ -114,7 +120,7 @@ if [ -z "$namespace" ] && run ip link show "$lab_iface" >/dev/null 2>&1; then
   fi
 fi
 
-if [ -z "$namespace" ]; then
+if [ "$skip_l3_check" != true ] && [ -z "$namespace" ]; then
   forwarding="$(sysctl -n net.ipv4.conf.lab0.forwarding 2>/dev/null || echo missing)"
   if [ "$forwarding" != "0" ]; then
     echo "FAIL: net.ipv4.conf.lab0.forwarding is '$forwarding', expected 0" >&2

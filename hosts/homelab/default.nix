@@ -85,6 +85,36 @@ in {
       };
     };
 
+    # ── microvm guest: disposable Juice Shop target (spec 31, Unit 3) ─────────
+    #
+    # Self-contained: the guest module sets `shares = []`, so microvm.nix builds
+    # a store disk instead of sharing the host's /nix/store. The root is tmpfs,
+    # so a restart is a reset. The tap is created by `modules/lab0.nix`.
+    microvm.vms.redteam-target = {
+      autostart = true;
+      restartIfChanged = false;
+      config = {
+        imports = [./modules/redteam-target.nix];
+      };
+    };
+
+    systemd.services."microvm@redteam-target" = {
+      wants = ["redteam-lab-taps.service"];
+      after = ["redteam-lab-taps.service"];
+      # microvm.nix's `microvm-tap-interfaces@` deletes and recreates the tap,
+      # which detaches it from lab0. Re-attach it after that service and before
+      # QEMU opens it. The `+` prefix runs the command as root; the unit itself
+      # runs as the unprivileged `microvm` user.
+      serviceConfig = {
+        ExecStartPre = [
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-target master lab0"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-target up"
+        ];
+        MemoryHigh = "1664M";
+        MemoryMax = "1792M";
+      };
+    };
+
     # Spec 31, Unit 1: explicit cgroup bounds for the sandbox guest. `mem` sizes
     # the guest's RAM; these bound the whole QEMU cgroup (RAM plus emulator
     # overhead). The red-team broker and target get their own bounds when they

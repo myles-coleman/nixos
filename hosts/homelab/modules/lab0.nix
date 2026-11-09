@@ -14,8 +14,13 @@
       chain forward {
         type filter hook forward priority -150; policy drop;
 
+        # Lab hosts may talk to each other (the broker proxy and the target),
+        # but not off the lab.
+        iifname "${labPorts}" oifname "${labPorts}" accept
+
         # Preserve every non-lab forwarding path (Docker, br0<->br0). Traffic
-        # that enters or leaves a lab0 port falls through to the drop policy.
+        # that enters or leaves a lab0 port in any other combination falls
+        # through to the drop policy.
         iifname != "${labPorts}" oifname != "${labPorts}" accept
       }
 
