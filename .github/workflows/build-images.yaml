@@ -88,8 +88,56 @@ jobs:
           esac
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
+      # opencode-sandbox only: build the exact image locally, run its pinned
+      # toolchain check (spec 30, FR-56 / FR-57), then push. Nothing is pushed
+      # until /opt/sandbox/check-tools.sh passes.
+      - name: Build opencode-sandbox for verification
+        if: matrix.image.name == 'opencode-sandbox'
+        id: build-verify
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          context: ${{ matrix.image.context }}
+          platforms: ${{ matrix.image.platforms }}
+          load: true
+          push: false
+          tags: ghcr.io/${{ github.repository_owner }}/opencode-sandbox:${{ steps.version.outputs.tag }}-verify
+
+      - name: Verify opencode-sandbox toolchain
+        if: matrix.image.name == 'opencode-sandbox'
+        run: |
+          set -euo pipefail
+          image="ghcr.io/${{ github.repository_owner }}/opencode-sandbox:${{ steps.version.outputs.tag }}-verify"
+          # The image entrypoint is `opencode`, so the check must replace it
+          # rather than arrive as an argument to the agent CLI.
+          docker run --rm --entrypoint /opt/sandbox/check-tools.sh "$image"
+
+      - name: Push verified opencode-sandbox image
+        if: matrix.image.name == 'opencode-sandbox'
+        run: |
+          set -euo pipefail
+          image="ghcr.io/${{ github.repository_owner }}/opencode-sandbox"
+          tag="${{ steps.version.outputs.tag }}"
+          docker tag "$image:$tag-verify" "$image:$tag"
+          docker push "$image:$tag"
+
+      - name: Record opencode-sandbox digest
+        if: matrix.image.name == 'opencode-sandbox'
+        run: |
+          set -euo pipefail
+          image="ghcr.io/${{ github.repository_owner }}/opencode-sandbox"
+          tag="${{ steps.version.outputs.tag }}"
+          digest=$(docker inspect --format '{{index .RepoDigests 0}}' "$image:$tag")
+          echo "digest=$digest"
+          {
+            echo "### opencode-sandbox"
+            echo '```'
+            echo "$digest"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Build and push
         id: build
+        if: matrix.image.name != 'opencode-sandbox'
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: ${{ matrix.image.context }}
@@ -98,6 +146,7 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.image.name }}:${{ steps.version.outputs.tag }}
 
       - name: Record digest
+        if: matrix.image.name != 'opencode-sandbox'
         run: |
           set -euo pipefail
           ref="ghcr.io/${{ github.repository_owner }}/${{ matrix.image.name }}"

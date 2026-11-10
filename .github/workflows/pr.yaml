@@ -29,7 +29,7 @@ jobs:
           set -euo pipefail
           base="origin/${{ github.base_ref }}"
           git fetch --no-tags origin "${{ github.base_ref }}" --depth=1
-          if git diff --name-only "$base"...HEAD | grep -qE '(\.nix$|^flake\.lock$|^\.sops\.yaml$|^secrets/|^scripts/|^\.github/workflows/)'; then
+          if git diff --name-only "$base"...HEAD | grep -qE '(\.nix$|^flake\.lock$|^\.sops\.yaml$|^secrets/|^scripts/|^images/|^\.github/workflows/)'; then
             echo "code=true" >> "$GITHUB_OUTPUT"
           else
             echo "code=false" >> "$GITHUB_OUTPUT"
@@ -122,6 +122,20 @@ jobs:
       # package's kubectl. No cluster access and no secret values.
       - name: Verify k3s version invariants
         run: scripts/k3s-upgrade-check.sh --static
+
+  # Spec 30, FR-56 / FR-57. Text-only check of the sandbox Dockerfile and tool
+  # pins: no Docker build, no Nix, no secret material.
+  sandbox-image-check:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify sandbox Dockerfile toolchain
+        run: ./scripts/tests/test-sandbox-dockerfile.sh
 
   closure-diff:
     needs: [changes, build-x86]
@@ -248,7 +262,7 @@ jobs:
 
   gate:
     if: always()
-    needs: [changes, build-x86, build-arm, pin-guard, closure-diff]
+    needs: [changes, build-x86, build-arm, pin-guard, sandbox-image-check, closure-diff]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -259,11 +273,12 @@ jobs:
           BUILD_X86: ${{ needs.build-x86.result }}
           BUILD_ARM: ${{ needs.build-arm.result }}
           PIN_GUARD: ${{ needs.pin-guard.result }}
+          SANDBOX_IMAGE_CHECK: ${{ needs.sandbox-image-check.result }}
           CLOSURE_DIFF: ${{ needs.closure-diff.result }}
         run: |
           set -euo pipefail
           fail=0
-          for result in "$CHANGES" "$BUILD_X86" "$BUILD_ARM" "$PIN_GUARD" "$CLOSURE_DIFF"; do
+          for result in "$CHANGES" "$BUILD_X86" "$BUILD_ARM" "$PIN_GUARD" "$SANDBOX_IMAGE_CHECK" "$CLOSURE_DIFF"; do
             case "$result" in
               success|skipped) ;;
               *) echo "required job result: $result"; fail=1 ;;
