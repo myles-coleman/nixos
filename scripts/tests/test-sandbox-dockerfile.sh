@@ -78,8 +78,8 @@ declare -A PINS=(
 # 1 file existence + 2 reference checks + 10 tools + 11 pins
 # + 2 check-tools file checks + 10 tool checks + 1 opencode check
 # + 1 workflow invocation + 1 push step + 1 ordering + 1 scoping
-# + 1 entrypoint override = 42.
-TOTAL=42
+# + 1 entrypoint override + 8 install-line checks = 50.
+TOTAL=50
 PASS=0
 
 pass() { PASS=$((PASS + 1)); printf 'PASS %2d/%d  %s\n' "$PASS" "$TOTAL" "$*"; }
@@ -178,6 +178,14 @@ pass "check-tools.sh is scoped to the opencode-sandbox image"
 grep -qF -- '--entrypoint /opt/sandbox/check-tools.sh' "$WORKFLOW" \
   || fail "check-tools.sh is not invoked with --entrypoint (the image entrypoint is opencode)"
 pass "check-tools.sh replaces the image entrypoint"
+
+# 43-50. FR-56 — the pins must be installed, not merely declared. A deleted
+# download/install block would otherwise leave the ARG and the word behind.
+for tool in jq alejandra kustomize helm kubeconform statix deadnix yamllint; do
+  grep -qF "/usr/local/bin/$tool" "$DOCKERFILE" \
+    || fail "Dockerfile does not install $tool into /usr/local/bin"
+  pass "Dockerfile installs $tool to /usr/local/bin"
+done
 
 [ "$PASS" -eq "$TOTAL" ] \
   || { echo "test-sandbox-dockerfile: internal error: ran $PASS of $TOTAL checks" >&2; exit 1; }
