@@ -150,7 +150,8 @@ pass "check-tools.sh runs 'opencode --version'"
 [ -f "$WORKFLOW" ] \
   || fail "workflow missing: .github/workflows/build-images.yaml"
 
-check_line="$(grep -nF 'check-tools.sh' "$WORKFLOW" | head -1 | cut -d: -f1 || true)"
+# Match the invocation, not a comment that happens to name the script.
+check_line="$(grep -nF 'check-tools.sh' "$WORKFLOW" | grep -F 'docker run' | head -1 | cut -d: -f1 || true)"
 [ -n "$check_line" ] \
   || fail "build-images.yaml does not run check-tools.sh"
 pass "build-images.yaml runs check-tools.sh (line $check_line)"
