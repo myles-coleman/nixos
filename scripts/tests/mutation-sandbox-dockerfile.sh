@@ -47,7 +47,7 @@ if [ "${1:-}" = "--list" ]; then
   exit 0
 fi
 
-run M13 "alejandra install block removed" '
+run N1 "alejandra install block removed" '
 p=root+"/images/opencode-sandbox/Dockerfile"
 s=open(p).read()
 start=s.index("# alejandra — musl binary")
@@ -55,19 +55,19 @@ end=s.index("# kustomize — tarball")
 open(p,"w").write(s[:start]+s[end:])
 '
 
-run M14 "ALEJANDRA_VERSION changed to 4.0.0" '
+run N2 "ALEJANDRA_VERSION changed to 4.0.0" '
 p=root+"/images/opencode-sandbox/Dockerfile"
 s=open(p).read().replace("ARG ALEJANDRA_VERSION=4.1.0","ARG ALEJANDRA_VERSION=4.0.0")
 open(p,"w").write(s)
 '
 
-run M15 "stale sandbox-image.yaml reference reintroduced" '
+run N3 "stale sandbox-image.yaml reference reintroduced" '
 p=root+"/images/opencode-sandbox/Dockerfile"
 s=open(p).read()
 open(p,"w").write("# see .github/workflows/sandbox-image.yaml\n"+s)
 '
 
-run M16 "check-tools moved after the push step" '
+run N4 "check-tools moved after the push step" '
 p=root+"/.github/workflows/build-images.yaml"
 s=open(p).read()
 start=s.index("      - name: Verify opencode-sandbox toolchain")
@@ -79,13 +79,13 @@ s=s[:anchor]+block+s[anchor:]
 open(p,"w").write(s)
 '
 
-run M17 "opencode --version check removed" '
+run N5 "opencode --version check removed" '
 p=root+"/images/opencode-sandbox/check-tools.sh"
 lines=[line for line in open(p).read().splitlines() if "expect opencode" not in line]
 open(p,"w").write("\n".join(lines)+"\n")
 '
 
-run M18 "check-tools entrypoint override removed" '
+run N6 "check-tools entrypoint override removed" '
 p=root+"/.github/workflows/build-images.yaml"
 s=open(p).read().replace("--entrypoint /opt/sandbox/check-tools.sh ","")
 open(p,"w").write(s)
