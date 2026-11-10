@@ -20,6 +20,8 @@ in {
         ./modules/automation.nix
         ./modules/networking.nix
         ./modules/packages.nix
+        # Spec 31, Unit 5: redteam-cli and the evidence verifier.
+        ./modules/redteam-cli.nix
         ../../modules/sops.nix
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default

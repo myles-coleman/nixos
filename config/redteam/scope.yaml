@@ -1,0 +1,22 @@
+engagement_id: stage1-demo
+version: 2
+not_before: 2026-01-01T00:00:00Z
+not_after: 2027-01-01T00:00:00Z
+target: 10.99.0.2
+target_criticality: high
+target_digest: sha256:dbc3d5d17edb85f908d6807a5a9b42e0e2c652fc595bdca8032ef4f30c420d8d
+lab_cidrs:
+  - 10.99.0.0/24
+allowed_classes:
+  - recon
+  - scan
+catalog_version: 1
+hard_deny:
+  - 10.0.0.0/24
+  - 10.43.0.0/16
+  - 10.42.0.0/16
+  - 169.254.169.254/32
+  - 127.0.0.0/8
+  - ::1/128
+  - fe80::/10
+  - 10.99.0.1/32
