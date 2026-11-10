@@ -142,9 +142,9 @@ for tool in "${TOOLS[@]}"; do
 done
 
 # 37. FR-56 — check-tools.sh checks the OpenCode CLI itself.
-grep -qE 'opencode[[:space:]]+--version' "$CHECK_TOOLS" \
-  || fail "check-tools.sh does not run 'opencode --version'"
-pass "check-tools.sh runs 'opencode --version'"
+grep -qE 'expect[[:space:]]+opencode[[:space:]]+"v\$\{OPENCODE_VERSION\}"' "$CHECK_TOOLS" \
+  || fail "check-tools.sh has no 'expect opencode' assertion"
+pass "check-tools.sh asserts the OpenCode version"
 
 # 38. FR-56/FR-57 — build-images.yaml runs check-tools.sh.
 [ -f "$WORKFLOW" ] \
