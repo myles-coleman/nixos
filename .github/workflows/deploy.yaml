@@ -204,7 +204,7 @@ jobs:
       - name: Deploy ${{ matrix.host }}
         if: github.event_name == 'workflow_dispatch' || steps.change.outputs.changed == 'true'
         run: |
-          nix run .#deploy -- .#${HOST} --skip-checks -- -L
+          nix run .#deploy -- ".#${HOST}" --skip-checks -- -L
         env:
           HOST: ${{ matrix.host }}
       - name: Verify ${{ matrix.host }} is reachable after deploy

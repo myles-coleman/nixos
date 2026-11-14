@@ -87,11 +87,18 @@ template must be installed by `k3s.preStart` (tmpfiles `C`/`C+` will not replace
 persistent volume), and gVisor 2026 releases need their `gvisor-bin/` sidecars — nixpkgs builds
 none of them, so the package comes from the upstream release tarball.
 
-The sandbox holds **no repository write credential** (spec 21, Unit 1): the PAT was revoked,
-`GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under Pod
-Security Admission `restricted` with seccomp, no capabilities and a read-only root filesystem.
-Work is handed back as patch files in `/home/agent/patches` and collected with
-`scripts/collect-sandbox-patches.sh` — never pushed.
+The sandbox still holds **no repository write credential** (spec 21, Unit 1): the PAT was
+revoked, `GIT_PAT` is gone from the pod spec and the `ExternalSecret`, and the pod runs under
+Pod Security Admission `restricted` with seccomp, no capabilities and a read-only root
+filesystem. Since spec 30 the agent hands work back through the validator instead of a patch
+directory: it commits locally, submits the change as patch text over mTLS
+(`POST /v1/patches` at `https://validator.agent.internal:8443`, client certificate under
+`/certs/`), the validator applies and verifies it, and the publisher pushes
+`refs/heads/agent/<uid>/<slug>` and opens a **draft PR**. The agent never pushes. The
+canonical protected-path list is
+`homelab-cluster/services/agent-broker/policy/repos.yaml` (served at `GET /v1/policy`), and the
+validator enforces it; do not maintain a local copy. Sandbox-specific instructions, including
+the patch-submission commands, live in `images/opencode-sandbox/AGENTS.md`.
 
 The legacy **systemd-nspawn** path on `bee-gpu-server` (`opencode-agents.nix` +
 `opencode-egress.nix`, unit `container@nixos`, tailnet DNAT) was **retired in the spec 20

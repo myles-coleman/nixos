@@ -54,17 +54,39 @@
     # ExecStartPre waits for the file and fails LOUDLY if it never appears.
     systemd.services.k3s = {
       requires = ["sops-install-secrets.service"];
-      serviceConfig.ExecStartPre = [
-        (pkgs.writeShellScript "k3s-wait-for-token" ''
-          for _ in $(seq 1 60); do
-            if [ -s "${toString config.services.k3s.tokenFile}" ]; then exit 0; fi
-            sleep 1
-          done
-          echo "k3s: ${toString config.services.k3s.tokenFile} is missing after 60s;" >&2
-          echo "     sops-install-secrets did not install it — check its journal." >&2
-          exit 1
-        '')
-      ];
+      serviceConfig.ExecStartPre =
+        [
+          (pkgs.writeShellScript "k3s-wait-for-token" ''
+            for _ in $(seq 1 60); do
+              if [ -s "${toString config.services.k3s.tokenFile}" ]; then exit 0; fi
+              sleep 1
+            done
+            echo "k3s: ${toString config.services.k3s.tokenFile} is missing after 60s;" >&2
+            echo "     sops-install-secrets did not install it — check its journal." >&2
+            exit 1
+          '')
+        ]
+        # Spec 28, task 4.12. k3s refuses to start when `server/cred/passwd` differs
+        # from the copy in its datastore AND is newer on disk:
+        #   "passwd newer than datastore and could cause a cluster outage. Remove the
+        #    file(s) from disk and restart to be recreated from datastore."
+        # With `--agent-token-file` the node password is derived from the agent token,
+        # so a start rewrites that file with content the datastore does not have — and
+        # the NEXT start then fatals. That is not hypothetical: it took the API down
+        # for 13 minutes during the first 1.34 deploy attempt (2026-11-06, see
+        # 28-proofs/incident-stage-b-node0.md). Moving it aside before every server
+        # start makes k3s recreate it from the datastore, which is the documented
+        # remedy applied deterministically. Agents authenticate with the token, not
+        # with this file, so their registration is unaffected.
+        ++ lib.optional (config.services.k3s.role == "server") (
+          pkgs.writeShellScript "k3s-drop-stale-passwd" ''
+            passwd=/var/lib/rancher/k3s/server/cred/passwd
+            if [ -e "$passwd" ]; then
+              mv -f "$passwd" "$passwd.stale"
+              echo "k3s: moved cred/passwd aside; it is recreated from the datastore" >&2
+            fi
+          ''
+        );
     };
 
     services.k3s.tokenFile =

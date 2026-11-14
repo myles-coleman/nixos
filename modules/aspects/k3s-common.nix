@@ -27,14 +27,67 @@
     config = {
       k3sCommon.enabled = true;
 
-      # 1.33 went end-of-life on 2026-06-28, and current nixpkgs refuses to
-      # evaluate it (meta.knownVulnerabilities), so the re-pinned nixpkgs
-      # (see flake.lock) requires the next minor. k3s only supports upgrading
-      # one minor at a time, so this is a deliberate 1.33 -> 1.34 step.
-      services.k3s.package = pkgs.k3s_1_34;
+      # Spec 28, Unit 1. The version a node reports must be the version it runs.
+      # These assertions fail the build rather than letting an unpinned nixpkgs
+      # package shadow `services.k3s.package` on PATH again. Matching is by name
+      # so the check does not force an insecure 1.3x alias derivation. The
+      # service package itself is allowed: the k3s module adds it to
+      # `environment.systemPackages` on purpose, and that is the one copy we want.
+      assertions = [
+        {
+          assertion = let
+            servicePackage = config.services.k3s.package;
+            shadowing =
+              lib.filter (
+                p: (p.pname or "") == "k3s" && p != servicePackage
+              )
+              config.environment.systemPackages;
+          in
+            shadowing == [];
+          message = ''
+            The `k3s-common` aspect must not add the unpinned nixpkgs `k3s` package
+            to `environment.systemPackages`. The NixOS k3s module already puts
+            `config.services.k3s.package` on PATH, and a second `k3s` entry makes
+            `k3s --version` disagree with the service that systemd actually runs
+            (spec 28, Unit 1). Remove `k3s` from the package list.
+          '';
+        }
+        {
+          assertion =
+            !(lib.any (
+                p: (p.pname or "") == "kubectl" || lib.hasPrefix "kubectl-" (p.name or "")
+              )
+              config.environment.systemPackages);
+          message = ''
+            The `k3s-common` aspect must not add the unpinned nixpkgs `kubectl`
+            package to `environment.systemPackages`. `services.k3s.package`
+            provides a kubectl that matches the apiserver minor; the nixpkgs one
+            is outside the supported +/-1 minor skew (spec 28, Unit 1). Remove
+            `kubectl` from the package list.
+          '';
+        }
+      ];
 
+      # K3s supports upgrading one minor at a time, so this is a deliberate
+      # 1.35 -> 1.36 step (spec 28). `mkDefault` lets a host override the minor
+      # without editing this shared aspect; the sandbox guest uses that to stay
+      # one minor behind the control plane while a hop is in flight.
+      #
+      # Note: 1.33 is end-of-life (2026-06-28) and its nixpkgs attribute carries
+      # `meta.knownVulnerabilities`, but it still *evaluates* — `k3s_1_33` is
+      # 1.33.13+k3s2 — so `permittedInsecurePackages` could pin it if a hop ever
+      # needed to be split from the nixpkgs bump. The earlier comment claiming
+      # nixpkgs "refuses to evaluate" it was wrong.
+      services.k3s.package = lib.mkDefault pkgs.k3s_1_36;
+
+      # Do NOT add `k3s` or `kubectl` to this list. The NixOS k3s module already
+      # puts `config.services.k3s.package` on PATH (it ships both binaries), so
+      # an unpinned `pkgs.k3s` / `pkgs.kubectl` entry silently shadows the
+      # running minor: before spec 28 every node's `k3s --version` reported 1.35
+      # while the service ran 1.33, and the PATH `kubectl` was two minors ahead
+      # of the apiserver (outside the supported +/-1 skew). The assertions below
+      # keep that regression out.
       environment.systemPackages = with pkgs; [
-        k3s
         coreutils
         openiscsi
         cryptsetup
@@ -42,7 +95,6 @@
         nfs-utils
         vim
         htop
-        kubectl
         curl
       ];
 

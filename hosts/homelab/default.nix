@@ -25,6 +25,9 @@ in {
         ./modules/containers.nix
         ./modules/storage.nix
         ./modules/networking.nix
+        # Isolated red-team target plane (spec 31, Unit 2). Additive: it creates
+        # `lab0` and its nftables boundary without changing `br0`.
+        ./modules/lab0.nix
         # gVisor pin for the sandbox node (spec 22, Unit 1). Host-level because
         # microvm.nix hands the host's `pkgs` to the guest evaluation.
         ./modules/gvisor.nix
@@ -80,6 +83,73 @@ in {
             sudo
           ]);
       };
+    };
+
+    # ── microvm guest: disposable Juice Shop target (spec 31, Unit 3) ─────────
+    #
+    # Self-contained: the guest module sets `shares = []`, so microvm.nix builds
+    # a store disk instead of sharing the host's /nix/store. The root is tmpfs,
+    # so a restart is a reset. The tap is created by `modules/lab0.nix`.
+    microvm.vms.redteam-target = {
+      autostart = true;
+      restartIfChanged = false;
+      config = {
+        imports = [./modules/redteam-target.nix];
+      };
+    };
+
+    systemd.services."microvm@redteam-target" = {
+      wants = ["redteam-lab-taps.service"];
+      after = ["redteam-lab-taps.service"];
+      # microvm.nix's `microvm-tap-interfaces@` deletes and recreates the tap,
+      # which detaches it from lab0. Re-attach it after that service and before
+      # QEMU opens it. The `+` prefix runs the command as root; the unit itself
+      # runs as the unprivileged `microvm` user.
+      serviceConfig = {
+        ExecStartPre = [
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-target master lab0"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-target up"
+        ];
+        MemoryHigh = "1664M";
+        MemoryMax = "1792M";
+      };
+    };
+
+    # ── microvm guest: Stage 1 broker (spec 31, Unit 4) ──────────────────────
+    #
+    # Two taps: the br0 leg stays in the guest's main namespace; the lab0 leg
+    # is moved into the proxy namespace by the guest module.
+    microvm.vms.redteam-broker = {
+      autostart = true;
+      restartIfChanged = false;
+      config = {
+        imports = [./modules/redteam-broker.nix];
+      };
+    };
+
+    systemd.services."microvm@redteam-broker" = {
+      wants = ["redteam-lab-taps.service"];
+      after = ["redteam-lab-taps.service"];
+      serviceConfig = {
+        ExecStartPre = [
+          "+${pkgs.iproute2}/bin/ip link set tap-br0-broker master br0"
+          "+${pkgs.iproute2}/bin/ip link set tap-br0-broker up"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-broker master lab0"
+          "+${pkgs.iproute2}/bin/ip link set tap-lab0-broker up"
+        ];
+        MemoryHigh = "1152M";
+        MemoryMax = "1280M";
+      };
+    };
+
+    # Spec 31, Unit 1: explicit cgroup bounds for the sandbox guest. `mem` sizes
+    # the guest's RAM; these bound the whole QEMU cgroup (RAM plus emulator
+    # overhead). The red-team broker and target get their own bounds when they
+    # are declared. Budget: host reserve ~3 GiB, sandbox-node 5 GiB, broker
+    # 1 GiB, target 1 GiB, leaving ~5.9 GiB of headroom on a ~15.9 GiB host.
+    systemd.services."microvm@sandbox-node".serviceConfig = {
+      MemoryHigh = "5376M";
+      MemoryMax = "5632M";
     };
 
     # microvm.nix creates <stateDir> and <stateDir>/<name> owned by microvm:kvm, but

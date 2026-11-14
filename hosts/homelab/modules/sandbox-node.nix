@@ -82,7 +82,13 @@ in {
         # vCPU, which cannot hold a k3s agent *plus* the sandbox pod (the pod was
         # Unschedulable: "Insufficient memory"). homelab has 16 cores and ~15 GiB
         # and also runs Jellyfin and the RAID, so the guest takes a fixed slice.
-        mem = 6144;
+        #
+        # Spec 31, Unit 1: reduced from 6144 to 5120 to free room for the
+        # red-team broker (1024) and target (1024) without touching the host
+        # reserve. 4608 was rejected before deployment because the guest's
+        # baseline cgroup usage was 4.7 GiB; the spike and rollback are in
+        # `31-proofs/1-memory-spike.md`.
+        mem = 5120;
         vcpu = 4;
 
         # Attach to homelab's `br0` through QEMU's bridge helper. The guest lands
@@ -195,6 +201,9 @@ in {
       # The guest uses the `end0` name for k3s/flannel (the aspect's default),
       # stated explicitly so the assumption is visible.
       k3sAgent.interface = "end0";
+
+      # Spec 28: the one-minor-behind pin was removed once every node reached
+      # 1.36.4, so the guest inherits `k3s-common`'s pin like any other node.
 
       # ── node identity in the cluster ────────────────────────────────────────
       # A label + NoSchedule taint mirroring the cluster's `gpu=amd:NoSchedule`

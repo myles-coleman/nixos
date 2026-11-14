@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "techniques": [
+    {
+      "id": "http.get",
+      "class": "recon",
+      "method": "GET",
+      "description": "GET a path on the engagement target"
+    },
+    {
+      "id": "http.head",
+      "class": "recon",
+      "method": "HEAD",
+      "description": "HEAD a path on the engagement target"
+    }
+  ]
+}

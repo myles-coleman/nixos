@@ -75,7 +75,6 @@ in {
     # System packages (shared CLI/server tools come from aspects)
     environment.systemPackages = with pkgs; [
       tmux
-      brave
       bat
       python3
 
