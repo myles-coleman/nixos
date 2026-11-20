@@ -39,6 +39,14 @@ in {
         unstable
       ]);
 
+    # nixpkgs builds CONFIG_ACPI_TINY_POWER_BUTTON as a module next to
+    # CONFIG_ACPI_BUTTON, so it autoloads on the ACPI power button. It turns
+    # the firmware's power-button notify on s2idle wake into SIGRTMIN+4 to
+    # PID 1, so every lid-open resume powers the machine off. The real power
+    # button keeps working through `button` + logind. Keep this until nixpkgs
+    # stops building the module.
+    # https://github.com/NixOS/nixpkgs/issues/577729
+    boot.blacklistedKernelModules = ["tiny_power_button"];
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 1;
     boot.loader.efi.canTouchEfiVariables = true;

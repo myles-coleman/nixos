@@ -25,6 +25,45 @@
       '';
     };
 
+    # Reservations and eviction thresholds exist because the agents had neither:
+    # allocatable equalled capacity, so the scheduler treated the whole 4 GiB of a
+    # Pi as pod-usable and filled node1 to 96% of its memory requests with 186%
+    # committed limits. Under real usage that left nothing for the OS, kubelet and
+    # containerd, and kubelet's PLEG stopped responding
+    # ("pleg was last seen active 3m24s ago; threshold is 3m0s"), so the node
+    # reported NodeStatusUnknown and every endpoint on it was withdrawn.
+    options.k3sAgent.kubeReserved = lib.mkOption {
+      type = lib.types.str;
+      default = "cpu=200m,memory=300Mi";
+      description = ''
+        Capacity withheld from scheduling for the Kubernetes components (kubelet,
+        containerd, CNI). Not a cgroup-enforced reservation — k3s does not set up
+        the reserved cgroups — but it removes the capacity from `allocatable` so
+        the scheduler stops overfilling the node.
+      '';
+    };
+
+    options.k3sAgent.systemReserved = lib.mkOption {
+      type = lib.types.str;
+      default = "cpu=100m,memory=300Mi";
+      description = ''
+        Capacity withheld from scheduling for the OS and system services (sshd,
+        systemd, the journal). Raise it on hosts running extra daemons.
+      '';
+    };
+
+    options.k3sAgent.evictionHardMemory = lib.mkOption {
+      type = lib.types.str;
+      default = "300Mi";
+      description = ''
+        Hard eviction threshold on `memory.available`. The kubelet evicts pods to
+        keep this much memory free, which is the behaviour that was missing: the
+        node previously thrashed down to 57 MiB available and stalled instead of
+        shedding a workload. Must stay below kubeReserved + systemReserved, or
+        nothing is ever schedulable.
+      '';
+    };
+
     config = {
       assertions = [
         {
@@ -49,6 +88,12 @@
           "--node-ip=${(builtins.elemAt config.networking.interfaces.${config.k3sAgent.interface}.ipv4.addresses 0).address}"
           "--node-external-ip=${(builtins.elemAt config.networking.interfaces.${config.k3sAgent.interface}.ipv4.addresses 0).address}"
           "--flannel-iface=${config.k3sAgent.interface}"
+          # Passed with --kubelet-arg rather than as k3s-specific flags so the
+          # kubelet parses them directly and we do not depend on which spellings
+          # k3s re-exports in a given release.
+          "--kubelet-arg=kube-reserved=${config.k3sAgent.kubeReserved}"
+          "--kubelet-arg=system-reserved=${config.k3sAgent.systemReserved}"
+          "--kubelet-arg=eviction-hard=memory.available<${config.k3sAgent.evictionHardMemory}"
         ];
       };
     };
