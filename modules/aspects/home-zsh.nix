@@ -27,6 +27,7 @@
       enableCompletion = true;
       shellAliases = {
         rebuild = "sh ~/nixos/rebuild.sh";
+        sh = "bash";
       };
       oh-my-zsh = {
         enable = true;
