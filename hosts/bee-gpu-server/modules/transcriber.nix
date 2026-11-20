@@ -17,7 +17,7 @@
 
   # Digest-pinned PUBLIC GHCR image. Built from ~/transcript-tool's Dockerfile;
   # pin the digest after `docker push` (the tag can move, the digest cannot).
-  image = "ghcr.io/myles-coleman/transcript-tool@sha256:8914f556f9e713948fd72852c8203a7c4013fe4611864285607a4cf40f676540";
+  image = "ghcr.io/myles-coleman/transcript-tool@sha256:56b055da939da0bfd25af1610b57ff058b1882026eda82fb5dcd7f6dadfcb67a";
 
   # 12 cores, but Strata shares this box and the GPU is the bottleneck anyway.
   threads = "8";
