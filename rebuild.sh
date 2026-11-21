@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# rebuild.sh — preflight the tree, then build this machine's NixOS generation.
-# Spec 32, tasks 2.0 and 3.0: tree/host resolution, orientation banner, guards,
-# the alejandra format step and a `nom`-monitored build with a real log.
-# Activation lands in task 4.0.
+# rebuild.sh — preflight the tree, build this machine's NixOS generation, then
+# activate it. Spec 32, tasks 2.0-4.0: tree/host resolution, orientation banner,
+# guards, the alejandra format step, a `nom`-monitored build with a real log,
+# serialised activation, verification and notification.
 #
 # Local rebuilds are limited to the x86_64-linux desktops (bee-pc, bee-gpd);
 # every other host is built and deployed by CI (workflow_dispatch) or deploy-rs.
@@ -332,13 +332,121 @@ printf 'built:  %s\n' "$built_path"
 printf 'log:    %s\n' "$log"
 printf 'replay: nom --json < %s\n' "$log"
 
-# ── 7. stop here until activation exists ────────────────────────────────────
-
 if $DRY_RUN; then
   exit 0
 fi
 
-# Task 4.0 replaces this with the --boot/switch activation. BOOT is parsed and
-# validated above so the flag surface is stable across tasks.
-printf 'error: activation is not implemented yet\n' >&2
-exit 1
+# ── 7. notification helper ──────────────────────────────────────────────────
+#
+# Desktop notification, used for the outcome below. It is optional and its exit
+# status is never allowed to speak for the rebuild: no notify-send, no session
+# bus, or a failing call are all silent no-ops.
+notify() {
+  command -v notify-send >/dev/null 2>&1 || return 0
+  [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] || return 0
+  notify-send "$1" "$2" || true
+}
+
+# ── 8. serialise activation ─────────────────────────────────────────────────
+#
+# Two rebuilds activating at once would race on the same generation and on the
+# system profile, so the activation is serialised by an exclusive lock taken
+# before sudo (the wait must not start after the password prompt). The lock file
+# is left in place: it is a rendezvous point, not state to be cleaned up. The
+# holding fd is inherited by the activation below, which keeps the lock held for
+# as long as this process lives.
+
+exec 9>"$state_dir/lock"
+if ! flock -n 9; then
+  printf 'waiting: another rebuild holds the activation lock\n' >&2
+fi
+# The blocking acquire runs in both cases: when the probe won, it re-enters the
+# lock this process already holds on fd 9 and returns at once; when the probe
+# lost, it waits for the holder to finish.
+flock 9
+
+# ── 9. sudo ─────────────────────────────────────────────────────────────────
+#
+# nixos-rebuild --sudo needs credentials for the whole activation. Prompting
+# once here keeps `nixos-rebuild`'s own sudo non-interactive, and makes the
+# no-tty case a pre-activation error instead of a half-run activation.
+
+if [ -t 0 ]; then
+  sudo -v || {
+    printf 'error: sudo authentication failed\n' >&2
+    exit 1
+  }
+else
+  if ! sudo -n true 2>/dev/null; then
+    printf 'error: sudo needs a password and stdin is not a terminal; run rebuild interactively\n' >&2
+    exit 1
+  fi
+fi
+
+# ── 10. activate ────────────────────────────────────────────────────────────
+
+if $BOOT; then action=boot; else action=switch; fi
+
+# Appended to the build log, so one file holds the whole run. The activation
+# status comes from nixos-rebuild via PIPESTATUS[0], never from `tee` and never
+# from nom: nom is not in this pipeline (it would parse nixos-rebuild's prose as
+# if it were a build stream).
+set +e
+nixos-rebuild "$action" --flake ".#$HOST" --sudo 2>&1 | tee -a "$log"
+activation_status=${PIPESTATUS[0]}
+set -e
+
+if [ "$activation_status" -ne 0 ]; then
+  printf 'error: activation failed (log: %s)\n' "$log" >&2
+  notify 'NixOS rebuild: activation failed' "$HOST: see $log"
+  exit 1
+fi
+
+# ── 11. verify what was activated ───────────────────────────────────────────
+#
+# A switch must have moved /run/current-system onto the generation just built;
+# anything else means the activation silently did nothing. --boot makes no such
+# claim: it only installs the boot entry for the next boot.
+
+if ! $BOOT; then
+  current_system="$(readlink -f /run/current-system 2>/dev/null || true)"
+  if [ "$current_system" != "$built_path" ]; then
+    printf 'error: activation did not take effect: /run/current-system is %s, expected %s\n' \
+      "${current_system:-<unreadable>}" "$built_path" >&2
+    notify 'NixOS rebuild: activation did not take effect' \
+      "$HOST: /run/current-system is ${current_system:-<unreadable>}"
+    exit 1
+  fi
+fi
+
+# The report is decoration: every failure below is tolerated, and none of it may
+# turn a successful activation into a failure. A failed list-generations prints
+# "unknown" rather than an empty line.
+
+generation="unknown"
+if generations="$(nixos-rebuild list-generations 2>/dev/null)"; then
+  generation="$(printf '%s\n' "$generations" |
+    awk '/current/ { print; exit }' |
+    sed 's/^[[:space:]]*//' || true)"
+  [ -n "$generation" ] || generation=unknown
+fi
+printf '  generation: %s\n' "$generation"
+
+failed_units="$(systemctl --failed --no-legend 2>/dev/null | grep -c . || true)"
+[ -n "$failed_units" ] || failed_units=0
+printf '  units:     %s failed\n' "$failed_units"
+
+# A switch does not change the running kernel; only a reboot does. The note is
+# informational and never changes the exit code.
+booted_system="$(readlink -f /run/booted-system 2>/dev/null || true)"
+current_system="$(readlink -f /run/current-system 2>/dev/null || true)"
+if [ "$booted_system" != "$current_system" ]; then
+  printf 'note: reboot to run the new kernel (/run/booted-system differs from /run/current-system)\n' >&2
+fi
+
+# ── 12. notify the outcome ──────────────────────────────────────────────────
+
+notify 'NixOS rebuild: activated' \
+  "$HOST: generation $generation, $failed_units failed units"
+
+printf 'activated: %s\n' "$built_path"

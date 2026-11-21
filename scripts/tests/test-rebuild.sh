@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 #
-# Tests for the rebuild.sh contract (spec 32, Units 2 and 3).
+# Tests for the rebuild.sh contract (spec 32, Units 2, 3 and 4).
 #
 # Assertions 1-20 pin the preflight contract (FR-1 to FR-14): the CLI surface,
 # tree/host resolution, the banner and the pre-build guards.
 # Assertions 21-33 pin the build contract: the alejandra format step, the
 # `nom`-monitored build, log capture, the exit status taken from `nix` rather
 # than `nom`, out-link cleanup and the interrupt trap.
+# Assertions 34-46 pin the activation contract (FR-24 to FR-31): the
+# non-interactive sudo guard, the activation lock, `switch`/`boot` invocation,
+# log append, the `/run/current-system` equality check, the generation and
+# failed-unit report, the reboot note and notification tolerance.
 #
 # rebuild.sh is replaced wholesale by spec 32. These tests pin that contract
-# with a stub PATH and throwaway git fixtures: no Nix, no network, no
+# with a stub PATH and throwaway git fixtures: no Nix, no network, no real
 # activation.
 #
 # `git` is real, not stubbed (spec 32, Amendment 2): the fixtures are the only
@@ -27,7 +31,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/rebuild.sh"
 
-TOTAL=33
+TOTAL=46
 
 TMP="$(mktemp -d)"
 TMP="$(cd "$TMP" && pwd -P)"
@@ -229,8 +233,11 @@ printf '%s\n' "\$*" >> "$CAPTURE/nixos-rebuild"
 if [ "\${1:-}" = "list-generations" ]; then
   printf '   1   current  2026-11-19\n'
   printf '   0  2026-11-01\n'
-  exit 0
+  exit "\${STUB_LIST_GEN_STATUS:-0}"
 fi
+# Mark the activation on stderr: the script must append activation output to
+# the build log, so this line and the build's @nix line must both survive.
+printf '%s\n' 'stub-activation-marker' >&2
 exit "\${STUB_ACT_STATUS:-0}"
 EOF
 
@@ -754,5 +761,193 @@ case "$build_argv" in
   *) fail 33 "the build argv does not name the configuration (got: $build_argv)" ;;
 esac
 pass 33 "the build argv names .#nixosConfigurations.bee-gpd.config.system.build.toplevel"
+
+# ── activation contract (spec 32, Unit 4) ───────────────────────────────────
+#
+# Assertions 34-46. Everything above this line is preflight and build.
+
+# Like `invoke`, but with stdin on /dev/null so `[ -t 0 ]` is false and the
+# script takes its non-interactive sudo path. Every assertion below uses this.
+invoke_switch() {
+  local cwd="$1"
+  shift
+  reset_capture
+  set +e
+  (
+    cd "$cwd" &&
+      env -u DBUS_SESSION_BUS_ADDRESS \
+        XDG_STATE_HOME="$TMP/state" \
+        HOME="$TMP/home" \
+        bash "$SCRIPT" "$@" </dev/null
+  ) >"$TMP/out" 2>"$TMP/err"
+  STATUS=$?
+  set -e
+}
+
+run_switch() {
+  local cwd="$1"
+  shift
+  invoke_switch "$cwd" "$@"
+}
+
+# The most recently written build log, if any.
+newest_log() {
+  if ls -t "$STATE_DIR"/*.log >/dev/null 2>&1; then
+    ls -t "$STATE_DIR"/*.log | awk 'NR == 1 { print }'
+  fi
+}
+
+# The activation argv: everything except the list-generations probe.
+activation_argv() {
+  awk '!/^list-generations( |$)/ { print; exit }' "$CAPTURE/nixos-rebuild"
+}
+
+ACT="$TMP/act"
+make_repo "$ACT"
+
+# 34. Without a tty a failing `sudo -n true` aborts before activation and points
+#     at interactive use.
+STUB_SUDO_STATUS=1 run_switch "$ACT" --force
+expect_status 1 34 "a failing non-interactive sudo exits 1"
+assert_contains "$TMP/err" "needs a password" 34 "the failure says a password is needed"
+assert_contains "$TMP/err" "not a terminal" 34 "the failure says stdin is not a terminal"
+assert_no_call nixos-rebuild 34 "a failing non-interactive sudo never activates"
+pass 34 "non-interactive sudo failure exits 1, names the terminal, and never invokes nixos-rebuild"
+
+# 35. The same non-interactive path activates once sudo credentials exist.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 35 "the non-interactive switch exits 0"
+if [ ! -s "$CAPTURE/nixos-rebuild" ]; then
+  fail 35 "nixos-rebuild was never invoked"
+fi
+pass 35 "a non-interactive switch runs nixos-rebuild and exits 0"
+
+# 36. The activation invocation is `switch --flake .#<host> --sudo`.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 36 "the switch run exits 0"
+act_argv="$(activation_argv)"
+if [ -z "$act_argv" ]; then
+  fail 36 "no non-list-generations nixos-rebuild invocation was captured"
+fi
+if ! printf '%s\n' "$act_argv" | grep -qE '(^| )switch( |$)'; then
+  fail 36 "the activation argv lacks 'switch' (got: $act_argv)"
+fi
+if ! printf '%s\n' "$act_argv" | grep -qF -- '--flake .#bee-gpd'; then
+  fail 36 "the activation argv lacks '--flake .#bee-gpd' (got: $act_argv)"
+fi
+if ! printf '%s\n' "$act_argv" | grep -qF -- '--sudo'; then
+  fail 36 "the activation argv lacks '--sudo' (got: $act_argv)"
+fi
+pass 36 "the activation invocation is 'switch --flake .#bee-gpd --sudo'"
+
+# 37. --boot activates with `boot`, not `switch`, and still uses --sudo.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --boot --force
+expect_status 0 37 "the --boot run exits 0"
+act_argv="$(activation_argv)"
+if [ -z "$act_argv" ]; then
+  fail 37 "no activation invocation was captured"
+fi
+if ! printf '%s\n' "$act_argv" | grep -qE '(^| )boot( |$)'; then
+  fail 37 "the --boot activation argv lacks 'boot' (got: $act_argv)"
+fi
+if printf '%s\n' "$act_argv" | grep -qE '(^| )switch( |$)'; then
+  fail 37 "the --boot activation argv uses 'switch' (got: $act_argv)"
+fi
+if ! printf '%s\n' "$act_argv" | grep -qF -- '--sudo'; then
+  fail 37 "the --boot activation argv lacks '--sudo' (got: $act_argv)"
+fi
+pass 37 "--boot activates with 'boot --flake .#bee-gpd --sudo', never 'switch'"
+
+# 38. Activation output is appended to the same log: the activation marker and
+#     the build's @nix line must both be present, so this is append, not
+#     truncate.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 38 "the logged switch exits 0"
+log38="$(newest_log)"
+if [ -z "$log38" ]; then
+  fail 38 "no build log was written"
+fi
+assert_contains "$log38" "stub-activation-marker" 38 "the activation output is in the log"
+assert_contains "$log38" "@nix" 38 "the build output survives activation (append, not truncate)"
+pass 38 "activation output is appended to the build log, which still holds the build output"
+
+# 39. nom never sees the activation stream: one nom invocation for the build.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 39 "the nom-counted switch exits 0"
+nom_lines="$(grep -c . "$CAPTURE/nom" 2>/dev/null || true)"
+assert_eq 1 "$nom_lines" 39 "nom runs exactly once (build only), never for activation"
+pass 39 "nom runs exactly once, for the build only"
+
+# 40. Activation is serialised by a lock file under the state directory.
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 40 "the locked switch exits 0"
+if [ ! -s "$CAPTURE/flock" ]; then
+  fail 40 "flock was never invoked"
+fi
+if [ ! -e "$STATE_DIR/lock" ]; then
+  fail 40 "no lock file at $STATE_DIR/lock"
+fi
+pass 40 "the activation takes a flock and leaves $STATE_DIR/lock behind"
+
+# 41. The waiting message is only reachable when the non-blocking `flock -n`
+#     attempt loses the race. The stub answers STUB_FLOCK_STATUS for every
+#     invocation, so failing only the first attempt cannot be staged. Assert
+#     instead that with the lock free the script does not claim to wait, and
+#     that it probes with `flock -n` before the blocking call that follows.
+STUB_FLOCK_STATUS=0 run_switch "$ACT" --force
+expect_status 0 41 "the free-lock switch exits 0"
+assert_not_contains "$TMP/err" "another rebuild holds the activation lock" 41 \
+  "a free lock does not print the waiting line"
+if [ ! -s "$CAPTURE/flock" ]; then
+  fail 41 "flock was never invoked"
+fi
+first_flock="$(awk 'NR == 1 { print }' "$CAPTURE/flock")"
+case "$first_flock" in
+  *"-n"*) ;;
+  *) fail 41 "the first flock call is not a non-blocking probe (got: $first_flock)" ;;
+esac
+if ! awk 'NR > 1 && $0 !~ /-n/ { found = 1 } END { exit !found }' "$CAPTURE/flock"; then
+  fail 41 "no blocking flock followed the non-blocking probe"
+fi
+pass 41 "the lock is probed with flock -n before the blocking flock, and no waiting line is printed"
+
+# 42. A switch whose /run/current-system is not the built path fails loudly.
+STUB_SUDO_STATUS=0 \
+  STUB_CURRENT_SYSTEM=/nix/store/00000000000000000000000000000099-system \
+  run_switch "$ACT" --force
+expect_status 1 42 "a switch that did not take effect exits 1"
+assert_contains "$TMP/err" "activation did not take effect" 42 "the mismatch is named on stderr"
+pass 42 "a /run/current-system mismatch exits 1 with 'activation did not take effect'"
+
+# 43. --boot makes no equality claim about /run/current-system.
+STUB_SUDO_STATUS=0 \
+  STUB_CURRENT_SYSTEM=/nix/store/00000000000000000000000000000099-system \
+  run_switch "$ACT" --boot --force
+expect_status 0 43 "--boot with a different current-system exits 0"
+assert_not_contains "$TMP/err" "activation did not take effect" 43 \
+  "--boot makes no current-system equality claim"
+pass 43 "--boot makes no current-system equality claim"
+
+# 44. A failing list-generations does not abort; the generation line still prints.
+STUB_SUDO_STATUS=0 STUB_LIST_GEN_STATUS=1 run_switch "$ACT" --force
+expect_status 0 44 "a failing list-generations does not change the exit code"
+assert_line_present "$TMP/out" "  generation:" 44 "the generation line still prints"
+pass 44 "a failing list-generations is tolerated and the generation line still prints"
+
+# 45. The report counts failed units, and a stale booted system prints the
+#     reboot note.
+STUB_SUDO_STATUS=0 \
+  STUB_FAILED_UNITS=2 \
+  STUB_BOOTED_SYSTEM=/nix/store/00000000000000000000000000000002-system \
+  run_switch "$ACT" --force
+expect_status 0 45 "the reporting switch exits 0"
+assert_contains "$TMP/out" "2 failed" 45 "stdout reports two failed units"
+assert_contains "$TMP/err" "reboot" 45 "a differing booted system prints the reboot note"
+pass 45 "stdout reports '2 failed' and a differing booted system prints the reboot note"
+
+# 46. A failing notify-send never turns a successful switch into a failure.
+STUB_SUDO_STATUS=0 STUB_NOTIFY_STATUS=1 run_switch "$ACT" --force
+expect_status 0 46 "a failing notify-send leaves the exit code at 0"
+pass 46 "a failing notify-send leaves the exit code at 0"
 
 printf '\nall %s assertions passed\n' "$TOTAL"
