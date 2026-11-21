@@ -13,6 +13,7 @@
       kustomize
       wl-clipboard
       jq
+      nix-output-monitor
       kubernetes-helm
       helmfile
       k9s

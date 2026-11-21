@@ -49,7 +49,7 @@ sops secrets/secrets.yaml
 
 ## Changing Mullvad location or port
 
-Edit `mullvadServerIp` in `hosts/protecli-vault/modules/mullvad.nix` and rebuild.
+Edit `mullvadServerIp` in `hosts/protecli-vault/modules/mullvad.nix` and deploy through CI (see Deploy above).
 To use a different UDP port, edit `mullvadPort` (it must be a port the chosen
 relay accepts; `51820` is the generator default, but `53`, `1234`, `443`, and
 `5001` are also commonly available). The WireGuard key and tunnel address work
@@ -64,9 +64,18 @@ rotate the WireGuard key as well (see Operational notes).
 
 ## Deploy
 
+This host is not in the local `rebuild.sh` allowlist (`bee-pc`, `bee-gpd`).
+Deploy it from CI with a `workflow_dispatch` run of the Deploy workflow
+(`hosts: protecli-vault`), or from a machine that can reach it:
+
 ```bash
-./rebuild.sh --protecli-vault --dry-run   # evaluate/build only
-./rebuild.sh --protecli-vault             # build locally, deploy to the Vault
+nix run .#deploy -- .#protecli-vault --skip-checks -- -L
+```
+
+For a build-only check that never touches the Vault:
+
+```bash
+nix build .#packages.x86_64-linux.protecli-vault
 ```
 
 The Vault is targeted over Tailscale (`bee@100.112.185.27`). The dedicated
@@ -192,7 +201,8 @@ plain-WAN egress. To roll back manually:
    hard-killed).
 2. Inspect generations: `nixos-rebuild list-generations`.
 3. Switch to the previous generation and reboot, or revert the offending
-   commit and run `./rebuild.sh --protecli-vault`.
+   commit and deploy again through CI (or
+   `nix run .#deploy -- .#protecli-vault --skip-checks -- -L`).
 4. Re-run the verification / leak test above before considering the rollback
    complete.
 
@@ -206,7 +216,7 @@ plain-WAN egress. To roll back manually:
   server to boot, so the address the gateway used to lease is pinned. Change
   `wanAddress` and `wanGateway` together if the upstream subnet moves, and
   confirm the address is unused (ARP probe) before pinning it.
-- **Mullvad location change**: one-line edit of `mullvadEndpoint` plus rebuild.
+- **Mullvad location change**: one-line edit of `mullvadEndpoint` plus a deploy through CI.
 - **WireGuard key rotation**: Mullvad's exit-IP assignment can link sessions
   across server changes; rotate the key (log out/in on the account, or generate
   and re-register a new key) when changing locations for privacy reasons.
