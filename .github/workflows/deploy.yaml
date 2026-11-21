@@ -129,7 +129,13 @@ jobs:
         with:
           name: nixos-monorepo
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          useDaemon: true
+          # The daemon's post-job `cachix daemon stop` exits 3 when the daemon
+          # has already exited, which marked a successful deploy red (run
+          # 44957877456: homelab activated, confirmed, and verified, then the
+          # job failed in cleanup). Pushing synchronously is slower -- no
+          # incremental push during the build -- but it cannot fail a deploy
+          # that already succeeded.
+          useDaemon: false
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
