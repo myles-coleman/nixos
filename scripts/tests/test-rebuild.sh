@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 #
-# Tests for the rebuild.sh preflight contract (spec 32, Unit 2; FR-1 to FR-14).
+# Tests for the rebuild.sh contract (spec 32, Units 2 and 3).
 #
-# rebuild.sh is replaced wholesale by spec 32. These tests pin the CLI surface,
-# tree/host resolution, the banner and the pre-build guards with a stub PATH and
-# throwaway git fixtures: no Nix, no network, no activation.
+# Assertions 1-20 pin the preflight contract (FR-1 to FR-14): the CLI surface,
+# tree/host resolution, the banner and the pre-build guards.
+# Assertions 21-33 pin the build contract: the alejandra format step, the
+# `nom`-monitored build, log capture, the exit status taken from `nix` rather
+# than `nom`, out-link cleanup and the interrupt trap.
+#
+# rebuild.sh is replaced wholesale by spec 32. These tests pin that contract
+# with a stub PATH and throwaway git fixtures: no Nix, no network, no
+# activation.
 #
 # `git` is real, not stubbed (spec 32, Amendment 2): the fixtures are the only
 # way to exercise the queries the script actually makes (`rev-parse`,
 # `branch --show-current`, `status --porcelain`, `ls-files`, `diff`). The other
-# commands in FR-36 (`nix`, `nom`, `nixos-rebuild`, `alejandra`, `notify-send`,
-# `systemctl`, `hostname`, `sudo`, `flock`, `readlink`) are stubs under
+# commands in FR-36 (`nix`, `nom`, `nix-instantiate`, `nixos-rebuild`,
+# `alejandra`, `notify-send`, `systemctl`, `hostname`, `sudo`, `flock`,
+# `readlink`) are stubs under
 # $TMP/bin. Coreutils stay real.
 #
 # Usage: scripts/tests/test-rebuild.sh
@@ -20,7 +27,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/rebuild.sh"
 
-TOTAL=20
+TOTAL=33
 
 TMP="$(mktemp -d)"
 TMP="$(cd "$TMP" && pwd -P)"
@@ -143,6 +150,25 @@ if [ -n "\${STUB_UNKNOWN_HOST:-}" ]; then
   done
 fi
 
+# "build" is dispatched before the evaluation answers below: the build argv
+# itself contains system.build.toplevel, so an eval loop placed first would
+# answer the build with a store path and make this branch unreachable.
+if [ "\${1:-}" = "build" ]; then
+  out=""
+  prev=""
+  for arg in "\$@"; do
+    if [ "\$prev" = "--out-link" ]; then out="\$arg"; fi
+    prev="\$arg"
+  done
+  # nix writes the out-link as a symlink to the built store path.
+  if [ -n "\$out" ]; then
+    ln -sfn "\${STUB_TOPLEVEL:-/nix/store/00000000000000000000000000000001-system}" "\$out"
+  fi
+  printf '%s\n' '@nix {"action":"msg","level":0,"msg":"stub"}' >&2
+  sleep "\${STUB_BUILD_SLEEP:-0}"
+  exit "\${STUB_BUILD_STATUS:-0}"
+fi
+
 for arg in "\$@"; do
   case "\$arg" in
     *builtins.attrNames*)
@@ -170,18 +196,6 @@ for arg in "\$@"; do
   esac
 done
 
-if [ "\${1:-}" = "build" ]; then
-  out=""
-  prev=""
-  for arg in "\$@"; do
-    if [ "\$prev" = "--out-link" ]; then out="\$arg"; fi
-    prev="\$arg"
-  done
-  if [ -n "\$out" ]; then mkdir -p "\$out"; fi
-  printf '%s\n' '@nix {"action":"msg","level":0,"msg":"stub"}' >&2
-  exit "\${STUB_BUILD_STATUS:-0}"
-fi
-
 exit 0
 EOF
 
@@ -200,6 +214,13 @@ if [ "\${1:-}" = "--check" ] && [ "\$status" -ne 0 ]; then
   printf '%s\n' '- ./broken.nix: unexpected TOKEN_ASSIGN at 1..2' >&2
 fi
 exit "\$status"
+EOF
+
+write_stub nix-instantiate <<EOF
+#!/usr/bin/env bash
+printf '%s\n' "\$*" >> "$CAPTURE/nix-instantiate"
+printf '%s\n' 'broken.nix:1:1: error: syntax error' >&2
+exit "\${STUB_NIX_INSTANTIATE_STATUS:-1}"
 EOF
 
 write_stub nixos-rebuild <<EOF
@@ -511,5 +532,227 @@ if grep -qE '\$\{[a-z][[:alnum:]_]*,,}' "$SCRIPT"; then
   fail 20 "rebuild.sh lowercases with \${var,,} (not bash 3 compatible)"
 fi
 pass 20 "rebuild.sh has no declare -A, mapfile or \${var,,}"
+
+# ── build contract (spec 32, Unit 3) ────────────────────────────────────────
+#
+# Assertions 21-33. Everything above this line is the preflight contract.
+
+# The argv of a `nix build` invocation, if the run made one.
+nix_build_line() {
+  if [ -f "$CAPTURE/nix" ]; then
+    awk '/^build( |$)/ { print; exit }' "$CAPTURE/nix"
+  fi
+}
+
+# Regular *.log files in the state directory created after <marker>.
+logs_newer_than() {
+  find "$STATE_DIR" -maxdepth 1 -type f -name '*.log' -newer "$1" 2>/dev/null || true
+}
+
+# Anything named `result` left in the state directory.
+state_result_leftovers() {
+  find "$STATE_DIR" -maxdepth 1 -name 'result' 2>/dev/null || true
+}
+
+STATE_DIR="$TMP/state/nixos-rebuild"
+
+# 21. The format step covers exactly the tracked Nix files: never an untracked
+#     file, never a bare `.`.
+FMT="$TMP/fmt"
+make_repo "$FMT"
+printf '%s\n' '{ }' >"$FMT/extra.nix"
+run_rebuild "$FMT" --force --dry-run
+expect_status 0 21 "the untracked-file --force run completes"
+if [ ! -s "$CAPTURE/alejandra" ]; then
+  fail 21 "alejandra was never invoked"
+fi
+if ! grep -qF 'flake.nix' "$CAPTURE/alejandra"; then
+  fail 21 "alejandra was not given flake.nix (got: $(tr '\n' ';' <"$CAPTURE/alejandra"))"
+fi
+if ! grep -qF 'modules/test.nix' "$CAPTURE/alejandra"; then
+  fail 21 "alejandra was not given modules/test.nix"
+fi
+if grep -qF 'extra.nix' "$CAPTURE/alejandra"; then
+  fail 21 "alejandra was given the untracked extra.nix"
+fi
+if grep -qE '^\.$' "$CAPTURE/alejandra"; then
+  fail 21 "alejandra was given a bare '.'"
+fi
+pass 21 "alejandra formats the tracked Nix files, never extra.nix, never a bare ."
+
+# 22. A failing alejandra aborts with exit 1 before the build.
+FAILDIR="$TMP/failfmt"
+make_repo "$FAILDIR"
+STUB_ALEJANDRA_STATUS=1 run_rebuild "$FAILDIR" --force --dry-run
+expect_status 1 22 "a failing alejandra exits 1"
+assert_contains "$TMP/err" "formatting failed" 22 "the failure says formatting failed"
+assert_eq 0 "$(nix_build_count)" 22 "a formatting failure never builds"
+pass 22 "a failing alejandra exits 1 with 'formatting failed' and never builds"
+
+# 23. The diagnostic names the file alejandra --check flagged, and that file is
+#     re-parsed with nix-instantiate --parse.
+assert_contains "$TMP/err" "broken.nix" 23 "stderr names the flagged file"
+if [ ! -s "$CAPTURE/nix-instantiate" ]; then
+  fail 23 "the flagged file was not re-parsed with nix-instantiate"
+fi
+if ! grep -qF 'broken.nix' "$CAPTURE/nix-instantiate"; then
+  fail 23 "nix-instantiate was not given broken.nix"
+fi
+pass 23 "the formatting failure names broken.nix and re-parses it with nix-instantiate"
+
+# 24. The pre-build diff uses the '*.nix' pathspec, so an uncommitted change to
+#     the top-level flake.nix appears in the output.
+DIFFFIX="$TMP/difffix"
+make_repo "$DIFFFIX"
+printf '\n# uncommitted-top-level-flake-change\n' >>"$DIFFFIX/flake.nix"
+run_rebuild "$DIFFFIX" --force --dry-run
+expect_status 0 24 "the dirty-flake run completes"
+assert_contains "$TMP/out" "flake.nix" 24 "the diff output names flake.nix"
+assert_contains "$TMP/out" "uncommitted-top-level-flake-change" 24 "the diff shows the uncommitted top-level change"
+pass 24 "an uncommitted top-level flake.nix change appears in the diff output"
+
+# 25. The build is the internal-json, verbose one, so nom can consume it.
+BUILD="$TMP/build"
+make_repo "$BUILD"
+run_rebuild "$BUILD" --dry-run --force
+expect_status 0 25 "the build run completes"
+build_argv="$(nix_build_line)"
+if [ -z "$build_argv" ]; then
+  fail 25 "no nix build invocation was captured"
+fi
+case "$build_argv" in
+  *"--log-format internal-json"*) ;;
+  *) fail 25 "the build lacks '--log-format internal-json' (got: $build_argv)" ;;
+esac
+case "$build_argv" in
+  *" -v"*) ;;
+  *) fail 25 "the build lacks -v (got: $build_argv)" ;;
+esac
+pass 25 "the build passes --log-format internal-json and -v"
+
+# 26. nom consumes that stream.
+if [ ! -s "$CAPTURE/nom" ]; then
+  fail 26 "nom was never invoked"
+fi
+if ! grep -qF -- '--json' "$CAPTURE/nom"; then
+  fail 26 "nom was not given --json (got: $(tr '\n' ';' <"$CAPTURE/nom"))"
+fi
+pass 26 "nom is invoked with --json"
+
+# 27. The build log is <state>/<tree>-<timestamp>.log and last.log points at it.
+LOGFIX="$TMP/logfix"
+make_repo "$LOGFIX"
+LOGMARK="$TMP/logmark-27"
+: >"$LOGMARK"
+run_rebuild "$LOGFIX" --dry-run --force
+expect_status 0 27 "the logged run completes"
+new_logs="$(logs_newer_than "$LOGMARK")"
+if [ -z "$new_logs" ]; then
+  fail 27 "no *.log file was created under $STATE_DIR"
+fi
+assert_eq 1 "$(printf '%s\n' "$new_logs" | grep -c . || true)" 27 "the run writes exactly one log file"
+log_file="$(printf '%s\n' "$new_logs" | awk 'NR == 1 { print }')"
+if ! printf '%s\n' "$log_file" | grep -qE '^.+-[0-9][A-Za-z0-9:._-]*\.log$'; then
+  fail 27 "the log file name '$(basename "$log_file")' is not <tree>-<timestamp>.log"
+fi
+if [ ! -L "$STATE_DIR/last.log" ]; then
+  fail 27 "last.log is not a symlink"
+fi
+last_target="$("$REAL_READLINK" -f "$STATE_DIR/last.log" 2>/dev/null || true)"
+assert_eq "$log_file" "$last_target" 27 "last.log resolves to the new log"
+pass 27 "the run writes one <tree>-<timestamp>.log and last.log points at it"
+
+# 28. The exit status comes from nix, not nom: nix failing while nom succeeds is
+#     a failure, and the log is kept.
+FAILBUILD="$TMP/failbuild"
+make_repo "$FAILBUILD"
+FAILMARK="$TMP/logmark-28"
+: >"$FAILMARK"
+STUB_BUILD_STATUS=1 STUB_NOM_STATUS=0 run_rebuild "$FAILBUILD" --dry-run --force
+expect_status 1 28 "nix failing while nom succeeds exits 1"
+if [ -z "$(logs_newer_than "$FAILMARK")" ]; then
+  fail 28 "the failed run kept no log file"
+fi
+pass 28 "nix failing while nom succeeds exits 1 and the log survives"
+
+# 29. ... and nix succeeding while nom fails is still a success.
+OKNOM="$TMP/oknom"
+make_repo "$OKNOM"
+STUB_BUILD_STATUS=0 STUB_NOM_STATUS=1 run_rebuild "$OKNOM" --dry-run --force
+expect_status 0 29 "nix succeeding while nom fails exits 0"
+pass 29 "nix succeeding while nom fails exits 0"
+
+# 30. A successful run reports built/log/replay and leaves no out-link behind.
+SUCCESS="$TMP/success"
+make_repo "$SUCCESS"
+rm -f "$STATE_DIR/result"
+run_rebuild "$SUCCESS" --dry-run --force
+expect_status 0 30 "the successful run exits 0"
+for needle in 'built:' 'log:' 'replay:'; do
+  assert_contains "$TMP/out" "$needle" 30 "a successful run prints $needle"
+done
+if [ -L "$SUCCESS/result" ] || [ -e "$SUCCESS/result" ]; then
+  fail 30 "the tree still has a result entry"
+fi
+if [ -n "$(state_result_leftovers)" ]; then
+  fail 30 "the state directory still has a result entry"
+fi
+pass 30 "a successful run prints built/log/replay and leaves no result behind"
+
+# 31. SIGINT during the build exits 130, names the log and removes the out-link.
+INT="$TMP/interrupt"
+make_repo "$INT"
+rm -f "$STATE_DIR/result"
+reset_capture
+set +e
+# Job control must be on for this launch: a background command started by a
+# non-interactive shell inherits SIGINT as ignored, so the script could never
+# install its trap and the kill below would do nothing.
+set -m
+(
+  cd "$INT" || exit 99
+  exec env -u DBUS_SESSION_BUS_ADDRESS \
+    XDG_STATE_HOME="$TMP/state" \
+    HOME="$TMP/home" \
+    STUB_BUILD_SLEEP=3 \
+    bash "$SCRIPT" --dry-run --force
+) >"$TMP/int.out" 2>"$TMP/int.err" &
+int_pid=$!
+sleep 0.5
+kill -INT "$int_pid" 2>/dev/null
+wait "$int_pid"
+int_status=$?
+set +m
+set -e
+assert_eq 130 "$int_status" 31 "SIGINT during the build exits 130"
+if [ -z "$(nix_build_line)" ]; then
+  fail 31 "the interrupted run never reached the build"
+fi
+if ! grep -qF '.log' "$TMP/int.out" && ! grep -qF '.log' "$TMP/int.err"; then
+  fail 31 "the interrupt does not name a log path"
+fi
+if [ -n "$(state_result_leftovers)" ]; then
+  fail 31 "the interrupt left the out-link behind"
+fi
+pass 31 "SIGINT exits 130, names the log and removes the out-link"
+
+# 32. --dry-run never activates through nixos-rebuild.
+run_rebuild "$SUCCESS" --dry-run --force
+expect_status 0 32 "the --dry-run run completes"
+assert_no_call nixos-rebuild 32 "--dry-run never invokes nixos-rebuild"
+pass 32 "--dry-run never invokes nixos-rebuild"
+
+# 33. The build argv names this configuration, so nom's output is about it.
+run_rebuild "$SUCCESS" --dry-run --force
+expect_status 0 33 "the argv run completes"
+build_argv="$(nix_build_line)"
+if [ -z "$build_argv" ]; then
+  fail 33 "no nix build invocation was captured"
+fi
+case "$build_argv" in
+  *".#nixosConfigurations.bee-gpd.config.system.build.toplevel"*) ;;
+  *) fail 33 "the build argv does not name the configuration (got: $build_argv)" ;;
+esac
+pass 33 "the build argv names .#nixosConfigurations.bee-gpd.config.system.build.toplevel"
 
 printf '\nall %s assertions passed\n' "$TOTAL"

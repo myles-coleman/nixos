@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
 # rebuild.sh — preflight the tree, then build this machine's NixOS generation.
-# Spec 32, task 2.0: tree/host resolution, orientation banner, guards and a
-# plain build. Activation lands in task 4.0.
+# Spec 32, tasks 2.0 and 3.0: tree/host resolution, orientation banner, guards,
+# the alejandra format step and a `nom`-monitored build with a real log.
+# Activation lands in task 4.0.
 #
 # Local rebuilds are limited to the x86_64-linux desktops (bee-pc, bee-gpd);
 # every other host is built and deployed by CI (workflow_dispatch) or deploy-rs.
@@ -266,30 +267,70 @@ if ! $FORCE && $tree_clean; then
   fi
 fi
 
-# ── 6. build ────────────────────────────────────────────────────────────────
+# ── 6. format, then build ───────────────────────────────────────────────────
 
-state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/nixos-rebuild"
-mkdir -p "$state_dir"
-out_link="$state_dir/result"
-rm -f "$out_link"
+# An interrupt can arrive at any point below, including during the format step,
+# so the trap is installed before either. `out_link` is only set once the build
+# section is reached; `log` likewise.
+on_interrupt() {
+  [ -n "${out_link:-}" ] && rm -f "$out_link"
+  printf '\ninterrupted: log at %s\n' "${log:-<no log>}" >&2
+  exit 130
+}
+trap on_interrupt INT TERM
 
-# The build status is taken explicitly rather than left to `set -e`/`pipefail`:
-# this is the one step whose exit code must be inspected to print a single
-# `error: build failed` instead of aborting mid-statement.
-set +e
-nix build ".#nixosConfigurations.$HOST.config.system.build.toplevel" --out-link "$out_link"
-build_status=$?
-set -e
-
-if [ "$build_status" -ne 0 ]; then
-  printf 'error: build failed\n' >&2
+# Only tracked files: this can never walk into .worktrees/ or format scratch
+# files. The listing is probed first: outside a git work tree `git ls-files`
+# fails, and the flake cannot see anything there, so the step is skipped
+# instead of being reported as a formatting failure. Both failures are consumed
+# by `if !`/`elif !` so `set -e` cannot abort before the diagnostic below.
+if ! git ls-files -z -- '*.nix' >/dev/null 2>&1; then
+  printf 'note: not a git work tree; skipping the tracked-file format step\n' >&2
+elif ! git ls-files -z -- '*.nix' | xargs -0 -r alejandra >/dev/null 2>&1; then
+  flagged="$(alejandra --check $(git ls-files -- '*.nix') 2>&1 | sed -n 's/^- \(\.\/\)\?\(.*\.nix\):.*/\2/p')" || true
+  if [ -n "$flagged" ]; then
+    nix-instantiate --parse $flagged || true
+  fi
+  printf 'formatting failed\n' >&2
   exit 1
 fi
 
-built_path="$(readlink -f "$out_link" 2>/dev/null || true)"
+# What the build will actually see, with no context lines to keep it readable.
+git diff HEAD -U0 -- '*.nix' 'flake.lock' || true
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/nixos-rebuild"
+mkdir -p "$state_dir"
+tree_name="$(basename "$TREE" | sed 's/[^A-Za-z0-9._-]/_/g')"
+log="$state_dir/$tree_name-$(date +%Y%m%dT%H%M%S).log"
+ln -sfn "$log" "$state_dir/last.log"
+out_link="$state_dir/result"
+rm -f "$out_link"
+
+if ! command -v nom >/dev/null 2>&1; then
+  printf 'error: nix-output-monitor (nom) is not installed; it comes from the dev-tools aspect\n' >&2
+  exit 1
+fi
+
+# The build status is taken from `nix` via PIPESTATUS[0] and never from `nom` or
+# `pipefail`: nom's exit status in filter mode is a heuristic about the stream it
+# happened to parse, not a statement about the build (spec 32, FR-19). `tee`
+# writes the log even when the build fails or is interrupted.
+set +e
+nix build ".#nixosConfigurations.$HOST.config.system.build.toplevel" \
+  --log-format internal-json -v --out-link "$out_link" 2>&1 | tee "$log" | nom --json
+build_status=${PIPESTATUS[0]}
+set -e
+
+if [ "$build_status" -ne 0 ]; then
+  printf 'error: build failed (log: %s)\n' "$log" >&2
+  exit 1
+fi
+
+built_path="$(readlink -f "$out_link")"
 rm -f "$out_link"
 printf 'built:  %s\n' "$built_path"
-printf 'log:    (not written yet)\n'
+printf 'log:    %s\n' "$log"
+printf 'replay: nom --json < %s\n' "$log"
 
 # ── 7. stop here until activation exists ────────────────────────────────────
 
