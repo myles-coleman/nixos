@@ -11,6 +11,8 @@
 # non-interactive sudo guard, the activation lock, `switch`/`boot` invocation,
 # log append, the `/run/current-system` equality check, the generation and
 # failed-unit report, the reboot note and notification tolerance.
+# Assertion 52 pins the no-`nom` fallback (Amendment 4): the build still runs
+# when nom is not on PATH, which is the first-run case.
 #
 # rebuild.sh is replaced wholesale by spec 32. These tests pin that contract
 # with a stub PATH and throwaway git fixtures: no Nix, no network, no real
@@ -31,7 +33,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/rebuild.sh"
 
-TOTAL=51
+TOTAL=52
 
 TMP="$(mktemp -d)"
 TMP="$(cd "$TMP" && pwd -P)"
@@ -1010,5 +1012,46 @@ case "$stale_status" in
     ;;
 esac
 pass 51 "no tracked *.md mentions --homelab, --pikvm, --protecli-vault or 10.0.0.150"
+
+# 52. The build degrades gracefully when `nom` is not on PATH (spec 32,
+#     Amendment 4): nom is delivered by the very configuration this script
+#     builds, so a first run cannot depend on it. The stub is moved aside and
+#     put back before any assertion below can fail.
+#
+# PATH minus every directory that provides `nom`: the stub is not the only
+# possible source, and this assertion must also hold on a machine where the
+# dev-tools aspect has already installed it.
+without_nom_path() {
+  local out="" dir
+  local IFS=:
+  for dir in $PATH; do
+    [ -n "$dir" ] || continue
+    [ -x "$dir/nom" ] && continue
+    out="${out:+$out:}$dir"
+  done
+  printf '%s' "$out"
+}
+
+NONOM="$TMP/nonom"
+make_repo "$NONOM"
+saved_path="$PATH"
+mv "$STUBBIN/nom" "$STUBBIN/nom.off"
+PATH="$(without_nom_path)"
+run_rebuild "$NONOM" --dry-run --force
+PATH="$saved_path"
+mv "$STUBBIN/nom.off" "$STUBBIN/nom"
+
+expect_status 0 52 "a --dry-run --force run without nom exits 0"
+if ! grep -qF 'not installed' "$TMP/err" &&
+  ! grep -qF 'without the dependency-tree view' "$TMP/err"; then
+  fail 52 "stderr does not say nom is missing (got: $(tr '\n' ' ' <"$TMP/err" | cut -c1-400))"
+fi
+assert_eq 1 "$(nix_build_count)" 52 "the run without nom still builds exactly once"
+nonom_log="$(newest_log)"
+if [ -z "$nonom_log" ]; then
+  fail 52 "the run without nom wrote no log"
+fi
+assert_contains "$nonom_log" "@nix" 52 "the log of the run without nom still holds the build output"
+pass 52 "without nom the build still runs, builds once, says so and still logs the build output"
 
 printf '\nall %s assertions passed\n' "$TOTAL"

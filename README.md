@@ -84,7 +84,7 @@ Rebuild this machine (the script is limited to `bee-pc` and `bee-gpd`):
 rebuild
 ```
 
-It builds the tree you are standing in — the git toplevel of the current directory, so any worktree works, not just `~/nixos`. It formats tracked `.nix` files with `alejandra`, builds under `nom`, and switches; it never commits.
+It builds the tree you are standing in — the git toplevel of the current directory, so any worktree works, not just `~/nixos`. It formats tracked `.nix` files with `alejandra`, builds under `nom` (unwrapped on a first run, before `nom` is installed), and switches; it never commits.
 
 Build without activating:
 ```bash

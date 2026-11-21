@@ -306,20 +306,31 @@ ln -sfn "$log" "$state_dir/last.log"
 out_link="$state_dir/result"
 rm -f "$out_link"
 
-if ! command -v nom >/dev/null 2>&1; then
-  printf 'error: nix-output-monitor (nom) is not installed; it comes from the dev-tools aspect\n' >&2
-  exit 1
-fi
+build_args=(build ".#nixosConfigurations.$HOST.config.system.build.toplevel" \
+  --log-format internal-json -v --out-link "$out_link")
 
 # The build status is taken from `nix` via PIPESTATUS[0] and never from `nom` or
 # `pipefail`: nom's exit status in filter mode is a heuristic about the stream it
-# happened to parse, not a statement about the build (spec 32, FR-19). `tee`
+# happened to parse, not a statement about the build (spec 32, FR-19). That
+# holds for both branches below, where PIPESTATUS[0] is `nix` either way. `tee`
 # writes the log even when the build fails or is interrupted.
-set +e
-nix build ".#nixosConfigurations.$HOST.config.system.build.toplevel" \
-  --log-format internal-json -v --out-link "$out_link" 2>&1 | tee "$log" | nom --json
-build_status=${PIPESTATUS[0]}
-set -e
+#
+# nom is delivered by the very configuration being built (the dev-tools aspect),
+# so a first rebuild cannot depend on it: without nom the build runs unwrapped,
+# and `--log-format internal-json` is kept so the log format is identical and
+# `nom --json` can replay it once nom is installed (spec 32, Amendment 4).
+if command -v nom >/dev/null 2>&1; then
+  set +e
+  nix "${build_args[@]}" 2>&1 | tee "$log" | nom --json
+  build_status=${PIPESTATUS[0]}
+  set -e
+else
+  printf 'note: nix-output-monitor (nom) is not installed; building without the dependency-tree view\n' >&2
+  set +e
+  nix "${build_args[@]}" 2>&1 | tee "$log"
+  build_status=${PIPESTATUS[0]}
+  set -e
+fi
 
 if [ "$build_status" -ne 0 ]; then
   printf 'error: build failed (log: %s)\n' "$log" >&2

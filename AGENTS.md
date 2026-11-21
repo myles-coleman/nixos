@@ -23,7 +23,7 @@ hosts, managed with flakes and home-manager.
 
 ## Commands
 
-- **Rebuild local machine**: `rebuild` (shell alias for `./rebuild.sh`). It builds the tree you are standing in — the git toplevel of the current directory, so any worktree, not necessarily `~/nixos` — formatting tracked `.nix` files with alejandra, building under `nom`, then switching. It never commits. Local rebuilds are limited to `bee-pc` and `bee-gpd`.
+- **Rebuild local machine**: `rebuild` (shell alias for `./rebuild.sh`). It builds the tree you are standing in — the git toplevel of the current directory, so any worktree, not necessarily `~/nixos` — formatting tracked `.nix` files with alejandra, building under `nom` (unwrapped on a first run, before `nom` is installed), then switching. It never commits. Local rebuilds are limited to `bee-pc` and `bee-gpd`.
 - **Rebuild flags**: `--dry-run` builds without activating; `--boot` installs the new generation for the next boot instead of switching now; `--force` skips both change detection and the untracked-Nix-file guard; `--host <name>` builds for `<name>` instead of this machine's hostname (still limited to `bee-pc`/`bee-gpd`); `rebuild --help` prints the usage.
 - **Rebuild logs**: `${XDG_STATE_HOME:-$HOME/.local/state}/nixos-rebuild/<tree>-<timestamp>.log`, with `last.log` beside it pointing at the newest run.
 - **Rebuild tests**: `scripts/tests/test-rebuild.sh` is the suite for that contract (stubbed `PATH`, throwaway git fixtures, no Nix); it runs in CI's `pin-guard` job.
