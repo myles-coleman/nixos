@@ -11,6 +11,10 @@
 # standard library only). PyYAML and yq are deliberately not used: this test
 # runs in the same secret-free CI path it is guarding.
 #
+# Assertions 11-14 (issue #114) pin the build-group split: the changes job
+# publishes the three outputs that scripts/ci-changed-groups.sh computes, each
+# build job gates on its own group, and the classifier suite runs in pin-guard.
+#
 # Usage: scripts/tests/test-pr-workflow.sh
 set -euo pipefail
 
@@ -22,7 +26,7 @@ import os
 import re
 import sys
 
-TOTAL = 10
+TOTAL = 14
 
 
 class YamlError(Exception):
@@ -433,6 +437,55 @@ def check_pins(text, label):
 check_pins(pr_text, "pr.yaml")
 check_pins(comment_text, "pr-comment.yaml")
 ok(10, "every uses: in both workflows is pinned to a full SHA with a version comment")
+
+
+def job_step_runs(job, needle):
+    if not isinstance(job, dict):
+        return False
+    for step in job.get("steps") or []:
+        if not isinstance(step, dict):
+            continue
+        if needle in str(step.get("run") or ""):
+            return True
+    return False
+
+
+# 11. The changes job publishes the code, x86 and arm outputs from one filter step.
+changes = jobs.get("changes")
+if not isinstance(changes, dict):
+    fail(11, "pr.yaml has no changes job")
+change_outputs = changes.get("outputs")
+if not isinstance(change_outputs, dict):
+    fail(11, "the changes job declares no outputs")
+for key in ("code", "x86", "arm"):
+    want = "${{ steps.filter.outputs." + key + " }}"
+    if change_outputs.get(key) != want:
+        fail(
+            11,
+            f"changes.outputs.{key} is {change_outputs.get(key)!r}, expected {want!r}",
+        )
+if not job_step_runs(changes, "scripts/ci-changed-groups.sh"):
+    fail(11, "the changes job does not run scripts/ci-changed-groups.sh")
+ok(11, "the changes job publishes code, x86 and arm from steps.filter")
+
+# 12. build-x86 gates on the x86 output, not the code output.
+build_x86 = jobs.get("build-x86")
+x86_if = str((build_x86 or {}).get("if") or "") if isinstance(build_x86, dict) else ""
+if "needs.changes.outputs.x86" not in x86_if:
+    fail(12, f"build-x86 if is {x86_if!r}, expected it to reference needs.changes.outputs.x86")
+ok(12, "build-x86 gates on needs.changes.outputs.x86")
+
+# 13. build-arm gates on the arm output.
+build_arm = jobs.get("build-arm")
+arm_if = str((build_arm or {}).get("if") or "") if isinstance(build_arm, dict) else ""
+if "needs.changes.outputs.arm" not in arm_if:
+    fail(13, f"build-arm if is {arm_if!r}, expected it to reference needs.changes.outputs.arm")
+ok(13, "build-arm gates on needs.changes.outputs.arm")
+
+# 14. pin-guard runs the classifier suite alongside the other text-only checks.
+if not job_step_runs(jobs.get("pin-guard"), "scripts/tests/test-ci-changed-groups.sh"):
+    fail(14, "pin-guard does not run scripts/tests/test-ci-changed-groups.sh")
+ok(14, "pin-guard runs scripts/tests/test-ci-changed-groups.sh")
 
 print(f"\nall {TOTAL} pr-workflow assertions passed")
 PY
