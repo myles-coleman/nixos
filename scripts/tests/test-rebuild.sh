@@ -13,6 +13,9 @@
 # failed-unit report, the reboot note and notification tolerance.
 # Assertion 52 pins the no-`nom` fallback (Amendment 4): the build still runs
 # when nom is not on PATH, which is the first-run case.
+# Assertion 53 pins the generation report (Amendment 5): the number is read from
+# /nix/var/nix/profiles/system, because `list-generations` marks the live
+# generation with a "Current" column, not the word "current".
 #
 # rebuild.sh is replaced wholesale by spec 32. These tests pin that contract
 # with a stub PATH and throwaway git fixtures: no Nix, no network, no real
@@ -33,7 +36,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/rebuild.sh"
 
-TOTAL=52
+TOTAL=53
 
 TMP="$(mktemp -d)"
 TMP="$(cd "$TMP" && pwd -P)"
@@ -290,6 +293,15 @@ case "\$path" in
     ;;
   /run/booted-system)
     printf '%s\n' "\${STUB_BOOTED_SYSTEM:-/nix/store/00000000000000000000000000000001-system}"
+    ;;
+  /nix/var/nix/profiles/system)
+    printf '%s\n' "\${STUB_SYSTEM_PROFILE:-system-143-link}"
+    ;;
+  /run/current-system/kernel)
+    printf '%s\n' "\${STUB_CURRENT_KERNEL:-\${STUB_CURRENT_SYSTEM:-/nix/store/00000000000000000000000000000001-system}/kernel}"
+    ;;
+  /run/booted-system/kernel)
+    printf '%s\n' "\${STUB_BOOTED_KERNEL:-\${STUB_BOOTED_SYSTEM:-/nix/store/00000000000000000000000000000001-system}/kernel}"
     ;;
   *)
     exec "$REAL_READLINK" "\$@"
@@ -930,14 +942,19 @@ assert_not_contains "$TMP/err" "activation did not take effect" 43 \
   "--boot makes no current-system equality claim"
 pass 43 "--boot makes no current-system equality claim"
 
-# 44. A failing list-generations does not abort; the generation line still prints.
+# 44. The generation line no longer depends on `list-generations` at all
+#     (Amendment 5: the number comes from the profile symlink), which is why a
+#     failing `list-generations` changes nothing: the run still exits 0 and the
+#     line still prints. The assertion is kept because it pins both.
 STUB_SUDO_STATUS=0 STUB_LIST_GEN_STATUS=1 run_switch "$ACT" --force
 expect_status 0 44 "a failing list-generations does not change the exit code"
 assert_line_present "$TMP/out" "  generation:" 44 "the generation line still prints"
 pass 44 "a failing list-generations is tolerated and the generation line still prints"
 
-# 45. The report counts failed units, and a stale booted system prints the
-#     reboot note.
+# 45. The report counts failed units, and the reboot note is driven by the
+#     kernels the two system links point at, not by the system links themselves:
+#     a switch always moves /run/current-system, so only a real kernel change
+#     may print the note.
 STUB_SUDO_STATUS=0 \
   STUB_FAILED_UNITS=2 \
   STUB_BOOTED_SYSTEM=/nix/store/00000000000000000000000000000002-system \
@@ -945,7 +962,18 @@ STUB_SUDO_STATUS=0 \
 expect_status 0 45 "the reporting switch exits 0"
 assert_contains "$TMP/out" "2 failed" 45 "stdout reports two failed units"
 assert_contains "$TMP/err" "reboot" 45 "a differing booted system prints the reboot note"
-pass 45 "stdout reports '2 failed' and a differing booted system prints the reboot note"
+# The false positive this pins: after every switch the two system links differ,
+# but when both point at the same kernel there is nothing to reboot for.
+STUB_SUDO_STATUS=0 \
+  STUB_BOOTED_SYSTEM=/nix/store/00000000000000000000000000000002-system \
+  STUB_CURRENT_SYSTEM=/nix/store/00000000000000000000000000000001-system \
+  STUB_BOOTED_KERNEL=/nix/store/0000000000000000000000000000000a-linux-6.12/kernel \
+  STUB_CURRENT_KERNEL=/nix/store/0000000000000000000000000000000a-linux-6.12/kernel \
+  run_switch "$ACT" --force
+expect_status 0 45 "the equal-kernel switch exits 0"
+assert_not_contains "$TMP/err" "reboot" 45 \
+  "equal kernels print no reboot note even though the system links differ"
+pass 45 "stdout reports '2 failed', a real kernel change prints the reboot note, and equal kernels do not"
 
 # 46. A failing notify-send never turns a successful switch into a failure.
 STUB_SUDO_STATUS=0 STUB_NOTIFY_STATUS=1 run_switch "$ACT" --force
@@ -1015,31 +1043,37 @@ pass 51 "no tracked *.md mentions --homelab, --pikvm, --protecli-vault or 10.0.0
 
 # 52. The build degrades gracefully when `nom` is not on PATH (spec 32,
 #     Amendment 4): nom is delivered by the very configuration this script
-#     builds, so a first run cannot depend on it. The stub is moved aside and
-#     put back before any assertion below can fail.
+#     builds, so a first run cannot depend on it. The run gets a farm of
+#     symlinks to the real tools instead, and PATH is restored afterwards.
 #
-# PATH minus every directory that provides `nom`: the stub is not the only
-# possible source, and this assertion must also hold on a machine where the
-# dev-tools aspect has already installed it.
-without_nom_path() {
-  local out="" dir
-  local IFS=:
-  for dir in $PATH; do
-    [ -n "$dir" ] || continue
-    [ -x "$dir/nom" ] && continue
-    out="${out:+$out:}$dir"
+# A PATH containing the tools the script needs and deliberately no nom: the
+# host's own PATH cannot be filtered, because on NixOS nom shares a directory
+# with coreutils. The test stubs are linked in too, minus the nom stub.
+make_nonom_path() {
+  local dir="$1" tool resolved stub
+  mkdir -p "$dir"
+  for tool in bash dirname basename git sed awk grep cat tee date ln rm mkdir \
+    readlink xargs tr cut wc head tail sort find cmp cp mv true false env \
+    printf chmod sleep; do
+    resolved="$(command -v "$tool" 2>/dev/null)" || continue
+    case "$resolved" in
+      /*) [ -e "$resolved" ] && ln -sfn "$resolved" "$dir/$tool" ;;
+    esac
   done
-  printf '%s' "$out"
+  for stub in "$STUBBIN"/*; do
+    [ -e "$stub" ] || continue
+    [ "$(basename "$stub")" = nom ] && continue
+    ln -sfn "$stub" "$dir/$(basename "$stub")"
+  done
+  printf '%s' "$dir"
 }
 
 NONOM="$TMP/nonom"
 make_repo "$NONOM"
 saved_path="$PATH"
-mv "$STUBBIN/nom" "$STUBBIN/nom.off"
-PATH="$(without_nom_path)"
+PATH="$(make_nonom_path "$TMP/nonom-bin")"
 run_rebuild "$NONOM" --dry-run --force
 PATH="$saved_path"
-mv "$STUBBIN/nom.off" "$STUBBIN/nom"
 
 expect_status 0 52 "a --dry-run --force run without nom exits 0"
 if ! grep -qF 'not installed' "$TMP/err" &&
@@ -1053,5 +1087,15 @@ if [ -z "$nonom_log" ]; then
 fi
 assert_contains "$nonom_log" "@nix" 52 "the log of the run without nom still holds the build output"
 pass 52 "without nom the build still runs, builds once, says so and still logs the build output"
+
+# 53. The generation number comes from the profile symlink (Amendment 5): the
+#     stub's default /nix/var/nix/profiles/system is "system-143-link", so an
+#     otherwise ordinary successful switch reports 143, not "unknown".
+STUB_SUDO_STATUS=0 run_switch "$ACT" --force
+expect_status 0 53 "the generation-reporting switch exits 0"
+generation_line="$(banner_line generation)"
+assert_eq "  generation: 143" "$generation_line" 53 \
+  "the generation line reports 143, the number in the profile symlink"
+pass 53 "the generation line reports 143 from /nix/var/nix/profiles/system, not unknown"
 
 printf '\nall %s assertions passed\n' "$TOTAL"

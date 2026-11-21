@@ -431,14 +431,17 @@ if ! $BOOT; then
 fi
 
 # The report is decoration: every failure below is tolerated, and none of it may
-# turn a successful activation into a failure. A failed list-generations prints
-# "unknown" rather than an empty line.
+# turn a successful activation into a failure.
+#
+# The generation number is the one in the system profile symlink, which points at
+# `system-<n>-link`. `nixos-rebuild list-generations` cannot supply it: it marks
+# the live generation with a `Current` column, not the word "current", so
+# searching its output finds the heading, not the number. An unreadable or
+# unexpected link prints "unknown" rather than an empty line.
 
 generation="unknown"
-if generations="$(nixos-rebuild list-generations 2>/dev/null)"; then
-  generation="$(printf '%s\n' "$generations" |
-    awk '/current/ { print; exit }' |
-    sed 's/^[[:space:]]*//' || true)"
+if profile="$(readlink /nix/var/nix/profiles/system 2>/dev/null)"; then
+  generation="$(printf '%s\n' "$profile" | sed -n 's/^system-\([0-9][0-9]*\)-link$/\1/p')"
   [ -n "$generation" ] || generation=unknown
 fi
 printf '  generation: %s\n' "$generation"
@@ -447,12 +450,15 @@ failed_units="$(systemctl --failed --no-legend 2>/dev/null | grep -c . || true)"
 [ -n "$failed_units" ] || failed_units=0
 printf '  units:     %s failed\n' "$failed_units"
 
-# A switch does not change the running kernel; only a reboot does. The note is
-# informational and never changes the exit code.
-booted_system="$(readlink -f /run/booted-system 2>/dev/null || true)"
-current_system="$(readlink -f /run/current-system 2>/dev/null || true)"
-if [ "$booted_system" != "$current_system" ]; then
-  printf 'note: reboot to run the new kernel (/run/booted-system differs from /run/current-system)\n' >&2
+# A switch does not change the running kernel; only a reboot does. The two system
+# links already differ after every switch, so comparing them would warn on every
+# run. Compare the kernels they point at instead: the note is true only when the
+# new generation brings a new kernel. It is informational and never changes the
+# exit code.
+booted_kernel="$(readlink -f /run/booted-system/kernel 2>/dev/null || true)"
+current_kernel="$(readlink -f /run/current-system/kernel 2>/dev/null || true)"
+if [ -n "$booted_kernel" ] && [ -n "$current_kernel" ] && [ "$booted_kernel" != "$current_kernel" ]; then
+  printf 'note: reboot to run the new kernel (/run/booted-system and /run/current-system point at different kernels)\n' >&2
 fi
 
 # ── 12. notify the outcome ──────────────────────────────────────────────────
