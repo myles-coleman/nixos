@@ -48,6 +48,12 @@ in {
     # https://github.com/NixOS/nixpkgs/issues/577729
     boot.blacklistedKernelModules = ["tiny_power_button"];
     boot.loader.systemd-boot.enable = true;
+    # Kept at 1 on purpose: the 100 MB ESP is shared with Windows (49 MB) and one
+    # NixOS generation costs ~40 MB (13 MB kernel + 27 MB initrd). The boot loader
+    # builder deletes dropped generations *before* copying the new one, so any
+    # value above 1 makes the next kernel or initrd change fail with ENOSPC.
+    # Rollback depth needs a larger ESP or a separate XBOOTLDR partition
+    # (spec 32 follow-up), not this knob.
     boot.loader.systemd-boot.configurationLimit = 1;
     boot.loader.efi.canTouchEfiVariables = true;
     networking.hostName = "bee-gpd";
