@@ -74,42 +74,51 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   ├── krisp-patcher.py
 │   ├── oh-my-posh-theme.json
 │   └── wallpaper1.jpg
-└── rebuild.sh             # Build script (formats, builds/switches; does not commit)
+└── rebuild.sh             # Local rebuild script for bee-pc/bee-gpd (preflight, format, build, switch)
 ```
 
 ## Usage
 
-Rebuild the current machine (auto-detects hostname):
+Rebuild this machine (the script is limited to `bee-pc` and `bee-gpd`):
 ```bash
 rebuild
 ```
 
-Deploy to the homelab remotely (builds locally, deploys to `bee@10.0.0.150` via SSH):
-```bash
-rebuild --homelab
-```
+It builds the tree you are standing in — the git toplevel of the current directory, so any worktree works, not just `~/nixos`. It formats tracked `.nix` files with `alejandra`, builds under `nom`, and switches; it never commits.
 
-Deploy to the pikvm remotely (cross-compiles aarch64, deploys to `bee@10.0.0.175` via SSH):
-```bash
-rebuild --pikvm
-```
-
-Dry run (build without switching):
+Build without activating:
 ```bash
 rebuild --dry-run
 ```
 
-Force rebuild even if no `.nix`/`flake.lock` changes detected:
+Install the new generation for the next boot instead of switching now:
+```bash
+rebuild --boot
+```
+
+Build even when the tree looks unchanged, and skip the untracked-Nix-file guard:
 ```bash
 rebuild --force
 ```
+
+Build for a named host instead of this machine's hostname (still limited to `bee-pc`/`bee-gpd`):
+```bash
+rebuild --host bee-pc
+```
+
+Print the usage and exit:
+```bash
+rebuild --help
+```
+
+Each run logs to `${XDG_STATE_HOME:-$HOME/.local/state}/nixos-rebuild/<tree>-<timestamp>.log`, with `last.log` beside it symlinked to the newest run.
 
 Update flake inputs:
 ```bash
 nix flake update
 ```
 
-The rebuild script auto-formats with `alejandra`, skips if no changes are detected (unless `--force`), and builds/switches locally. It no longer commits or pushes: changes go through a branch and pull request so CI can verify and deploy them.
+Every other host deploys through CI (see below) or `nix run .#deploy -- .#<host> --skip-checks -- -L`, never through this script.
 
 ## Deployment (CI)
 

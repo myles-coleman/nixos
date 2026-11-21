@@ -23,11 +23,11 @@ hosts, managed with flakes and home-manager.
 
 ## Commands
 
-- **Rebuild local machine**: `rebuild` (shell alias for `./rebuild.sh`, auto-detects hostname, formats with alejandra, builds/switches only — it does not commit)
-- **Rebuild homelab**: `rebuild --homelab` (deploys to bee@10.0.0.150)
-- **Rebuild pikvm**: `rebuild --pikvm` (cross-compiles aarch64, deploys to bee@10.0.0.175)
-- **Dry run**: Add `--dry-run` to any rebuild command
-- **Force rebuild** (skip change detection): Add `--force`
+- **Rebuild local machine**: `rebuild` (shell alias for `./rebuild.sh`). It builds the tree you are standing in — the git toplevel of the current directory, so any worktree, not necessarily `~/nixos` — formatting tracked `.nix` files with alejandra, building under `nom`, then switching. It never commits. Local rebuilds are limited to `bee-pc` and `bee-gpd`.
+- **Rebuild flags**: `--dry-run` builds without activating; `--boot` installs the new generation for the next boot instead of switching now; `--force` skips both change detection and the untracked-Nix-file guard; `--host <name>` builds for `<name>` instead of this machine's hostname (still limited to `bee-pc`/`bee-gpd`); `rebuild --help` prints the usage.
+- **Rebuild logs**: `${XDG_STATE_HOME:-$HOME/.local/state}/nixos-rebuild/<tree>-<timestamp>.log`, with `last.log` beside it pointing at the newest run.
+- **Rebuild tests**: `scripts/tests/test-rebuild.sh` is the suite for that contract (stubbed `PATH`, throwaway git fixtures, no Nix); it runs in CI's `pin-guard` job.
+- **Other hosts**: every other host is built and deployed by CI — merge to `main` for `homelab` and `bee-gpu-server`, `workflow_dispatch` for `protecli-vault`, `pikvm` and the RPi fleet — or by `nix run .#deploy -- .#<host> --skip-checks -- -L`, never by this script.
 - **Update flake inputs**: `nix flake update`
 - **Format code**: `alejandra .` (never use nixfmt)
 - **Deploy a host**: `nix run .#deploy -- .#<host> --skip-checks -- -L` (deploy-rs; server hosts only; `--skip-checks` avoids building `pikvm`'s aarch64 kernel on x86_64 — validate schema with `nix flake check --no-build`). The k3s nodes and `rpi3` are manual (`workflow_dispatch`) only, reached over the LAN as `pi@10.0.0.140`–`144` and `bee@10.0.0.145`.

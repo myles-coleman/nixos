@@ -122,6 +122,9 @@ jobs:
       # package's kubectl. No cluster access and no secret values.
       - name: Verify k3s version invariants
         run: scripts/k3s-upgrade-check.sh --static
+      # Spec 32: the rebuild script's preflight, build and activation contract.
+      - name: Verify rebuild script contract
+        run: scripts/tests/test-rebuild.sh
 
   # Spec 30, FR-56 / FR-57. Text-only check of the sandbox Dockerfile and tool
   # pins: no Docker build, no Nix, no secret material.

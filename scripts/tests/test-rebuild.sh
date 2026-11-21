@@ -31,7 +31,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/rebuild.sh"
 
-TOTAL=46
+TOTAL=51
 
 TMP="$(mktemp -d)"
 TMP="$(cd "$TMP" && pwd -P)"
@@ -949,5 +949,66 @@ pass 45 "stdout reports '2 failed' and a differing booted system prints the rebo
 STUB_SUDO_STATUS=0 STUB_NOTIFY_STATUS=1 run_switch "$ACT" --force
 expect_status 0 46 "a failing notify-send leaves the exit code at 0"
 pass 46 "a failing notify-send leaves the exit code at 0"
+
+# ── config changes the script relies on (spec 32, Unit 5) ───────────────────
+#
+# Assertions 47-51. The script is only safe to hand to a reader once the
+# config it depends on is in place: nom on PATH, a bounded boot menu, the
+# alias, a CI lane, and docs that no longer promise the removed flags.
+
+# 47. nix-output-monitor is provided by dev-tools, and only there (FR-32).
+DEVTOOLS="$ROOT/modules/aspects/dev-tools.nix"
+COMMON="$ROOT/modules/aspects/common.nix"
+assert_contains "$DEVTOOLS" "nix-output-monitor" 47 \
+  "nix-output-monitor is missing from modules/aspects/dev-tools.nix"
+assert_not_contains "$COMMON" "nix-output-monitor" 47 \
+  "nix-output-monitor still appears in modules/aspects/common.nix"
+pass 47 "nix-output-monitor is in dev-tools.nix and absent from common.nix"
+
+# 48. bee-gpd keeps a single generation, with the ESP rationale spelled out
+#     (FR-33 as superseded by Amendment 1).
+BEEGPD="$ROOT/hosts/bee-gpd/default.nix"
+assert_contains "$BEEGPD" "configurationLimit = 1;" 48 \
+  "hosts/bee-gpd/default.nix lacks 'configurationLimit = 1;'"
+assert_contains "$BEEGPD" "NixOS generation costs" 48 \
+  "hosts/bee-gpd/default.nix lacks the ESP rationale line 'NixOS generation costs'"
+pass 48 "bee-gpd pins configurationLimit = 1 and states the ESP generation cost"
+
+# 49. The shell offers `sh` to other shells and the rebuild alias (FR-34).
+HOMEZSH="$ROOT/modules/aspects/home-zsh.nix"
+assert_contains "$HOMEZSH" 'sh = "bash"' 49 \
+  'modules/aspects/home-zsh.nix lacks the sh = "bash" alias'
+assert_contains "$HOMEZSH" 'rebuild = "sh ~/nixos/rebuild.sh"' 49 \
+  'modules/aspects/home-zsh.nix lacks rebuild = "sh ~/nixos/rebuild.sh"'
+pass 49 'home-zsh.nix exposes sh = "bash" and the rebuild alias'
+
+# 50. CI runs this suite, so the contract cannot rot between local runs
+#     (FR-37).
+PRWORKFLOW="$ROOT/.github/workflows/pr.yaml"
+assert_contains "$PRWORKFLOW" "scripts/tests/test-rebuild.sh" 50 \
+  "the PR workflow never runs scripts/tests/test-rebuild.sh"
+pass 50 "the PR workflow runs scripts/tests/test-rebuild.sh"
+
+# 51. No tracked Markdown still tells a reader to rebuild a host with the flag
+#     this script no longer has. `git grep` searches tracked files only, so
+#     untracked worktrees and build outputs cannot fail the assertion, and
+#     exit 1 means "no matches", which is the pass.
+STALEREFS="$TMP/stalerefs-51"
+: >"$STALEREFS"
+set +e
+"$REAL_GIT" -C "$ROOT" grep -nE -- \
+  '--homelab|--pikvm|--protecli-vault|10\.0\.0\.150' -- '*.md' >"$STALEREFS" 2>&1
+stale_status=$?
+set -e
+case "$stale_status" in
+  0)
+    fail 51 "a tracked *.md still mentions a removed flag or host address: $(awk 'NR == 1 { print }' "$STALEREFS")"
+    ;;
+  1) ;;
+  *)
+    fail 51 "git grep failed with exit $stale_status: $(awk 'NR == 1 { print }' "$STALEREFS")"
+    ;;
+esac
+pass 51 "no tracked *.md mentions --homelab, --pikvm, --protecli-vault or 10.0.0.150"
 
 printf '\nall %s assertions passed\n' "$TOTAL"
