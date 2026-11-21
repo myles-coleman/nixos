@@ -57,6 +57,21 @@
 
     home.packages = [pkgs.hyprpaper];
 
+    # Waybar is supervised rather than started with a bare `waybar &` in
+    # start.sh: when PipeWire restarts — which any rebuild that bumps it does —
+    # libpulse's reconnect re-enters waybar's AudioBackend::connectContext
+    # until it aborts, and the bar silently disappears. Not enabled with
+    # WantedBy: greetd does not put the session in graphical-session.target,
+    # so start.sh imports the compositor environment and starts the unit.
+    systemd.user.services.waybar = {
+      Unit.Description = "Waybar status bar";
+      Service = {
+        ExecStart = "${pkgs.waybar}/bin/waybar";
+        Restart = "always";
+        RestartSec = 2;
+      };
+    };
+
     programs.git = {
       enable = true;
       settings = {
