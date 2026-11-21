@@ -18,6 +18,8 @@ jobs:
       contents: read
     outputs:
       code: ${{ steps.filter.outputs.code }}
+      x86: ${{ steps.filter.outputs.x86 }}
+      arm: ${{ steps.filter.outputs.arm }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -29,15 +31,14 @@ jobs:
           set -euo pipefail
           base="origin/${{ github.base_ref }}"
           git fetch --no-tags origin "${{ github.base_ref }}" --depth=1
-          if git diff --name-only "$base"...HEAD | grep -qE '(\.nix$|^flake\.lock$|^\.sops\.yaml$|^secrets/|^scripts/|^images/|^\.github/workflows/)'; then
-            echo "code=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "code=false" >> "$GITHUB_OUTPUT"
-          fi
+          changed=$(git diff --name-only "$base"...HEAD)
+          # Issue #114: classify into code / x86 / arm. An unrecognised path
+          # builds both groups, so a stale pattern over-builds, never skips.
+          printf '%s\n' "$changed" | scripts/ci-changed-groups.sh >> "$GITHUB_OUTPUT"
 
   build-x86:
     needs: changes
-    if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    if: needs.changes.outputs.x86 == 'true' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -68,7 +69,7 @@ jobs:
 
   build-arm:
     needs: changes
-    if: needs.changes.outputs.code == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    if: needs.changes.outputs.arm == 'true' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
@@ -115,6 +116,9 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Verify PR workflow hardening
         run: scripts/tests/test-pr-workflow.sh
+      # Issue #114: the classifier that decides which host groups this PR builds.
+      - name: Verify CI change classification
+        run: scripts/tests/test-ci-changed-groups.sh
       - name: Verify root nixpkgs is aligned with nixos-raspberrypi
         run: scripts/repin-nixpkgs-from-rpi.sh
       # Spec 28: keeps an unpinned `k3s`/`kubectl` from shadowing the pinned
