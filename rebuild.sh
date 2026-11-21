@@ -337,8 +337,16 @@ if [ "$build_status" -ne 0 ]; then
   exit 1
 fi
 
-built_path="$(readlink -f "$out_link")"
+# One level is enough: `nix build --out-link` writes a direct symlink to the
+# store path. `readlink -f` would additionally canonicalise through /nix/store,
+# which fails on a machine that has no store (the CI runner) and aborts the
+# script with no message.
+built_path="$(readlink "$out_link" 2>/dev/null || true)"
 rm -f "$out_link"
+if [ -z "$built_path" ]; then
+  printf 'error: build reported success but produced no store path (expected a symlink at %s)\n' "$out_link" >&2
+  exit 1
+fi
 printf 'built:  %s\n' "$built_path"
 printf 'log:    %s\n' "$log"
 printf 'replay: nom --json < %s\n' "$log"
