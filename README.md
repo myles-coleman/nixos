@@ -40,7 +40,7 @@ NixOS configurations for my machines, managed with home-manager and flakes.
 │   │   └── SETUP.md       # PiKVM setup guide
 │   ├── node0/             # k3s control plane (aarch64, NVMe); host aspect
 │   ├── node1/ … node3/    # k3s agents (aarch64, NVMe); host aspects
-│   ├── node4/             # k3s agent (aarch64, SD card); host aspect
+│   ├── node4/             # k3s agent (aarch64, NVMe); host aspect
 │   └── rpi3/              # Chromium kiosk (aarch64, SD card); host aspect
 │       ├── default.nix
 │       └── modules/       # Host-local plain modules (kiosk, firmware, users)
@@ -136,10 +136,10 @@ These targets resolve only when CI (or your machine) can reach the LAN via `prot
 
 The five-node Raspberry Pi 5 k3s cluster is imported from the former `rpi5-nixos`
 repository (program Phase 4). `node0` is the control plane, `node1`–`node3` are NVMe
-agents, and `node4` is an SD-card agent. They build with the `nixos-raspberrypi`
+agents, and `node4` is an NVMe agent like `node1`–`node3`. They build with the `nixos-raspberrypi`
 vendor modules and use `disko` for NVMe partitioning. The cluster join token is
 supplied at activation by `sops-nix` (`k3s_server_token` in `secrets/common.yaml`);
-it is never written into the Nix store or the SD images.
+it is never written into the Nix store or the disk images.
 
 Before a node's first activation under the monorepo, provision its per-host age key
 out-of-band (the deploy identity is `pi`):

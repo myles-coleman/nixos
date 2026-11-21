@@ -73,8 +73,20 @@ in {
         source = ../../../config/waybar/kvm-switch.sh;
         executable = true;
       };
+      # The youtube_transcript tool: a server plugin that calls the local
+      # whisper.cpp service on bee-gpu-server. Kept in Nix so the plugin and
+      # the baseURL travel with the rest of the config.
+      "opencode/plugins/youtube-transcript/index.ts".source =
+        ../../../config/opencode/plugins/youtube-transcript/index.ts;
+
       "opencode/opencode.json".text = builtins.toJSON {
         "$schema" = "https://opencode.ai/config.json";
+        plugins = [
+          {
+            package = "./plugins/youtube-transcript";
+            options.baseURL = "http://100.127.170.8:8090";
+          }
+        ];
         provider = {
           llama-cpp = {
             npm = "@ai-sdk/openai-compatible";
