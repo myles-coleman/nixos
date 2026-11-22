@@ -1,0 +1,54 @@
+name: Renovate
+
+# Self-hosted Renovate for flake.lock.
+#
+# It has to be self-hosted: Renovate's nix manager delegates lock-file work to
+# the package manager as an external command, and the Mend-hosted app fails to
+# install a `nix` binary on its runners. So the job installs Nix and runs the
+# CLI directly rather than the Renovate action container.
+#
+# One PR per flake input, deliberately. A combined `nix flake update` over 19
+# inputs cannot be bisected when the host build matrix fails; a per-input PR
+# leaves one suspect. Grouping would put us back to all-or-nothing.
+#
+# The token must not be GITHUB_TOKEN: pull requests opened with it do not
+# trigger `pull_request` workflows, so `pr.yaml` would never build the hosts.
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+env:
+  RENOVATE_VERSION: 44.257.9
+
+jobs:
+  renovate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install Nix
+        # Renovate shells out to `nix` for flake.lock updates, so this is the
+        # dependency the hosted app cannot satisfy.
+        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Renovate
+        env:
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_REPOSITORIES: '["myles-coleman/nixos"]'
+          LOG_LEVEL: info
+        run: npx --yes "renovate@${RENOVATE_VERSION}"
