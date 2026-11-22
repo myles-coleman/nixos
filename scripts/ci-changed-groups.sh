@@ -10,9 +10,10 @@
 #             protecli-vault
 #   arm=...   pikvm, rpi3 and the k3s node0-node4 fleet
 #
-# There are three classes. A path is *x86-only* when only x86 hosts consume it,
-# *arm-only* when only the Raspberry Pi fleet and pikvm do, and *shared*
-# otherwise. Anything the patterns below do not name is shared on purpose: an
+# A path is *x86-only* when only x86 hosts consume it, *arm-only* when only the
+# Raspberry Pi fleet and pikvm do, and *shared* otherwise. Two cases build
+# nothing at all: prose, and CI plumbing (`scripts/`, `.github/`), which runs
+# the checks without changing any host's closure. Anything the patterns below do not name is shared on purpose: an
 # unrecognised path must over-build, never skip a host whose configuration the
 # PR could have changed. A stale pattern here costs runner minutes; a missing
 # one ships a host nobody built.
@@ -70,10 +71,12 @@ while IFS= read -r path || [ -n "$path" ]; do
     *.md | docs/*) continue ;;
   esac
 
-  # 2. The shell suites and the pin guard still run, but no host is built from
-  #    a script.
+  # 2. CI plumbing still runs the checks, but no host is built from a script or
+  #    from a workflow definition. A broken workflow fails its own run, and the
+  #    next PR that touches a host builds normally, so gating a build on these
+  #    paths buys a three-hour ARM lane to validate a YAML key.
   case "$path" in
-    scripts/*)
+    scripts/* | .github/*)
       code=true
       continue
       ;;
