@@ -11,11 +11,12 @@ name: Renovate
 # inputs cannot be bisected when the host build matrix fails; a per-input PR
 # leaves one suspect. Grouping would put us back to all-or-nothing.
 #
-# The token must not be GITHUB_TOKEN: pull requests opened with it do not
-# trigger `pull_request` workflows, so `pr.yaml` would never build the hosts.
-# It also needs workflow write access, because Renovate bumps the `uses:` pins
-# in this directory and GitHub rejects a push touching .github/workflows/**
-# without it.
+# Authentication is a GitHub App installation token minted per run, not a PAT:
+#   - pull requests it opens DO trigger workflows. GITHUB_TOKEN does not, so
+#     pr.yaml would never build the hosts on a Renovate PR.
+#   - the App needs Workflows: write, because Renovate bumps the `uses:` pins in
+#     this directory and GitHub rejects a push touching .github/workflows/**
+#     without it.
 on:
   schedule:
     - cron: "0 5 * * 1"
@@ -53,9 +54,20 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - name: Generate app token
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          app-id: ${{ vars.RENOVATE_APP_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+          owner: myles-coleman
+          repositories: nixos
+
       - name: Renovate
         env:
-          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_TOKEN: ${{ steps.app-token.outputs.token }}
+          RENOVATE_USERNAME: ${{ steps.app-token.outputs.app-slug }}[bot]
+          RENOVATE_GIT_AUTHOR: ${{ steps.app-token.outputs.app-slug }}[bot] <${{ vars.RENOVATE_APP_ID }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com>
           RENOVATE_REPOSITORIES: '["myles-coleman/nixos"]'
           LOG_LEVEL: info
         run: npx --yes "renovate@${RENOVATE_VERSION}"
