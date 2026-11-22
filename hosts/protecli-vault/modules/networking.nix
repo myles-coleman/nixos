@@ -5,10 +5,6 @@
   ...
 }: let
   wan = "enp1s0";
-  # Static WAN addressing on the upstream LAN. See the 10-wan block below for
-  # why this is not DHCP.
-  wanAddress = "10.0.0.227/24";
-  wanGateway = "10.0.0.1";
   lan1 = "enp2s0";
   lan2 = "enp3s0";
   lan3 = "enp4s0";
@@ -49,6 +45,11 @@ in {
   # ── IPv4 forwarding (required for routing) ─────────────────────────
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
+    # Tailscale subnet-router traffic arrives on tailscale0 with a 100.64/10
+    # source while its reverse path is the WAN default; strict rp_filter drops
+    # it. Keep the policy loose.
+    "net.ipv4.conf.all.rp_filter" = 2;
+    "net.ipv4.conf.default.rp_filter" = 2;
   };
 
   # ── Allow interfaces to be plugged/unplugged dynamically ───────────
@@ -71,48 +72,29 @@ in {
       # Enslave LAN interfaces to the bridge
       lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])
       // {
-        # WAN: statically addressed on the upstream LAN.
-        #
-        # This was DHCP until 2026-10-28, when the Xfinity gateway stopped
-        # answering DISCOVERs (no OFFER was ever returned; other clients on the
-        # same segment went unanswered too). That left the Vault with no
-        # default route, no DNS, no wg0 handshake, and the hard kill switch
-        # holding every client offline -- a router should not need an upstream
-        # DHCP server in order to boot. The address the gateway used to lease
-        # (10.0.0.227, verified unused before pinning) is now static.
-        #
-        # If the upstream subnet moves, update wanAddress/wanGateway above and
-        # the 10.0.0.0/24 route below together.
+        # WAN: DHCP from the Hitron CODA56 modem-only bridge. The old static
+        # address (10.0.0.227/24) was a workaround for the Xfinity gateway
+        # dropping DHCP on 2026-10-28; the CODA56 is the edge now and leases a
+        # public address. The 192.168.100.2/24 alias is for the modem's
+        # source-restricted status GUI at 192.168.100.1.
         "10-wan" = {
           matchConfig.Name = wan;
-          address = [wanAddress];
+          address = ["192.168.100.2/24"];
           networkConfig = {
+            DHCP = "ipv4";
             IPv4Forwarding = true;
           };
-          # Use upstream DNS servers for the Vault itself (before Pi-hole is running)
-          dns = ["8.8.8.8" "1.1.1.1"];
-          routes = [
-            # Default route for the Vault's own host traffic (main table).
-            {
-              Destination = "0.0.0.0/0";
-              Gateway = wanGateway;
-            }
-            # Transitional: the upstream LAN (10.0.0.0/24) is advertised as a
-            # tailnet subnet route, so tailnet traffic to it must leave via the
-            # WAN interface instead of the table-100 default (wg0).
-            {
-              Destination = "10.0.0.0/24";
-              Table = 100;
-              Scope = "link";
-            }
-          ];
+          dhcpV4Config = {
+            UseDNS = true;
+            UseRoutes = true;
+          };
           linkConfig.RequiredForOnline = "routable";
         };
 
         # Management port: separate subnet for SSH safety
         "10-mgmt" = {
           matchConfig.Name = mgmt;
-          address = ["192.168.100.1/24"];
+          address = ["192.168.200.1/24"];
           networkConfig = {
             ConfigureWithoutCarrier = true;
           };
@@ -127,11 +109,27 @@ in {
         # hosts/protecli-vault/modules/mullvad.nix (wgTable).
         "40-br-lan" = {
           matchConfig.Name = "br-lan";
-          address = ["192.168.1.1/24"];
+          # Transitional dual-subnet bridge: 192.168.1.0/24 carries the
+          # operator laptop and the AI server; 10.0.0.0/24 is the estate's
+          # preserved addressing (homelab, k3s, PiKVM, kube-vip). The
+          # segmentation spec later splits 10.0.0.0/24 into its own bridges.
+          address = ["192.168.1.1/24" "10.0.0.1/24"];
           networkConfig = {
             ConfigureWithoutCarrier = true;
           };
           routingPolicyRules = [
+            # Keep inter-subnet and tailnet-to-LAN traffic out of table 100
+            # (whose default is wg0). These must precede the table-100 rules.
+            {
+              To = "10.0.0.0/24";
+              Table = 254;
+              Priority = 32761;
+            }
+            {
+              To = "192.168.1.0/24";
+              Table = 254;
+              Priority = 32762;
+            }
             # LAN clients: AND the source subnet with the ingress interface
             # so the Vault's own 192.168.1.1 host traffic is NOT matched.
             {
