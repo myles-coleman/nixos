@@ -5,8 +5,9 @@
 # The classifier decides which host groups a PR builds. Its one safety
 # property: a path it does not recognise must over-build (both groups), never
 # skip a host whose configuration the PR could have changed. These assertions
-# pin the three classes (x86-only, arm-only, shared) plus the arm-before-x86
-# ordering that keeps `config/pikvm/` from being read as an x86 `config/` path.
+# pin the classes (x86-only, arm-only, shared, plus the two that build nothing)
+# and the arm-before-x86 ordering that keeps `config/pikvm/` from being read as
+# an x86 `config/` path.
 #
 # Usage: scripts/tests/test-ci-changed-groups.sh
 set -euo pipefail
@@ -15,7 +16,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 SCRIPT="$ROOT/scripts/ci-changed-groups.sh"
 
-TOTAL=16
+TOTAL=17
 
 fail() {
   printf 'FAIL %s/%s - %s\n' "$1" "$TOTAL" "$2" >&2
@@ -74,5 +75,6 @@ check 13 "modules/sops.nix is shared" "modules/sops.nix" "$BOTH"
 check 14 "a markdown change plus an arm host is arm-only" "$(printf 'README.md\nhosts/node0/default.nix')" "$ARM"
 check 15 "an arm host plus an x86 host is both" "$(printf 'hosts/node0/default.nix\nhosts/bee-gpd/default.nix')" "$BOTH"
 check 16 "empty input builds nothing" "" "$NOTHING"
+check 17 "a workflow change runs the checks without a build" ".github/workflows/pr.yaml" "$CODE"
 
 printf '\nall %s assertions passed\n' "$TOTAL"
