@@ -50,6 +50,30 @@ in {
     # it. Keep the policy loose.
     "net.ipv4.conf.all.rp_filter" = 2;
     "net.ipv4.conf.default.rp_filter" = 2;
+    # br-lan is deliberately one flat L2 domain: its ports must be able to
+    # reach each other without the routed-traffic forward chain dropping the
+    # bridged frames. Docker loads br_netfilter, which otherwise feeds those
+    # frames to `inet filter forward` (policy drop). Keep the bridge out of
+    # the IP hook; the L3 rules still cover everything that is routed.
+    "net.bridge.bridge-nf-call-iptables" = 0;
+    "net.bridge.bridge-nf-call-ip6tables" = 0;
+  };
+
+  # Docker sets the bridge sysctls when it starts, after systemd-sysctl.
+  # Re-assert them after Docker (and whenever Docker restarts).
+  systemd.services.flat-bridge-netfilter = {
+    description = "Keep the flat br-lan bridge out of the IP forward chain";
+    wantedBy = ["multi-user.target"];
+    after = ["docker.service" "systemd-modules-load.service"];
+    partOf = ["docker.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.procps}/bin/sysctl -w net.bridge.bridge-nf-call-iptables=0
+      ${pkgs.procps}/bin/sysctl -w net.bridge.bridge-nf-call-ip6tables=0
+    '';
   };
 
   # ── Allow interfaces to be plugged/unplugged dynamically ───────────
