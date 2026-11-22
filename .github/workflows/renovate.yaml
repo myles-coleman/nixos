@@ -13,6 +13,9 @@ name: Renovate
 #
 # The token must not be GITHUB_TOKEN: pull requests opened with it do not
 # trigger `pull_request` workflows, so `pr.yaml` would never build the hosts.
+# It also needs workflow write access, because Renovate bumps the `uses:` pins
+# in this directory and GitHub rejects a push touching .github/workflows/**
+# without it.
 on:
   schedule:
     - cron: "0 5 * * 1"
@@ -32,6 +35,10 @@ jobs:
   renovate:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
+    # Environment secret, not a repository secret: a pull_request job cannot read
+    # a write-capable credential. `main` only, and deliberately no required
+    # reviewers, which would stall every scheduled run.
+    environment: renovate
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
