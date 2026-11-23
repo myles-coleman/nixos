@@ -255,6 +255,20 @@ in {
         -p tcp --dport 8080 ! -i tailscale0 -j DROP 2>/dev/null \
         || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
           -p tcp --dport 8080 ! -i tailscale0 -j DROP
+
+      # The transcriber container summarizes transcripts through this API, so it
+      # has to be exempt from the catch-all drop above: its traffic arrives on
+      # the docker bridge, not on tailscale0. Verified the hard way — without
+      # this, a request from inside the container to 100.127.170.8:8080 hangs
+      # until it times out.
+      #
+      # Deleted and re-inserted at position 1 on every run, because the drop is
+      # itself inserted at position 1: relying on -C alone can leave the accept
+      # underneath the drop, where it never matches.
+      ${pkgs.iptables}/bin/iptables -D DOCKER-USER \
+        -s 172.17.0.0/16 -p tcp --dport 8080 -j ACCEPT 2>/dev/null || true
+      ${pkgs.iptables}/bin/iptables -I DOCKER-USER 1 \
+        -s 172.17.0.0/16 -p tcp --dport 8080 -j ACCEPT
     '';
   };
 }
