@@ -7,14 +7,6 @@
   wan = "enp1s0";
   mgmt = "enp6s0";
   wifi = "wlp7s0";
-
-  # Unbound runs as the `unbound` user. NixOS may assign that uid dynamically,
-  # so fall back to the user name (nft resolves names at ruleset load time).
-  unboundUid = config.users.users.unbound.uid;
-  unboundMatch =
-    if unboundUid == null
-    then "\"unbound\""
-    else toString unboundUid;
 in {
   networking.nftables.enable = true;
   networking.nftables.checkRuleset = false;
@@ -39,8 +31,8 @@ in {
         # ride an existing conntrack entry.
         iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
 
-        # Return traffic for host-initiated connections (e.g. Unbound queries
-        # that egress via wg0 and recursive replies that arrive back on wg0).
+        # Return traffic for host-initiated connections (recursive Unbound
+        # queries and their replies, nix, NTP, the tailscaled control plane).
         ct state { established, related } accept comment "allow established/related input"
 
         # LAN and WiFi traffic to router
@@ -112,15 +104,15 @@ in {
       chain output {
         type filter hook output priority 0; policy accept;
 
-        # WireGuard's own encapsulated packets inherit the sending socket's
-        # uid and carry the tunnel fwmark. Exempt them, otherwise the
-        # uid-scoped DNS kill switch below drops the tunnel itself for
-        # Unbound (its queries would never leave the box).
+        # WireGuard's own encapsulated packets carry the tunnel fwmark.
+        # Exempt them explicitly so a future output-chain rule cannot drop the
+        # tunnel's transport packets.
         meta mark 51820 accept comment "allow WireGuard encapsulated packets"
 
-        # HARD KILL SWITCH: locally generated recursive DNS must not leak to
-        # the WAN when wg0 is down.
-        oifname "${wan}" meta skuid ${unboundMatch} drop comment "HARD KILL SWITCH: Unbound DNS cannot leak to WAN"
+        # Spec 29, Unit 1: Unbound now resolves by full recursion out the WAN,
+        # so there is deliberately no `skuid unbound` WAN drop here any more.
+        # DNS no longer depends on wg0, and blocking it would blackhole
+        # resolution whenever the tunnel is down.
       }
     }
 

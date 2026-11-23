@@ -27,16 +27,18 @@
         hide-version = true;
       };
 
-      # Spec 05 fallback (now active): Mullvad refuses iterative (RD=0) DNS to
-      # root servers over the tunnel, which breaks full recursion. Forward to
-      # Mullvad's in-tunnel resolver instead. Unbound still caches and can
-      # validate DNSSEC. 10.64.0.1 is not in the Tailscale CGNAT range.
-      forward-zone = [
-        {
-          name = ".";
-          forward-addr = "10.64.0.1";
-        }
-      ];
+      # Full recursion from the root servers, deliberately with no
+      # `forward-zone`. The old forwarder was 10.64.0.1 inside the Mullvad
+      # tunnel, which made every DNS lookup depend on wg0 staying up.
+      # Outbound port 53 from the WAN was proven open before this change
+      # (`dig @198.41.0.4 . NS`). Accepted trade-off: the ISP can now see the
+      # queries. See spec 29, Unit 1.
+      #
+      # Manual fallback if recursion ever breaks: add back
+      #   forward-zone: name "." forward-addr 10.64.0.1
+      # and a table-100 policy rule for the unbound user.
+      # DNSSEC validation and the trust anchor stay on, so a hijacked answer
+      # that fails validation is served as SERVFAIL, not silently accepted.
     };
   };
 

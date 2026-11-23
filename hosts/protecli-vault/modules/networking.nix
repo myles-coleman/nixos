@@ -166,11 +166,6 @@ in {
               IncomingInterface = "tailscale0";
               Table = 100;
             }
-            # Locally generated recursive Unbound DNS.
-            {
-              User = "unbound";
-              Table = 100;
-            }
           ];
           routes = [
             # LAN-destined tailnet traffic (subnet routing) must leave via
