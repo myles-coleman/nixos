@@ -59,15 +59,17 @@ in {
         # hostapd adds wlp7s0 to the WiFi bridge, which carries 10.50.0.0/24
         # and its own networkd DHCP scope. networkd never matches wlp7s0.
         bridge = "br-wifi";
-        # Clients cannot talk to each other at L2; everything goes through the
-        # Vault, where the segment firewall decides.
-        ap_isolate = 1;
         # The NixOS module emits vht_oper_chwidth but not the centre segment
         # index, and hostapd needs both for 80MHz.
         vht_oper_centr_freq_seg0_idx = 155;
       };
       networks."${interface}" = {
         ssid = ssid;
+        # Clients cannot talk to each other at L2; everything goes through the
+        # Vault, where the segment firewall decides. This must be the typed
+        # `apIsolate` option: a freeform `settings.ap_isolate` is emitted
+        # before the option's default and loses to it.
+        apIsolate = true;
         authentication = {
           mode = "wpa3-sae";
           # Read the password from the sops secret at service start instead
