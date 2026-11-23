@@ -126,6 +126,14 @@ in {
         # gaming -> AI inference only.
         iifname "br-gaming" oifname "br-ai" ip daddr ${aiHost} tcp dport ${toString aiPort} accept comment "gaming to AI inference (tcp/${toString aiPort})"
 
+        # Tailscale transport between segments (udp/41641). Without it every
+        # cross-segment tailnet pair falls back to DERP: the AI host to a
+        # homelab peer, an owner laptop on br-wifi to a homelab service, and so
+        # on. The traffic is WireGuard, authenticated by the tailnet keys, and
+        # the ACL still decides which peers may talk; this only restores direct
+        # LAN paths instead of relaying through a DERP server on the internet.
+        iifname ${bridgeSet} oifname ${bridgeSet} udp dport 41641 accept comment "Tailscale transport between segments (direct paths)"
+
         # ── Tailnet subnet routing ───────────────────────────────────
         ${tailnetToSegments}
 
