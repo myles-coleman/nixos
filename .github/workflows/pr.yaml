@@ -22,7 +22,7 @@ jobs:
       arm: ${{ steps.filter.outputs.arm }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
       - name: Detect relevant changes
@@ -48,16 +48,16 @@ jobs:
         host: [bee-pc, bee-gpd, homelab, bee-gpu-server, protecli-vault]
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
       - name: Install Nix
-        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        uses: cachix/install-nix-action@v31.10.3
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             extra-substituters = https://nixos-raspberrypi.cachix.org
             extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
       - name: Setup Cachix
-        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        uses: cachix/cachix-action@v17
         with:
           name: nixos-monorepo
           useDaemon: true
@@ -79,7 +79,7 @@ jobs:
         host: [pikvm, node0, node1, node2, node3, node4, rpi3]
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
       - name: Free disk space
         # node0-node3 build the aarch64 kernel + full system closure from
         # source (their page-size-16k overlay misses every binary cache), which
@@ -88,14 +88,14 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache
           df -h /
       - name: Install Nix
-        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        uses: cachix/install-nix-action@v31.10.3
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             extra-substituters = https://nixos-raspberrypi.cachix.org
             extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
       - name: Setup Cachix
-        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        uses: cachix/cachix-action@v17
         with:
           name: nixos-monorepo
           useDaemon: true
@@ -113,7 +113,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
       - name: Verify PR workflow hardening
         run: scripts/tests/test-pr-workflow.sh
       # Issue #114: the classifier that decides which host groups this PR builds.
@@ -140,7 +140,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
       - name: Verify sandbox Dockerfile toolchain
         run: ./scripts/tests/test-sandbox-dockerfile.sh
 
@@ -163,18 +163,18 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
       - name: Install Nix
-        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        uses: cachix/install-nix-action@v31.10.3
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             extra-substituters = https://nixos-raspberrypi.cachix.org
             extra-trusted-public-keys = nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI=
       - name: Setup Cachix
-        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        uses: cachix/cachix-action@v17
         with:
           name: nixos-monorepo
           useDaemon: true
@@ -260,7 +260,7 @@ jobs:
           echo "comment_file=${COMMENT_FILE}" >> "$GITHUB_OUTPUT"
       - name: Upload diff comment
         if: always() && steps.diff.outputs.comment_file != ''
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: nixos-diff-comment
           path: ${{ steps.diff.outputs.comment_file }}

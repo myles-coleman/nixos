@@ -118,9 +118,35 @@ plus the k3s agent-token rollout are operator, console-access steps.
 - The `nixpkgs-unstable` overlay provides bleeding-edge packages when the stable channel lags
 - Shared concerns are **aspects** under `modules/aspects/` (flake-parts + `import-tree`); a host enables a capability by listing the aspect ("listed = enabled"). All five x86_64 hosts (`homelab`, `bee-pc`, `bee-gpd`, `bee-gpu-server`, `protecli-vault`) and the RPi hosts (`node0`–`node4`, `rpi3`) are aspect-composed. The RPi aspects are flat (no aspect imports another) and the k3s role aspects assert `k3sCommon.enabled` so listing a role without `k3s-common` fails at evaluation. Vendor board/kernel modules stay plain host imports. `pikvm` is the only remaining host on plain modules (not on the vendor library). See `modules/aspects/README.md` before adding or changing one.
 
+## CI Workflow Dependencies
+
+`.github/workflows/` pins its actions through `.github/workflows/actions.lock`, not by
+writing a 40-character SHA into each `uses:`. The workflows keep readable tags
+(`actions/checkout@v6.0.2`); the lockfile records the commit each reference resolves to,
+including the actions a composite action calls itself, plus the source repository's numeric
+identity.
+
+- After adding or changing any `uses:`, or adding a workflow, run `gh actions-lock` from the
+  repository root and commit the regenerated lockfile in the same change.
+  `.github/workflows/verify-lockfile.yml` runs `gh actions-lock --verify` on every pull
+  request, so an un-locked reference fails CI.
+- Never edit `actions.lock` by hand; it is machine-generated and the next run overwrites it.
+- Keep tags in workflows. A SHA in a `uses:` is locked as a SHA, adds nothing over the
+  lockfile entry, and makes the workflow harder to read. (The extension narrows a partial ref
+  like `@v4` to the full tag it resolved to on first lock.)
+- Renovate regenerates the lockfile in the same pull request as an action bump. Its lockfile
+  support is marked experimental, so review an actions PR as two files: the workflow and
+  `actions.lock`.
+- The extension itself is pinned in `verify-lockfile.yml`; Renovate bumps that tag too.
+- `pin-guard` asserts the model for `pr.yaml` and `pr-comment.yaml` in
+  `scripts/tests/test-pr-workflow.sh`: every `uses:` must be a tag with a matching
+  `actions.lock` entry carrying a commit, `owner_id` and `repo_id`.
+
 ## Guardrails
 
 - Never modify `hardware-configuration.nix` files (auto-generated)
+- Never hand-edit `.github/workflows/actions.lock`, and never merge a `uses:` change without
+  the lockfile update `gh actions-lock` produces; CI fails on a stale lockfile
 - `rpi3` intentionally enables SSH password authentication (preserved from its
   source config); this is a known hardening follow-up, not a bug
 - Never hardcode passwords or keys in .nix files

@@ -42,21 +42,21 @@ jobs:
     environment: renovate
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
 
       - name: Install Nix
         # Renovate shells out to `nix` for flake.lock updates, so this is the
         # dependency the hosted app cannot satisfy.
-        uses: cachix/install-nix-action@96951a368ba55167b55f1c916f7d416bac6505fe # v31.10.3
+        uses: cachix/install-nix-action@v31.10.3
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
       - name: Generate app token
         id: app-token
-        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        uses: actions/create-github-app-token@v3.4.0
         with:
           app-id: ${{ vars.RENOVATE_APP_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
@@ -66,7 +66,7 @@ jobs:
       - name: Set up Node
         # Renovate declares `engines: node ^24.11.0 || ^26.13.0`; the runner's
         # default Node 22 lacks RegExp.escape and Renovate dies loading managers.
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: '24'
 
