@@ -162,6 +162,21 @@ ping -c1 <homelab-host>                      # [fails: default deny]
 Anti-spoof: from a segment, add a foreign source address and try to reach the
 WAN; the packet is dropped with `anti-spoof <bridge>:` in the journal.
 
+### 3b. Pi-hole web UI access
+
+The admin UI is **not** exposed directly to every segment:
+
+| From | URL | Reachable |
+| --- | --- | --- |
+| Tailnet (any owner device) | `https://pihole.cowlab.org` (via the homelab nginx-proxy-manager, `*.cowlab.org` wildcard) or `http://protecli-vault.tail6d2e9b.ts.net/admin` | yes |
+| Homelab segment | `http://10.0.0.1/admin` | yes (backend for the proxy) |
+| WiFi / gaming / ai | `https://pihole.cowlab.org` | no: the forward chain denies segment -> homelab, and `80/443` to the gateway is allowed from `br-homelab` only |
+| Management port | `http://192.168.200.1/admin` | yes (break-glass) |
+
+The UI has its own password (Pi-hole `pwhash`). The reverse proxy forwards
+`pihole.cowlab.org` to `http://10.0.0.1:80`; it lives in nginx-proxy-manager's
+database on homelab, not in this repository.
+
 ### 4. WiFi
 
 ```bash

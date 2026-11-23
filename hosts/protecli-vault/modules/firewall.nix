@@ -47,7 +47,11 @@
   # 123 NTP; ICMP for path MTU and reachability.
   toRouter = ''
     iifname ${bridgeSet} udp dport { 53, 67, 123 } accept comment "segment DNS/DHCP/NTP to the router"
-    iifname ${bridgeSet} tcp dport { 22, 53, 80, 443 } accept comment "segment SSH/DNS/Pi-hole admin to the router"
+    iifname ${bridgeSet} tcp dport { 22, 53 } accept comment "segment SSH/DNS to the router"
+    # The Pi-hole web UI is reached as https://pihole.cowlab.org through the
+    # homelab reverse proxy, so only that segment needs the backend port. WiFi
+    # (phones, guests), gaming and ai get no direct admin UI at all.
+    iifname "br-homelab" tcp dport { 80, 443 } accept comment "Pi-hole web UI backend, homelab segment only"
     iifname ${bridgeSet} icmp type { echo-request, destination-unreachable, time-exceeded } accept comment "segment ICMP to the router"
   '';
 in {
