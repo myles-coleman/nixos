@@ -71,6 +71,12 @@ in {
     ];
   };
 
+  # The container reaches Strata through the host's published port, and that
+  # path lands on the INPUT chain, which the firewall drops. Without this the
+  # summarize call hangs until it times out — the DOCKER-USER guard is not
+  # involved, because docker-proxy answers on the host, not by forwarding.
+  networking.firewall.interfaces."docker0".allowedTCPPorts = [8080];
+
   # `environmentFiles` is read when the container starts, so the file has to
   # exist by then. `strata-env` renders it; a plain `after` avoids making the
   # transcriber restart whenever the key rotates.
