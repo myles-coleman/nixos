@@ -71,11 +71,10 @@ in {
       chain forward {
         type filter hook forward priority 0; policy drop;
 
-        # Scoped exception: tailnet subnet routing to the upstream LAN
-        # (10.0.0.0/24) is allowed out the WAN interface (SNATed by the
-        # enp1s0 masquerade rule). This is a local-LAN exception, not an
-        # internet fallback, so it must precede the kill switch.
-        iifname "tailscale0" oifname "${wan}" ip daddr 10.0.0.0/24 accept comment "tailnet to upstream LAN (subnet routing)"
+        # The estate (10.0.0.0/24: homelab, k3s, PiKVM, kube-vip) is
+        # infrastructure and egresses directly. Only the 192.168.1.0/24 LAN
+        # stays on the Mullvad path. This must precede the kill switch.
+        iifname "br-lan" ip saddr 10.0.0.0/24 oifname "${wan}" accept comment "estate direct WAN"
 
         # HARD KILL SWITCH: forwarded client/tailnet traffic never falls back
         # to the WAN, regardless of tunnel state.
