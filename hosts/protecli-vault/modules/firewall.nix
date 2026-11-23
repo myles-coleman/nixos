@@ -181,7 +181,17 @@ in {
       chain postrouting {
         type nat hook postrouting priority 100; policy accept;
         oifname "wg0" masquerade comment "NAT exit-node clients into the Mullvad tunnel"
-        oifname "tailscale0" masquerade comment "SNAT tailnet subnet/exit traffic"
+        oifname "tailscale0" masquerade comment "SNAT LAN traffic leaving via the tailnet"
+        # Tailnet -> segment traffic is SNATed to that segment's gateway before
+        # it reaches the host. Tailscale's own netfilter mode installs exactly
+        # this (its ts-postrouting MASQUERADE); the Vault runs
+        # `--netfilter-mode=off`, so it has to do it itself. Without it, a
+        # destination host that also runs Tailscale routes its reply to the
+        # 100.x source out of its own tailscale0 with a foreign source address
+        # (e.g. 10.0.0.200), which tailscaled drops: the handshake never
+        # completes and any tailnet->kube-vip client (CI's kubeconfig to
+        # 10.0.0.200:6443) times out.
+        iifname "tailscale0" oifname ${bridgeSet} masquerade comment "SNAT tailnet-to-segment traffic"
         oifname "${wan}" masquerade comment "NAT segments and the Vault to the WAN"
       }
     }
