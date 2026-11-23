@@ -88,24 +88,26 @@ in {
           }
         ];
         provider = {
-          llama-cpp = {
-            npm = "@ai-sdk/openai-compatible";
-            options = {
-              baseURL = "https://llama.cowlab.org/v1";
-            };
-            models = {
-              "Qwen3-8B-Q4_K_M" = {
-                name = "Qwen3 8B (llama.cpp GPU)";
-              };
-            };
-          };
           qwen-local = {
             npm = "@ai-sdk/openai-compatible";
             options = {
               # Strata on bee-gpu-server, reached over the tailnet (the two LANs
               # have no forwarding path). Replaces the dead 10.0.0.156:8080 that
               # served the retired qwen-177b container (spec 20).
+              #
+              # This is now the only model host. `llama.cowlab.org` was retired
+              # with the llama.cpp container, and the `llama-cpp` provider that
+              # still pointed at it has been removed rather than repointed:
+              # keeping two provider names for one backend only splits which
+              # model id a session records.
               baseURL = "http://100.127.170.8:8080/v1";
+              # Strata validates the bearer token — it answers 401 to a missing
+              # or wrong key, so this provider cannot authenticate anonymously.
+              # `{env:...}` keeps the value out of the Nix store, which is
+              # world-readable; export STRATA_API_KEY before launching, the same
+              # way ~/strata-gate does, from sops:
+              # secrets/hosts/bee-gpu-server.yaml -> strata_api_key.
+              apiKey = "{env:STRATA_API_KEY}";
               includeUsage = true;
             };
             models = {
