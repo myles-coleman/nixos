@@ -57,17 +57,21 @@
           WEBPASSWORD = ""; # Empty -- set manually post-deploy for security
 
           # Pi-hole v6 Configuration via FTLCONF_ environment variables
-          FTLCONF_dns_interface = "br-lan";
+          #
+          # `dns.interface` is pinned in pihole.toml (it was "br-lan" ### CHANGED
+          # (env)). Deleting the env var does NOT revert the stored value, so set
+          # it to the empty string explicitly: FTL then listens on all
+          # interfaces, which is what dns.listeningMode=ALL already does.
+          # DHCP now belongs to systemd-networkd on each segment bridge.
+          FTLCONF_dns_interface = "";
           FTLCONF_dns_upstreams = "127.0.0.1#5335";
           FTLCONF_dns_domain_name = "lan";
           FTLCONF_dns_listeningMode = "ALL";
-          FTLCONF_dhcp_logging = "true";
 
-          FTLCONF_dhcp_active = "true";
-          FTLCONF_dhcp_start = "192.168.1.50";
-          FTLCONF_dhcp_end = "192.168.1.254";
-          FTLCONF_dhcp_router = "192.168.1.1";
-          FTLCONF_dhcp_leaseTime = "24";
+          # dhcp.active was persisted as true; removing the variable would not
+          # stop the server. Turn it off explicitly so exactly one DHCP
+          # authority (networkd) remains per bridge.
+          FTLCONF_dhcp_active = "false";
         };
         volumes = [
           "/var/lib/pihole/etc-pihole:/etc/pihole"

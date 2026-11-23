@@ -62,10 +62,12 @@
         ip daddr { 1.1.1.1, 8.8.8.8 } tcp dport 53 accept
 
         # Everything else to the LAN is denied: SMB, NFS, the kubelets, the API on
-        # any other node, the Docker-published services. Pods (10.42.0.0/16) and
-        # services (10.43.0.0/16) sit outside these ranges and stay reachable, so
-        # cluster traffic and the squid hop are unaffected.
-        ip daddr { 10.0.0.0/24, 192.168.1.0/24 } drop
+        # any other node, the Docker-published services. The LAN is four
+        # segments now (spec 29) plus the out-of-band management subnet; the
+        # guest belongs to none of them. Pods (10.42.0.0/16) and services
+        # (10.43.0.0/16) sit outside these ranges and stay reachable, so cluster
+        # traffic and the squid hop are unaffected.
+        ip daddr { 10.0.0.0/24, 10.20.0.0/24, 10.30.0.0/24, 10.50.0.0/24, 192.168.200.0/24 } drop
 
         # Tailscale: control/DERP, STUN, and the direct endpoint.
         tcp dport 443 accept

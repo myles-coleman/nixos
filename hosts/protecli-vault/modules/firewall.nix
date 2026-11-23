@@ -6,7 +6,50 @@
 }: let
   wan = "enp1s0";
   mgmt = "enp6s0";
-  wifi = "wlp7s0";
+
+  inherit (lib) concatMapStrings concatStringsSep map;
+
+  # Everything below is derived from the one segment matrix in segments.nix.
+  segments = config.vault.segments;
+  segmentBridges = map (s: s.bridge) segments;
+  segmentSubnets = map (s: s.subnet) segments;
+  bridgeSet = "{ ${concatStringsSep ", " (map (b: "\"${b}\"") segmentBridges)} }";
+
+  # Anti-spoofing: a port that belongs to one segment may only carry that
+  # segment's subnet. Logged (rate-limited) so a forged source is visible.
+  antiSpoof =
+    concatMapStrings (s: ''
+      iifname "${s.bridge}" ip saddr != ${s.subnet} counter log prefix "anti-spoof ${s.bridge}: " limit rate 5/minute drop comment "anti-spoof ${s.name} segment"
+    '')
+    segments;
+
+  tailnetToSegments =
+    concatMapStrings (s: ''
+      iifname "tailscale0" oifname "${s.bridge}" accept comment "tailnet to ${s.name} (subnet routing)"
+      iifname "${s.bridge}" oifname "tailscale0" accept comment "${s.name} to tailnet (subnet routing)"
+    '')
+    segments;
+
+  segmentToWan =
+    concatMapStrings (s: ''
+      iifname "${s.bridge}" oifname "${wan}" accept comment "${s.name} direct WAN"
+    '')
+    segments;
+
+  # The AI workstation's address comes from the AI segment's static lease in
+  # the matrix; the allow matrix below must not carry a second copy of it.
+  aiSegment = lib.findFirst (s: s.name == "ai") (throw "segments.nix: no `ai` segment in the matrix") segments;
+  aiHost = (builtins.head aiSegment.staticLeases).Address;
+  aiPort = 8080;
+
+  # The Vault's own services that a segment client is allowed to reach.
+  # 80/443 are the Pi-hole admin UI, 22 is key-only SSH, 53 DNS, 67 DHCP,
+  # 123 NTP; ICMP for path MTU and reachability.
+  toRouter = ''
+    iifname ${bridgeSet} udp dport { 53, 67, 123 } accept comment "segment DNS/DHCP/NTP to the router"
+    iifname ${bridgeSet} tcp dport { 22, 53, 80, 443 } accept comment "segment SSH/DNS/Pi-hole admin to the router"
+    iifname ${bridgeSet} icmp type { echo-request, destination-unreachable, time-exceeded } accept comment "segment ICMP to the router"
+  '';
 in {
   networking.nftables.enable = true;
   networking.nftables.checkRuleset = false;
@@ -14,6 +57,15 @@ in {
 
   networking.nftables.ruleset = ''
     table inet filter {
+      set segment_prefixes {
+        type ipv4_addr
+        flags interval
+        comment "the four LAN segment prefixes, generated from segments.nix"
+        elements = {
+          ${concatStringsSep ", " segmentSubnets}
+        }
+      }
+
       chain input {
         type filter hook input priority 0; policy drop;
 
@@ -35,9 +87,8 @@ in {
         # queries and their replies, nix, NTP, the tailscaled control plane).
         ct state { established, related } accept comment "allow established/related input"
 
-        # LAN and WiFi traffic to router
-        iifname "br-lan" accept comment "allow LAN traffic to router"
-        iifname "${wifi}" accept comment "allow WiFi traffic to router"
+        # Segment clients to the router: only the services they need.
+        ${toRouter}
 
         # Tailscale: --netfilter-mode=off means the Vault owns the path,
         # so accept tailnet input and the Tailscale transport port here.
@@ -46,8 +97,8 @@ in {
         # transport port itself; it arrives on the WAN interface, not tailscale0.
         udp dport 41641 accept comment "allow Tailscale transport"
 
-        # Mullvad tunnel: accept return traffic for the Vault's own host
-        # traffic (Unbound DNS, nix, NTP, tailscaled control plane).
+        # Mullvad tunnel: accept return traffic for exit-node clients and for
+        # the Vault's own host traffic.
         iifname "wg0" accept comment "allow Mullvad tunnel input to the host"
 
         # WAN: only established/related connections
@@ -63,14 +114,41 @@ in {
       chain forward {
         type filter hook forward priority 0; policy drop;
 
-        # The estate (10.0.0.0/24: homelab, k3s, PiKVM, kube-vip) is
-        # infrastructure and egresses directly. Only the 192.168.1.0/24 LAN
-        # stays on the Mullvad path. This must precede the kill switch.
-        iifname "br-lan" ip saddr 10.0.0.0/24 oifname "${wan}" accept comment "estate direct WAN"
+        # ── Anti-spoofing, before anything can be accepted ───────────
+        ${antiSpoof}
 
-        # HARD KILL SWITCH: forwarded client/tailnet traffic never falls back
-        # to the WAN, regardless of tunnel state.
-        iifname { "br-lan", "tailscale0" } oifname "${wan}" drop comment "HARD KILL SWITCH: no WAN fallback"
+        # ── Management plane: break-glass in, nothing back in ────────
+        iifname "${mgmt}" accept comment "management to anywhere (break-glass)"
+        iifname != "${mgmt}" ip daddr ${config.vault.mgmtSubnet} drop comment "segments and tailnet cannot reach management"
+
+        # ── The allow matrix ─────────────────────────────────────────
+        # Everything not listed here stays denied by the policy drop.
+        # gaming -> AI inference only.
+        iifname "br-gaming" oifname "br-ai" ip daddr ${aiHost} tcp dport ${toString aiPort} accept comment "gaming to AI inference (tcp/${toString aiPort})"
+
+        # ── Tailnet subnet routing ───────────────────────────────────
+        ${tailnetToSegments}
+
+        # ── Media egress overlay (tag:media-egress) ───────────────────
+        # qBittorrent and Prowlarr reach the internet as tailnet exit-node
+        # clients: tailscale0 -> wg0, and the replies back. Their own pod
+        # kill switches fail closed if this path is gone.
+        iifname "tailscale0" oifname "wg0" accept comment "tailnet exit-node clients to Mullvad"
+        iifname "wg0" oifname "tailscale0" accept comment "Mullvad replies to tailnet clients"
+
+        # ── Bogon egress filter, before any WAN accept ───────────────
+        # A LAN prefix must never be routed out the WAN, even if a segment is
+        # re-addressed into public space: this is the matrix-generated half.
+        oifname "${wan}" ip daddr @segment_prefixes counter drop comment "no segment prefix egresses the WAN"
+        oifname "${wan}" ip daddr { 0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16 } counter drop comment "no bogon egresses the WAN"
+
+        # ── Direct WAN egress for every segment ──────────────────────
+        ${segmentToWan}
+
+        # ── The single kill switch ───────────────────────────────────
+        # Only exit-node traffic may reach the internet from the tailnet, and
+        # that goes through wg0 above. There is exactly one such rule.
+        iifname "tailscale0" oifname "${wan}" drop comment "HARD KILL SWITCH: no tailnet WAN fallback"
 
         # IPv6 is actively blackholed, not merely ignored.
         meta nfproto ipv6 drop comment "IPv6 blackholed"
@@ -78,27 +156,12 @@ in {
         # CGNAT anti-spoof for forwarded traffic.
         iifname != "tailscale0" ip saddr 100.64.0.0/10 drop comment "CGNAT anti-spoof"
 
-        # Client/tailnet egress through the Mullvad tunnel.
-        iifname { "br-lan", "tailscale0" } oifname "wg0" accept comment "clients/tailnet to Mullvad"
-        iifname "wg0" oifname "br-lan" accept comment "Mullvad return to LAN"
-        iifname "wg0" oifname "tailscale0" accept comment "Mullvad return to tailnet"
-
-        # Subnet routing between the tailnet and the LAN.
-        iifname "tailscale0" oifname "br-lan" accept comment "tailnet to LAN (subnet routing)"
-        iifname "br-lan" oifname "tailscale0" accept comment "LAN to tailnet (subnet routing replies)"
-
-        # Transitional dual-subnet br-lan: 192.168.1.0/24 (operator laptop, AI
-        # server, WiFi) and 10.0.0.0/24 (estate) share the bridge but are routed
-        # between each other. Until the segmentation spec splits the bridge,
-        # let that routed traffic through; the bridged same-subnet traffic is
-        # not affected because br_netfilter is off.
-        iifname "br-lan" oifname "br-lan" accept comment "dual-subnet br-lan routed traffic"
-
         # Return traffic for the above flows.
         ct state { established, related } accept comment "allow return traffic"
 
-        # Log and drop everything else (rate-limited)
-        counter log prefix "dropped forward: " limit rate 5/minute drop comment "log and drop other forwarded traffic"
+        # Log and drop everything else: inter-segment traffic that is not in
+        # the allow matrix lands here.
+        counter log prefix "dropped forward: " limit rate 5/minute drop comment "default deny: log and drop other forwarded traffic"
       }
 
       chain output {
@@ -109,19 +172,17 @@ in {
         # tunnel's transport packets.
         meta mark 51820 accept comment "allow WireGuard encapsulated packets"
 
-        # Spec 29, Unit 1: Unbound now resolves by full recursion out the WAN,
-        # so there is deliberately no `skuid unbound` WAN drop here any more.
-        # DNS no longer depends on wg0, and blocking it would blackhole
-        # resolution whenever the tunnel is down.
+        # Spec 29, Unit 1: Unbound resolves by full recursion out the WAN, so
+        # there is deliberately no `skuid unbound` WAN drop here any more.
       }
     }
 
     table ip nat {
       chain postrouting {
         type nat hook postrouting priority 100; policy accept;
-        oifname "wg0" masquerade comment "NAT client traffic into the Mullvad tunnel"
-        oifname "tailscale0" masquerade comment "SNAT tailnet exit/subnet traffic"
-        oifname "${wan}" masquerade comment "NAT Vault host traffic to WAN"
+        oifname "wg0" masquerade comment "NAT exit-node clients into the Mullvad tunnel"
+        oifname "tailscale0" masquerade comment "SNAT tailnet subnet/exit traffic"
+        oifname "${wan}" masquerade comment "NAT segments and the Vault to the WAN"
       }
     }
 

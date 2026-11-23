@@ -12,10 +12,12 @@ in {
     ...
   }: let
     mainUser = "bee";
+    tailnetRoutes = lib.concatStringsSep "," (map (s: s.subnet) config.vault.segments);
   in {
     imports =
       [
         ./hardware-configuration.nix
+        ./modules/segments.nix
         ./modules/networking.nix
         ./modules/firewall.nix
         ./modules/services.nix
@@ -58,21 +60,29 @@ in {
     # from the `tailscale` aspect; the flags below are host-specific. The Vault
     # owns forwarding and SNAT (--netfilter-mode=off) so its custom nftables
     # ruleset is the only data path.
+    #
+    # The advertised prefixes are generated from the segment matrix, so a new
+    # segment or subnet change cannot leave a stale route behind. The
+    # management subnet (192.168.200.0/24) is deliberately never advertised.
+    # --accept-dns=false: the Vault is the tailnet's global nameserver; it must
+    # not consume Tailscale's MagicDNS, it resolves through its own Pi-hole.
     services.tailscale = {
       useRoutingFeatures = "both";
       authKeyFile = config.sops.secrets.tailscale_auth_key.path;
       extraUpFlags = [
         "--netfilter-mode=off"
+        "--accept-dns=false"
         "--advertise-exit-node"
-        "--advertise-routes=192.168.1.0/24,10.0.0.0/24"
+        "--advertise-routes=${tailnetRoutes}"
       ];
       # extraUpFlags only apply on a fresh login. extraSetFlags re-applies the
       # same settings on every boot, which is required for an already-authenticated
       # node (otherwise NetfilterMode stays at the default and nothing is advertised).
       extraSetFlags = [
         "--netfilter-mode=off"
+        "--accept-dns=false"
         "--advertise-exit-node"
-        "--advertise-routes=192.168.1.0/24,10.0.0.0/24"
+        "--advertise-routes=${tailnetRoutes}"
       ];
     };
 
