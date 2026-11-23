@@ -24,8 +24,9 @@
   # Dedicated routing table and firewall mark for the Mullvad tunnel.
   # NOTE: wgFwMark is a routing/firewall mark, NOT the endpoint port; the two
   # only coincide numerically here by coincidence.
-  # These MUST stay in sync with hosts/protecli-vault/modules/networking.nix
-  # (the persistent policy rules on br-lan) and modules/firewall.nix.
+  # Table 100 also carries the tailnet's 100.64.0.0/10 route; the policy rule
+  # that steers `iif tailscale0` into it is generated in segments.nix, and the
+  # firewall's tailscale0 -> wg0 path is in firewall.nix.
   wgTable = 100;
   wgFwMark = 51820;
 
@@ -77,6 +78,23 @@ in {
           Gateway = "0.0.0.0";
           Table = wgTable;
           Metric = 0;
+        }
+        # Return path for tailnet peers whose packets were handed to table 100
+        # by `iif tailscale0 lookup 100`. Without this, tailnet-to-tailnet
+        # traffic would be pulled into the Mullvad default.
+        {
+          Destination = "100.64.0.0/10";
+          Scope = "link";
+          Table = wgTable;
+        }
+        # Persistent blackhole: when wg0 is down its metric-0 default
+        # disappears and this catches the lookup instead of falling through to
+        # main -> WAN. Exit-node clients (qBittorrent, Prowlarr) fail closed.
+        {
+          Destination = "0.0.0.0/0";
+          Table = wgTable;
+          Metric = 1000;
+          Type = "blackhole";
         }
       ];
       linkConfig.RequiredForOnline = "no";

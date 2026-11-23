@@ -5,24 +5,9 @@
   ...
 }: let
   wan = "enp1s0";
-  lan1 = "enp2s0";
-  lan2 = "enp3s0";
-  lan3 = "enp4s0";
-  lan4 = "enp5s0";
   mgmt = "enp6s0";
-  wifi = "wlp7s0";
 
-  # Helper: enslave a LAN interface to the br-lan bridge
-  enslaveToBridge = name: {
-    "30-${name}" = {
-      matchConfig.Name = name;
-      networkConfig = {
-        Bridge = "br-lan";
-        ConfigureWithoutCarrier = true;
-      };
-      linkConfig.RequiredForOnline = "enslaved";
-    };
-  };
+  mgmtRulePriority = 32764;
 in {
   # ── Use systemd-networkd (not NetworkManager) ──────────────────────
   networking.useNetworkd = true;
@@ -35,34 +20,36 @@ in {
   networking.nat.enable = false;
 
   # ── Disable systemd-resolved entirely ──────────────────────────────
-  # The Vault will use Pi-hole (192.168.1.1) for its own DNS after Pi-hole starts
-  # Temporary bootstrap DNS is provided by Docker daemon settings
+  # The Vault resolves through its own Pi-hole (127.0.0.1:53), which fronts
+  # the recursive Unbound on 127.0.0.1:5335.
   services.resolved.enable = false;
 
-  # Set static DNS for the Vault itself to use Pi-hole
-  networking.nameservers = ["192.168.1.1" "8.8.8.8"];
+  # Bootstrap fallback only: Pi-hole may not be up yet when the Vault needs a
+  # name (nix substituters, NTP). 8.8.8.8 is a last resort, not an upstream.
+  networking.nameservers = ["127.0.0.1" "8.8.8.8"];
 
   # ── IPv4 forwarding (required for routing) ─────────────────────────
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
     # Tailscale subnet-router traffic arrives on tailscale0 with a 100.64/10
     # source while its reverse path is the WAN default; strict rp_filter drops
-    # it. Keep the policy loose.
+    # it. Keep the policy loose (each segment bridge also sets
+    # IPv4ReversePathFilter=loose in the generated .network file).
     "net.ipv4.conf.all.rp_filter" = 2;
     "net.ipv4.conf.default.rp_filter" = 2;
-    # br-lan is deliberately one flat L2 domain: its ports must be able to
-    # reach each other without the routed-traffic forward chain dropping the
-    # bridged frames. Docker loads br_netfilter, which otherwise feeds those
-    # frames to `inet filter forward` (policy drop). Keep the bridge out of
-    # the IP hook; the L3 rules still cover everything that is routed.
+    # Every bridge is one flat L2 domain: its ports must reach each other
+    # without the routed-traffic forward chain dropping the bridged frames.
+    # Docker loads br_netfilter, which otherwise feeds those frames to
+    # `inet filter forward` (policy drop). Keep the bridge out of the IP hook;
+    # the L3 rules still cover everything that is routed between segments.
     "net.bridge.bridge-nf-call-iptables" = 0;
     "net.bridge.bridge-nf-call-ip6tables" = 0;
   };
 
   # Docker sets the bridge sysctls when it starts, after systemd-sysctl.
   # Re-assert them after Docker (and whenever Docker restarts).
-  systemd.services.flat-bridge-netfilter = {
-    description = "Keep the flat br-lan bridge out of the IP forward chain";
+  systemd.services.bridge-netfilter-off = {
+    description = "Keep the segment bridges out of the IP forward chain";
     wantedBy = ["multi-user.target"];
     after = ["docker.service" "systemd-modules-load.service"];
     partOf = ["docker.service"];
@@ -81,113 +68,65 @@ in {
     enable = true;
     wait-online.anyInterface = true;
 
-    # ── Bridge netdev ──────────────────────────────────────────────
-    netdevs = {
-      "20-br-lan" = {
-        netdevConfig = {
-          Kind = "bridge";
-          Name = "br-lan";
+    # The segment bridges, their member ports, addresses, DHCP scopes and
+    # per-segment policy rules are generated from the matrix in segments.nix.
+    networks = {
+      # WAN: DHCP from the Hitron CODA56 modem-only bridge. The 192.168.100.2/24
+      # alias is for the modem's source-restricted status GUI at 192.168.100.1.
+      # (The `iif tailscale0 lookup 100` policy rule is attached to this network
+      # in segments.nix, because it must exist whenever the tailnet is usable.)
+      "10-wan" = {
+        matchConfig.Name = wan;
+        address = ["192.168.100.2/24"];
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv4Forwarding = true;
+          IPv6AcceptRA = false;
         };
+        dhcpV4Config = {
+          UseDNS = true;
+          UseRoutes = true;
+        };
+        linkConfig.RequiredForOnline = "routable";
+      };
+
+      # Management port: separate subnet for SSH safety. No bridge, no DHCP:
+      # the break-glass laptop is configured by hand at 192.168.200.2/24.
+      "10-mgmt" = {
+        matchConfig.Name = mgmt;
+        address = [config.vault.mgmtAddress];
+        networkConfig = {
+          ConfigureWithoutCarrier = true;
+          LinkLocalAddressing = "no";
+          IPv6AcceptRA = false;
+        };
+        # Tailnet-to-management traffic must never fall into table 100 (wg0).
+        # The firewall drops it as well; this is the routing half.
+        routingPolicyRules = [
+          {
+            To = config.vault.mgmtSubnet;
+            Table = 254;
+            Priority = mgmtRulePriority;
+          }
+        ];
+        linkConfig.RequiredForOnline = "no";
       };
     };
 
-    # ── Network configurations ─────────────────────────────────────
-    networks =
-      # Enslave LAN interfaces to the bridge
-      lib.mergeAttrsList (map enslaveToBridge [lan1 lan2 lan3 lan4])
-      // {
-        # WAN: DHCP from the Hitron CODA56 modem-only bridge. The old static
-        # address (10.0.0.227/24) was a workaround for the Xfinity gateway
-        # dropping DHCP on 2026-10-28; the CODA56 is the edge now and leases a
-        # public address. The 192.168.100.2/24 alias is for the modem's
-        # source-restricted status GUI at 192.168.100.1.
-        "10-wan" = {
-          matchConfig.Name = wan;
-          address = ["192.168.100.2/24"];
-          networkConfig = {
-            DHCP = "ipv4";
-            IPv4Forwarding = true;
-          };
-          dhcpV4Config = {
-            UseDNS = true;
-            UseRoutes = true;
-          };
-          linkConfig.RequiredForOnline = "routable";
-        };
-
-        # Management port: separate subnet for SSH safety
-        "10-mgmt" = {
-          matchConfig.Name = mgmt;
-          address = ["192.168.200.1/24"];
-          networkConfig = {
-            ConfigureWithoutCarrier = true;
-          };
-          linkConfig.RequiredForOnline = "no";
-        };
-
-        # LAN bridge: main internal network
-        #
-        # Policy routing for the Mullvad tunnel lives on this *persistent*
-        # link, not on wg0: networkd drops rules attached to a link when it
-        # goes down. Table 100 must stay in sync with
-        # hosts/protecli-vault/modules/mullvad.nix (wgTable).
-        "40-br-lan" = {
-          matchConfig.Name = "br-lan";
-          # Transitional dual-subnet bridge: 192.168.1.0/24 carries the
-          # operator laptop and the AI server; 10.0.0.0/24 is the estate's
-          # preserved addressing (homelab, k3s, PiKVM, kube-vip). The
-          # segmentation spec later splits 10.0.0.0/24 into its own bridges.
-          address = ["192.168.1.1/24" "10.0.0.1/24"];
-          networkConfig = {
-            ConfigureWithoutCarrier = true;
-          };
-          routingPolicyRules = [
-            # Keep inter-subnet and tailnet-to-LAN traffic out of table 100
-            # (whose default is wg0). These must precede the table-100 rules.
-            {
-              To = "10.0.0.0/24";
-              Table = 254;
-              Priority = 32761;
-            }
-            {
-              To = "192.168.1.0/24";
-              Table = 254;
-              Priority = 32762;
-            }
-            # LAN clients: AND the source subnet with the ingress interface
-            # so the Vault's own 192.168.1.1 host traffic is NOT matched.
-            {
-              From = "192.168.1.0/24";
-              IncomingInterface = "br-lan";
-              Table = 100;
-            }
-            # Tailnet clients using the Vault as exit node / subnet router.
-            {
-              IncomingInterface = "tailscale0";
-              Table = 100;
-            }
-          ];
-          routes = [
-            # LAN-destined tailnet traffic (subnet routing) must leave via
-            # br-lan, not the table-100 default (wg0). Without this, an
-            # advertised 192.168.1.0/24 route would be tunneled into Mullvad.
-            {
-              Destination = "192.168.1.0/24";
-              Table = 100;
-              Scope = "link";
-            }
-            # Persistent blackhole: when wg0 is down its metric-0 default
-            # disappears and this catches the lookup instead of falling
-            # through to main -> WAN.
-            {
-              Destination = "0.0.0.0/0";
-              Table = 100;
-              Metric = 1000;
-              Type = "blackhole";
-            }
-          ];
-          linkConfig.RequiredForOnline = "no";
-        };
+    # The spare port (enp2s0) is deliberately inert: no address, no DHCP
+    # client, no link-local. It is *not* left unmatched, because NixOS would
+    # otherwise hand it the generated `99-ethernet-default-dhcp` catch-all
+    # (only absent because networking.useDHCP is off) or the kernel would add
+    # an IPv6 link-local as soon as a cable appears. An explicit match pins the
+    # intent instead of relying on the catch-all's absence.
+    networks."10-spare-enp2s0" = {
+      matchConfig.Path = "pci-0000:02:00.0";
+      networkConfig = {
+        ConfigureWithoutCarrier = true;
+        LinkLocalAddressing = "no";
+        IPv6AcceptRA = false;
       };
+      linkConfig.RequiredForOnline = "no";
+    };
   };
 }

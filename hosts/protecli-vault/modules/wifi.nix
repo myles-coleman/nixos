@@ -56,10 +56,12 @@ in {
       # 802.11ac card — advertising HE would make hostapd reject the config.
       wifi6.enable = false;
       settings = {
-        # hostapd must add the interface to the LAN bridge so wireless
-        # clients share 192.168.1.0/24 and Pi-hole's DHCP. networkd does not
-        # manage wlp7s0; hostapd does the enslaving.
-        bridge = "br-lan";
+        # hostapd adds wlp7s0 to the WiFi bridge, which carries 10.50.0.0/24
+        # and its own networkd DHCP scope. networkd never matches wlp7s0.
+        bridge = "br-wifi";
+        # Clients cannot talk to each other at L2; everything goes through the
+        # Vault, where the segment firewall decides.
+        ap_isolate = 1;
         # The NixOS module emits vht_oper_chwidth but not the centre segment
         # index, and hostapd needs both for 80MHz.
         vht_oper_centr_freq_seg0_idx = 155;
@@ -78,7 +80,7 @@ in {
     };
   };
 
-  # hostapd needs br-lan (created by systemd-networkd) to exist before it
+  # hostapd needs br-wifi (created by systemd-networkd) to exist before it
   # can enslave wlp7s0.
   systemd.services.hostapd = {
     after = ["systemd-networkd.service" "ath10k-regdomain.service"];
