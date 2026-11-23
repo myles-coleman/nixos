@@ -95,6 +95,13 @@ in {
         iifname "tailscale0" oifname "br-lan" accept comment "tailnet to LAN (subnet routing)"
         iifname "br-lan" oifname "tailscale0" accept comment "LAN to tailnet (subnet routing replies)"
 
+        # Transitional dual-subnet br-lan: 192.168.1.0/24 (operator laptop, AI
+        # server, WiFi) and 10.0.0.0/24 (estate) share the bridge but are routed
+        # between each other. Until the segmentation spec splits the bridge,
+        # let that routed traffic through; the bridged same-subnet traffic is
+        # not affected because br_netfilter is off.
+        iifname "br-lan" oifname "br-lan" accept comment "dual-subnet br-lan routed traffic"
+
         # Return traffic for the above flows.
         ct state { established, related } accept comment "allow return traffic"
 
