@@ -44,7 +44,20 @@ in {
       DEFAULT_MODEL = "large-v3-turbo";
       TRANSLATE_MODEL = "large-v3";
       PORT = "8090";
+
+      # Summaries are generated here, not on the client: the transcript and the
+      # model's API key both stay on this host. Strata serves on the same
+      # machine, and `strata-port-guard` exempts the docker bridge for exactly
+      # this call.
+      STRATA_URL = "http://100.127.170.8:8080/v1";
+      STRATA_MODEL = "qwen3.8-flash-next";
     };
+
+    # The key is injected by the daemon from the file that already exists for
+    # Strata (root-owned, 0400), so it is never written into this repository, the
+    # Nix store, or `docker run --env` argv. The environment file names it
+    # API_KEY; app/summarize.py accepts either that or STRATA_API_KEY.
+    environmentFiles = ["/run/strata/strata.env"];
 
     extraOptions = [
       # Vulkan needs the render node; Mesa RADV lives inside the image.
@@ -56,6 +69,20 @@ in {
       # A cancelled transcription should not linger holding the card.
       "--stop-timeout=30"
     ];
+  };
+
+  # The container reaches Strata through the host's published port, and that
+  # path lands on the INPUT chain, which the firewall drops. Without this the
+  # summarize call hangs until it times out — the DOCKER-USER guard is not
+  # involved, because docker-proxy answers on the host, not by forwarding.
+  networking.firewall.interfaces."docker0".allowedTCPPorts = [8080];
+
+  # `environmentFiles` is read when the container starts, so the file has to
+  # exist by then. `strata-env` renders it; a plain `after` avoids making the
+  # transcriber restart whenever the key rotates.
+  systemd.services.docker-transcriber = {
+    after = ["strata-env.service"];
+    wants = ["strata-env.service"];
   };
 
   systemd.tmpfiles.rules = [
