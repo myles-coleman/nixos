@@ -247,10 +247,17 @@ in {
       # FORWARD, so it is unaffected either way.
       #
       # The accept is inserted first so it sits above the catch-all drop.
-      ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
-        -s 10.20.0.0/24 -p tcp --dport 8080 -j ACCEPT 2>/dev/null \
-        || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
-          -s 10.20.0.0/24 -p tcp --dport 8080 -j ACCEPT
+      # The gaming segment by explicit matrix grant, and this segment's own
+      # gateway. Tailnet clients arrive SNATed to the gateway (the Vault
+      # masquerades `iifname tailscale0 oifname br-*`), so without the gateway
+      # source an owner using the tailnet subnet route would be refused even
+      # though the ACL allows it.
+      for src in 10.20.0.0/24 10.30.0.1; do
+        ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
+          -s "$src" -p tcp --dport 8080 -j ACCEPT 2>/dev/null \
+          || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
+            -s "$src" -p tcp --dport 8080 -j ACCEPT
+      done
       ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
         -p tcp --dport 8080 ! -i tailscale0 -j DROP 2>/dev/null \
         || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
