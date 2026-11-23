@@ -22,6 +22,14 @@ in {
   # set the cfg80211 hint rather than relying on hostapd to set it later.
   boot.extraModprobeConfig = "options cfg80211 ieee80211_regdom=US";
 
+  # 6.18.64 regression: the modprobe hint alone no longer prevents the phy
+  # from being registered under the world domain, which marks the whole 5 GHz
+  # band NO-IR and makes hostapd fail with "Hardware does not support
+  # configured channel". Pass the hint on the kernel command line and reload
+  # ath10k after setting the reg domain, so the phy is created under US before
+  # hostapd runs.
+  boot.kernelParams = ["cfg80211.ieee80211_regdom=US"];
+
   services.hostapd = {
     enable = true;
     radios."${interface}" = {
@@ -73,8 +81,32 @@ in {
   # hostapd needs br-lan (created by systemd-networkd) to exist before it
   # can enslave wlp7s0.
   systemd.services.hostapd = {
-    after = ["systemd-networkd.service"];
-    wants = ["systemd-networkd.service"];
+    after = ["systemd-networkd.service" "ath10k-regdomain.service"];
+    wants = ["systemd-networkd.service" "ath10k-regdomain.service"];
+  };
+
+  # Recreate the ath10k phy under the US regulatory domain. Setting the reg
+  # domain after the phy exists is too late: the driver keeps the world-domain
+  # NO-IR flags for 5 GHz and hostapd cannot clear them.
+  systemd.services.ath10k-regdomain = {
+    description = "Set the US regulatory domain before hostapd starts";
+    before = ["hostapd.service"];
+    after = ["systemd-modules-load.service" "systemd-networkd.service"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.iw}/bin/iw reg set US || true
+      ${pkgs.kmod}/bin/modprobe -r ath10k_pci || true
+      ${pkgs.kmod}/bin/modprobe ath10k_pci || true
+      n=0
+      while [ "$n" -lt 20 ] && [ ! -e /sys/class/net/wlp7s0 ]; do
+        n=$((n + 1))
+        ${pkgs.coreutils}/bin/sleep 0.5
+      done
+    '';
   };
 
   environment.systemPackages = [pkgs.iw];
