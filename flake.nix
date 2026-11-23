@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     deploy-rs = {
-      url = "github:serokell/deploy-rs/e760371d631165e7d8de5b0dcf148e21ec4c16f0";
+      url = "github:serokell/deploy-rs/1cec0527bd09074bbee6d4461900ce5d58267217";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
