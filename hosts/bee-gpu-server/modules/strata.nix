@@ -228,11 +228,12 @@ in {
   # `networking.firewall` cannot restrict 8080. `DOCKER-USER` is the supported
   # hook and is evaluated before Docker's own forward rules.
   #
-  # Only the tailnet and loopback may reach it. The alternative — binding the
-  # container to the tailnet IP — was rejected: Docker can start before
-  # tailscaled, and the container would then fail to bind at boot.
+  # Only the tailnet may reach it, plus the gaming segment by explicit grant
+  # in spec 29's allow matrix (gaming -> AI tcp/8080). The alternative —
+  # binding the container to the tailnet IP — was rejected: Docker can start
+  # before tailscaled, and the container would then fail to bind at boot.
   systemd.services.strata-port-guard = {
-    description = "Allow Strata's port 8080 only from the tailnet";
+    description = "Allow Strata's port 8080 only from the tailnet and the gaming segment";
     wants = ["docker.service"];
     after = ["docker.service"];
     wantedBy = ["multi-user.target"];
@@ -244,6 +245,12 @@ in {
       # iptables accepts only one --in-interface per rule. Loopback is not named:
       # traffic the host sends to itself goes through OUTPUT and never traverses
       # FORWARD, so it is unaffected either way.
+      #
+      # The accept is inserted first so it sits above the catch-all drop.
+      ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
+        -s 10.20.0.0/24 -p tcp --dport 8080 -j ACCEPT 2>/dev/null \
+        || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \
+          -s 10.20.0.0/24 -p tcp --dport 8080 -j ACCEPT
       ${pkgs.iptables}/bin/iptables -C DOCKER-USER \
         -p tcp --dport 8080 ! -i tailscale0 -j DROP 2>/dev/null \
         || ${pkgs.iptables}/bin/iptables -I DOCKER-USER \

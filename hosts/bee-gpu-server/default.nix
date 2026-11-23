@@ -66,6 +66,31 @@ in {
     # `tailscale` aspect.
     services.tailscale.useRoutingFeatures = "both";
 
+    # LAN address on the protecli-vault's AI segment (spec 29).
+    #
+    # The Vault's br-ai is 10.30.0.0/24 and reserves 10.30.0.10 for this host's
+    # MAC. This profile replaces the hand-made NetworkManager profile
+    # `vault-temp` (static 192.168.1.10, DNS 192.168.1.1), which was the last
+    # piece of the retired 192.168.1.0/24 LAN. The address is static rather than
+    # a DHCP lease so the host is reachable the moment the cable's segment
+    # becomes br-ai; delete `vault-temp` after the first switch.
+    networking.networkmanager.ensureProfiles.profiles.lan-ai = {
+      connection = {
+        id = "lan-ai";
+        type = "ethernet";
+        interface-name = "enp42s0";
+        autoconnect = "true";
+        # Win over any leftover imperative profile on the same interface.
+        autoconnect-priority = "100";
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "10.30.0.10/24,10.30.0.1";
+        dns = "10.30.0.1;";
+      };
+      ipv6.method = "ignore";
+    };
+
     # Per-instance OpenCode sandbox secrets (server password + scoped git PAT).
     sops.defaultSopsFile = ../../secrets/hosts/bee-gpu-server.yaml;
     # Install secrets via the systemd unit rather than the activation script so
