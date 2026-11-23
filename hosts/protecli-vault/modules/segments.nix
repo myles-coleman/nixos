@@ -279,6 +279,16 @@ in {
         # traffic falls into table 100 and out wg0.
         "10-wan" = {
           routingPolicyRules = [
+            # Unbound forwards to Mullvad's in-tunnel resolver. Scope the rule
+            # to that one address: a bare `User = "unbound"` rule sent every
+            # query, including the recursive fallback, into table 100, where the
+            # blackhole default swallowed it whenever wg0 was down.
+            {
+              To = "10.64.0.1/32";
+              User = "unbound";
+              Table = 100;
+              Priority = 32759;
+            }
             {
               IncomingInterface = "tailscale0";
               Table = 100;

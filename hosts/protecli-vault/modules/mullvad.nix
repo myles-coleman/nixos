@@ -79,20 +79,18 @@ in {
           Table = wgTable;
           Metric = 0;
         }
-        # Persistent blackhole: when wg0 is down its metric-0 default
-        # disappears and this catches the lookup instead of falling through to
-        # main -> WAN. Exit-node clients (qBittorrent, Prowlarr) fail closed.
-        {
-          Destination = "0.0.0.0/0";
-          Table = wgTable;
-          Metric = 1000;
-          Type = "blackhole";
-        }
       ];
       linkConfig.RequiredForOnline = "no";
     };
   };
 
+  # ── Table 100: fail-closed default ────────────────────────────────
+  # The blackhole/unreachable default lives on the WAN network (networking.nix),
+  # not here: networkd removes a .network file's routes when its link goes down,
+  # so a blackhole attached to wg0 vanished exactly when it was needed. On the
+  # WAN it persists, and `Type = "unreachable"` makes a failed forwarder return
+  # an error immediately instead of hanging until a timeout.
+  #
   # ── Table 100: return path to the tailnet ─────────────────────────
   # `iif tailscale0 lookup 100` hands every tailnet-sourced packet to table
   # 100, whose default is wg0. Tailnet-destined traffic needs its own route
