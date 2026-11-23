@@ -24,8 +24,9 @@
   # Dedicated routing table and firewall mark for the Mullvad tunnel.
   # NOTE: wgFwMark is a routing/firewall mark, NOT the endpoint port; the two
   # only coincide numerically here by coincidence.
-  # These MUST stay in sync with hosts/protecli-vault/modules/networking.nix
-  # (the persistent policy rules on br-lan) and modules/firewall.nix.
+  # Table 100 also carries the tailnet's 100.64.0.0/10 route; the policy rule
+  # that steers `iif tailscale0` into it is generated in segments.nix, and the
+  # firewall's tailscale0 -> wg0 path is in firewall.nix.
   wgTable = 100;
   wgFwMark = 51820;
 
@@ -78,8 +79,57 @@ in {
           Table = wgTable;
           Metric = 0;
         }
+        # Persistent blackhole: when wg0 is down its metric-0 default
+        # disappears and this catches the lookup instead of falling through to
+        # main -> WAN. Exit-node clients (qBittorrent, Prowlarr) fail closed.
+        {
+          Destination = "0.0.0.0/0";
+          Table = wgTable;
+          Metric = 1000;
+          Type = "blackhole";
+        }
       ];
       linkConfig.RequiredForOnline = "no";
     };
+  };
+
+  # ── Table 100: return path to the tailnet ─────────────────────────
+  # `iif tailscale0 lookup 100` hands every tailnet-sourced packet to table
+  # 100, whose default is wg0. Tailnet-destined traffic needs its own route
+  # back out tailscale0, or a tailnet-to-tailnet packet would be pulled into
+  # the Mullvad tunnel.
+  #
+  # networkd cannot declare this: routes in a .network file are bound to that
+  # file's link, and tailscale0 is unmanaged (Tailscale creates it with
+  # --netfilter-mode=off). A tiny oneshot keeps the route idempotent instead.
+  systemd.services.tailnet-table100-route = {
+    description = "Keep the tailnet return route in routing table 100";
+    wantedBy = ["multi-user.target"];
+    requires = ["sys-subsystem-net-devices-tailscale0.device"];
+    after = [
+      "sys-subsystem-net-devices-tailscale0.device"
+      "systemd-networkd.service"
+      "tailscaled.service"
+    ];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      TimeoutStartSec = "120s";
+    };
+    # tailscale0 exists as soon as the device unit is plugged, but it stays
+    # down (no carrier) until tailscaled finishes configuring it, and
+    # `ip route replace` refuses a nexthop whose device is down. Retry until
+    # the route is actually accepted instead of guessing at the link state.
+    script = ''
+      for _ in $(seq 1 90); do
+        if ${pkgs.iproute2}/bin/ip route replace 100.64.0.0/10 dev tailscale0 table ${toString wgTable} 2>/dev/null; then
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "tailscale0 did not come up within 90s" >&2
+      exit 1
+    '';
   };
 }
