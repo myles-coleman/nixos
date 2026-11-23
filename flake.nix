@@ -32,7 +32,7 @@
     import-tree.url = "github:denful/import-tree";
     # Pinned to a commit: microvm.nix has had no tagged release since v0.5.0.
     microvm = {
-      url = "github:microvm-nix/microvm.nix/f13928fe9900e91709d7ce581eefa47eaafa79e1";
+      url = "github:microvm-nix/microvm.nix/430a46d03ef15f1b8b715fafa85f21847960b783";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
