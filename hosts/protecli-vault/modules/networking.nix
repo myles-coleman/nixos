@@ -87,6 +87,20 @@ in {
           UseDNS = true;
           UseRoutes = true;
         };
+        routes = [
+          # Fail-closed default for routing table 100. It must live on a link
+          # that stays up: networkd drops a network's routes when its link goes
+          # down, and wg0 is exactly the link that fails. `unreachable` (rather
+          # than a silent blackhole) makes Unbound's in-tunnel forwarder fail
+          # instantly, so `forward-first` falls back to recursion without a
+          # multi-second stall - and the query never leaks out the WAN.
+          {
+            Destination = "0.0.0.0/0";
+            Table = 100;
+            Metric = 1000;
+            Type = "unreachable";
+          }
+        ];
         linkConfig.RequiredForOnline = "routable";
       };
 

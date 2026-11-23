@@ -27,18 +27,25 @@
         hide-version = true;
       };
 
-      # Full recursion from the root servers, deliberately with no
-      # `forward-zone`. The old forwarder was 10.64.0.1 inside the Mullvad
-      # tunnel, which made every DNS lookup depend on wg0 staying up.
-      # Outbound port 53 from the WAN was proven open before this change
-      # (`dig @198.41.0.4 . NS`). Accepted trade-off: the ISP can now see the
-      # queries. See spec 29, Unit 1.
+      # Forward to Mullvad's in-tunnel resolver (10.64.0.1) so queries travel
+      # inside wg0: the ISP sees WireGuard, not plaintext DNS names, and the
+      # resolver a site sees is Mullvad's. The policy rule that puts the
+      # unbound user into table 100 lives in networking.nix.
       #
-      # Manual fallback if recursion ever breaks: add back
-      #   forward-zone: name "." forward-addr 10.64.0.1
-      # and a table-100 policy rule for the unbound user.
+      # `forward-first: yes` is the point of this design: if wg0 is down the
+      # forwarder times out and Unbound falls back to full recursion out the
+      # WAN. A tunnel outage therefore costs privacy for the duration, not DNS
+      # for the house -- the failure mode spec 29 Unit 1 set out to remove.
+      #
       # DNSSEC validation and the trust anchor stay on, so a hijacked answer
       # that fails validation is served as SERVFAIL, not silently accepted.
+      forward-zone = [
+        {
+          name = ".";
+          forward-addr = "10.64.0.1";
+          forward-first = true;
+        }
+      ];
     };
   };
 
