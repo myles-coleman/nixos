@@ -232,6 +232,7 @@ root = sys.argv[1]
 workflows = os.path.join(root, ".github", "workflows")
 pr_path = os.path.join(workflows, "pr.yaml")
 comment_path = os.path.join(workflows, "pr-comment.yaml")
+lock_path = os.path.join(workflows, "actions.lock")
 
 
 def read(path, number, label):
@@ -314,7 +315,7 @@ for step in steps:
     if not isinstance(step, dict):
         continue
     uses = step.get("uses") or ""
-    if not re.fullmatch(r"actions/upload-artifact@[0-9a-f]{40}", uses):
+    if not re.fullmatch(r"actions/upload-artifact@v\S+", uses):
         continue
     with_ = step.get("with") or {}
     if (
@@ -373,7 +374,7 @@ for job in comment_jobs.values():
         if not isinstance(step, dict):
             continue
         uses = step.get("uses") or ""
-        if not re.fullmatch(r"actions/download-artifact@[0-9a-f]{40}", uses):
+        if not re.fullmatch(r"actions/download-artifact@v\S+", uses):
             continue
         with_ = step.get("with") or {}
         if (
@@ -405,7 +406,7 @@ for job in comment_jobs.values():
         if not isinstance(step, dict):
             continue
         uses = step.get("uses") or ""
-        if not re.fullmatch(r"actions/checkout@[0-9a-f]{40}", uses):
+        if not re.fullmatch(r"actions/checkout@v\S+", uses):
             continue
         checkout_found = True
         with_ = step.get("with") or {}
@@ -415,11 +416,24 @@ for job in comment_jobs.values():
         if str(persist).lower() != "false":
             fail(9, f"pr-comment.yaml checkout persist-credentials is {persist!r}, expected false")
 if not checkout_found:
-    fail(9, "pr-comment.yaml has no pinned actions/checkout step")
+    fail(9, "pr-comment.yaml has no actions/checkout step")
 ok(9, "pr-comment.yaml checks out without a ref and sets persist-credentials: false")
 
-# 10. Every uses: in both workflows is pinned to a full SHA with a version comment.
-def check_pins(text, label):
+# 10. Every uses: is covered by the lockfile: a readable tag in the workflow,
+# and a commit plus owner_id/repo_id in actions.lock. Inline SHA pinning is
+# gone; the lockfile is the pin (AGENTS.md, "CI Workflow Dependencies").
+lock_text = read(lock_path, 10, "actions.lock")
+lock = parse(lock_path, lock_text, 10, "actions.lock")
+lock_workflows = lock.get("workflows") if isinstance(lock, dict) else None
+lock_deps = lock.get("dependencies") if isinstance(lock, dict) else None
+if not isinstance(lock_workflows, dict) or not isinstance(lock_deps, dict):
+    fail(10, "actions.lock has no workflows/dependencies mappings")
+
+
+def check_pins(text, label, workflow):
+    locked = lock_workflows.get(workflow)
+    if not isinstance(locked, list):
+        fail(10, f"{label} is not onboarded in actions.lock")
     for lineno, line in enumerate(text.splitlines(), 1):
         match = re.match(r"^\s*(?:-\s+)?uses:\s*(\S+)(.*)$", line)
         if not match:
@@ -428,15 +442,38 @@ def check_pins(text, label):
         trailing = match.group(2)
         if ref.startswith("./"):
             continue
-        if not re.fullmatch(r"[^@\s]+@[0-9a-f]{40}", ref):
-            fail(10, f"{label}:{lineno}: uses {ref!r} is not pinned to a 40-character commit SHA")
-        if not re.match(r"^\s*#\s*v\S+", trailing):
-            fail(10, f"{label}:{lineno}: uses {ref!r} has no trailing '# v...' version comment")
+        repo, separator, version = ref.rpartition("@")
+        if not separator or not repo or not version:
+            fail(10, f"{label}:{lineno}: uses {ref!r} has no @ref")
+        # A SHA in the workflow is pinned inline and gains nothing over the
+        # lockfile entry; it also hides which version is meant.
+        if re.fullmatch(r"[0-9a-f]{40}", version):
+            fail(
+                10,
+                f"{label}:{lineno}: uses {ref!r} is pinned inline to a SHA; use the tag "
+                "and let actions.lock pin it",
+            )
+        if re.match(r"^\s*#", trailing):
+            fail(
+                10,
+                f"{label}:{lineno}: uses {ref!r} carries a version comment; the lockfile "
+                "records the version",
+            )
+        if ref not in locked:
+            fail(10, f"{label}:{lineno}: uses {ref!r} is not listed for this workflow in actions.lock")
+        dependency = lock_deps.get(ref)
+        if not isinstance(dependency, dict):
+            fail(10, f"{label}:{lineno}: actions.lock has no dependency entry for {ref!r}")
+        if not re.fullmatch(r"sha[0-9]*-[0-9a-f]{40}", str(dependency.get("commit") or "")):
+            fail(10, f"{label}:{lineno}: actions.lock entry for {ref!r} has no commit")
+        for field in ("owner_id", "repo_id"):
+            if not re.fullmatch(r"[0-9]+", str(dependency.get(field) or "")):
+                fail(10, f"{label}:{lineno}: actions.lock entry for {ref!r} has no {field}")
 
 
-check_pins(pr_text, "pr.yaml")
-check_pins(comment_text, "pr-comment.yaml")
-ok(10, "every uses: in both workflows is pinned to a full SHA with a version comment")
+check_pins(pr_text, "pr.yaml", ".github/workflows/pr.yaml")
+check_pins(comment_text, "pr-comment.yaml", ".github/workflows/pr-comment.yaml")
+ok(10, "every uses: is a tag covered by a committed actions.lock entry")
 
 
 def job_step_runs(job, needle):
