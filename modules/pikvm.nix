@@ -328,6 +328,12 @@ in {
       "kvmd/meta.yaml".source = ../config/pikvm/meta.yaml;
       "kvmd/empty_file".text = "";
       "kvmd/tc358743-edid.hex".source = "${kvmd}/share/kvmd/edid/v3.hex";
+      # kvmd-janus passes `--configs-folder=/etc/kvmd/janus`, but nothing used to
+      # install that directory: Janus started with no transport config, died
+      # with "No Janus API transport is available", and the runner restarted it
+      # every second. Each attempt resolved stun.l.google.com, which made it the
+      # top Pi-hole query (~100/min) while the WebRTC KVM stream was dead.
+      "kvmd/janus".source = "${kvmd}/share/janus";
     };
 
     # ── Users & groups ────────────────────────────────────────────────
