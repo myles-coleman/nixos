@@ -32,6 +32,7 @@ in {
         coreutils
         gawk
         util-linux
+        iputils
       ];
       serviceConfig.Type = "oneshot";
       script = ''
@@ -52,6 +53,19 @@ in {
           ${lib.optionalString (cfg.notifyCommand != "") ''
           ${cfg.notifyCommand} "$msg" || true
         ''}
+        else
+          # A fresh handshake does not prove the relay forwards traffic. On
+          # 2026-11-24 ca-van-wg-201 completed handshakes but dropped every
+          # packet, so exit-node clients lost internet while this watchdog was
+          # silent. Probe egress through the tunnel and alert when it fails.
+          endpoint=$(wg show wg0 endpoints 2>/dev/null | awk '{print $2}' | head -1 || true)
+          if ! ping -I wg0 -c 1 -W 3 1.1.1.1 >/dev/null 2>&1; then
+            msg="wg0 handshake is fresh but no traffic reaches 1.1.1.1 through ''${endpoint:-the tunnel}; exit-node clients have no internet - check the Mullvad relay"
+            logger -t wg0-watchdog -p daemon.emerg "$msg"
+            ${lib.optionalString (cfg.notifyCommand != "") ''
+          ${cfg.notifyCommand} "$msg" || true
+        ''}
+          fi
         fi
       '';
     };
