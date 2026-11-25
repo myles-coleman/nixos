@@ -39,6 +39,17 @@ in {
         unstable
       ]);
 
+    # MagicDNS. The transcriber is reached as
+    # https://bee-gpu-server.tail6d2e9b.ts.net, and without this the name does
+    # not resolve: tailscaled had no DNS rights, so systemd-resolved answered
+    # NXDOMAIN while `dig @100.100.100.100` resolved fine.
+    #
+    # Scoped to this host on purpose. It rewrites the host resolver to the
+    # tailnet's (which forwards upstream), and the cluster nodes have their own
+    # DNS story through k3s; promote it to the `tailscale` aspect only if every
+    # machine should have MagicDNS.
+    services.tailscale.extraSetFlags = ["--accept-dns=true"];
+
     # nixpkgs builds CONFIG_ACPI_TINY_POWER_BUTTON as a module next to
     # CONFIG_ACPI_BUTTON, so it autoloads on the ACPI power button. It turns
     # the firmware's power-button notify on s2idle wake into SIGRTMIN+4 to
