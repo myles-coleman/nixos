@@ -106,7 +106,9 @@ in {
       ipv4 = {
         method = "manual";
         address1 = "10.0.0.150/24,10.0.0.1";
-        dns = "1.1.1.1;8.8.8.8;";
+        # Pi-hole first (ad-blocking + DNS leaves through the Vault's Mullvad
+        # tunnel); the public resolver is only a fallback for a Vault outage.
+        dns = "10.0.0.1;1.1.1.1;";
       };
       ipv6 = {
         method = "ignore";
@@ -129,7 +131,7 @@ in {
       };
     };
   };
-  networking.nameservers = ["1.1.1.1" "8.8.8.8"];
+  networking.nameservers = ["10.0.0.1" "1.1.1.1"];
 
   # Docker loads `br_netfilter` and sets the iptables FORWARD policy to DROP, which
   # silently blackholes all bridged guest traffic in a way that looks like "the node
