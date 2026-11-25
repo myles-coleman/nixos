@@ -15,11 +15,16 @@
   # The generated config's IPv6 address and `DNS = 10.64.0.1` are intentionally
   # not used: IPv6 is blackholed, and DNS stays local (Pi-hole + recursive
   # Unbound) to avoid the 100.64.0.0/10 CGNAT collision with Tailscale.
-  mullvadServerIp = "104.193.135.196";
+  # ca-van-wg-201 (104.193.135.196) stopped forwarding on 2026-11-24: the
+  # handshake stayed fresh and Mullvad's API still reported it active, but
+  # nothing it received reached the internet, so every exit-node client lost
+  # connectivity while the Vault itself (direct WAN) looked fine. Moved to
+  # us-sea-wg-001, which is a short hop away.
+  mullvadServerIp = "138.199.43.91";
   mullvadPort = 51820;
   mullvadEndpoint = "${mullvadServerIp}:${toString mullvadPort}";
   mullvadTunnelAddress = "10.68.169.78";
-  mullvadPeerPublicKey = "hYbb2NQKB0g2RefngdHl3bfaLImUuzeVIv2i1VCVIlQ=";
+  mullvadPeerPublicKey = "bZQF7VRDRK/JUJ8L6EFzF/zRw2tsqMRk6FesGtTgsC0=";
 
   # Dedicated routing table and firewall mark for the Mullvad tunnel.
   # NOTE: wgFwMark is a routing/firewall mark, NOT the endpoint port; the two
