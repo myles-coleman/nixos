@@ -38,7 +38,9 @@ in {
       }
     ];
     networking.defaultGateway = "10.0.0.1";
-    networking.nameservers = ["1.1.1.1"];
+    # Pi-hole on the Vault (DNS leaves via its Mullvad tunnel); 1.1.1.1 only
+    # as a fallback if the Vault is down.
+    networking.nameservers = ["10.0.0.1" "1.1.1.1"];
 
     # Tailscale (spec 20, Units 2-3): the fleet-wide model path needs a route on
     # every node. The shared auth key lives in secrets/common.yaml, which the k3s

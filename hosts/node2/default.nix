@@ -34,7 +34,7 @@ in {
       }
     ];
     networking.defaultGateway = "10.0.0.1";
-    networking.nameservers = ["1.1.1.1"];
+    networking.nameservers = ["10.0.0.1" "1.1.1.1"];
 
     # Tailscale (spec 20, Units 2-3): the fleet-wide model path needs a route on
     # every node. The shared auth key lives in secrets/common.yaml, which the k3s
