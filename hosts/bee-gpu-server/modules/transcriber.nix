@@ -91,6 +91,10 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      # tailscaled can be running but not yet authenticated at boot; a oneshot
+      # would stay failed and the name would never be served.
+      Restart = "on-failure";
+      RestartSec = 15;
     };
     script = ''
       ${config.services.tailscale.package}/bin/tailscale serve --bg ${toString port}
