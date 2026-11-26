@@ -29,11 +29,11 @@ in {
   virtualisation.oci-containers.containers.transcriber = {
     inherit image;
 
-    # Tailnet-only on purpose. Docker publishes ports by inserting its own
-    # iptables rules, which bypass the host firewall, so binding to 0.0.0.0
-    # would expose transcripts to the whole LAN. Pinning the published address
-    # to the tailscale IP is the same pattern Strata uses (100.127.170.8:8080).
-    ports = ["100.127.170.8:${toString port}:8090/tcp"];
+    # Loopback only. The tailnet reaches it through `tailscale serve` below,
+    # which terminates TLS on the MagicDNS name; nothing else can connect.
+    # Docker's published ports bypass the host firewall, so this is the bind
+    # address doing the work, not a firewall rule.
+    ports = ["127.0.0.1:${toString port}:8090/tcp"];
 
     volumes = ["${dataDir}:/data"];
 
@@ -76,6 +76,30 @@ in {
   # summarize call hangs until it times out — the DOCKER-USER guard is not
   # involved, because docker-proxy answers on the host, not by forwarding.
   networking.firewall.interfaces."docker0".allowedTCPPorts = [8080];
+
+  # HTTPS on the tailnet's own DNS name, with a certificate Tailscale issues
+  # and renews: https://bee-gpu-server.tail6d2e9b.ts.net
+  #
+  # nixpkgs' tailscale module has no `serve` option, so the state is asserted by
+  # a oneshot. `--bg` persists the config in tailscaled, which is why this is
+  # safe to run once per boot rather than as a long-lived proxy process.
+  systemd.services.tailscale-serve-transcriber = {
+    description = "Publish the transcriber on the tailnet over HTTPS";
+    wantedBy = ["multi-user.target"];
+    wants = ["tailscaled.service" "docker-transcriber.service"];
+    after = ["tailscaled.service" "docker-transcriber.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # tailscaled can be running but not yet authenticated at boot; a oneshot
+      # would stay failed and the name would never be served.
+      Restart = "on-failure";
+      RestartSec = 15;
+    };
+    script = ''
+      ${config.services.tailscale.package}/bin/tailscale serve --bg ${toString port}
+    '';
+  };
 
   # `environmentFiles` is read when the container starts, so the file has to
   # exist by then. `strata-env` renders it; a plain `after` avoids making the

@@ -26,11 +26,11 @@
  * Configure in ~/.config/opencode/opencode.json:
  *
  *   "plugins": [{ "package": "./plugins/youtube-transcript",
- *                 "options": { "baseURL": "http://100.127.170.8:8090",
+ *                 "options": { "baseURL": "https://bee-gpu-server.tail6d2e9b.ts.net",
  *                              "summaryModel": "qwen-local/qwen3.8-flash-next" } }]
  */
 
-const DEFAULT_BASE_URL = "http://100.127.170.8:8090"
+const DEFAULT_BASE_URL = "https://bee-gpu-server.tail6d2e9b.ts.net"
 const DEFAULT_TIMEOUT_MS = 20 * 60 * 1000
 const POLL_MS = 3000
 

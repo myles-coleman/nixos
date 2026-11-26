@@ -84,7 +84,7 @@ in {
         plugins = [
           {
             package = "./plugins/youtube-transcript";
-            options.baseURL = "http://100.127.170.8:8090";
+            options.baseURL = "https://bee-gpu-server.tail6d2e9b.ts.net";
           }
         ];
         provider = {
