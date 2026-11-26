@@ -22,6 +22,7 @@ in {
         inputs.home-manager.nixosModules.default
       ]
       ++ (with aspects; [
+        brave
         common
         desktop
         home-desktop

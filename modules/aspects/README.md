@@ -92,6 +92,17 @@ NixOS module system applies a module once per reference, so listing them
 directly *and* transitively would define unique options twice. They are still
 fully type-checked through `network`.
 
+## Desktop extras
+
+- `brave.nix` — Brave browser, listed by `bee-pc` and `bee-gpd` only. It
+  overlays `pkgs.brave` from the dedicated `nixpkgs-brave` flake input instead
+  of the system pin: nixpkgs dropped brave/brave-origin on 2026-11-03
+  (PR #582838, backport #582874) over maintainer/committer coverage and re-added
+  them on 2026-11-07 (PR #584534). The separate pin keeps evaluation working if
+  that happens again, and `nix flake update nixpkgs-brave` moves only the
+  browser. The overlay imports the pinned nixpkgs with `allowUnfree = true`
+  because `legacyPackages` cannot carry `config`.
+
 ## Host-local modules (`hosts/<host>/modules/`)
 
 Host-local concerns that do not belong in a shared aspect live in
