@@ -33,8 +33,9 @@
       wget
       obsidian
       discord
-      # brave was removed from nixpkgs (no maintainers left to handle security
-      # updates). Add chromium or firefox here if a browser is wanted.
+      # Browsers for the desktop hosts live in the `brave` aspect
+      # (modules/aspects/brave.nix), which overlays Brave from its own nixpkgs
+      # pin. Add chromium or firefox here if one is wanted on every host.
       ntfs3g #for mounting ntfs drives
       alejandra #for formatting in rebuild script
       libnotify #for system notifications

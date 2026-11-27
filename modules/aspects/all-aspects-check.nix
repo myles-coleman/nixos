@@ -33,6 +33,7 @@
       # `network`.
       x86AspectNames = [
         "access"
+        "brave"
         "common"
         "desktop"
         "dev-tools"

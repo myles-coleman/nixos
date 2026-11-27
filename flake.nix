@@ -4,6 +4,12 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Brave browser, deliberately independent of the system pin: nixpkgs dropped
+    # brave and brave-origin (PR #582838/#582874, 2026-11-03) over maintainer
+    # coverage and re-added them on 2026-11-07 (PR #584534). A dedicated pin lets
+    # `nix flake update nixpkgs-brave` move only the browser, and keeps
+    # evaluation of this flake working if the package is removed again.
+    nixpkgs-brave.url = "github:NixOS/nixpkgs/nixos-unstable";
     opencodeV2.url = "github:anomalyco/opencode/v2.0.23";
     sops-nix = {
       url = "github:Mic92/sops-nix";
