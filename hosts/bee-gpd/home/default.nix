@@ -83,7 +83,12 @@ in {
         "$schema" = "https://opencode.ai/config.json";
         plugins = [
           {
-            package = "./plugins/youtube-transcript";
+            # Absolute, not "./plugins/...": a configured plugin path resolves
+            # against the project directory, not against this config file, so the
+            # relative form looked for <project>/plugins/youtube-transcript and
+            # was skipped without a warning. Verified: the same directory loads
+            # by absolute path and does not by relative.
+            package = "${config.users.users.${mainUser}.home}/.config/opencode/plugins/youtube-transcript";
             options.baseURL = "https://bee-gpu-server.tail6d2e9b.ts.net";
           }
         ];
