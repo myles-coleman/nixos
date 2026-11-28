@@ -69,7 +69,7 @@ in {
     # index.ts loads, the same content behind a symlink does not, and a
     # symlinked plugin *directory* does not either. So this one path is copied
     # rather than linked.
-    home.activation.opencodeYoutubeTranscript = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    home.activation.opencodeYoutubeTranscript = ''
       target="$HOME/.config/opencode/plugins/youtube-transcript"
       $DRY_RUN_CMD rm -rf "$target"
       $DRY_RUN_CMD install -d -m 0755 "$target"
