@@ -386,7 +386,12 @@ in {
       before = ["kvmd.service"];
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${pkgs.v4l-utils}/bin/v4l2-ctl --device=${cfg.videoDevice} --set-edid=file=/etc/kvmd/tc358743-edid.hex --fix-edid-checksums --info-edid";
+        # v4l-utils 1.32 (nixpkgs 26.05) changed the EDID CLI: --set-edid now
+        # requires a pad, checksums are fixed unless --keep-edid-checksums is
+        # given, and --info-edid takes the pad. The old form
+        # (--fix-edid-checksums, bare --info-edid) exits 1 with a usage dump,
+        # which failed activation and rolled the whole pikvm deploy back.
+        ExecStart = "${pkgs.v4l-utils}/bin/v4l2-ctl --device=${cfg.videoDevice} --set-edid=pad=0,file=/etc/kvmd/tc358743-edid.hex --info-edid=0";
         ExecStop = "${pkgs.coreutils}/bin/true";
         RemainAfterExit = true;
       };
